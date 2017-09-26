@@ -1,0 +1,28 @@
+[user]
+	email = a-happin@users.noreply.github.com
+	name = a-happin
+[push]
+	default = simple
+[color]
+	ui = auto
+[core]
+	editor = nvim
+[log]
+	decorate = short
+[alias]
+	aa = add -A
+	addp = add -p
+	aliases = config --get-regexp ^alias\\.
+	branchall = branch -a
+	commitv = commit -v
+	cv = commit -v
+	ignore = !"f () { echo $1 >> .gitignore;}; f"
+	initcommit = !git init && git commit --allow-empty -m \"Inital commit.\"
+	mergenoff = merge --no-ff
+	pullrebase = pull --rebase
+	refresh = fetch --prune
+	s = !git show && echo --------------------------------------------------------------------------- && git status
+	staged = diff --cached
+	tree = log --graph --pretty=format:'%C(auto)%h%d %Creset%s - %Cblue%cn, %Cgreen%cr%Creset'
+	uncommit = reset --soft HEAD^
+	unstage = reset HEAD
