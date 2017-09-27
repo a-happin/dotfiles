@@ -437,7 +437,7 @@ function my-compress ()
 }
 
 # foreach git status
-function git-forgot ()
+function git-foreach-status ()
 {
   local i
   for i in `find ~ -name .git -print`
