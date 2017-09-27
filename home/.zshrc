@@ -276,15 +276,15 @@ autoload -Uz run-help run-help-git run-help-openssl run-help-sudo
 # EDITOR
 
 type nvim > /dev/null 2>&1 && export EDITOR=nvim
-# export VTE_CJK_WIDTH=1
+#export VTE_CJK_WIDTH=1
 #export XDG_CONFIG_HOME=${HOME}/.config
 
-alias vim='printf "vimがいいのですか？でもnvimを起動しますね。" && read -k1 && nvim'
+#alias vim='printf "vimがいいのですか？でもnvimを起動しますね。" && read -k1 && nvim'
 
 ########################################
 # PATH
 
-export PATH="${PATH}:${HOME}/bin"
+#export PATH="${PATH}:${HOME}/bin"
 #export LD_LIBRARY_PATH="${HOME}/lib"
 
 ########################################
@@ -379,17 +379,26 @@ function trash ()
   mkdir -p /tmp/trash && mv -fv "$@" /tmp/trash
 }
 
+# stderrへのecho、ついでに終了コード1
+function echoerr ()
+{
+  echo "$@" >&2
+  false
+}
+
 # ♪
 function music-play ()
 {
-  mplayer "$@" > /dev/null 2>&1 < /dev/null || echo Error: cannot play >&2
+  mplayer "$@" || echoerr Error: cannot play
 }
+
 alias -s {mp3,flac,m4a}=music-play
 alias -s py=python3
 alias -s hs=runhaskell
 alias -s c=my-runc
 alias -s {cpp,cxx,cc}=my-runcxx
 alias -s html=open
+alias -s jar='java -jar'
 
 # 拡張子から圧縮形式を判別して解凍
 function my-extract ()
@@ -397,7 +406,7 @@ function my-extract ()
   local i
   for i in "$@"
   do
-    case ${i} in
+    case "${i}" in
       *.tgz | *.tar.gz ) tar -zxvf ${i} ;;
       *.tbz2 | *.tar.bz2 ) tar -jxvf ${i} ;;
       *.tar.xz ) tar -Jxvf ${i} ;;
@@ -407,7 +416,7 @@ function my-extract ()
       *.xz ) xz -d ${i} ;;
       *.zip ) unzip ${i} ;;
       *.rar ) unrar x ${i} ;;
-      * ) echo Error: unknown suffix. >&2 ;;
+      * ) echoerr Error: unknown suffix. ;;
     esac
   done
 }
@@ -416,15 +425,26 @@ alias -s {tgz,tbz2,tar,gz,bz2,xz,zip,rar}=my-extract
 # 拡張子に合った圧縮形式で圧縮
 function my-compress ()
 {
-  case $1 in
+  case "$1" in
     *.tgz | *.tar.gz ) tar -zcvf "$@" ;;
     *.tbz2 | *.tar.bz2 ) tar -jcvf "$@" ;;
     *.tar.xz ) tar -Jcvf "$@" ;;
     *.tar ) tar -cvf "$@" ;;
     *.zip ) zip -r "$@" ;;
     *.rar ) rar a "$@" ;;
-    * ) echo Error: unknown suffix. >&2 ;;
+    * ) echoerr Error: unknown suffix. ;;
   esac
+}
+
+# foreach git status
+function git-forgot ()
+{
+  local i
+  for i in `find ~ -name .git -print`
+  do
+    printf "%s\n" `dirname "$i"`
+    git -C `dirname "$i"` status
+  done
 }
 
 ########################################
