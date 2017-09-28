@@ -70,8 +70,8 @@ zstyle ':completion:*:default' list-colors ""
 # _prefix: カーソル以降を無視してカーソル位置までで補完する。
 zstyle ':completion:*' completer _oldlist _complete _match _approximate _prefix
 
-# 補完キャッシュを使う
-zstyle ':completion:*' use-cache yes
+# 補完キャッシュを使わない
+zstyle ':completion:*' use-cache no
 
 # 詳細な情報を使う
 zstyle ':completion:*' verbose yes
@@ -188,15 +188,9 @@ function decorate-branch_impl ()
     while IFS= read line
     do
       case "${line[1,2]}" in
-        \?\?)
-          ((++git_info[untracked]))
-          ;;
-        ?\ )
-          ((++git_info[staged]))
-          ;;
-        \ ?)
-          ((++git_info[modified]))
-          ;;
+        \?\?) ((++git_info[untracked])) ;;
+        ?\ ) ((++git_info[staged])) ;;
+        \ ?) ((++git_info[modified])) ;;
         *)
           ((++git_info[staged]))
           ((++git_info[modified]))
@@ -230,24 +224,11 @@ function decorate-prompt ()
   printf "%s\n" "%{${reset_color}%}"
   [[ ${exit_code} -eq 0 ]] || printf "%s" "%{${fg_bold[red]}%}${exit_code} "
   case "${USER}" in
-    root)
-      printf "%s" "%{${fg_bold[red]}%}"
-      ;;
-    *)
-      printf "%s" "%{${fg_bold[green]}%}"
-      ;;
+    root) printf "%s" "%{${fg_bold[red]}%}" ;;
+    *) printf "%s" "%{${fg_bold[green]}%}" ;;
   esac
   printf "%s\n" "${USER}%{${fg_bold[green]}%}@${HOST} %{${fg_bold[blue]}%}${PWD} $(decorate-branch)"
   printf "%s" "%{${reset_color}%}%(!.#.$) "
-}
-
-########################################
-# 実行直前に色をリセットする
-
-function preexec ()
-{
-  printf "%s" ${reset_color}
-  #echo -n -e "\e[m"
 }
 
 ########################################
@@ -264,6 +245,15 @@ function precmd ()
 {
   PROMPT="$(decorate-prompt)"
   #RPROMPT="$(decorate-branch_old)"
+}
+
+########################################
+# 実行直前に色をリセットする
+
+function preexec ()
+{
+  printf "%s" ${reset_color}
+  #echo -n -e "\e[m"
 }
 
 ########################################
@@ -298,9 +288,10 @@ alias grep='\grep --color=auto'
 type xsel > /dev/null 2>&1 && alias pbcopy='xsel --clipboard --input' && alias pbpaste='xsel --clipboard --output'
 type xdg-open > /dev/null 2>&1 && alias open=xdg-open
 
-alias rm='\rm -i'
 alias cp='\cp -i'
 alias mv='\mv -i'
+alias rm='\rm -i'
+alias rr='\rm -ri'
 
 alias type='type -as'
 
@@ -315,6 +306,9 @@ alias commit='git commit -v'
 alias checkout='git checkout'
 alias push='git push'
 alias fetch='git fetch && git status'
+
+alias encrypt='openssl aes-256-cbc -e -salt'
+alias decrypt='openssl aes-256-cbc -d -salt'
 
 alias nvimrc='${EDITOR} ${HOME}/.config/nvim/init.vim'
 alias zshrc='${EDITOR} ${HOME}/.zshrc'
@@ -383,14 +377,64 @@ function trash ()
 function echoerr ()
 {
   echo "$@" >&2
-  false
+  return 1
 }
 
 # ♪
 function music-play ()
 {
-  mplayer "$@" || echoerr Error: cannot play
+  mplayer "$@" || echoerr Error: cannot play.
 }
+
+# 拡張子から圧縮形式を判別して解凍
+function extract ()
+{
+  if [[ -z $1 || -n $2 ]]
+  then
+    \type -f extract >&2
+  else
+    case "$1" in
+      *.tgz | *.tar.gz) tar -zxvf "$1" ;;
+      *.tbz2 | *.tar.bz2) tar -jxvf "$1" ;;
+      *.tar.xz) tar -Jxvf "$1" ;;
+      *.tar) tar -xvf "$1" ;;
+      *.gz) gzip -dc "$1" ;;
+      *.bz2) bzip2 -dc "$1" ;;
+      *.xz) xz -d "$1" ;;
+      *.zip) unzip "$1" ;;
+      *.rar) unrar x "$1" ;;
+      *) echoerr Error: unknown suffix. ;;
+    esac
+  fi
+}
+
+# 拡張子に合った圧縮形式で圧縮
+function compress ()
+{
+  case "$1" in
+    *.tgz | *.tar.gz) tar -zcvf "$@" ;;
+    *.tbz2 | *.tar.bz2) tar -jcvf "$@" ;;
+    *.tar.xz) tar -Jcvf "$@" ;;
+    *.tar) tar -cvf "$@" ;;
+    *.zip) zip -r "$@" ;;
+    *.rar) rar a "$@" ;;
+    *) echoerr Error: unknown suffix. ;;
+  esac
+}
+
+# ~以下のすべてのリポジトリに対してgit statusを実行
+function git-status-all ()
+{
+  local i
+  for i in `find ~ -name .git -type d -exec dirname {} \;`
+  do
+    printf "%s\n" "$i"
+    git -C "$i" status
+  done
+}
+
+########################################
+# suffix alias
 
 alias -s {mp3,flac,m4a}=music-play
 alias -s py=python3
@@ -398,54 +442,8 @@ alias -s hs=runhaskell
 alias -s c=my-runc
 alias -s {cpp,cxx,cc}=my-runcxx
 alias -s html=open
+alias -s {tgz,tbz2,tar,gz,bz2,xz,zip,rar}=extract
 alias -s jar='java -jar'
-
-# 拡張子から圧縮形式を判別して解凍
-function my-extract ()
-{
-  local i
-  for i in "$@"
-  do
-    case "${i}" in
-      *.tgz | *.tar.gz ) tar -zxvf ${i} ;;
-      *.tbz2 | *.tar.bz2 ) tar -jxvf ${i} ;;
-      *.tar.xz ) tar -Jxvf ${i} ;;
-      *.tar ) tar -xvf ${i} ;;
-      *.gz ) gzip -dc ${i} ;;
-      *.bz2 ) bzip2 -dc ${i} ;;
-      *.xz ) xz -d ${i} ;;
-      *.zip ) unzip ${i} ;;
-      *.rar ) unrar x ${i} ;;
-      * ) echoerr Error: unknown suffix. ;;
-    esac
-  done
-}
-alias -s {tgz,tbz2,tar,gz,bz2,xz,zip,rar}=my-extract
-
-# 拡張子に合った圧縮形式で圧縮
-function my-compress ()
-{
-  case "$1" in
-    *.tgz | *.tar.gz ) tar -zcvf "$@" ;;
-    *.tbz2 | *.tar.bz2 ) tar -jcvf "$@" ;;
-    *.tar.xz ) tar -Jcvf "$@" ;;
-    *.tar ) tar -cvf "$@" ;;
-    *.zip ) zip -r "$@" ;;
-    *.rar ) rar a "$@" ;;
-    * ) echoerr Error: unknown suffix. ;;
-  esac
-}
-
-# foreach git status
-function git-foreach-status ()
-{
-  local i
-  for i in `find ~ -name .git -type d -exec dirname {} \;`
-  do
-    printf "%s\n" "$i"
-    git -C "$i" status --short
-  done
-}
 
 ########################################
 # キーバインド
@@ -476,8 +474,8 @@ bindkey "^[[Z" reverse-menu-complete
 # History
 
 export HISTFILE=${HOME}/.zsh_history
-export HISTSIZE=10000
-export SAVEHIST=10000
+export HISTSIZE=12000
+export SAVEHIST=12000
 setopt EXTENDED_HISTORY
 
 # ヒストリーファイルを共有する
