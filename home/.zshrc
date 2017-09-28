@@ -440,10 +440,10 @@ function my-compress ()
 function git-foreach-status ()
 {
   local i
-  for i in `find ~ -name .git -print`
+  for i in `find ~ -name .git -type d -exec dirname {} \;`
   do
-    printf "%s\n" `dirname "$i"`
-    git -C `dirname "$i"` status
+    printf "%s\n" "$i"
+    git -C "$i" status --short
   done
 }
 
