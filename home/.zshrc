@@ -314,6 +314,9 @@ alias nvimrc='${EDITOR} ${HOME}/.config/nvim/init.vim'
 alias zshrc='${EDITOR} ${HOME}/.zshrc'
 alias relogin='exec zsh -l'
 
+chinoopt='-std=c++2a -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -O2 -pipe'
+alias chino='clang++ ${=chinoopt}'
+
 # typo
 #alias exho=echo
 
@@ -339,6 +342,11 @@ function my-runc ()
 function my-runcxx ()
 {
   my-cxx -o /tmp/a.out "$1" && shift && /tmp/a.out "$@"
+}
+
+function runchino ()
+{
+  chino -o /tmp/a.out "$1" && shift && /tmp/a.out "$@"
 }
 
 # sandbox用(?)
@@ -440,9 +448,12 @@ alias -s {mp3,flac,m4a}=music-play
 alias -s py=python3
 alias -s hs=runhaskell
 alias -s c=my-runc
-alias -s {cpp,cxx,cc}=my-runcxx
+alias -s {cpp,cxx,cc}=runchino
 alias -s html=open
-alias -s {tgz,tbz2,tar,gz,bz2,xz,zip,rar}=extract
+alias -s {tgz,tbz2,gz,bz2,xz}=extract
+alias -s tar='tar xvf'
+alias -s zip='unzip'
+alias -s rar='unrar x'
 alias -s jar='java -jar'
 
 ########################################
