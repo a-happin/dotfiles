@@ -12,7 +12,7 @@
 [alias]
 	aa = add -A
 	addp = add -p
-	aliases = config --get-regexp ^alias\\.
+	alias = config --get-regexp ^alias\\.
 	branchall = branch -a
 	commitv = commit -v
 	cv = commit -v
@@ -24,5 +24,5 @@
 	s = !git show && echo --------------------------------------------------------------------------- && git status
 	staged = diff --cached
 	tree = log --graph --pretty=format:'%C(auto)%h%d %Creset%s - %Cblue%cn, %Cgreen%cr%Creset'
-	uncommit = reset --soft HEAD^
+	uncommit = reset --soft HEAD~
 	unstage = reset HEAD
