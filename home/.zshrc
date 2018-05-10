@@ -455,6 +455,7 @@ alias -s tar='tar xvf'
 alias -s zip='unzip'
 alias -s rar='unrar x'
 alias -s jar='java -jar'
+alias -s exe='wine'
 
 ########################################
 # キーバインド
