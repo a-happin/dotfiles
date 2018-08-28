@@ -244,7 +244,6 @@ setopt transient_rprompt
 function precmd ()
 {
   PROMPT="$(decorate-prompt)"
-  #RPROMPT="$(decorate-branch_old)"
 }
 
 ########################################
@@ -253,7 +252,6 @@ function precmd ()
 function preexec ()
 {
   printf "%s" ${reset_color}
-  #echo -n -e "\e[m"
 }
 
 ########################################
@@ -431,10 +429,11 @@ function compress ()
 }
 
 # ~以下のすべてのリポジトリに対してgit statusを実行
+# .cacheは除外
 function git-status-all ()
 {
   local i
-  for i in `find ~ -name .git -type d -exec dirname {} \;`
+  for i in `find ~ -name .cache -type d -prune -o -name .git -type d -exec dirname {} \;`
   do
     printf "%s\n" "$i"
     git -C "$i" status
@@ -468,16 +467,12 @@ bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
 # HOME,ENDで移動する
-#bindkey "^[OH" beginning-of-line
-bindkey "^[[7$" beginning-of-line
-bindkey "^[[7~" beginning-of-line
-#bindkey "^[OF" end-of-line
-bindkey "^[[8$" end-of-line
-bindkey "^[[8~" end-of-line
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
 
 # Deleteキーで消す
 bindkey "^[[3~" delete-char
-bindkey "^[[3;2~" delete-char
+#bindkey "^[[3;2~" delete-char
 
 # Shift+Tabで逆順補完
 bindkey "^[[Z" reverse-menu-complete
@@ -515,32 +510,12 @@ setopt auto_cd
 # 同じディレクトリはpushしない
 setopt pushd_ignore_dups
 
-# 多い時は省略して表示
-#function auto-ls ()
-#{
-#  local i
-#  set -- "${(f)$(ls -C --color=always)}"
-#  if (( 10 < $#* ))
-#  then
-#    for i in `seq 10`
-#      echo ${*[$i]}
-#    echo -e '\e[1;33m'etc...
-#  else
-#    ls
-#  fi
-#}
-
 # cdしたときに自動的にls
 function chpwd ()
 {
   la
 }
 
-# 色付きターミナルの場合はカラフルにする
-case ${TERM} in
-  *color* ) [[ -e /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ;;
-esac
-
-# zsh-syntax-highlightingがなかった場合起動時にエラーコードが表示されるので、最後に何もしないコマンド
+# 直前にエラーを吐いてもエラーコードを表示しないように、何もしないコマンド。
 :
 

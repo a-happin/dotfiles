@@ -14,25 +14,28 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 
 # xrdb
-#xrdb ${HOME}/.Xresources
+xrdb ${HOME}/.Xresources
 
 # fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
-#fcitx-autostart
+fcitx-autostart
 
 # disable touchpad while typing (by keyboard)
 #   -i n -- enable after n seconds.
 #   -k   -- ignore ctrl (enable ctrl + click)
-type syndaemon && syndaemon -i 0.5 -k -d
+#type syndaemon && syndaemon -i 0.5 -k -d
 
 # キーリピート開始まで350ms、キーリピート間隔50ms
 xset r rate 350 50
 
 # バックライトを切らない
 # keep screen on
-xset dpms 0 0 0; xset s off
+#xset dpms 0 0 0; xset s off
+
+# for VMware
+#vmware-user-suid-wrapper
 
 # exec gnome-session
 # exec startkde
