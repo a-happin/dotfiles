@@ -312,8 +312,9 @@ alias nvimrc='${EDITOR} ${HOME}/.config/nvim/init.vim'
 alias zshrc='${EDITOR} ${HOME}/.zshrc'
 alias relogin='exec zsh -l'
 
-chinoopt='-std=c++2a -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -O2 -pipe'
-alias chino='clang++ ${=chinoopt}'
+#chinoopt='-std=c++2a -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -O2 -pipe'
+#alias chino='clang++ ${=chinoopt}'
+alias chino='clang++ -std=c++2a -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -O2 -pipe'
 
 # typo
 #alias exho=echo
@@ -325,22 +326,22 @@ alias chino='clang++ ${=chinoopt}'
 ########################################
 # compile
 
-alias my-cc='clang -std=c11 -Wall -Wextra -pedantic-errors -O2'
+alias my-cc='clang -std=c11 -Wall -Wextra -pedantic-errors -O2 -pipe'
 
-function my-cxx ()
-{
-  clang++ -std=c++1z -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -pedantic-errors -O2 -stdlib=libc++ -I../include -Iinclude "$@" -lc++abi
-}
+#function my-cxx ()
+#{
+#  clang++ -std=c++1z -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -pedantic-errors -O2 -stdlib=libc++ -I../include -Iinclude "$@" -lc++abi
+#}
 
 function my-runc ()
 {
   my-cc -o /tmp/a.out "$1" && shift && /tmp/a.out "$@"
 }
 
-function my-runcxx ()
-{
-  my-cxx -o /tmp/a.out "$1" && shift && /tmp/a.out "$@"
-}
+#function my-runcxx ()
+#{
+#  my-cxx -o /tmp/a.out "$1" && shift && /tmp/a.out "$@"
+#}
 
 function runchino ()
 {
