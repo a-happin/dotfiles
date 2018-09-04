@@ -1,0 +1,6 @@
+"^chromium$"
+  None,    Up,   Button4,         3
+  None,    Down, Button5,         2
+  Shift_L, Up,   Shift_L|Button4, 3
+  Shift_L, Down, Shift_L|Button5, 2
+
