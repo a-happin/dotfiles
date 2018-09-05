@@ -22,6 +22,9 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx-autostart
 
+# mouse wheel scroll amount
+imwheel
+
 # disable touchpad while typing (by keyboard)
 #   -i n -- enable after n seconds.
 #   -k   -- ignore ctrl (enable ctrl + click)
