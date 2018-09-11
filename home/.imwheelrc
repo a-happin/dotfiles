@@ -3,4 +3,6 @@
   None,    Down, Button5,         2
   Shift_L, Up,   Shift_L|Button4, 3
   Shift_L, Down, Shift_L|Button5, 2
+  Shift_R, Up,   Shift_R|Button4, 3
+  Shift_R, Down, Shift_R|Button5, 2
 
