@@ -449,6 +449,7 @@ alias -s py=python3
 alias -s hs=runhaskell
 alias -s c=my-runc
 alias -s {cpp,cxx,cc}=runchino
+alias -s ml=ocaml
 alias -s html=open
 alias -s {tgz,tbz2,gz,bz2,xz}=extract
 alias -s tar='tar xvf'
