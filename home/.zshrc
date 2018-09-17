@@ -215,7 +215,7 @@ function decorate-branch_impl ()
 
 function decorate-branch ()
 {
-  git status --porcelain --branch 2> /dev/null | decorate-branch_impl
+  \git status --porcelain --branch 2> /dev/null | decorate-branch_impl
 }
 
 function decorate-prompt ()
@@ -291,19 +291,19 @@ alias mv='\mv -i'
 alias rm='\rm -i'
 alias rr='\rm -ri'
 
-alias type='type -as'
+alias type='\type -as'
 
 # alias fcrontab='fcrontab -i'
 
 alias history='\history 0'
 alias historygrep='\history 0 | grep'
 
-alias addp='git add -p'
-alias gommit='git commit -v'
-alias commit='git commit -v'
-alias checkout='git checkout'
-alias push='git push'
-alias fetch='git fetch && git status'
+alias addp='\git add -p'
+alias gommit='\git commit -v'
+alias commit='\git commit -v'
+alias checkout='\git checkout'
+alias push='\git push'
+alias fetch='\git fetch'
 
 alias encrypt='openssl aes-256-cbc -e -salt'
 alias decrypt='openssl aes-256-cbc -d -salt'
@@ -437,7 +437,7 @@ function git-status-all ()
   for i in `find ~ -name .cache -type d -prune -o -name .git -type d -exec dirname {} \;`
   do
     printf "%s\n" "$i"
-    git -C "$i" status
+    \git -C "$i" status
   done
 }
 
