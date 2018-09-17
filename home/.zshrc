@@ -305,7 +305,7 @@ alias checkout='\git checkout'
 alias push='\git push'
 alias fetch='\git fetch'
 
-alias git='git-restrict'
+#alias git='git-restrict'
 
 alias encrypt='openssl aes-256-cbc -e -salt'
 alias decrypt='openssl aes-256-cbc -d -salt'
