@@ -486,7 +486,9 @@ bindkey "^[[F" end-of-line
 
 # Deleteキーで消す
 bindkey "^[[3~" delete-char
-#bindkey "^[[3;2~" delete-char
+
+# Ctrl+BackSpaceで単語削除
+bindkey "^?" backward-delete-word
 
 # Shift+Tabで逆順補完
 bindkey "^[[Z" reverse-menu-complete
