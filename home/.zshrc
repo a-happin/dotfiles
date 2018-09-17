@@ -305,6 +305,8 @@ alias checkout='\git checkout'
 alias push='\git push'
 alias fetch='\git fetch'
 
+alias git='git-restrict'
+
 alias encrypt='openssl aes-256-cbc -e -salt'
 alias decrypt='openssl aes-256-cbc -d -salt'
 
@@ -439,6 +441,16 @@ function git-status-all ()
     printf "%s\n" "$i"
     \git -C "$i" status
   done
+}
+
+# いらない(と思う)機能を制限したgit
+# (git configで対応できたらなぁ…)
+function git-restrict ()
+{
+  case "$1" in
+    stash) echoerr "git stash is disabled by .zshrc" ;;
+    *) \git "$@" ;;
+  esac
 }
 
 ########################################
