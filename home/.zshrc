@@ -481,6 +481,8 @@ bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
 # HOME,ENDで移動する
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
 bindkey "^[[H" beginning-of-line
 bindkey "^[[F" end-of-line
 
