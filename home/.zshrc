@@ -481,16 +481,11 @@ bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
 # HOME,ENDで移動する
-bindkey "^[[1~" beginning-of-line
-bindkey "^[[4~" end-of-line
 bindkey "^[[H" beginning-of-line
 bindkey "^[[F" end-of-line
 
 # Deleteキーで消す
 bindkey "^[[3~" delete-char
-
-# Ctrl+BackSpaceで単語削除
-bindkey "^?" backward-delete-word
 
 # Shift+Tabで逆順補完
 bindkey "^[[Z" reverse-menu-complete
