@@ -6,13 +6,14 @@
 xterm*metaSendsEscape: true
 
 ! scroll
-*saveLines: 12000
+*saveLines: 10000
 
 ! color
+URxvt*depth: 32
 *background:  #1d1f21
+URxvt*background:  [90]#1d1f21
 *foreground:  #c5c8c6
 *cursorColor: #93a1a1
-URxvt*fadeColor: #000000
 
 ! black
 *color0:  #282a2e
@@ -40,25 +41,44 @@ URxvt*fadeColor: #000000
 *color15: #c5c8c6
 
 ! font
-URxvt*font: xft:Ricty:size=12:antialias=true, xft:Symbola:size=12:antialias=true
+URxvt*font: xft:Ricty:size=12:antialias=true, xft:Symbola:size=12
+URxvt*letterSpace: -1
 
 ! font
 xterm*faceName: Inconsolata
 xterm*faceNameDoublesize: Ricty
 xterm*faceSize: 12
-xterm*ximFont: Ricty
 xterm*cjkWidth: true
 
 ! hide scrollBar
 URxvt*scrollBar: false
 
 ! フォーカスを失った時にfadeColorでフェード(透過する%)
+URxvt*fadeColor: #000000
 URxvt*fading: 40
+
+! 透過設定
+!URxvt*inheritPixmap: true
+!URxvt*transparent: true
+!URxvt*shading: 30
 
 ! clickable url
 URxvt.perl-ext-common: default,matcher
 URxvt.url-launcher: /usr/bin/chromium
 URxvt.matcher.button: 1
+
+! fix key
+!URxvt.keysym.BackSpace: \011 !sttyがおかしくなる
+URxvt.keysym.Control-BackSpace: \027
+URxvt.keysym.Control-Up: \033[1;5A
+URxvt.keysym.Control-Down: \033[1;5B
+URxvt.keysym.Control-Left: \033[1;5D
+URxvt.keysym.Control-Right: \033[1;5C
+URxvt.keysym.Home: \033[H
+URxvt.keysym.End: \033[F
+
+! Disable iso14755 mode
+URxvt*iso14755: false
 
 ! scale height (default: 1.0)
 xterm*scaleHeight: 1.0
