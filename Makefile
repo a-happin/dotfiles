@@ -8,13 +8,13 @@ DOTFILES          := $(filter-out $(DOTFILES_EXCLUDES),$(subst $(DOTFILES_DIR)/,
 LN                := ln -snfv
 RM                := rm -fv
 
-define install
+define installFunc
 	$(LN) $(FROM_DIR)/$(1) $(DEST_DIR)/$(1)
 
 
 endef
 
-define uninstall
+define uninstallFunc
 	$(RM) $(DEST_DIR)/$(1)
 
 
@@ -27,10 +27,10 @@ init:
 clean: uninstall
 
 install:
-	@$(foreach elem,$(DOTFILES),$(call install,$(elem)))
+	@$(foreach elem,$(DOTFILES),$(call installFunc,$(elem)))
 
 uninstall:
-	@$(foreach elem,$(DOTFILES),$(call uninstall,$(elem)))
+	@$(foreach elem,$(DOTFILES),$(call uninstallFunc,$(elem)))
 
 .PHONY: all init clean run install uninstall
 
