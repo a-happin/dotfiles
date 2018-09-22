@@ -310,6 +310,9 @@ alias fetch='\git fetch'
 alias encrypt='openssl aes-256-cbc -e -salt'
 alias decrypt='openssl aes-256-cbc -d -salt'
 
+# set wallpaper
+alias wallpaper='feh --no-fehbg --randomize --bg-max'
+
 alias nvimrc='${EDITOR} ${HOME}/.config/nvim/init.vim'
 alias zshrc='${EDITOR} ${HOME}/.zshrc'
 alias relogin='exec zsh -l'
