@@ -60,7 +60,7 @@ URxvt*fading: 40
 ! 透過設定
 !URxvt*inheritPixmap: true
 URxvt*transparent: true
-URxvt*shading: 20
+URxvt*shading: 30
 
 ! clickable url
 URxvt.perl-ext-common: default,matcher
