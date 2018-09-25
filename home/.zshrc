@@ -442,7 +442,7 @@ function git-status-all ()
   for i in `find ~ -name .cache -type d -prune -o -name .git -type d -exec dirname {} \;`
   do
     printf "%s\n" "$i"
-    \git -C "$i" status
+    \git -C "$i" status -s
   done
 }
 
