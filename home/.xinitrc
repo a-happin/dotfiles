@@ -38,6 +38,7 @@ xset r rate 350 50
 #xset dpms 0 0 0; xset s off
 
 # for VMware
+# しかし重いということに気がついた。残念。
 #vmware-user-suid-wrapper
 
 # exec gnome-session

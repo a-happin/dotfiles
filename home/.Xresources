@@ -2,6 +2,17 @@
 ! UTF-8
 *locale: true
 
+! Xft フォント設定
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.autohint: 0
+Xft.hintstyle: hintslight
+Xft.rgba: none
+Xft.lcdfilter: lcdnone
+
+! ディスプレイと相談
+!Xft.dpi: 100
+
 ! fix Alt
 xterm*metaSendsEscape: true
 
@@ -41,7 +52,7 @@ xterm*metaSendsEscape: true
 *color15: #c5c8c6
 
 ! font
-URxvt*font: xft:Roboto Mono:size=11:antialias=true, xft:Migu 1m:size=11:antialias=true
+URxvt*font: xft:Roboto Mono:size=11:antialias=true, xft:M+ 1m:size=11:antialias=true
 URxvt*letterSpace: -1
 !URxvt*font: xft:Ricty:size=12:antialias=true, xft:Symbola:size=12
 !URxvt*letterSpace: -1
@@ -62,7 +73,7 @@ URxvt*fading: 40
 ! 透過設定
 !URxvt*inheritPixmap: true
 URxvt*transparent: true
-URxvt*shading: 30
+URxvt*shading: 20
 
 ! clickable url
 URxvt.perl-ext-common: default,matcher
