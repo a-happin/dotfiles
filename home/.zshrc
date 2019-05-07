@@ -276,15 +276,54 @@ type nvim > /dev/null 2>&1 && export EDITOR=nvim
 #export LD_LIBRARY_PATH="${HOME}/lib"
 
 ########################################
+# 環境依存
+
+case ${OSTYPE} in
+  darwin*)
+    # ここに Mac 向けの設定
+    alias ls='\ls -G'
+    ;;
+  linux*)
+    # ここに Linux 向けの設定
+    alias ls='\ls --color=auto -F'
+    alias pbcopy='xsel --clipboard --input'
+    alias pbpaste='xsel --clipboard --output'
+    alias open=xdg-open
+    ;;
+esac
+
+# WSL
+if [[ $(uname -r) =~ Microsoft$ ]]
+then
+  # windows用open
+  function win-open ()
+  {
+    if [[ $# -eq 1 ]]
+    then
+      cmd.exe /c start $(wslpath -m $(readlink -f $1))
+    else
+      echoerr Error: win-open: 引数を正しく指定してください。
+      echoerr Usage: win-open [file/path]
+      return 1;
+    fi
+  }
+
+  alias open=win-open
+
+  PATH="${PATH}:/mnt/c/opt/ffmpeg/bin"
+  alias java='/mnt/c/Program Files/Java/jre1.8.0_211/bin/java.exe'
+fi
+
+########################################
 # aliasたち
 
-alias ls='\ls --color=auto -F'
-alias la='\ls --color=auto -F -A'
-alias ll='\ls --color=auto -F -l -A'
+#alias ls='\ls --color=auto -F'
+alias la='ls -A'
+alias ll='ls -l -A'
 alias grep='\grep --color=auto'
 
-type xsel > /dev/null 2>&1 && alias pbcopy='xsel --clipboard --input' && alias pbpaste='xsel --clipboard --output'
-type xdg-open > /dev/null 2>&1 && alias open=xdg-open
+#type xsel > /dev/null 2>&1 && alias pbcopy='xsel --clipboard --input' && alias pbpaste='xsel --clipboard --output'
+#type xdg-open > /dev/null 2>&1 && alias open=xdg-open
 
 alias cp='\cp -i'
 alias mv='\mv -i'
