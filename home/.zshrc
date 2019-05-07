@@ -300,7 +300,7 @@ then
   {
     if [[ $# -eq 1 ]]
     then
-      cmd.exe /c start $(wslpath -m $(readlink -f $1))
+      cmd.exe /c start $(wslpath -m $(readlink -f "$1"))
     else
       echoerr Error: win-open: 引数を正しく指定してください。
       echoerr "Usage: win-open [file/path]"
