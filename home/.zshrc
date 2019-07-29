@@ -489,7 +489,7 @@ function compress ()
 function git-status-all ()
 {
   local i
-  for i in `find ~ -name .cache -type d -prune -o -name .git -type d -exec dirname {} \;`
+  find ~ -name .cache -prune -o -name .git -type d -exec dirname {} \; | while read i
   do
     printf "%s\n" "$i"
     \git -C "$i" status -s
