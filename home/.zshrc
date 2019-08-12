@@ -363,14 +363,14 @@ alias relogin='exec zsh -l'
 clang_warnings='-Weverything -Wno-c++98-compat-pedantic'
 gcc_warnings='-Wall -Wextra -Wcast-align -Wcast-qual -Wconversion -Wdelete-non-virtual-dtor -Wdisabled-optimization -Wdouble-promotion -Wfloat-equal -Wformat -Wformat-nonliteral -Wformat-security -Wformat-signedness -Winit-self -Wlogical-op -Wmissing-declarations -Wmultichar -Wnoexcept -Wnon-virtual-dtor -Wold-style-cast -Woverloaded-virtual -Wpacked -Wpadded -Wpointer-arith -Wredundant-decls -Wreorder -Wshadow -Wsign-promo -Wswitch-default -Wswitch-enum -Wunsafe-loop-optimizations'
 #alias chino='clang++ ${=chinoopt}'
-alias chino='clang++ -std=c++2a -pedantic-errors -Weverything -Wno-c++98-compat-pedantic -I ./include -I ../include -O2 -pipe'
+alias chino='clang++ -std=c++2a -pedantic-errors -Weverything -Wno-c++98-compat-pedantic -O2 -pipe'
 alias c++14-clang='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c++11-compat-pedantic -pedantic-errors -O2 -pipe'
 alias c++17-clang='clang++ -std=c++17 -Weverything -Wno-c++98-compat-pedantic -Wno-c++11-compat-pedantic -Wno-c++14-compat-pedantic -pedantic-errors -O2 -pipe'
 alias c++2a-clang='clang++ -std=c++2a -Weverything -Wno-c++98-compat-pedantic -Wno-c++11-compat-pedantic -Wno-c++14-compat-pedantic -Wno-c++17-compat-pedantic -pedantic-errors -O2 -pipe'
 
 alias c++14-gcc='g++ -std=c++14 ${=gcc_warnings} -pedantic-errors -O2 -pipe'
 
-alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -pedantic-errors -O2 -pipe -DLOCAL -DDEBUG'
+alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -pedantic-errors -g -O0 -pipe -DLOCAL -DDEBUG'
 
 
 # typo
@@ -392,7 +392,7 @@ alias my-cc='clang -std=c11 -Wall -Wextra -pedantic-errors -O2 -pipe'
 
 function my-runc ()
 {
-  my-cc -o /tmp/a.out "$1" && shift && /tmp/a.out "$@"
+  my-cc -o /tmp/a.out "$@" && /tmp/a.out
 }
 
 #function my-runcxx ()
@@ -402,7 +402,12 @@ function my-runc ()
 
 function runchino ()
 {
-  chino -o /tmp/a.out "$1" && shift && /tmp/a.out "$@"
+  chino -o /tmp/a.out "$@" && /tmp/a.out
+}
+
+function atcoder-run ()
+{
+  atcoder-cc -o ./a.out "$1" && shift && ./a.out "$@"
 }
 
 # sandbox用(?)
