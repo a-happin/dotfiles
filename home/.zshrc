@@ -421,6 +421,15 @@ function my-ghc ()
   fi
 }
 
+
+########################################
+# debug
+
+function valgrind_cpp ()
+{
+  atcoder-cc -o ./a.out "$1" && valgrind ./a.out
+}
+
 ########################################
 # utility
 
