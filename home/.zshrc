@@ -500,6 +500,22 @@ function compress ()
   esac
 }
 
+# デコードして編集（してエンコード）
+function decrypt-edit ()
+{
+  decrypt -in "$1" -out "$1~" && ${EDITOR} "$1~"
+  if [[ $? -ne 0 ]]
+  then
+    return 1
+  fi
+  encrypt -in "$1~" -out "$1"
+  if [[ $? -ne 0 ]]
+  then
+    return 1
+  fi
+  rm -f "$1~"
+}
+
 # ~以下のすべてのリポジトリに対してgit statusを実行
 # .cacheは除外
 function git-status-all ()
@@ -537,6 +553,7 @@ alias -s tar='tar xvf'
 alias -s zip='unzip'
 alias -s rar='unrar x'
 alias -s jar='java -jar'
+alias -s encrypted='decrypt-edit'
 type wine > /dev/null 2>&1 && alias -s exe='wine'
 
 ########################################
