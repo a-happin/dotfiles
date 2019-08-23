@@ -370,7 +370,7 @@ alias c++2a-clang='clang++ -std=c++2a -Weverything -Wno-c++98-compat-pedantic -W
 
 alias c++14-gcc='g++ -std=c++14 ${=gcc_warnings} -pedantic-errors -O2 -pipe'
 
-alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -pedantic-errors -g -O0 -pipe -DLOCAL -DDEBUG'
+alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -Wno-unused-const-variable -pedantic-errors -g -O0 -pipe -DLOCAL -DDEBUG'
 
 
 # typo
