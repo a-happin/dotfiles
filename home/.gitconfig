@@ -19,6 +19,7 @@
 	initcommit = !git init && git commit --allow-empty -m \"Inital commit.\"
 	merge-noff = merge --no-ff
 	pull-rebase = pull --rebase
+	push-u = push -u origin HEAD
 	refresh = fetch --prune
 	reset-to-head = reset --hard HEAD
 	staged = diff --cached
