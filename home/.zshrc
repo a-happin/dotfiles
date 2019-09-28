@@ -359,6 +359,7 @@ alias vscode=code
 
 alias nvimrc='${EDITOR} ${HOME}/.config/nvim/init.vim'
 alias zshrc='${EDITOR} ${HOME}/.zshrc'
+alias gitconfig='git config --global -e'
 alias relogin='exec zsh -l'
 
 #chinoopt='-std=c++2a -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -O2 -pipe'
