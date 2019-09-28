@@ -312,7 +312,8 @@ then
   alias open=win-open
 
   PATH="${PATH}:/mnt/c/opt/ffmpeg/bin"
-  alias java=/mnt/c/Program\\\ Files/Java/jre1.8.0_211/bin/java.exe
+  PATH="${PATH}:/mnt/c/opt/jdk-12.0.1/bin"
+  alias java=java.exe
 fi
 
 ########################################
