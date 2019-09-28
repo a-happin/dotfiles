@@ -313,6 +313,7 @@ then
 
   PATH="${PATH}:/mnt/c/opt/ffmpeg/bin"
   PATH="${PATH}:/mnt/c/opt/jdk-12.0.1/bin"
+  alias explorer=explorer.exe
   alias java=java.exe
 fi
 
