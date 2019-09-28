@@ -13,9 +13,9 @@
 	add-commit = !git add -A && git commit -v
 	addp = add -p
 	alias = config --get-regexp ^alias\\.
-	branchall = branch -a
 	commitv = commit -v
-	delete-current-branch = "!f () { local branch ; branch=`git rev-parse --abbrev-ref HEAD` ; git checkout `git hash` && git branch -d ${branch} ; } ; f"
+	delete-current-branch = !git detach && git branch -d @{-1} && :
+	detach = checkout --detach
 	hash = rev-parse HEAD
 	ignore = "!f () { for i in \"$@\" ; do echo \"$i\" >> .gitignore ; done ; } ; f"
 	initcommit = !git init && git commit --allow-empty -m \"Inital commit.\"
