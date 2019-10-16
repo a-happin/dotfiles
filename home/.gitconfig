@@ -13,18 +13,20 @@
 	add-commit = !git add -A && git commit -v
 	addp = add -p
 	alias = config --get-regexp ^alias\\.
+	amend = commit --amend --no-edit
 	commitv = commit -v
 	delete-current-branch = !git detach && git branch -d @{-1} && :
 	detach = checkout --detach
 	hash = rev-parse HEAD
 	ignore = "!f () { for i in \"$@\" ; do echo \"$i\" >> .gitignore ; done ; } ; f"
-	initcommit = !git init && git commit --allow-empty -m \"Inital commit.\"
+	initcommit = !git init && git commit --allow-empty -m \"Initial commit.\"
 	merge-noff = merge --no-ff
 	pull-rebase = pull --rebase
 	push-u = push -u origin HEAD
 	refresh = fetch --prune
 	reset-to-head = reset --hard HEAD
 	staged = diff --cached
+	touch = commit --amend --no-edit --date=now
 	tree = log --graph --all --pretty=format:'%C(auto)%h%d %Creset%s - %Cblue%cn, %Cgreen%cr%Creset'
 	uncommit = reset --soft HEAD~
 	unstage = reset HEAD
