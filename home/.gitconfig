@@ -13,7 +13,7 @@
 	add-commit = !git add -A && git commit -v
 	addp = add -p
 	alias = config --get-regexp ^alias\\.
-	amend = commit --amend --no-edit
+	amend = commit --amend
 	commitv = commit -v
 	delete-current-branch = !git detach && git branch -d @{-1} && :
 	detach = checkout --detach
