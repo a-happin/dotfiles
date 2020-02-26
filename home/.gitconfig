@@ -25,6 +25,7 @@
 	push-u = push -u origin HEAD
 	refresh = fetch --prune
 	reset-to-head = reset --hard HEAD
+	reset-to-remote = reset --hard @{u}
 	staged = diff --cached
 	touch = commit --amend --no-edit --date=now
 	tree = log --graph --all --pretty=format:'%C(auto)%h%d%C(reset) - %s %C(blue)by %an%C(reset), %C(green)%cr%C(reset)'
