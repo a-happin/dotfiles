@@ -141,38 +141,10 @@ setopt long_list_jobs
 # 3秒以上かかった処理は詳細表示
 REPORTTIME=2
 
+
 ########################################
-# vcs_info
+# decoration
 
-#autoload -Uz vcs_info
-#zstyle ':vcs_info:*' max-exports 4
-#zstyle ':vcs_info:*' formats '%s' '%b'
-#zstyle ':vcs_info:*' actionformats '%s' '%b' '' '|%a'
-#
-#zstyle ':vcs_info:git:*' check-for-changes true # %cと%uを有効にする(でかいリポジトリだと重いらしい)
-#zstyle ':vcs_info:git:*' formats '%s' '%b' '%u%c'
-#zstyle ':vcs_info:git:*' actionformats '%s' '%b' '%u%c' '|%a'
-
-#function decorate-branch_old ()
-#{
-#  LANG=en_US.UTF-8 vcs_info
-#  [[ -n ${vcs_info_msg_0_} ]] &&
-#  {
-#    if [[ -n ${vcs_info_msg_3_} ]]
-#    then
-#      echo -e -n %{${fg_bold[red]}%}
-#    elif [[ -n ${vcs_info_msg_2_} ]]
-#    then
-#      echo -e -n %{${fg_bold[yellow]}%}
-#    else
-#      echo -e -n %{${fg_bold[cyan]}%}
-#    fi
-#    echo -n "(${vcs_info_msg_0_})-[${vcs_info_msg_1_}${vcs_info_msg_3_}]${vcs_info_msg_2_}"
-#    echo -e -n %{${reset_color}%}
-#  }
-#}
-
-# デコ
 function decorate-branch_impl ()
 {
   typeset -A git_info
@@ -264,10 +236,24 @@ autoload -Uz run-help run-help-git run-help-openssl run-help-sudo
 # EDITOR
 
 type nvim > /dev/null 2>&1 && export EDITOR=nvim
-#export VTE_CJK_WIDTH=1
-#export XDG_CONFIG_HOME=${HOME}/.config
-
 #alias vim='printf "vimがいいのですか？でもnvimを起動しますね。" && read -k1 && nvim'
+
+########################################
+# VISUAL
+
+type nvim > /dev/null 2>&1 && export VISUAL=nvim
+
+########################################
+# XDG_CONFIG_HOME
+
+export XDG_CONFIG_HOME=${HOME}/.config
+export XDG_CACHE_HOME=${HOME}/.cache
+export XDG_DATA_HOME=${HOME}/.local/share
+
+########################################
+# VTE_CJK_WIDTH
+
+#export VTE_CJK_WIDTH=1
 
 ########################################
 # PATH
@@ -340,14 +326,12 @@ alias type='\type -as'
 alias history='\history 0'
 alias historygrep='\history 0 | grep'
 
-alias addp='\git add -p'
-alias gommit='\git commit -v'
-alias commit='\git commit -v'
-alias checkout='\git checkout'
-alias push='\git push'
-alias fetch='\git fetch'
-
-#alias git='git-restrict'
+#alias addp='\git add -p'
+#alias gommit='\git commit -v'
+#alias commit='\git commit -v'
+#alias checkout='\git checkout'
+#alias push='\git push'
+#alias fetch='\git fetch'
 
 alias encrypt='openssl aes-256-cbc -e -salt'
 alias decrypt='openssl aes-256-cbc -d -salt'
@@ -435,6 +419,13 @@ function valgrind_cpp ()
 
 ########################################
 # utility
+
+# mkdircd
+function mkdircd ()
+{
+  [[ -d "$@" ]] && echoerr "${fg_bold[red]}$@" already exists.
+  mkdir -p -- "$@" && cd -- "$@"
+}
 
 # ぐぐる
 function google ()
@@ -529,16 +520,6 @@ function git-status-all ()
     printf "%s\n" "$i"
     \git -C "$i" status -s
   done
-}
-
-# いらない(と思う)機能を制限したgit
-# (git configで対応できたらなぁ…)
-function git-restrict ()
-{
-  case "$1" in
-    stash) echoerr "git stash is disabled by .zshrc" ;;
-    *) \git "$@" ;;
-  esac
 }
 
 ########################################
