@@ -522,6 +522,19 @@ function git-status-all ()
   done
 }
 
+# 自動コマンド挿入
+function subsh()
+{
+  if [[ -n "$*" ]]
+  then
+    eval "__precmd_for_subsh() { print -z '$* ' }"
+  else
+    eval "__precmd_for_subsh() { }"
+  fi
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd "__precmd_for_subsh"
+}
+
 ########################################
 # suffix alias
 
