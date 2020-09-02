@@ -1,34 +1,55 @@
+# vim: set noexpandtab sw=0 :
 [user]
 	email = 10003601+a@users.noreply.github.com
 	name = a_happin
-[push]
-	default = simple
 [color]
 	ui = auto
 [core]
 	editor = nvim
 [log]
 	decorate = short
+[pull]
+	ff = only
+[push]
+	default = upstream
 [alias]
-	add-commit = !git add -A && git commit -v
-	addp = add -p
-	alias = config --get-regexp ^alias\\.
+	a = add -p
+	alias = !git config --get-regexp ^alias\\. | sed 's/^alias\\.\\([^ ]*\\) /\\1\\\t => /'
 	amend = commit --amend
+	branchname = symbolic-ref --short HEAD
+	branches = branch -a
 	commitv = commit -v
 	delete-current-branch = !git detach && git branch -d @{-1} && :
+	delete-merged-branch = !git merged | xargs git branch -d
 	detach = checkout --detach
+	diff-filename = diff --name-only
+	diff-words = diff --color-words='\\w+|[^[:space:]]'
+	discard-local-changes = reset --hard @{u}
+	e = config --global -e
+	fetch-prune = fetch --prune
+	git = !git
 	hash = rev-parse HEAD
-	ignore = "!f () { for i in \"$@\" ; do echo \"$i\" >> .gitignore ; done ; } ; f"
-	initcommit = !git init && git commit --allow-empty -m \"Initial commit.\"
-	merge-noff = merge --no-ff
-	pull-rebase = pull --rebase
-	push-u = push -u origin HEAD
-	refresh = fetch --prune
+	i = rebase -i
+	ignore = "!_() { for i in \"$@\" ; do echo \"$i\" >> \"${GIT_PREFIX}.gitignore\"; done; }; _"
+	initial-commit = commit --allow-empty -m \"Initial commit.\"
+	merged = !git branch --merged | grep -Ev '\\*|master|develop|release|gh-pages' | tr -d '^ '
+	new = switch -c
+	p = pull --rebase origin develop
+	pushu = push -u origin HEAD
 	reset-to-head = reset --hard HEAD
 	reset-to-remote = reset --hard @{u}
+	s = !git stash list && git status && git log -1
+	skip = update-index --skip-worktree
 	staged = diff --cached
+	stashes = stash list
+	today = !git log --branches --since=midnight --date=iso --author=\"$(git config user.name)\"
 	touch = commit --amend --no-edit --date=now
-	tree = log --graph --all --pretty=format:'%C(auto)%h%d%C(reset) - %s %C(blue)by %an%C(reset), %C(green)%cr%C(reset)'
+	tree = log --graph --all --pretty=format:'%C(auto)%h%d%C(reset) %C(cyan)-%C(reset) %s %C(blue)by %an%C(reset), %C(green)%cr%C(reset)'
 	uncommit = reset --soft HEAD~
-	unstage = reset HEAD
+	unskip = update-index --no-skip-worktree
+	unstage = reset HEAD --
+	untrack = rm --cache --
+	untracked = ls-files --others --exclude-standard
 	wip = commit -m \"WIP: \" --edit
+	zip = !git archive --worktree-attributes --format=zip HEAD -o $(basename `pwd`).zip
+
