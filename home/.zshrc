@@ -226,6 +226,23 @@ function preexec ()
   printf "%s" ${reset_color}
 }
 
+
+########################################
+# 自動コマンド挿入
+
+function __precmd_for_subsh()
+{
+  [[ -n "${SUBSH}" ]] && print -z "${SUBSH} "
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd "__precmd_for_subsh"
+
+function subsh()
+{
+  export SUBSH="$*"
+}
+
 ########################################
 # run-help
 
@@ -267,7 +284,7 @@ export XDG_DATA_HOME=${HOME}/.local/share
 case ${OSTYPE} in
   darwin*)
     # ここに Mac 向けの設定
-    alias ls='\ls -G'
+    alias ls='\ls -G -F'
     ;;
   linux*)
     # ここに Linux 向けの設定
@@ -321,6 +338,9 @@ alias rr='\rm -ri'
 
 alias type='\type -as'
 
+# sudo でaliasが使えるようにする
+alias sudo='sudo '
+
 # alias fcrontab='fcrontab -i'
 
 alias history='\history 0'
@@ -332,6 +352,7 @@ alias historygrep='\history 0 | grep'
 #alias checkout='\git checkout'
 #alias push='\git push'
 #alias fetch='\git fetch'
+alias g='subsh git'
 
 alias encrypt='openssl aes-256-cbc -e -salt'
 alias decrypt='openssl aes-256-cbc -d -salt'
@@ -520,19 +541,6 @@ function git-status-all ()
     printf "%s\n" "$i"
     \git -C "$i" status -s
   done
-}
-
-# 自動コマンド挿入
-function subsh()
-{
-  if [[ -n "$*" ]]
-  then
-    eval "__precmd_for_subsh() { print -z '$* ' }"
-  else
-    eval "__precmd_for_subsh() { }"
-  fi
-  autoload -Uz add-zsh-hook
-  add-zsh-hook precmd "__precmd_for_subsh"
 }
 
 ########################################
