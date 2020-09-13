@@ -35,6 +35,7 @@
 	merged = !git branch --merged | grep -Ev '\\*|master|develop|release|gh-pages' | tr -d '^ '
 	new = switch -c
 	p = pull --rebase origin develop
+	pushf = push --force-with-lease
 	pushu = push -u origin HEAD
 	reset-to-head = reset --hard HEAD
 	reset-to-remote = reset --hard @{u}
