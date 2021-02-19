@@ -102,3 +102,5 @@ xterm*borderWidth: 0
 ! auto copy to clipboard
 xterm*selectToClipboard: true
 
+URxvt.visualBell: true
+
