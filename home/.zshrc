@@ -275,7 +275,7 @@ export XDG_DATA_HOME=${HOME}/.local/share
 ########################################
 # PATH
 
-#export PATH="${PATH}:${HOME}/bin"
+export PATH="${PATH}:${HOME}/bin"
 #export LD_LIBRARY_PATH="${HOME}/lib"
 
 ########################################
@@ -314,10 +314,9 @@ then
   alias pbcopy=clip.exe
   alias open=win-open
 
-  PATH="${PATH}:/mnt/c/opt/ffmpeg/bin"
-  PATH="${PATH}:/mnt/c/opt/jdk-12.0.1/bin"
   alias explorer=explorer.exe
   alias java=java.exe
+  alias deno=deno.exe
 fi
 
 ########################################
@@ -559,6 +558,7 @@ alias -s zip='unzip'
 alias -s rar='unrar x'
 alias -s jar='java -jar'
 alias -s encrypted='decrypt-edit'
+alias -s ts='deno run --allow-all'
 type wine > /dev/null 2>&1 && alias -s exe='wine'
 
 ########################################
