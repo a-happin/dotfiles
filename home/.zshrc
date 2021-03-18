@@ -353,8 +353,8 @@ alias historygrep='\history 0 | grep'
 #alias fetch='\git fetch'
 alias g='subsh git'
 
-alias encrypt='openssl aes-256-cbc -e -salt'
-alias decrypt='openssl aes-256-cbc -d -salt'
+alias encrypt='openssl aes-256-cbc -e -iter 100'
+alias decrypt='openssl aes-256-cbc -d -iter 100'
 
 # set wallpaper
 alias wallpaper='feh --no-fehbg --randomize --bg-max'
