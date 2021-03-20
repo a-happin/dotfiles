@@ -1,8 +1,8 @@
-"^chromium$"
-  None,    Up,   Button4,         3
-  None,    Down, Button5,         3
-  Shift_L, Up,   Shift_L|Button4, 3
-  Shift_L, Down, Shift_L|Button5, 3
-  Shift_R, Up,   Shift_R|Button4, 3
-  Shift_R, Down, Shift_R|Button5, 3
+".* - Google Chrome$"
+  None,    Up,   Button4, 3
+  None,    Down, Button5, 3
+  Shift_L, Up,   Button6, 3
+  Shift_L, Down, Button7, 3
+  Shift_R, Up,   Button6, 3
+  Shift_R, Down, Button7, 3
 
