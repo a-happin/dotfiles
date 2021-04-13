@@ -77,7 +77,7 @@ URxvt*shading: 20
 
 ! clickable url
 URxvt.perl-ext-common: default,matcher
-URxvt.url-launcher: /usr/bin/chromium
+URxvt.url-launcher: /usr/bin/google-chrome-stable
 URxvt.matcher.button: 1
 
 ! fix key
