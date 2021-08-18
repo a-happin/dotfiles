@@ -754,7 +754,7 @@ function subsh()
 type zinit > /dev/null 2>&1 && {
   zinit light zsh-users/zsh-syntax-highlighting
   zinit light zsh-users/zsh-autosuggestions
-  zinit light momo-lab/zsh-abbrev-alias
+  zinit ice ver"feature/auto_remove_slash" ; zinit light a-happin/zsh-abbrev-alias
 }
 
 #------------------------------
