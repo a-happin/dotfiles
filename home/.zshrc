@@ -770,6 +770,7 @@ type abbrev-alias > /dev/null 2>&1 && {
   abbrev-alias -c mv='mv -i'
   abbrev-alias -c rm='rm -i'
   abbrev-alias -c rr='rm -ri'
+  abbrev-alias -c ln='ln -snfv'
   abbrev-alias -c type='type -as'
   # abbrev-alias -c history='history 0'
   abbrev-alias -c historygrep='history | grep'
