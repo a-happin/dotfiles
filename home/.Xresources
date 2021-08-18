@@ -52,7 +52,7 @@ xterm*metaSendsEscape: true
 *color15: #c5c8c6
 
 ! font
-URxvt*font: xft:Roboto Mono:size=10:antialias=true, xft:M+ 1m:size=10:antialias=true,xft:Symbola:size=12
+URxvt*font: xft:Roboto Mono Medium:size=10:antialias=true, xft:M+ 1m:size=10:antialias=true,xft:Symbola:size=12
 !URxvt*letterSpace: -1
 !URxvt*font: xft:Ricty:size=12:antialias=true, xft:Symbola:size=12
 !URxvt*letterSpace: -1
