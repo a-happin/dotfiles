@@ -779,6 +779,10 @@ type abbrev-alias > /dev/null 2>&1 && {
   abbrev-alias -c vscode=code
   abbrev-alias -c gitconfig='git config --global -e'
   abbrev-alias -c pacman='sudo pacman'
+  abbrev-alias -c push='git push'
+  abbrev-alias -cr pushu='push -u origin HEAD'
+  abbrev-alias -c gs='git status'
+  abbrev-alias -c firstcommit='git commit -m "First commit."'
 }
 
 ########################################
