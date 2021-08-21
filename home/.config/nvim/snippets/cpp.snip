@@ -1,0 +1,375 @@
+### include
+snippet     include<>
+abbr        #include <bits/stdc++.h>
+  #include <${1:bits/stdc++.h}>$0
+
+### include
+snippet     include""
+abbr        #include ""
+  #include "${1}"$0
+
+### main
+snippet     main()
+abbr        main
+#options     head
+  #include <bits/stdc++.h>
+  #define _for(i,b,e) for (common_type_t<decltype(b),decltype(e)> i = (b), i ## __end = (e); i < i ## __end; ++ i)
+  #define FOR(...)   _for (__VA_ARGS__)
+  #define rep(i,n)   FOR (i, size_t{}, n)
+  #define ALL(x)     begin (x), end (x)
+  using namespace std;
+  using ll = int64_t;
+  
+  auto main () -> int
+  {
+    cin.tie (nullptr);
+    ios::sync_with_stdio (false);
+  
+    $0
+  }
+
+### if
+snippet     if()
+abbr        if
+  if (${1:#:/* condition */})$0
+
+### else if
+snippet     else-if()
+abbr        else if
+  else if (${1:#:/* condition */})$0
+
+### while
+snippet     while()
+abbr        while
+  while (${1:#:/* condition */})$0
+
+### do-while
+snippet     do-while();
+abbr        do-while
+  do
+  {
+    $0
+  } while (${1:#:/* condition */});
+
+### for loop
+snippet     for-loop
+abbr        for loop
+  for (${1:auto} ${2:i} = ${3:0}; $2 < ${4:n}; ++ $2)$0
+
+### for loop reverse
+snippet     for-loop-reverse
+abbr        for loop [reverse]
+  for (${1:auto} ${2:i} = ${3:n}; $2 -- > ${4:0};)$0
+
+### for loop with iterator
+snippet     for-loop-iterator
+abbr        for loop with iterator
+  for (${1:auto} ${2:ite} = begin (${3:vec}); $2 != end ($3); ++ $2)$0
+
+### range-based for
+snippet     range-based-for-loop
+abbr        range-based for loop
+#alias       for-range-based
+  for (auto && ${1:elem} : ${2:v})$0
+
+snippet     for-range-based
+abbr        range-based for loop
+  for (auto && ${1:elem} : ${2:v})$0
+
+### switch
+snippet     switch()
+abbr        switch
+  switch (${1:#:/* expression */})
+  {
+  $0
+  }
+
+### case
+snippet     case:
+abbr        case
+##options     indent
+  case ${1:#:/* integral constant */}:
+    $0
+    break;
+
+### goto
+snippet     goto-statement
+abbr        goto
+  goto ${1:label};$0
+
+### return
+snippet     return-statement
+abbr        return
+  return ${1:res};$0
+
+### try catch
+snippet     try-catch
+abbr        try catch
+  try
+  {
+    $0
+  }
+  catch (const ${1:exception} & ${2:e})
+  {
+    cerr << $2.what () << endl;
+  }
+
+### throw
+snippet     throw-statement
+abbr        throw
+  throw ${1:#:/* exception */};$0
+
+### sizeof
+snippet     sizeof()
+abbr        sizeof
+options     word
+  sizeof (${1:#:/* expression */})$0
+
+### alignof
+snippet     alignof()
+abbr        alignof
+options     word
+  alignof (${1:#:/* expression */})$0
+
+### decltype
+snippet     decltype()
+abbr        decltype
+options     word
+  decltype (${1:#:/* expression */})$0
+
+### noexcept
+snippet     noexcept()
+abbr        noexcept
+options     word
+  noexcept (${1:#:/* expression */})$0
+
+### static_cast
+snippet     static_cast<>()
+abbr        static_cast
+options     word
+  static_cast <${1:#:/* type */}> (${2:#:/* expression */})$0
+
+### static_assert
+snippet     static_assert()
+abbr        static_assert
+  static_assert (${1:#:/* condition */});$0
+
+### namespace
+snippet     namespace{}
+abbr        namespace
+  namespace ${1:detail}
+  {
+    $0
+  } // namespace $1
+
+### template
+snippet     template<>
+abbr        template
+  template <$0>
+
+### lambda
+snippet     lambda-expression
+abbr        lambda
+options     word
+  [&] () {
+    return;$0
+  }
+
+### lambda recursive
+snippet     lambda-expression-recursive
+abbr        lambda-recursive
+options     word
+  auto ${1:f} = [&] (auto self) {
+    return self (self);$0
+  };
+
+### function
+snippet     function
+abbr        function
+  inline ${2:constexpr }auto ${1:f} ()${3: noexcept}
+  {
+    $0
+  }
+
+### auto&&
+snippet     auto&&
+abbr        auto &&
+options     word
+  auto &&$0
+
+### structured binding
+snippet     structured-binding-declaration
+abbr        structured binding
+#alias       auto-structured-binding
+  auto && [${1:_}] = ${2:/* tuple or array */};$0
+
+snippet     auto-structured-binding
+abbr        structured binding
+  auto && [${1:_}] = ${2:/* tuple or array */};$0
+
+### iterator pair
+snippet     iterator-pair
+abbr        begin (), end ()
+#alias       ALL
+options     word
+  begin (${1:v}), end ($1)$0
+
+### iterator pair
+snippet     ALL()
+abbr        begin (), end ()
+options     word
+  begin (${1:v}), end ($1)$0
+
+### iterator pair
+snippet     TAIL()
+abbr        next (begin ()), end ()
+options     word
+  next (begin (${1:v})), end ($1)$0
+
+### iterator pair of istream
+snippet     istreambuf_iterator<char>-pair
+abbr        iterator pair of istreambuf_iterator
+options     word
+  (istreambuf_iterator <char> (${1:cin})), istreambuf_iterator <char> ()$0
+
+### iterator_traits::value_type
+snippet     iterator_traits::value_type
+abbr        iterator_traits::value_type
+options     word
+  typename iterator_traits <Iterator>::value_type$0
+
+### input with cin
+snippet     cin>>
+abbr        input with cin
+  cin >> $1;$0
+
+### output with cout
+snippet     cout<<T
+abbr        output with cout
+  cout << ${1:ans} << endl;$0
+
+### output double with cout
+snippet     cout<<double
+abbr        output double with cout
+  cout << fixed << setprecision (15) << ${1:ans} << endl;$0
+
+### output bool with cout
+snippet     cout<<bool
+abbr        outout bool with cout
+  cout << (${1:ans} ? "${2:true}" : "${3:false}") << endl;$0
+
+### input with istream_iterator
+snippet     input-with-istream_iterator
+abbr        input with istream_iterator
+  copy_n (istream_iterator <iterator_traits <decltype (begin ($1))>::value_type> (cin), ${2:n}, back_inserter (${1:v}));$0
+
+### output with ostream_iterator
+snippet     output-with-ostream_iterator
+abbr        output with ostream_iterator
+  copy (begin (${1:ans}), end ($1), ostream_iterator <iterator_traits <decltype (begin ($1))>::value_type> (${2:cout}, " "));
+  $2 << endl;$0
+
+### unique
+snippet     unique()
+abbr        unique
+  ${1:v}.erase (unique ($1.begin (), $1.end ()), $1.end ());$0
+
+### sum
+snippet     sum()
+abbr        sum of
+  accumulate (begin (${1:v}), end ($1), typename iterator_traits <decltype (begin ($1))>::value_type {});$0
+
+### define rep
+snippet     define-rep
+abbr        define rep
+  #define rep(i,n) for (decay_t <decltype (n)> i = 0, i ## __len = (n); i < i ## __len; ++ i)$0
+
+### define repr
+snippet     define-repr
+abbr        define repr
+  #define repr(i,n) for (auto i = (n); i -- > 0;)$0
+
+### define FOR
+snippet     define-FOR
+abbr        define FOR
+  #define FOR(i,b,e) for (common_type_t <decltype (b), decltype (e)> i = (b), i ## __end = (e); i < i ## __end; ++ i)$0
+
+### define FORR
+snippet     define-FORR
+abbr        define FORR
+  #define FORR(i,b,e) for (common_type_t <decltype (b), decltype (e)> i = (e), i ## __begin = (b); i -- > i ## __begin;)$0
+
+### define ALL
+snippet     define-ALL
+abbr        define ALL
+  #define ALL(x) begin (x), end (x)$0
+
+### define FOR_WITH_INDEX
+snippet     define-FOR_WITH_INDEX
+abbr        define FOR_WITH_INDEX
+  #define FOR_WITH_INDEX(i,ite,b,e) for (size_t i = 0; i == 0; i |= 1) for (auto ite = (b), ite ## __end = (e); ite != ite ## __end; static_cast <void> (++ ite), ++ i)$0
+
+### define RECURSIVE_LAMBDA series
+snippet     define-RECURSIVE_LAMBDA-series
+abbr        define RECURSIVE_LAMBDA series
+  #define RECURSIVE_LAMBDA(...)	[&] (auto self, __VA_ARGS__)
+  #define RECURSIVE_CALL(...)	self (self, __VA_ARGS__)
+  #define INVOKE(f,...)		f (f, __VA_ARGS__)$0
+
+### define dump
+snippet     define-dump
+abbr        define dump
+  #define dump(x) cerr << #x " = " << boolalpha << (x) << endl;$0
+
+### define inf
+snippet     define-inf
+abbr        define inf [constexpr]
+  constexpr int64_t inf = 0x1bc16d683b9aca07;$0
+
+### define EPS
+snippet     define-EPS
+abbr        define EPS [constexpr]
+  constexpr auto EPS = 1e-9;$0
+
+### define EPS
+snippet     define-invalid
+abbr        define invalid [constexpr]
+  constexpr auto invalid = 1e-9;$0
+
+### priority_queue_reverse
+snippet     define-PQR
+abbr        define priority_queue_reverse
+  template <typename T>
+  using PQR = priority_queue <T, vector <T>, greater <T>>;
+
+### define operator""
+snippet     define-operator""
+abbr        define operator""
+  constexpr auto operator"" _zu (unsigned long long x) noexcept { return static_cast <size_t> (x); }
+  constexpr auto operator"" _ll (unsigned long long x) noexcept { return static_cast <int64_t> (x); }$0
+
+### include guard
+snippet     include-guard
+abbr        include-guard
+  #ifndef ${1:#:/* macro */}
+  #define $1
+  $0
+  #endif // $1
+
+### #ifdef ~ #endif
+snippet     ifdef-endif
+abbr        #ifdef ~ #endif
+  #ifdef ${1:LOCAL}
+  $0
+  #endif
+
+### define operator << (ostream &, const T &)
+snippet     operator<<ostream
+abbr        define operator << (ostream)
+  ${1:template <typename T>}
+  inline auto operator << (ostream & stream, const ${2:vector <T>} & x) -> ostream &
+  {
+    ostream_join (begin (x), end (x), stream, " ");$0
+    return stream;
+  }
+
