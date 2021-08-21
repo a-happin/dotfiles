@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-function! hook_add#lightline#hook_add() abort
+function! my#plugin#lightline#hook_add() abort
   let g:lightline = {
         \   'colorscheme': 'wombat',
         \   'enable': {'tabline': 0},

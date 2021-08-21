@@ -44,7 +44,10 @@ if dein#load_state (s:dein_directory)
   " call dein#add ('cocopon/iceberg.vim')
 
   " LSP client, completion
-  call dein#add ('neoclide/coc.nvim', {'merged': 0, 'rev': 'release', 'hook_add': 'call hook_add#coc#hook_add()'})
+  call dein#add ('neoclide/coc.nvim', {'merged': 0, 'rev': 'release', 'on_event': ['VimEnter'], 'hook_add': 'call my#plugin#coc#hook_add()'})
+
+  " SignColumnにgitの差分を表示
+  call dein#add ('airblade/vim-gitgutter', {'lazy': 1, 'on_event': 'VimEnter'})
 
   " completion
   "call dein#add ('Shougo/deoplete.nvim')
@@ -62,24 +65,34 @@ if dein#load_state (s:dein_directory)
   "call dein#add ('w0rp/ale')
 
   " customize statusline
-  call dein#add ('itchyny/lightline.vim', {'lazy': 1, 'hook_add': 'call hook_add#lightline#hook_add()'})
+  call dein#add ('itchyny/lightline.vim', {'on_source': 'josa42/vim-lightline-coc'})
   " cocの情報をlightlineに表示するためのコンポーネント提供, autocmd追加
-  call dein#add ('josa42/vim-lightline-coc', {'lazy': 1})
+  call dein#add ('josa42/vim-lightline-coc', {'on_event': 'VimEnter', 'hook_post_source': 'call my#plugin#lightline#hook_add()'})
 
   " visible indent
   "call dein#add ('Yggdroot/indentLine')
 
-  " 色コードを色で表示
-  call dein#add ('gorodinskiy/vim-coloresque', {'lazy': 1})
-
   " toggle comment
-  call dein#add ('tpope/vim-commentary', {'lazy': 1})
+  call dein#add ('tpope/vim-commentary', {'on_map': 'gc'})
+
+  " fzf
+  call dein#add ('junegunn/fzf.vim', {'lazy': 1})
+
+  " file explorer
+  call dein#add ('lambdalisue/fern.vim', {'on_event': 'VimEnter'})
+
+  " --------------------
+  " ftplugin
+  " --------------------
+
+  "  syntax hilight色コードを色で表示
+  call dein#add ('gorodinskiy/vim-coloresque')
 
   " syntax
   " call dein#add ('sheerun/vim-polyglot')
 
-  " fzf
-  call dein#add ('junegunn/fzf.vim', {'lazy': 1})
+  " syntax hilight
+  call dein#add ('octol/vim-cpp-enhanced-highlight', {'on_ft': 'cpp'})
 
   call dein#end ()
   call dein#save_state ()
