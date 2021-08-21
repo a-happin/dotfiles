@@ -2,14 +2,15 @@
 # initialize plugin
 ########################################
 
-ZINIT_DIR=${XDG_CONFIG_HOME}/zsh/.zinit
-if [[ -d ${ZINIT_DIR} ]]
+declare -A ZINIT
+ZINIT[HOME_DIR]=${XDG_CACHE_HOME}/zsh/.zinit
+if [[ -d ${ZINIT[HOME_DIR]} ]]
 then
-  source ${ZINIT_DIR}/bin/zinit.zsh
+  source ${ZINIT[HOME_DIR]}/bin/zinit.zsh
   autoload -Uz _zinit
   (( ${+_comps} )) && _comps[zinit]=_zinit
 else
-  mkdir -p ${ZINIT_DIR} && git clone --depth 1 https://github.com/zdharma/zinit.git ${ZINIT_DIR}/bin
+  mkdir -p ${ZINIT[HOME_DIR]} && git clone --depth 1 https://github.com/zdharma/zinit.git ${ZINIT[HOME_DIR]}/bin
 fi
 
 ########################################
