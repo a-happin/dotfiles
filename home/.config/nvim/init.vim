@@ -14,13 +14,12 @@ if empty ($XDG_CACHE_HOME)
   let $XDG_CACHE_HOME = $HOME . '/.cache'
 endif
 
-let s:nvim_directory = $XDG_CONFIG_HOME . '/nvim'
-let s:dein_directory = $XDG_CACHE_HOME . '/dein'
-
 
 " *******************************
 " **  dein.vim
 " *******************************
+
+let s:dein_directory = $XDG_CACHE_HOME . '/dein'
 
 " install dein automatically
 if !isdirectory (s:dein_directory)
@@ -63,24 +62,24 @@ if dein#load_state (s:dein_directory)
   "call dein#add ('w0rp/ale')
 
   " customize statusline
-  call dein#add ('itchyny/lightline.vim', {'hook_add': 'call hook_add#lightline#hook_add()'})
+  call dein#add ('itchyny/lightline.vim', {'lazy': 1, 'hook_add': 'call hook_add#lightline#hook_add()'})
   " cocの情報をlightlineに表示するためのコンポーネント提供, autocmd追加
-  call dein#add ('josa42/vim-lightline-coc')
+  call dein#add ('josa42/vim-lightline-coc', {'lazy': 1})
 
   " visible indent
   "call dein#add ('Yggdroot/indentLine')
 
   " 色コードを色で表示
-  call dein#add ('gorodinskiy/vim-coloresque')
+  call dein#add ('gorodinskiy/vim-coloresque', {'lazy': 1})
 
   " toggle comment
-  call dein#add ('tpope/vim-commentary')
+  call dein#add ('tpope/vim-commentary', {'lazy': 1})
 
   " syntax
   " call dein#add ('sheerun/vim-polyglot')
 
   " fzf
-  call dein#add ('junegunn/fzf.vim')
+  call dein#add ('junegunn/fzf.vim', {'lazy': 1})
 
   call dein#end ()
   call dein#save_state ()
@@ -91,14 +90,16 @@ if dein#check_install ()
   call dein#install ()
 endif
 
+
 " *******************************
 " **  (v'-')っ First Initialize
 " *******************************
 
-runtime! init/*.vim
-
 filetype plugin indent on
 syntax enable
+
+runtime! init/*.vim
+
 
 " *******************************
 " **  コマンド
@@ -117,6 +118,7 @@ cnoreabbrev w!! w !sudo -S tee > /dev/null %
 " カーソル位置のsyntax hightlight group
 command! CurrentSyntax echo synIDattr(synID(line('.'), col('.'), 1), 'name')
 
+
 " *******************************
 " **  settings
 " *******************************
@@ -129,89 +131,10 @@ let g:netrw_liststyle = 3
 let g:netrw_sizestyle = "H"
 " 左右分割を右側に開く
 let g:netrw_altv = 1
-" 分割で開いたときに85%のサイズで開く
-let g:netrw_winsize = 15
-" 直前に開いていた位置で開く
-let g:netrw_browse_split = 4
 
 " jsonのconcealを無効にする
 let g:vim_json_conceal = 0
 
-" *******************************
-" **  autocmd
-" *******************************
-
-" turn off IME when leave insert mode
-if executable('fcitx-remote')
-  augroup resetIME
-    autocmd!
-    autocmd InsertLeave * silent !fcitx-remote -c
-  augroup END
-endif
-
-" auto reload vimrc
-augroup auto-reload-vimrc
-  autocmd!
-  autocmd BufWritePost *init.vim ++nested source ${MYVIMRC}
-augroup END
-
-augroup dictionary
-  autocmd!
-  autocmd FileType cpp setlocal dictionary+=~/.config/nvim/dictionary/cpp.dict
-augroup END
-
-"augroup auto_save
-"  autocmd!
-"  autocmd TextChanged,InsertLeave * silent call auto_save#save ()
-"augroup END
-
-augroup auto_mkdir
-  autocmd!
-  autocmd BufWritePre * call auto_mkdir#mkdir(expand('<afile>:p:h'), v:cmdbang)
-augroup END
-
-augroup reload-file
-  autocmd!
-  autocmd InsertEnter,WinEnter,FocusGained * checktime
-augroup END
-
-augroup load-template
-  autocmd!
-  autocmd BufNewFile *.cpp  execute '0r ' . s:nvim_directory . '/template/.cpp'
-  autocmd BufNewFile *.html execute '0r ' . s:nvim_directory . '/template/.html'
-  autocmd BufNewFile *.sh execute '0r' . s:nvim_directory . '/template/.sh'
-  autocmd BufNewFile pack.mcmeta execute '0r ' . s:nvim_directory . '/template/pack.mcmeta'
-augroup END
-
-augroup fix-terminal
-  autocmd!
-  autocmd TermOpen term://* setlocal nonumber bufhidden=wipe
-  autocmd TermOpen,TermEnter,WinEnter term://* startinsert
-  autocmd TermClose term://* stopinsert
-  autocmd TermClose term://*/zsh bw!
-  autocmd TermClose term://*/fish bw!
-augroup END
-
-augroup fix-netrw
-  autocmd!
-  autocmd FileType netrw setlocal bufhidden=wipe
-augroup END
-
-augroup fix-filetype
-  autocmd!
-  autocmd BufNewFile,BufReadPost *.fish setfiletype sh
-  autocmd BufNewFile,BufReadPost *.mcmeta setfiletype json
-augroup END
-
-augroup fix-formatoptions
-  autocmd!
-  autocmd FileType * setlocal formatoptions-=ro
-augroup END
-
-augroup restore-cursor-pos
-  autocmd!
-  autocmd BufReadPost * if line ("'\"") > 0 && line ("'\"") <= line ("$") | execute "normal! g'\"" | endif
-augroup END
 
 " *******************************
 " **  set
@@ -245,7 +168,9 @@ set cinoptions& cinoptions+=:0,g0,t0,+0
 
 " share clipboard
 if has('unnamedplus')
-  set clipboard=unnamedplus
+  set clipboard=unnamedplus,unnamed
+else
+  set clipboard=unnamed
 endif
 
 " 補完の種類
@@ -269,8 +194,10 @@ set completeopt=menuone,preview,noselect
 " c: command line editing
 set concealcursor=nc
 
-" if 0, disable conceal
-set conceallevel=2
+" if 0, disable c
+" 表示するなら2かな
+" 起動時の:introがなくなってしまうことに気づいて、寂しいので無効化する……。
+set conceallevel=0
 
 " 保存せずに終了しようとした時に確認を行う
 set confirm
@@ -290,10 +217,12 @@ set nocursorcolumn nocursorline
 set expandtab
 
 " End of Bufferの~を非表示にする
-set fillchars+=eob:\ 
+set fillchars& fillchars+=eob:\ 
 
+" 勝手にwrapしない
 " 行コメントを自動で継続しない
-set formatoptions& formatoptions-=ro
+" 日本語でjoin時に空白を入れない
+set formatoptions& formatoptions-=t formatoptions-=c formatoptions-=r formatoptions-=o formatoptions+=M
 
 " :bでバッファを切り替えるときに保存しなくてもよくなる
 set hidden
@@ -421,8 +350,11 @@ set tabline=%!tabline#make()
 " tab width
 set tabstop=8
 
+" Time in milliseconds to wait for a mapped sequence to complete.
+set timeoutlen=2000
+
 " CursorHoldの発動ラグ
-set updatetime=500
+set updatetime=300
 
 " 移動キーなどで行をまたいで移動する
 " b: <BS>
@@ -431,7 +363,7 @@ set updatetime=500
 " >: <Right>
 " [: <Left> in insert mode
 " ]: <Right> in insert mode
-set whichwrap=b,s
+set whichwrap=
 
 " charater which starts completion in command line
 set wildchar=<Tab>
@@ -458,6 +390,7 @@ set wrapscan
 " Make a backup before overwriting a file.
 set nowritebackup
 
+
 " *******************************
 " **  colorscheme
 " *******************************
@@ -481,3 +414,71 @@ endtry
 " highlight Normal ctermbg=none
 " highlight CursorLineNr ctermfg=15
 
+
+" *******************************
+" **  autocmd
+" *******************************
+
+" turn off IME when leave insert mode
+if executable('fcitx-remote')
+  augroup resetIME
+    autocmd!
+    autocmd InsertLeave * silent !fcitx-remote -c
+  augroup END
+endif
+
+" auto reload vimrc
+augroup auto-reload-vimrc
+  autocmd!
+  autocmd BufWritePost *init.vim ++nested source ${MYVIMRC}
+augroup END
+
+"augroup auto_save
+"  autocmd!
+"  autocmd TextChanged,InsertLeave * silent call auto_save#save ()
+"augroup END
+
+augroup auto_mkdir
+  autocmd!
+  autocmd BufWritePre * call auto_mkdir#mkdir (expand ('<afile>:p:h'), v:cmdbang)
+augroup END
+
+augroup dictionary
+  autocmd!
+  autocmd FileType * if filereadable ($XDG_CONFIG_HOME . '/nvim/dictionary/' . &filetype . '.dict') | execute 'setlocal dictionary+=' . $XDG_CONFIG_HOME . '/nvim/dictionary/' . &filetype . '.dict' | endif
+augroup END
+
+augroup reload-file
+  autocmd!
+  autocmd InsertEnter,WinEnter,FocusGained * checktime
+augroup END
+
+augroup template
+  autocmd!
+  autocmd BufNewFile *.* silent! 0r $XDG_CONFIG_HOME/nvim/template/.%:e
+augroup END
+
+augroup fix-terminal
+  autocmd!
+  autocmd TermOpen term://* setlocal nonumber bufhidden=wipe
+  autocmd TermOpen,TermEnter,WinEnter term://* startinsert
+  autocmd TermClose term://* stopinsert
+  autocmd TermClose term://*/zsh bw!
+  autocmd TermClose term://*/fish bw!
+augroup END
+
+augroup fix-filetype
+  autocmd!
+  autocmd BufNewFile,BufReadPost *.fish setfiletype sh
+  autocmd BufNewFile,BufReadPost *.mcmeta setfiletype json
+augroup END
+
+augroup fix-formatoptions
+  autocmd!
+  autocmd FileType * setlocal formatoptions& formatoptions-=t formatoptions-=c formatoptions-=r formatoptions-=o formatoptions+=M
+augroup END
+
+augroup restore-cursor-pos
+  autocmd!
+  autocmd BufReadPost * if line ("'\"") > 0 && line ("'\"") <= line ("$") | execute "normal! g'\"" | endif
+augroup END

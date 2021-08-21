@@ -140,6 +140,7 @@ nnoremap <Space>t <Cmd>terminal<CR>
 nnoremap <Space>f <Cmd>FZF<CR>
 
 nnoremap <Space>; :
+xnoremap <Space>; :
 
 " バッファ一覧
 nnoremap <Space>b <Cmd>Buffers<CR>
@@ -215,7 +216,10 @@ nmap <silent> ]e <Plug>(coc-diagnostic-next)
 nmap qf <Plug>(coc-fix-current)
 
 " show documentation
-nnoremap <silent> <F1> <Cmd>call <SID>show_documentation ()<CR>
+nmap <F1> K
+nnoremap <silent> K <Cmd>call <SID>show_documentation ()<CR>
+
+
 " rename identifier
 nmap <F2> <Plug>(coc-rename)
 
