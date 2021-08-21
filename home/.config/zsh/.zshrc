@@ -2,13 +2,14 @@
 # initialize plugin
 ########################################
 
-if [[ -d ${HOME}/.zinit ]]
+ZINIT_DIR=${XDG_CONFIG_HOME}/zsh/.zinit
+if [[ -d ${ZINIT_DIR} ]]
 then
-  source ${HOME}/.zinit/bin/zinit.zsh
+  source ${ZINIT_DIR}/bin/zinit.zsh
   autoload -Uz _zinit
   (( ${+_comps} )) && _comps[zinit]=_zinit
 else
-  mkdir ${HOME}/.zinit && git clone --depth 1 https://github.com/zdharma/zinit.git ${HOME}/.zinit/bin
+  mkdir -p ${ZINIT_DIR} && git clone --depth 1 https://github.com/zdharma/zinit.git ${ZINIT_DIR}/bin
 fi
 
 ########################################
@@ -16,22 +17,27 @@ fi
 ########################################
 
 #------------------------------
+# HISTFILE
+#------------------------------
+mkdir -p ${XDG_DATA_HOME}/zsh && export HISTFILE=${XDG_DATA_HOME}/zsh/history
+
+#------------------------------
 # EDITOR
 #------------------------------
-type nvim > /dev/null 2>&1 && export EDITOR=nvim
+#type nvim > /dev/null 2>&1 && export EDITOR=nvim
 #alias vim='printf "vimがいいのですか？でもnvimを起動しますね。" && read -k1 && nvim'
 
 #------------------------------
 # VISUAL
 #------------------------------
-type nvim > /dev/null 2>&1 && export VISUAL=nvim
+#type nvim > /dev/null 2>&1 && export VISUAL=nvim
 
 #------------------------------
 # XDG_CONFIG_HOME
 #------------------------------
-export XDG_CONFIG_HOME=${HOME}/.config
-export XDG_CACHE_HOME=${HOME}/.cache
-export XDG_DATA_HOME=${HOME}/.local/share
+# export XDG_CONFIG_HOME=${HOME}/.config
+# export XDG_CACHE_HOME=${HOME}/.cache
+# export XDG_DATA_HOME=${HOME}/.local/share
 
 #------------------------------
 # VTE_CJK_WIDTH
@@ -191,14 +197,11 @@ setopt transient_rprompt
 # history
 #------------------------------
 
-# history file
-export HISTFILE=${HOME}/.zsh_history
-
 # メモリに保持するhistroy
-export HISTSIZE=12000
+export HISTSIZE=10000
 
 # ファイルに保持するhistory
-export SAVEHIST=12000
+export SAVEHIST=10000
 
 # 他プロセスのzshと履歴を共有する
 setopt extended_history
@@ -367,7 +370,7 @@ alias historygrep='\history 0 | grep'
 #alias checkout='\git checkout'
 #alias push='\git push'
 #alias fetch='\git fetch'
-alias g='subsh git'
+# alias g='subsh git'
 
 alias encrypt='openssl aes-256-cbc -e -iter 100'
 alias decrypt='openssl aes-256-cbc -d -iter 100'
@@ -375,10 +378,10 @@ alias decrypt='openssl aes-256-cbc -d -iter 100'
 # set wallpaper
 alias wallpaper='feh --no-fehbg --randomize --bg-max'
 
-alias vscode=code
+# alias vscode=code
 
-alias nvimrc='${EDITOR} ${HOME}/.config/nvim/init.vim'
-alias zshrc='${EDITOR} ${HOME}/.zshrc'
+alias nvimrc='${EDITOR} ${XDG_CONFIG_HOME}/nvim/init.vim'
+alias zshrc='${EDITOR} ${XDG_CONFIG_HOME}/zsh/.zshrc'
 alias gitconfig='git config --global -e'
 alias relogin='exec zsh -l'
 
@@ -422,7 +425,7 @@ alias -s zip='unzip'
 alias -s rar='unrar x'
 alias -s jar='java -jar'
 # alias -s encrypted='decrypt-edit'
-alias -s ts='deno run --allow-all'
+alias -s ts='deno run --allow-all --unstable'
 type wine > /dev/null 2>&1 && alias -s exe='wine'
 
 
@@ -628,6 +631,9 @@ function fzf-git-repository ()
 # keybind
 ########################################
 
+# reset
+bindkey -d
+
 # Emacs風キーバインド
 bindkey -e
 
@@ -736,14 +742,14 @@ function preexec ()
 #------------------------------
 # subsh
 #------------------------------
-function __precmd_for_subsh()
+function __precmd_for_subsh ()
 {
   [[ -n "${SUBSH}" ]] && print -z "${SUBSH} "
 }
 
 add-zsh-hook precmd "__precmd_for_subsh"
 
-function subsh()
+function subsh ()
 {
   export SUBSH="$*"
 }
@@ -754,35 +760,9 @@ function subsh()
 ########################################
 
 type zinit > /dev/null 2>&1 && {
-  zinit light zsh-users/zsh-syntax-highlighting
-  zinit light zsh-users/zsh-autosuggestions
-  zinit ice ver"feature/auto_remove_slash" ; zinit light a-happin/zsh-abbrev-alias
-}
-
-#------------------------------
-# abbrev-alias
-#------------------------------
-type abbrev-alias > /dev/null 2>&1 && {
-  abbrev-alias -c :q=exit
-  abbrev-alias -c e=nvim
-  abbrev-alias -c g=git
-  abbrev-alias -c la='ls -A'
-  abbrev-alias -c ll='ls -lA'
-  abbrev-alias -c cp='cp -i'
-  abbrev-alias -c mv='mv -i'
-  abbrev-alias -c rm='rm -i'
-  abbrev-alias -c rr='rm -ri'
-  abbrev-alias -c ln='ln -snfv'
-  abbrev-alias -c type='type -as'
-  # abbrev-alias -c history='history 0'
-  abbrev-alias -c historygrep='history | grep'
-  abbrev-alias -c vscode=code
-  abbrev-alias -c gitconfig='git config --global -e'
-  abbrev-alias -c pacman='sudo pacman'
-  abbrev-alias -c push='git push'
-  abbrev-alias -cr pushu='push -u origin HEAD'
-  abbrev-alias -c gs='git status'
-  abbrev-alias -c firstcommit='git commit -m "First commit."'
+  zinit ice wait lucid ; zinit light zdharma/fast-syntax-highlighting
+  zinit ice wait lucid ; zinit light zsh-users/zsh-autosuggestions
+  zinit ice wait lucid ver"feature/auto_remove_slash" atload"source ${ZDOTDIR}/abbrev.zsh" ; zinit light a-happin/zsh-abbrev-alias
 }
 
 ########################################
