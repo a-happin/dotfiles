@@ -3,7 +3,7 @@ FROM_DIR          := $(abspath $(DOTFILES_DIR))
 DEST_DIR          := $(HOME)
 
 DOTFILES_EXCLUDES := . .. .DS_Store .git .gitmodules .travis.yml .gitignore .config
-DOTFILES          := $(filter-out $(DOTFILES_EXCLUDES),$(notdir $(wildcard $(DOTFILES_DIR)/.*)))
+DOTFILES          := $(filter-out $(DOTFILES_EXCLUDES),$(notdir $(wildcard $(DOTFILES_DIR)/.*))) $(addprefix .config/,$(notdir $(wildcard $(DOTFILES_DIR)/.config/*)))
 
 LN                := ln -snfv
 RM                := rm -fv
