@@ -134,7 +134,8 @@ nnoremap <silent> <Space>q <Cmd>q<CR>
 nnoremap <Space>w <Cmd>w<CR>
 
 " ファイルを開く
-nnoremap <Space>e :<C-u>e<Space>
+" nnoremap <Space>e :<C-u>e<Space>
+nnoremap <Space>e <Cmd>Fern . -reveal=% -drawer -toggle<CR>
 
 " Open New Tab
 nnoremap <Space>t <Cmd>tabnew<CR>
