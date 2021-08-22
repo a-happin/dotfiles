@@ -265,7 +265,7 @@ zstyle ':completion:*' list-colors 'di=01;34' 'ln=01;36' 'so=01;35' 'ex=01;32' '
 # _ignored: 補完候補に出さないと指定したものも補完候補とする。
 # _approximate: 似ている補完候補も補完候補とする。
 # _prefix: カーソル以降を無視してカーソル位置までで補完する。
-zstyle ':completion:*' completer _expand _oldlist _complete _match _history _approximate _prefix
+zstyle ':completion:*' completer _expand _oldlist _complete _match _approximate _prefix
 
 # 補完キャッシュを使う
 zstyle ':completion:*' use-cache true
@@ -319,9 +319,11 @@ case ${OSTYPE} in
     ;;
 esac
 
-# WSL
+# WSL Windows
 if [[ $(uname -r) =~ Microsoft$ ]]
 then
+  export DISPLAY=localhost:0
+
   # windows用open
   function win-open ()
   {
@@ -336,11 +338,15 @@ then
   }
 
   alias pbcopy=clip.exe
+  alias pbpaste='powershell.exe get-clipboard'
   alias open=win-open
 
   alias explorer=explorer.exe
   alias java=java.exe
   alias deno=deno.exe
+  alias ffmpeg=ffmpeg.exe
+  alias ffprobe=ffprobe.exe
+  alias ffplay=ffplay.exe
 fi
 
 #------------------------------
@@ -761,6 +767,10 @@ function subsh ()
 ########################################
 
 type zinit > /dev/null 2>&1 && {
+  # iceにblockfを追記すると、プラグインの中で$fpathに書き込むのを禁止（無効化）します。 これはzinitを使うときに有用です。
+  # zinitはプラグインの中の補完用のファイルを自動で探索し、シンボリックリンクを使ってfpathに追加する特殊な機能があります。
+  # なので、プラグインの中のfpath追加を使わずにzinitに面倒を見させるのほうが高速となります。
+  # zinit ice wait lucid fblock ; zinit light zsh-users/zsh-completions
   zinit ice wait lucid ; zinit light zdharma/fast-syntax-highlighting
   zinit ice wait lucid ; zinit light zsh-users/zsh-autosuggestions
   zinit ice wait lucid ver"feature/auto_remove_slash" atload"source ${ZDOTDIR}/abbrev.zsh" ; zinit light a-happin/zsh-abbrev-alias
