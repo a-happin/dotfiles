@@ -44,10 +44,10 @@ if dein#load_state (s:dein_directory)
   " call dein#add ('cocopon/iceberg.vim')
 
   " LSP client, completion
-  call dein#add ('neoclide/coc.nvim', {'merged': 0, 'rev': 'release', 'on_event': ['VimEnter'], 'hook_add': 'call my#plugin#coc#hook_add()'})
+  call dein#add ('neoclide/coc.nvim', {'merged': 0, 'rev': 'release', 'on_event': 'FileType', 'hook_add': 'call my#plugin#coc#hook_add()', 'hook_post_source': 'call my#plugin#coc#hook_post_source()'})
 
   " SignColumnにgitの差分を表示
-  call dein#add ('airblade/vim-gitgutter', {'lazy': 1, 'on_event': 'VimEnter'})
+  call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter'})
 
   " completion
   "call dein#add ('Shougo/deoplete.nvim')
@@ -73,13 +73,13 @@ if dein#load_state (s:dein_directory)
   "call dein#add ('Yggdroot/indentLine')
 
   " toggle comment
-  call dein#add ('tpope/vim-commentary', {'on_map': 'gc'})
+  call dein#add ('tpope/vim-commentary', {'on_event': 'VimEnter', 'hook_post_source': 'call my#plugin#commentary#hook_post_source()'})
 
   " fzf
-  call dein#add ('junegunn/fzf.vim', {'lazy': 1})
+  call dein#add ('junegunn/fzf.vim', {'on_event': 'VimEnter'})
 
   " file explorer
-  call dein#add ('lambdalisue/fern.vim', {'on_event': 'VimEnter'})
+  call dein#add ('lambdalisue/fern.vim', {'hook_add': 'call my#plugin#fern#hook_add()'})
 
   " --------------------
   " ftplugin
@@ -119,17 +119,20 @@ runtime! init/*.vim
 " *******************************
 command! Reload source ${MYVIMRC}
 
-command! -nargs=* Hterminal botright split new | resize 15 | terminal <args>
+command! -nargs=* Hterminal botright split new | resize 20 | terminal <args>
 command! -nargs=* Vterminal botright vertical new | terminal <args>
 command! -nargs=* Tterminal tabnew | terminal <args>
 
 command! -nargs=* W w <args>
 
 " root権限に昇格して書き込み
+" neovimでは機能しない https://github.com/neovim/neovim/issues/8217 ←won't fix……
 cnoreabbrev w!! w !sudo -S tee > /dev/null %
 
 " カーソル位置のsyntax hightlight group
 command! CurrentSyntax echo synIDattr(synID(line('.'), col('.'), 1), 'name')
+
+command! DiffOrig aboveleft vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis
 
 
 " *******************************
@@ -146,7 +149,8 @@ let g:netrw_sizestyle = "H"
 let g:netrw_altv = 1
 
 " jsonのconcealを無効にする
-let g:vim_json_conceal = 0
+" 今はconceal自体を無効化しているのでコメントアウト
+" let g:vim_json_conceal = 0
 
 
 " *******************************

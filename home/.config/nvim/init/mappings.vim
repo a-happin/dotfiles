@@ -78,6 +78,8 @@ nnoremap <silent> <C-q> <Cmd>confirm qall<CR>
 " <Tab>でtab切り替え
 nnoremap <Tab> gt
 nnoremap <S-Tab> gT
+nnoremap <C-w><Tab> gt
+nnoremap <C-w><S-Tab> gT
 
 " ファイルチェックして再描画！
 nnoremap <C-l> <Cmd>checktime<CR><C-l>
@@ -108,6 +110,8 @@ xnoremap <M-Down> :move '>+1<CR>gv
 "  <Space>
 " --------------------------------
 
+nnoremap <Space><Esc> <Nop>
+
 " Paste from clipboard
 nnoremap <Space>p "+p
 nnoremap <Space>P "+P
@@ -137,7 +141,7 @@ nnoremap <Space>e :<C-u>e<Space>
 nnoremap <Space>t <Cmd>terminal<CR>
 
 " Run FZF
-nnoremap <Space>f <Cmd>FZF<CR>
+nnoremap <Space>f <Cmd>Files<CR>
 
 nnoremap <Space>; :
 xnoremap <Space>; :
@@ -153,6 +157,7 @@ nnoremap <Space>0 $
 
 " open config file
 nnoremap <Space>, <Cmd>edit $MYVIMRC<CR>
+nnoremap <M-,> <Cmd>edit $MYVIMRC<CR>
 
 " toggle option
 nnoremap <silent> <Space>1 <Cmd>setlocal cursorline! cursorcolumn!<CR>
@@ -182,46 +187,18 @@ onoremap il <Cmd>normal! v_o$h<CR>
 "  コメントアウト
 " --------------------------------
 
+" プラグイン側で上書きするのであまり気にしないでおく。
+
 " Linuxでは<C-/>は<C-_>で設定しないといけないらしい
-nmap <C-_> gcc
-imap <C-_> <C-o>gcc
-xmap <C-_> gc
+" nnoremap <C-_> I// <Esc>
+" inoremap <C-_> <C-o>^// 
+" xnoremap <C-_> I// <Esc>
 
 
 " --------------------------------
 "  netrw
 " --------------------------------
-"nnoremap <C-e> :<C-u>NERDTreeToggle<CR>
-nnoremap <silent> <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
-
-
-" --------------------------------
-"  coc
-" --------------------------------
-
-" 定義ジャンプ
-nmap <silent> gd <Plug>(coc-definition)
-
-" 参照ジャンプ
-" grは元は仮想上書き
-nmap <silent> gr <Plug>(coc-references)
-
-" CocList
-" nnoremap <silent> <Space><Space> :<C-u>CocList<CR>
-
-" 次のdiagnostic(エラー、警告)
-nmap <silent> [e <Plug>(coc-diagnostic-prev)
-nmap <silent> ]e <Plug>(coc-diagnostic-next)
-
-nmap qf <Plug>(coc-fix-current)
-
-" show documentation
-nmap <F1> K
-nnoremap <silent> K <Cmd>call <SID>show_documentation ()<CR>
-
-
-" rename identifier
-nmap <F2> <Plug>(coc-rename)
+" nnoremap <silent> <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
 
 
 " --------------------------------
@@ -276,12 +253,6 @@ nnoremap <Plug>(dsurround)` "zci`<BS><Del><C-r><C-o>z<Esc>
 " --------------------------------
 "  自動補完
 " --------------------------------
-
-" for neosnippet
-"imap <C-k> <Plug>(neosnippet_expand_or_jump)
-"smap <C-k> <Plug>(neosnippet_expand_or_jump)
-"xmap <C-k> <Plug>(neosnippet_expand_target)
-"imap <C-k> <Plug>(coc-snippets-expand-jump)
 
 " ポップアップ補完メニューが表示されているときは次の候補を選択
 inoremap <silent><expr> <Tab> <SID>tab_key ()
@@ -341,6 +312,7 @@ cnoremap <C-n> <Down>
 cnoremap <Up> <C-p>
 cnoremap <Down> <C-n>
 
+cnoremap <C-R> <C-u>History:<CR>
 
 " --------------------------------
 "  Terminal
@@ -349,7 +321,7 @@ cnoremap <Down> <C-n>
 "tnoremap <Esc><Esc> <C-\><C-n>
 " クリックでterminal windowを選択時にnormalモードに戻らないようにする
 tnoremap <LeftRelease> <Nop>
-tnoremap <C-w> <C-\><C-n><C-w>
+tmap <C-w> <C-\><C-n><C-w>
 
 " *******************************
 " **  function!
@@ -550,11 +522,7 @@ function! s:tab_key () abort
   else
     let [prev, post] = s:getline ()
     if prev =~# '\k$'
-      if dein#tap ('coc.nvim')
-        return coc#refresh ()
-      else
-        return "\<C-n>"
-      endif
+      return "\<C-n>"
     elseif prev =~# '/$'
       return "\<C-x>\<C-f>"
     elseif prev ==# '' && post ==# '' && &cinkeys =~# '\V!^F' && (&cindent || &indentexpr !=# '')
@@ -654,15 +622,6 @@ function! s:space_key () abort
   endif
 endfunction
 
-
-" show vim help
-function! s:show_documentation () abort
-  if (index (['vim', 'help'], &filetype) >= 0)
-    execute 'help ' . expand ('<cword>')
-  else
-    call CocAction ('doHover')
-  endif
-endfunction
 
 function! s:toggle_netrw () abort
   let exists_netrw = 0
