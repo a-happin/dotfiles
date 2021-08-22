@@ -126,7 +126,6 @@ nnoremap <Space>O O<Space><C-u><Esc>
 
 nnoremap <Space>h ^
 nnoremap <Space>l $
-nnoremap <Space><Tab> <Cmd>tabnew<CR>
 
 " 閉じる
 nnoremap <silent> <Space>q <Cmd>q<CR>
@@ -137,11 +136,17 @@ nnoremap <Space>w <Cmd>w<CR>
 " ファイルを開く
 nnoremap <Space>e :<C-u>e<Space>
 
-" Open Terminal
-nnoremap <Space>t <Cmd>terminal<CR>
+" Open New Tab
+nnoremap <Space>t <Cmd>tabnew<CR>
+
+" Split Horizontally
+nnoremap <Space>s <C-w>s
 
 " Run FZF
 nnoremap <Space>f <Cmd>Files<CR>
+
+" Split Vertically
+nnoremap <Space>v <C-w>v
 
 nnoremap <Space>; :
 xnoremap <Space>; :
