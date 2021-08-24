@@ -20,6 +20,13 @@ if status is-login
 
   # prepend to $PATH
   set -g fish_user_paths "$HOME/bin"
+
+  # Windows WSL
+  if uname -r | string match -q -- '**Microsoft'
+    set -a fish_user_paths "$HOME/.nodebrew/current/bin"
+    set -a fish_user_paths "$HOME/.fzf/bin"
+    set -gx DISPLAY 'localhost:0'
+  end
 end
 
 
@@ -29,17 +36,10 @@ end
 
 set -g chino_opt '-std=c++2b -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -I./include -O2 -pipe'
 
+
 ################################
 # function
 ################################
-
-function pbcopy
-  xsel --clipboard --input
-end
-
-function pbpaste
-  xsel --clipboard --output
-end
 
 function runchino
   clang++ $chino_opt -o /tmp/a.out $argv[1] && echo -e "\033[1mcompile suceeded.\033[0m" >&2 && /tmp/a.out $argv[2..-1]
