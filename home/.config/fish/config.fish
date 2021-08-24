@@ -41,18 +41,6 @@ function pbpaste
   xsel --clipboard --output
 end
 
-function encrypt
-  openssl aes-256-cbc -e -iter 100 $argv
-end
-
-function decrypt
-  openssl aes-256-cbc -d -iter 100 $argv
-end
-
-function chino
-  clang++ -std=c++2b -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -I./include -O2 -pipe $argv
-end
-
 function runchino
   clang++ $chino_opt -o /tmp/a.out $argv[1] && echo -e "\033[1mcompile suceeded.\033[0m" >&2 && /tmp/a.out $argv[2..-1]
 end
@@ -62,85 +50,103 @@ end
 # abbreviation
 ################################
 
-abbr --add -g e "$EDITOR"
-abbr --add -g fishrc "$EDITOR $XDG_CONFIG_HOME/fish/config.fish"
-abbr --add -g nvimrc "$EDITOR $XDG_CONFIG_HOME/nvim/init.vim"
-abbr --add -g zshrc "$EDITOR $XDG_CONFIG_HOME/zsh/.zshrc"
-abbr --add -g bashrc "$EDITOR $HOME/.bashrc"
-abbr --add -g gitconfig 'git config --global -e'
+if status is-interactive
+  # abbreviation
+  abbr --add -g g 'git'
+  abbr --add -g push 'git push'
+  abbr --add -g pushu 'git push -u orgin HEAD'
+  abbr --add -g commit 'git commit -v'
+  abbr --add -g e "$EDITOR"
 
-abbr --add -g chino "clang++ $chino_opt"
+  # default options
+  abbr --add -g la 'ls -lah'
+  abbr --add -g ll 'ls -lah'
+  abbr --add -g cp 'cp -iv'
+  abbr --add -g mv 'mv -i'
+  abbr --add -g rm 'rm -i'
+  abbr --add -g rr 'rm -ri'
+  abbr --add -g ln 'ln -snfv'
+  abbr --add -g mkdir 'mkdir -p'
+  abbr --add -g funced 'funced --save'
 
-abbr --add -g g 'git'
-abbr --add -g push 'git push'
-abbr --add -g pushu 'git push -u orgin HEAD'
-abbr --add -g commit 'git commit -v'
-abbr --add -g :q 'exit'
-abbr --add -g la 'ls -lAh'
-abbr --add -g ll 'ls -lAh'
-abbr --add -g cp 'cp -iv'
-abbr --add -g mv 'mv -i'
-abbr --add -g rm 'rm -i'
-abbr --add -g rr 'rm -ri'
-abbr --add -g ln 'ln -snfv'
-abbr --add -g mkdir 'mkdir -p'
-abbr --add -g pacman 'sudo pacman'
-abbr --add -g systemctl 'sudo systemctl'
-abbr --add -g funced 'funced --save'
-abbr --add -g vscode code
+  # like a new command
+  abbr --add -g fishrc "$EDITOR $XDG_CONFIG_HOME/fish/config.fish"
+  abbr --add -g nvimrc "$EDITOR $XDG_CONFIG_HOME/nvim/init.vim"
+  abbr --add -g zshrc "$EDITOR $XDG_CONFIG_HOME/zsh/.zshrc"
+  abbr --add -g bashrc "$EDITOR $HOME/.bashrc"
+  abbr --add -g gitconfig 'git config --global -e'
+  abbr --add -g encrypt 'openssl aes-256-cbc -e -iter 100'
+  abbr --add -g decrypt 'openssl aes-256-cbc -d -iter 100'
 
-# suffix abbreviation
-sabbr 'ts' 'deno run --allow-all'
-sabbr 'cpp' 'runchino'
-sabbr 'jar' 'java -jar'
+  # kawaii
+  abbr --add -g chino "clang++ $chino_opt"
 
-context-abbr 'git' 'clean' 'clean -df'
-context-abbr 'git' 'init' 'init && git commit --allow-empty -m "Initial commit."'
-context-abbr 'git' 'new' 'switch -c'
-context-abbr 'git' 'ci' 'commit -v'
-context-abbr 'git' 'co' 'checkout'
-context-abbr 'git' 'pu' 'push -u origin HEAD'
-context-abbr 'git' 'a' 'add -p'
-context-abbr 'git' 's' 'status'
-context-abbr 'git' 'd' 'diff'
-context-abbr 'git' 'b' 'branch'
-context-abbr 'git' 'p' 'pull --rebase origin develop'
-context-abbr --eval 'git **' 'B' 'git symbolic-ref --short HEAD'
+  # don't forget sudo
+  abbr --add -g pacman 'sudo pacman'
+  abbr --add -g systemctl 'sudo systemctl'
 
-context-abbr 'cd' 'f' '(fzf-directory || printf .)'
-context-abbr 'cd' 'g' '(fzf-git-repository || printf .)'
+  # typo
+  abbr --add -g :q 'exit'
+  abbr --add -g vscode code
 
-context-abbr -C 'compile' '**.cpp' "clang++ $chino_opt"
+  # suffix abbreviation
+  # sabbr 'ts' 'deno run --allow-all'
+  # sabbr 'cpp' 'runchino'
+  # sabbr 'jar' 'java -jar'
 
-context-abbr -C 'run' '**.cpp' 'runchino'
-context-abbr -C 'run' '**.ts' 'deno run --allow-all --unstable'
-context-abbr -C 'run' '**.jar' 'java -jar'
+  # subcommand abbreviation
+  context-abbr 'git' 'clean' 'clean -df'
+  context-abbr 'git' 'init' 'init && git commit --allow-empty -m "Initial commit."'
+  context-abbr 'git' 'new' 'switch -c'
+  context-abbr 'git' 'ci' 'commit -v'
+  context-abbr 'git' 'co' 'checkout'
+  context-abbr 'git' 'pu' 'push -u origin HEAD'
+  context-abbr 'git' 'a' 'add -p'
+  context-abbr 'git' 's' 'status'
+  context-abbr 'git' 'd' 'diff'
+  context-abbr 'git' 'b' 'branch'
+  context-abbr 'git' 'p' 'pull --rebase origin develop'
+  context-abbr --eval 'git **' 'B' 'git symbolic-ref --short HEAD'
+
+  context-abbr 'cd' 'f' '(fzf-directory || printf .)'
+  context-abbr 'cd' 'g' '(fzf-git-repository || printf .)'
+
+  # prepend sudo
+  context-abbr -C 'nvim' '/etc/ssh/sshd_config' 'sudo nvim'
+
+  # fake command
+  context-abbr -C 'compile' '**.cpp' "clang++ $chino_opt"
+
+  context-abbr -C 'run' '**.cpp' 'runchino'
+  context-abbr -C 'run' '**.ts' 'deno run --allow-all --unstable'
+  context-abbr -C 'run' '**.jar' 'java -jar'
 
 
-context-abbr -C 'extract' '**.tar.bz2' 'tar -jxvf'
-context-abbr -C 'extract' '**.tar.gz' 'tar -zxvf'
-context-abbr -C 'extract' '**.tar.xz' 'tar -Jxvf'
-context-abbr -C 'extract' '**.tbz2' 'tar -jxvf'
-context-abbr -C 'extract' '**.tgz' 'tar -zxvf'
-context-abbr -C 'extract' '**.tar' 'tar -xvf'
-context-abbr -C 'extract' '**.bz2' 'bzip2 -dc'
-context-abbr -C 'extract' '**.zip' 'unzip'
-context-abbr -C 'extract' '**.rar' 'unrar x'
-context-abbr -C 'extract' '**.gz' 'gzip -dc'
-context-abbr -C 'extract' '**.xz' 'xz -d'
+  context-abbr -C 'extract' '**.tar.bz2' 'tar -jxvf'
+  context-abbr -C 'extract' '**.tar.gz' 'tar -zxvf'
+  context-abbr -C 'extract' '**.tar.xz' 'tar -Jxvf'
+  context-abbr -C 'extract' '**.tbz2' 'tar -jxvf'
+  context-abbr -C 'extract' '**.tgz' 'tar -zxvf'
+  context-abbr -C 'extract' '**.tar' 'tar -xvf'
+  context-abbr -C 'extract' '**.bz2' 'bzip2 -dc'
+  context-abbr -C 'extract' '**.zip' 'unzip'
+  context-abbr -C 'extract' '**.rar' 'unrar x'
+  context-abbr -C 'extract' '**.gz' 'gzip -dc'
+  context-abbr -C 'extract' '**.xz' 'xz -d'
 
-context-abbr -C 'compress' '**.tar.bz2' 'tar -jcvf'
-context-abbr -C 'compress' '**.tar.gz' 'tar -zcvf'
-context-abbr -C 'compress' '**.tar.xz' 'tar -Jcvf'
-context-abbr -C 'compress' '**.tbz2' 'tar -jcvf'
-context-abbr -C 'compress' '**.tgz' 'tar -zcvf'
-context-abbr -C 'compress' '**.tar' 'tar -cvf'
-context-abbr -C 'compress' '**.zip' 'zip -r'
-context-abbr -C 'compress' '**.rar' 'rar a'
+  context-abbr -C 'compress' '**.tar.bz2' 'tar -jcvf'
+  context-abbr -C 'compress' '**.tar.gz' 'tar -zcvf'
+  context-abbr -C 'compress' '**.tar.xz' 'tar -Jcvf'
+  context-abbr -C 'compress' '**.tbz2' 'tar -jcvf'
+  context-abbr -C 'compress' '**.tgz' 'tar -zcvf'
+  context-abbr -C 'compress' '**.tar' 'tar -cvf'
+  context-abbr -C 'compress' '**.zip' 'zip -r'
+  context-abbr -C 'compress' '**.rar' 'rar a'
 
-# global abbreviation
-context-abbr '**' 'G' '| grep'
-context-abbr '**' 'L' '| less'
+  # global abbreviation
+  context-abbr '**' 'G' '| grep'
+  context-abbr '**' 'L' '| less'
+end
 
 ################################
 # dev
@@ -156,11 +162,7 @@ function commandline_test
   echo pc = (commandline -pc)
   echo j = (commandline -j)
   echo poc = (commandline -poc | string join ' ')
-  commandline -poc | string join ' ' > ~/hello
   echo pc = (commandline -pc)
-  commandline --paging-mode && echo paging-mode
-  commandline --search-mode && echo search-mode
-  commandline --paging-mode --search-mode && echo mode
   commandline -f repaint
 end
 
