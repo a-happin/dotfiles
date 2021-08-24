@@ -7,6 +7,7 @@ function! my#plugin#coc#hook_add () abort
         \ 'coc-json',
         \ 'coc-tsserver',
         \ 'coc-deno',
+        \ 'coc-fish',
         \]
 endfunction
 

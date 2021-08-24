@@ -112,39 +112,43 @@ xnoremap <M-Down> :move '>+1<CR>gv
 
 nnoremap <Space><Esc> <Nop>
 
-" Paste from clipboard
-nnoremap <Space>p "+p
-nnoremap <Space>P "+P
-
 " 空白1文字挿入
 nnoremap <Space>i i<Space><Esc>
 nnoremap <Space>a a<Space><Esc>
 
-" 改行挿入
-nnoremap <Space>o o<Space><C-u><Esc>
-nnoremap <Space>O O<Space><C-u><Esc>
-
-nnoremap <Space>h ^
-nnoremap <Space>l $
-
 " 閉じる
-nnoremap <silent> <Space>q <Cmd>q<CR>
+nnoremap <silent> <Space>q <Cmd>close<CR>
 
 " 保存
 nnoremap <Space>w <Cmd>w<CR>
 
 " ファイルを開く
 " nnoremap <Space>e :<C-u>e<Space>
-nnoremap <Space>e <Cmd>Fern . -reveal=% -drawer -toggle<CR>
+" nnoremap <Space>e <Cmd>Fern . -reveal=% -drawer -toggle<CR>
+nnoremap <Space>e <Cmd>Files<CR>
 
 " Open New Tab
 nnoremap <Space>t <Cmd>tabnew<CR>
+
+" 改行挿入
+nnoremap <Space>o o<Space><C-u><Esc>
+nnoremap <Space>O O<Space><C-u><Esc>
+
+" Paste from clipboard
+nnoremap <Space>p "+p
+nnoremap <Space>P "+P
 
 " Split Horizontally
 nnoremap <Space>s <C-w>s
 
 " Run FZF
-nnoremap <Space>f <Cmd>Files<CR>
+" nnoremap <Space>f <Cmd>Files<CR>
+
+" git ls-files | fzf
+nnoremap <Space>g <Cmd>GFiles<CR>
+
+nnoremap <Space>h ^
+nnoremap <Space>l $
 
 " Split Vertically
 nnoremap <Space>v <C-w>v
@@ -158,9 +162,6 @@ nnoremap <Space>b <Cmd>Buffers<CR>
 " 新規
 nnoremap <Space>n <Cmd>enew<CR>
 
-" 行末
-nnoremap <Space>0 $
-
 " open config file
 nnoremap <Space>, <Cmd>edit $MYVIMRC<CR>
 nnoremap <M-,> <Cmd>edit $MYVIMRC<CR>
@@ -169,6 +170,9 @@ nnoremap <M-,> <Cmd>edit $MYVIMRC<CR>
 nnoremap <silent> <Space>1 <Cmd>setlocal cursorline! cursorcolumn!<CR>
 nnoremap <silent> <Space>2 <Cmd>setlocal relativenumber!<CR>
 nnoremap <silent> <Space>3 <Cmd>setlocal spell!<CR>
+
+" 行末
+nnoremap <Space>4 $
 " nnoremap <silent> <Space>0 <Cmd>setlocal paste!<CR>
 
 

@@ -40,14 +40,16 @@ if dein#load_state (s:dein_directory)
   " requires
   call dein#add (s:dein_repo_directory)
 
+  " --------------------
   " colorscheme
+  " --------------------
   " call dein#add ('cocopon/iceberg.vim')
 
+  " --------------------
+  " LSP, completion, ...
+  " --------------------
   " LSP client, completion
   call dein#add ('neoclide/coc.nvim', {'merged': 0, 'rev': 'release', 'on_event': 'FileType', 'hook_add': 'call my#plugin#coc#hook_add()', 'hook_post_source': 'call my#plugin#coc#hook_post_source()'})
-
-  " SignColumnにgitの差分を表示
-  call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter'})
 
   " completion
   "call dein#add ('Shougo/deoplete.nvim')
@@ -64,35 +66,51 @@ if dein#load_state (s:dein_directory)
   " asynchronous lint engine
   "call dein#add ('w0rp/ale')
 
+  " --------------------
+  " customize displayed information
+  " --------------------
+  " SignColumnにgitの差分を表示
+  call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter'})
+
   " customize statusline
   call dein#add ('itchyny/lightline.vim', {'on_source': 'josa42/vim-lightline-coc'})
   " cocの情報をlightlineに表示するためのコンポーネント提供, autocmd追加
   call dein#add ('josa42/vim-lightline-coc', {'on_event': 'VimEnter', 'hook_post_source': 'call my#plugin#lightline#hook_add()'})
 
+  " --------------------
+  " customize keymap
+  " --------------------
   " visible indent
   "call dein#add ('Yggdroot/indentLine')
 
   " toggle comment
   call dein#add ('tpope/vim-commentary', {'on_event': 'VimEnter', 'hook_post_source': 'call my#plugin#commentary#hook_post_source()'})
 
+  " --------------------
+  " Command
+  " --------------------
   " fzf
   call dein#add ('junegunn/fzf.vim', {'on_event': 'VimEnter'})
 
-  " file explorer
+  " asynchronous tree viewer
   call dein#add ('lambdalisue/fern.vim', {'hook_add': 'call my#plugin#fern#hook_add()'})
 
   " --------------------
   " ftplugin
   " --------------------
 
-  "  syntax hilight色コードを色で表示
+  " 色コードを色で表示
   call dein#add ('gorodinskiy/vim-coloresque')
 
-  " syntax
+  " syntax いろいろ
   " call dein#add ('sheerun/vim-polyglot')
 
-  " syntax hilight
+  " c++
   call dein#add ('octol/vim-cpp-enhanced-highlight', {'on_ft': 'cpp'})
+
+  " fish shell script
+  call dein#add ('dag/vim-fish')
+
 
   call dein#end ()
   call dein#save_state ()
@@ -482,11 +500,12 @@ augroup fix-terminal
   autocmd TermClose term://* stopinsert
   autocmd TermClose term://*/zsh bw!
   autocmd TermClose term://*/fish bw!
+  autocmd TermClose term://*/bash bw!
 augroup END
 
 augroup fix-filetype
   autocmd!
-  autocmd BufNewFile,BufReadPost *.fish setfiletype sh
+  " autocmd BufNewFile,BufReadPost *.fish setfiletype sh
   autocmd BufNewFile,BufReadPost *.mcmeta setfiletype json
 augroup END
 

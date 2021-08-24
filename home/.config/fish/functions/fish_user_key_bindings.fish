@@ -1,3 +1,6 @@
 function fish_user_key_bindings
-  bind ' ' 'commandline -f expand-abbr; __expand_suffix_abbreviation; commandline -i " "'
+  fzf_key_bindings
+  bind ' ' "__expand_context_abbr; commandline -f expand-abbr; commandline -i ' '"
+  bind \n "__expand_context_abbr; commandline -f execute"
+  bind \r "__expand_context_abbr; commandline -f execute"
 end
