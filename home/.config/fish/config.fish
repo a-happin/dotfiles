@@ -67,6 +67,9 @@ if status is-interactive
   abbr --add -g rr 'rm -ri'
   abbr --add -g ln 'ln -snfv'
   abbr --add -g mkdir 'mkdir -p'
+  abbr --add -g df 'df -h'
+  abbr --add -g du 'du -h --max-depth 1'
+  abbr --add -g paccache 'paccache -r; paccache -ruk0'
   abbr --add -g funced 'funced --save'
 
   # like a new command
