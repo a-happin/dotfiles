@@ -94,6 +94,7 @@ sabbr 'ts' 'deno run --allow-all'
 sabbr 'cpp' 'runchino'
 sabbr 'jar' 'java -jar'
 
+context-abbr 'git' 'clean' 'clean -df'
 context-abbr 'git' 'init' 'init && git commit --allow-empty -m "Initial commit."'
 context-abbr 'git' 'new' 'switch -c'
 context-abbr 'git' 'ci' 'commit -v'

@@ -41,9 +41,11 @@
 	master = !git config init.defaultBranch || echo master
 	merged = !git branch --merged | grep -Ev '\\*|master|develop|release|gh-pages' | tr -d '^ '
 	new = switch -c
+	newtag = tag -a
 	p = pull --rebase origin develop
 	progress = !git log --branches --since=midnight --date=iso --author=\"$(git config user.name)\"
 	progress1 = progress --pretty=format:%s
+	pulltag = pull --tags
 	pushf = push --force-with-lease
 	pushu = push -u origin HEAD
 	reset-to-head = reset --hard HEAD
