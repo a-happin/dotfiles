@@ -5,5 +5,7 @@ function pbpaste
     powershell.exe get-clipboard
   else if command -q xsel
     xsel --clipboard --output
+  else
+    return 1
   end
 end

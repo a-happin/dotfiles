@@ -5,5 +5,7 @@ function pbcopy
     clip.exe
   else if command -q xsel
     xsel --clipboard --input
+  else
+    return 1
   end
 end

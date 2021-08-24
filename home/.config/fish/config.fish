@@ -7,7 +7,7 @@ if status is-login
   # バグるのでやめといたほうがいい
   # set -gx SHELL (type -P fish)
 
-  type -q nvim && begin
+  type -fq nvim && begin
     set -gx EDITOR nvim
     set -gx VISUAL nvim
   end
@@ -120,7 +120,6 @@ if status is-interactive
   context-abbr -C 'run' '**.cpp' 'runchino'
   context-abbr -C 'run' '**.ts' 'deno run --allow-all --unstable'
   context-abbr -C 'run' '**.jar' 'java -jar'
-
 
   context-abbr -C 'extract' '**.tar.bz2' 'tar -jxvf'
   context-abbr -C 'extract' '**.tar.gz' 'tar -zxvf'
