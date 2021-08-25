@@ -151,7 +151,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Shutdown' 'systemctl poweroff' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit'"
+bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -f 'pango:Koruri SemiBold 9' -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Shutdown' 'systemctl poweroff' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit'"; exec --no-startup-id "sleep 10; killall i3-nagbar"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -185,11 +185,24 @@ bar {
   position top
   font pango:Koruri Bold 9
   status_command i3status -c ${HOME}/.config/i3/i3statusconfig
+
+  colors {
+      background #000000
+      statusline #ffffff
+      separator #666666
+
+      focused_workspace  #88b8f6 #88b8f6 #000000
+      # active_workspaceはマルチモニター環境じゃないと見えない
+      active_workspace   #000000 #5f676a #ffffff
+      inactive_workspace #000000 #000000 #888888
+      urgent_workspace   #f58c80 #f58c80 #000000
+  }
 }
 
 #exec --no-startup-id xrdb ~/.Xresources
 #exec --no-startup-id fcitx-autostart
 exec --no-startup-id feh --no-fehbg --randomize --bg-max ~/Dropbox/image/illust/*/*
+# imwheelはここで起動しないと失敗する(.xinitrcじゃだめ)
 exec --no-startup-id imwheel
 #exec --no-startup-id compton --config ${HOME}/.config/compton/compton.conf
 

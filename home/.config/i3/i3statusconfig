@@ -37,7 +37,8 @@ memory {
 }
 
 disk "/" {
-  format = "DISK AVAIL: %avail"
+  #format = "DISK AVAIL: %avail"
+  format = "DISK: %used/%total"
 }
 
 run_watch DHCP {
