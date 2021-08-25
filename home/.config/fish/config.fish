@@ -26,6 +26,14 @@ if status is-login
     set -a fish_user_paths "$HOME/.nodebrew/current/bin"
     set -a fish_user_paths "$HOME/.fzf/bin"
     set -gx DISPLAY 'localhost:0'
+
+    alias deno='deno.exe'
+    alias java='java.exe'
+    alias explorer='explorer.exe'
+    alias ffmpeg='ffmpeg.exe'
+    alias ffprobe='ffprobe.exe'
+    alias ffplay='ffplay.exe'
+    alias open='powershell.exe start'
   end
 end
 

@@ -49,7 +49,7 @@ if dein#load_state (s:dein_directory)
   " LSP, completion, ...
   " --------------------
   " LSP client, completion
-  call dein#add ('neoclide/coc.nvim', {'merged': 0, 'rev': 'release', 'on_event': 'FileType', 'hook_add': 'call my#plugin#coc#hook_add()', 'hook_post_source': 'call my#plugin#coc#hook_post_source()'})
+  call dein#add ('neoclide/coc.nvim', {'merged': 0, 'rev': 'release', 'on_event': 'VimEnter', 'hook_add': 'call my#plugin#coc#hook_add()', 'hook_post_source': 'call my#plugin#coc#hook_post_source()'})
 
   " completion
   "call dein#add ('Shougo/deoplete.nvim')
@@ -90,6 +90,7 @@ if dein#load_state (s:dein_directory)
   " Command
   " --------------------
   " fzf
+  " call dein#add ('junegunn/fzf', {'on_event': 'VimEnter'})
   call dein#add ('junegunn/fzf.vim', {'on_event': 'VimEnter'})
 
   " asynchronous tree viewer
