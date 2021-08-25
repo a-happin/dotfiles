@@ -69,6 +69,7 @@ if status is-interactive
   abbr --add -g mkdir 'mkdir -p'
   abbr --add -g df 'df -h'
   abbr --add -g du 'du -h --max-depth 1'
+  abbr --add -g ssh-keygen 'ssh-keygen -t ed255519 -f ~/.ssh/__DIRECTORY__ # mkdir before create'
   abbr --add -g paccache 'paccache -r; paccache -ruk0'
   abbr --add -g funced 'funced --save'
 

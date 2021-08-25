@@ -22,16 +22,13 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx-autostart
 
-# mouse wheel scroll amount
-imwheel
-
 # disable touchpad while typing (by keyboard)
 #   -i n -- enable after n seconds.
 #   -k   -- ignore ctrl (enable ctrl + click)
 #type syndaemon && syndaemon -i 0.5 -k -d
 
-# キーリピート開始まで350ms、キーリピート間隔50ms
-xset r rate 350 50
+# キーリピート開始まで400[ms]、キーリピート間隔1/45[sec]
+xset r rate 400 45
 
 # バックライトを切らない
 # keep screen on
