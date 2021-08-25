@@ -322,6 +322,10 @@ cnoremap <C-n> <Down>
 cnoremap <Up> <C-p>
 cnoremap <Down> <C-n>
 
+" draw cursor
+cnoremap <Left> <Left><C-l>
+cnoremap <Right> <Right><C-l>
+
 cnoremap <C-R> <C-u>History:<CR>
 
 " --------------------------------
