@@ -23,7 +23,7 @@ endif
 " **  minpac
 " *******************************
 
-let s:minpac_dir = $XDG_CACHE_HOME . '/minpac'
+let s:minpac_dir = $XDG_CACHE_HOME . '/nvim/minpac'
 execute 'set packpath^=' . s:minpac_dir
 
 if isdirectory (s:minpac_dir)
@@ -50,6 +50,7 @@ else
   call minpac#update ()
 endif
 
+packadd mappings
 
 " *******************************
 " **  command

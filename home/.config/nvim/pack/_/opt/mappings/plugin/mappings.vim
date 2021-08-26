@@ -30,6 +30,9 @@ vnoremap <MiddleMouse> <Nop>
 nnoremap Q <Nop>
 nnoremap gQ <Nop>
 
+" disable commandline window?
+nnoremap q: <Nop>
+
 
 " --------------------------------
 "  挙動修正

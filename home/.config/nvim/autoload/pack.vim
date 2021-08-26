@@ -43,7 +43,6 @@ function! pack#init () abort
 endfunction
 
 function! pack#VimEnter (...) abort
-  packadd mappings
   " ********************************
   " * vim-commentary
   " ********************************
