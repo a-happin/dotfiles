@@ -18,9 +18,9 @@ function fish_prompt --description 'Write out the prompt'
     printf '%s ' $last_status
   end
   if test $USER = 'root'
-    printf 'fish# '
+    printf '# '
   else
-    printf 'fish> '
+    printf '> '
   end
   set_color normal
 end
