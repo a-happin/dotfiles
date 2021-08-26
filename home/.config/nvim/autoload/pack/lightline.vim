@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-function! my#plugin#lightline#hook_add() abort
+function! pack#lightline#init () abort
   let g:lightline = {
         \   'colorscheme': 'wombat',
         \   'enable': {'tabline': 0},
@@ -22,5 +22,4 @@ function! my#plugin#lightline#hook_add() abort
         \     'inactive': ['filename', 'modified']
         \   }
         \ }
-  call lightline#coc#register()
 endfunction

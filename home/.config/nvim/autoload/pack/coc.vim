@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-function! my#plugin#coc#hook_add () abort
+function! pack#coc#init () abort
   let g:coc_global_extensions = [
         \ 'coc-lists',
         \ 'coc-vimlsp',
@@ -9,9 +9,13 @@ function! my#plugin#coc#hook_add () abort
         \ 'coc-deno',
         \ 'coc-fish',
         \]
+  augroup pack-coc-on-init
+    autocmd!
+    autocmd User CocNvimInit ++once call s:on_init ()
+  augroup END
 endfunction
 
-function! my#plugin#coc#hook_post_source () abort
+function! s:on_init () abort
   " 定義ジャンプ
   nmap <silent> gd <Plug>(coc-definition)
 
@@ -26,15 +30,15 @@ function! my#plugin#coc#hook_post_source () abort
   nmap <silent> [e <Plug>(coc-diagnostic-prev)
   nmap <silent> ]e <Plug>(coc-diagnostic-next)
 
-  nmap qf <Plug>(coc-fix-current)
+  nmap <nowait><silent> qf <Plug>(coc-fix-current)
 
   " show documentation
-  nmap <F1> K
+  nnoremap <silent> <F1> <Cmd>CocAction ('doHover')<CR>
   nnoremap <silent> K <Cmd>call <SID>show_documentation ()<CR>
 
 
   " rename identifier
-  nmap <F2> <Plug>(coc-rename)
+  nmap <silent> <F2> <Plug>(coc-rename)
 
   " 補完開始
   inoremap <silent><expr> <C-Space> coc#start()
@@ -53,3 +57,4 @@ function! s:show_documentation () abort
     call CocAction ('doHover')
   endif
 endfunction
+

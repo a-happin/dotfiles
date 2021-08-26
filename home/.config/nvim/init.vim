@@ -14,113 +14,79 @@ if empty ($XDG_CACHE_HOME)
   let $XDG_CACHE_HOME = $HOME . '/.cache'
 endif
 
+if empty ($XDG_DATA_HOME)
+  let $XDG_DATA_HOME = $HOME . '/.local/share'
+endif
+
 
 " *******************************
-" **  dein.vim
+" **  minpac
 " *******************************
 
-let s:dein_directory = $XDG_CACHE_HOME . '/dein'
+let s:minpac_dir = $XDG_CACHE_HOME . '/minpac'
+execute 'set packpath^=' . s:minpac_dir
 
-" install dein automatically
-if !isdirectory (s:dein_directory)
-  call system ('curl -s https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh | sh -s -- ' . s:dein_directory)
+if isdirectory (s:minpac_dir)
+  augroup minpac_packadd
+    autocmd!
+    autocmd VimEnter * ++once call pack#VimEnter ()
+    autocmd InsertEnter * ++once call pack#InsertEnter ()
+    autocmd CmdUndefined * call pack#CmdUndefined (expand ('<afile>'))
+    " autocmd BufNewFile,BufReadPost *.* call pack#BufReadPost (expand ('<afile>:t:s/\v^[^.]*//'))
+    autocmd FileType * call pack#FileType (expand ('<amatch>'))
+  augroup END
+
+  " *******************************
+  " **  packadd
+  " *******************************
+  " ftpluginなど、事前にロードが必要なもの
+
+  packadd encrypt
+  packadd vim-fish
+
+else
+  call system ('git clone --depth 1 https://github.com/k-takata/minpac.git ' . s:minpac_dir . '/pack/minpac/opt/minpac')
+  call pack#init ()
+  call minpac#update ()
 endif
 
-let s:dein_repo_directory = s:dein_directory . '/repos/github.com/Shougo/dein.vim'
 
-" add dein path in runtimepath
-"execute 'set runtimepath+=' . s:dein_directory . '/repos/github.com/Shougo/dein.vim'
-"let &runtimepath = s:dein_repo_directory . ',' . &runtimepath
-let &runtimepath = &runtimepath . ',' . s:dein_repo_directory
+" *******************************
+" **  command
+" *******************************
 
+" minpac
+command! -bar PackInit call pack#init ()
+command! -bar PackUpdate call pack#init () | call minpac#update ()
+command! -bar PackClean call pack#init () | call minpac#clean ()
 
-if dein#load_state (s:dein_directory)
-  call dein#begin (s:dein_directory)
+command! -bar Reload source ${MYVIMRC}
 
-  " requires
-  call dein#add (s:dein_repo_directory)
+" terminal
+command! -nargs=* -complete=shellcmd Hterminal botright split new | resize 20 | terminal <args>
+command! -nargs=* -complete=shellcmd Vterminal botright vertical new | terminal <args>
+command! -nargs=* -complete=shellcmd Tterminal tabnew | terminal <args>
 
-  " --------------------
-  " colorscheme
-  " --------------------
-  " call dein#add ('cocopon/iceberg.vim')
+command! -bar GitHub call util#open ('https://github.com/' . expand ('<cfile>'))
 
-  " --------------------
-  " LSP, completion, ...
-  " --------------------
-  " LSP client, completion
-  call dein#add ('neoclide/coc.nvim', {'merged': 0, 'rev': 'release', 'on_event': 'VimEnter', 'hook_add': 'call my#plugin#coc#hook_add()', 'hook_post_source': 'call my#plugin#coc#hook_post_source()'})
+" カーソル位置のsyntax hightlight group
+command! -bar CurrentSyntax echo synIDattr(synID(line('.'), col('.'), 1), 'name')
 
-  " completion
-  "call dein#add ('Shougo/deoplete.nvim')
+" session
+command! -bar -nargs=1 SaveSession call mkdir ($XDG_DATA_HOME . '/nvim/sessions', 'p') | mksession! $XDG_DATA_HOME/nvim/sessions/<args>.vim
+command! -bar -nargs=1 LoadSession source $XDG_DATA_HOME/nvim/sessions/<args>.vim
 
-  " make deoplete use dictionary
-  "call dein#add ('deoplete-plugins/deoplete-dictionary')
-
-  " snippets
-  "call dein#add ('Shougo/neosnippet.vim')
-
-  " default snippets
-  "call dein#add ('Shougo/neosnippet-snippets')
-
-  " asynchronous lint engine
-  "call dein#add ('w0rp/ale')
-
-  " --------------------
-  " customize displayed information
-  " --------------------
-  " SignColumnにgitの差分を表示
-  call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter'})
-
-  " customize statusline
-  call dein#add ('itchyny/lightline.vim', {'on_source': 'josa42/vim-lightline-coc'})
-  " cocの情報をlightlineに表示するためのコンポーネント提供, autocmd追加
-  call dein#add ('josa42/vim-lightline-coc', {'on_event': 'VimEnter', 'hook_post_source': 'call my#plugin#lightline#hook_add()'})
-
-  " --------------------
-  " customize keymap
-  " --------------------
-  " visible indent
-  "call dein#add ('Yggdroot/indentLine')
-
-  " toggle comment
-  call dein#add ('tpope/vim-commentary', {'on_event': 'VimEnter', 'hook_post_source': 'call my#plugin#commentary#hook_post_source()'})
-
-  " --------------------
-  " Command
-  " --------------------
-  " fzf
-  " call dein#add ('junegunn/fzf', {'on_event': 'VimEnter'})
-  call dein#add ('junegunn/fzf.vim', {'on_event': 'VimEnter'})
-
-  " asynchronous tree viewer
-  call dein#add ('lambdalisue/fern.vim', {'hook_add': 'call my#plugin#fern#hook_add()'})
-
-  " --------------------
-  " ftplugin
-  " --------------------
-
-  " 色コードを色で表示
-  call dein#add ('gorodinskiy/vim-coloresque')
-
-  " syntax いろいろ
-  " call dein#add ('sheerun/vim-polyglot')
-
-  " c++
-  call dein#add ('octol/vim-cpp-enhanced-highlight', {'on_ft': 'cpp'})
-
-  " fish shell script
-  call dein#add ('dag/vim-fish')
+" 最後に保存してからのdiff
+command! -bar DiffOrig aboveleft vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis
 
 
-  call dein#end ()
-  call dein#save_state ()
-endif
 
-" auto install new plugin
-if dein#check_install ()
-  call dein#install ()
-endif
+" typo対策
+cnoreabbrev <expr> W (getcmdtype () ==# ":" && getcmdline () ==# "W") ? "w" : "W"
+
+" root権限に昇格して書き込み
+" neovimでは機能しない https://github.com/neovim/neovim/issues/8217 ←won't fix……
+cnoreabbrev <expr> w!! (getcmdtype () ==# ":" && getcmdline () ==# "w!!") ? "w !sudo tee > /dev/null %" : "w!!"
 
 
 " *******************************
@@ -129,29 +95,6 @@ endif
 
 filetype plugin indent on
 syntax enable
-
-runtime! init/*.vim
-
-
-" *******************************
-" **  コマンド
-" *******************************
-command! Reload source ${MYVIMRC}
-
-command! -nargs=* Hterminal botright split new | resize 20 | terminal <args>
-command! -nargs=* Vterminal botright vertical new | terminal <args>
-command! -nargs=* Tterminal tabnew | terminal <args>
-
-command! -nargs=* W w <args>
-
-" root権限に昇格して書き込み
-" neovimでは機能しない https://github.com/neovim/neovim/issues/8217 ←won't fix……
-cnoreabbrev w!! w !sudo -S tee > /dev/null %
-
-" カーソル位置のsyntax hightlight group
-command! CurrentSyntax echo synIDattr(synID(line('.'), col('.'), 1), 'name')
-
-command! DiffOrig aboveleft vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis
 
 
 " *******************************
@@ -325,6 +268,9 @@ set pumblend=0
 " show position of cursor
 set ruler
 
+" session保存時に保存する情報
+set sessionoptions& sessionoptions+=resize
+
 " 環境変数SHELLから自動で設定されるので設定の必要なし
 " set shell=fish
 
@@ -456,7 +402,7 @@ endtry
 " *******************************
 
 " turn off IME when leave insert mode
-if executable('fcitx-remote')
+if executable ('fcitx-remote')
   augroup resetIME
     autocmd!
     autocmd InsertLeave * silent !fcitx-remote -c
@@ -479,14 +425,9 @@ augroup auto_mkdir
   autocmd BufWritePre * call auto_mkdir#mkdir (expand ('<afile>:p:h'), v:cmdbang)
 augroup END
 
-augroup dictionary
-  autocmd!
-  autocmd FileType * if filereadable ($XDG_CONFIG_HOME . '/nvim/dictionary/' . &filetype . '.dict') | execute 'setlocal dictionary+=' . $XDG_CONFIG_HOME . '/nvim/dictionary/' . &filetype . '.dict' | endif
-augroup END
-
 augroup reload-file
   autocmd!
-  autocmd InsertEnter,WinEnter,FocusGained * checktime
+  autocmd InsertEnter,FocusGained * checktime
 augroup END
 
 augroup template
@@ -499,20 +440,24 @@ augroup fix-terminal
   autocmd TermOpen term://* setlocal nonumber bufhidden=wipe
   autocmd TermOpen,TermEnter,WinEnter term://* startinsert
   autocmd TermClose term://* stopinsert
-  autocmd TermClose term://*/zsh bw!
-  autocmd TermClose term://*/fish bw!
-  autocmd TermClose term://*/bash bw!
+  autocmd TermClose term://*/bash,term://*/fish,term://*/zsh bw!
 augroup END
 
+" ftdetect/xxx.vimのほうがいいかも
 augroup fix-filetype
   autocmd!
   " autocmd BufNewFile,BufReadPost *.fish setfiletype sh
   autocmd BufNewFile,BufReadPost *.mcmeta setfiletype json
 augroup END
 
-augroup fix-formatoptions
+augroup set-force
   autocmd!
-  autocmd FileType * setlocal formatoptions& formatoptions-=t formatoptions-=c formatoptions-=r formatoptions-=o formatoptions+=M
+  autocmd FileType * setlocal formatoptions& formatoptions-=t formatoptions-=c formatoptions-=r formatoptions-=o formatoptions+=M iskeyword-=# iskeyword-=/
+augroup END
+
+augroup dictionary
+  autocmd!
+  autocmd FileType * if filereadable ($XDG_CONFIG_HOME . '/nvim/dictionary/' . &filetype . '.dict') | execute 'setlocal dictionary+=' . $XDG_CONFIG_HOME . '/nvim/dictionary/' . &filetype . '.dict' | endif
 augroup END
 
 augroup restore-cursor-pos
