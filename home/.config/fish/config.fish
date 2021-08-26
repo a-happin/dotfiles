@@ -94,8 +94,8 @@ if status is-interactive
   abbr --add -g chino "clang++ $chino_opt"
 
   # don't forget sudo
-  abbr --add -g pacman 'sudo pacman'
-  abbr --add -g systemctl 'sudo systemctl'
+  # abbr --add -g pacman 'sudo pacman'
+  # abbr --add -g systemctl 'sudo systemctl'
 
   # typo
   abbr --add -g :q 'exit'
