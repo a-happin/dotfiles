@@ -98,7 +98,8 @@ nnoremap <C-l> <Cmd>checktime<CR><C-l>
 nnoremap Y y$
 
 " 選択範囲をヤンクした文字列で上書き時にレジスタを汚さない
-xnoremap p pgvy
+" xnoremap p pgvy
+xnoremap p "_xP
 
 " 選択中にCtrl-Cでクリップボードにコピー
 vnoremap <C-c> "+y
