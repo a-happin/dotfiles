@@ -50,6 +50,7 @@
 	pushu = push -u origin HEAD
 	reset-to-head = reset --hard HEAD
 	reset-to-remote = reset --hard @{u}
+	root = rev-parse --show-toplevel
 	s = !git stash list && git status && git log -1
 	skip = update-index --skip-worktree
 	staged = diff --cached

@@ -99,7 +99,8 @@ nnoremap Y y$
 
 " 選択範囲をヤンクした文字列で上書き時にレジスタを汚さない
 " xnoremap p pgvy
-xnoremap p "_xP
+" xnoremap p "_xP
+xnoremap <expr> p 'pgv"' . v:register . 'y`>'
 
 " 選択中にCtrl-Cでクリップボードにコピー
 vnoremap <C-c> "+y
