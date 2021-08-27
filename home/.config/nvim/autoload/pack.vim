@@ -95,5 +95,5 @@ function! pack#FileType (ft) abort
 endfunction
 
 function! pack#InsertEnter () abort
-  packadd mappings_i
+  call init#source ('init/mappings_i.vim')
 endfunction

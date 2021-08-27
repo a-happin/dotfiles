@@ -84,24 +84,23 @@ function! s:ends_with (str, x) abort
   return a:str =~# '\V' . a:x . '\v$'
 endfunction
 
-let s:pairs = {
-  \ '(': ')',
-  \ '{': '}',
-  \ '[': ']',
-  \ '<': '>',
-  \ '''': '''',
-  \ '"': '"',
-  \ '`': '`',
-  \ }
+let s:parens = [
+  \ ['(', ')'],
+  \ ['{', '}'],
+  \ ['[', ']'],
+  \ ['<', '>'],
+  \ ]
+
+let s:quotations = [
+  \ '''',
+  \ '"',
+  \ '`',
+  \ ]
 
 " 空の括弧の中にいるかどうか
+" (|)
 function! s:is_in_empty_parentheses (prev, post) abort
-  for [begin, end] in items (s:pairs)
-    " skip quotation
-    if begin ==# end
-      continue
-    endif
-
+  for [begin, end] in s:parens
     if s:ends_with (a:prev, begin) && s:starts_with (a:post, end)
       return 1
     endif
@@ -110,14 +109,10 @@ function! s:is_in_empty_parentheses (prev, post) abort
   return 0
 endfunction
 
+" '|'
 function! s:is_in_empty_quotation (prev, post) abort
-  for [begin, end] in items (s:pairs)
-    " skip parentheses
-    if begin !=# end
-      continue
-    endif
-
-    if s:ends_with (a:prev, begin) && s:starts_with (a:post, end)
+  for quot in s:quotations
+    if s:ends_with (a:prev, quot) && s:starts_with (a:post, quot)
       return 1
     endif
   endfor
@@ -125,13 +120,9 @@ function! s:is_in_empty_quotation (prev, post) abort
   return 0
 endfunction
 
+" ( | )
 function! s:is_in_empty_parenthes_with_space (prev, post) abort
-  for [begin, end] in items (s:pairs)
-    " skip quotation
-    if begin ==# end
-      continue
-    endif
-
+  for [begin, end] in s:parens
     if s:ends_with (a:prev, begin . ' ') && s:starts_with (a:post, ' ' . end)
       return 1
     endif
@@ -140,70 +131,31 @@ function! s:is_in_empty_parenthes_with_space (prev, post) abort
   return 0
 endfunction
 
-" 括弧閉じるを補完するべきかどうか
-" カーソル位置が末尾、
-" カーソル位置に空白、
-" カーソル位置に括弧閉じるがある場合は補完するべき。(連続で入力したときに補完されないのはおかしいので)
-function! s:should_complete_end_parenthesis (prev, post) abort
-  if a:post =~# '\v^$|^\s'
-    return 1
-  endif
-
-  for [begin, end] in items (s:pairs)
-    " skip quotation
-    if begin ==# end
-      continue
-    endif
-
-    if s:starts_with (a:post, end)
-      return 1
-    endif
-  endfor
-
-  return 0
-endfunction
-
-" quotation閉じるを補完すべきかどうか
-" カーソルの前後が空白か括弧のときは補完するべき（と思う）
-function! s:should_complete_quotation (prev, post) abort
-  let left_flag = 0
-  let right_flag = 0
-
-  if a:prev =~# '\v^$|\s$'
-    let left_flag = 1
-  endif
-
-  if a:post =~# '\v^$|^\s'
-    let right_flag = 1
-  endif
-
-  for [begin, end] in items (s:pairs)
-    if begin ==# end
-      continue
-    endif
-
-    if s:ends_with (a:prev, begin)
-      let left_flag = 1
-    endif
-
-    if s:starts_with (a:post, end)
-      let right_flag = 1
-    endif
-  endfor
-
-  return left_flag == 1 && right_flag == 1
-endfunction
-
 
 """"""""""""""""""""""""""""""""
 " Key
 """"""""""""""""""""""""""""""""
 
 " 括弧開始
-" カーソル直下がキーワードでなかった場合、閉じ括弧を補完
+" カーソル直下が空白or括弧閉じの場合、閉じ括弧を補完
 function! s:begin_parenthesis (begin, end) abort
   let [prev, post] = s:getline ()
-  if s:should_complete_end_parenthesis (prev, post)
+
+  let should_complete = 0
+  " カーソル直下が空文字, 空白, ',' or ';'
+  if post =~# '\v^$|^[\s,;]'
+    let should_complete = 1
+  else
+    " カーソル直下が括弧閉じ
+    " |)
+    for [begin, end] in s:parens
+      if s:starts_with (post, end)
+        let should_complete = 1
+      endif
+    endfor
+  endif
+
+  if should_complete == 1
     let b:parentheses_completion_stack += 1
     return a:begin . a:end . "\<Left>"
   else
@@ -211,12 +163,13 @@ function! s:begin_parenthesis (begin, end) abort
   endif
 endfunction
 
+
 " 括弧閉じ
 " 補完スタックがある時、単に右に移動
 " それ以外は括弧閉じる
 function! s:end_parenthesis (begin, end) abort
   let [prev, post] = s:getline ()
-  if b:parentheses_completion_stack > 0 && post =~# '^' . a:end
+  if b:parentheses_completion_stack > 0 && s:starts_with (post, a:end)
     let b:parentheses_completion_stack -= 1
     return "\<Right>"
   else
@@ -236,10 +189,31 @@ function! s:quotation_key (key) abort
     return a:key
   elseif post =~# '^' . a:key
     return "\<Right>"
-  elseif s:should_complete_quotation (prev, post)
-    return a:key . a:key . "\<Left>"
   else
-    return a:key
+    " カーソル直前が空文字 or 空白
+    let left_flag = prev =~# '\v^$|\s$'
+    " カーソル直下が空文字 or 空白
+    let right_flag = post =~# '\v^$|^\s'
+
+    " カーソル直前が括弧開き
+    " (|
+    for [begin, end] in s:parens
+      if s:ends_with (prev, begin)
+        let left_flag = 1
+      endif
+
+    " カーソル直下が括弧閉じ
+    " |)
+      if s:starts_with (post, end)
+        let right_flag = 1
+      endif
+    endfor
+
+    if left_flag == 1 && right_flag == 1
+      return a:key . a:key . "\<Left>"
+    else
+      return a:key
+    endif
   endif
 endfunction
 
@@ -267,10 +241,9 @@ function! s:tab_key () abort
 endfunction
 
 
-
 " CR
 " カーソルが{}の間ならいい感じに改行
-" カーソルが``の間なら```にして改行
+" カーソル直前が3つの連続したquotなら6つにして真ん中で改行
 " それ以外は改行
 function! s:cr_key () abort
   if pumvisible ()
@@ -279,15 +252,14 @@ function! s:cr_key () abort
     let [prev, post] = s:getline ()
     if s:is_in_empty_parentheses (prev, post)
       return "\<CR>\<Up>\<End>\<CR>"
-    elseif prev =~# '''$' && post =~# '^'''
-      return "''\<CR>''\<Up>\<End>\<CR>"
-    elseif prev =~# '"$' && post =~# '^"'
-      return "\"\"\<CR>\"\"\<Up>\<End>\<CR>"
-    elseif prev =~# '`$' && post =~# '^`'
-      return "``\<CR>``\<Up>\<End>\<CR>"
-    else
-      return "\<CR>"
+    elseif post ==# ''
+      for quot in s:quotations
+        if prev =~# '\v' . quot . '@<!' . quot . quot . quot . '$'
+          return "\<CR>" . quot . quot . quot . "\<Up>\<End>\<CR>"
+        endif
+      endfor
     endif
+    return "\<CR>"
   endif
 endfunction
 
