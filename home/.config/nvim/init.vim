@@ -437,12 +437,18 @@ augroup template
   autocmd BufNewFile *.* silent! 0r $XDG_CONFIG_HOME/nvim/template/.%:e
 augroup END
 
+" terminalを改善する
+" interactive shellの場合,
+" * 名前をterm://Terminalに書き換える
+" * 自動で挿入モードに入る
+" * 終了時に即消す
+" 隠れたらbdelete
 augroup fix-terminal
   autocmd!
-  autocmd TermOpen term://* setlocal nonumber bufhidden=wipe
-  autocmd TermOpen,TermEnter,WinEnter term://* startinsert
-  autocmd TermClose term://* stopinsert | setlocal readonly
-  autocmd TermClose term://*/bash,term://*/fish,term://*/zsh bwipeout!
+  autocmd TermOpen term://* setlocal nonumber bufhidden=delete
+  autocmd TermOpen term://*/bash,term://*/fish,term://*/zsh file term://Terminal | startinsert
+  autocmd WinEnter term://Terminal startinsert
+  autocmd TermClose term://Terminal bdelete!
 augroup END
 
 " ftdetect/xxx.vimのほうがいいかも
