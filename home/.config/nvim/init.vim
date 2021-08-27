@@ -415,7 +415,7 @@ endif
 augroup auto-reload-vimrc
   autocmd!
   " autocmd BufWritePost init.vim ++nested source ${MYVIMRC}
-  autocmd BufWritePost */.config/nvim/* ++nested source $MYVIMRC | redraw | echomsg 'Reloaded' $MYVIMRC
+  autocmd BufWritePost */.config/nvim/* ++nested source $MYVIMRC | redraw | echomsg '*** Reloaded' $MYVIMRC '***'
 augroup END
 
 "augroup auto_save
@@ -438,7 +438,7 @@ augroup END
 " * 名前をterm://Terminalに書き換える
 " * 自動で挿入モードに入る
 " * 終了時に即消す
-" 隠れたらbdelete
+" 隠れたらbdelete!
 augroup fix-terminal
   autocmd!
   autocmd TermOpen term://* setlocal nonumber bufhidden=delete
@@ -457,6 +457,11 @@ augroup END
 augroup restore-cursor-pos
   autocmd!
   autocmd BufReadPost * if &filetype !=# 'gitcommit' && line ("'\"") > 0 && line ("'\"") <= line ("$") | execute "normal! g'\"" | endif
+augroup END
+
+augroup special-mapping
+  autocmd!
+  autocmd FileType gitcommit nnoremap <buffer> <Space>q <Cmd>q<CR>
 augroup END
 
 augroup set-force
