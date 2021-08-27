@@ -413,7 +413,8 @@ endif
 " auto reload vimrc
 augroup auto-reload-vimrc
   autocmd!
-  autocmd BufWritePost *init.vim ++nested source ${MYVIMRC}
+  " autocmd BufWritePost init.vim ++nested source ${MYVIMRC}
+  autocmd BufWritePost */.config/nvim/* ++nested source $MYVIMRC | redraw | echomsg 'Reloaded' $MYVIMRC
 augroup END
 
 "augroup auto_save
@@ -440,8 +441,8 @@ augroup fix-terminal
   autocmd!
   autocmd TermOpen term://* setlocal nonumber bufhidden=wipe
   autocmd TermOpen,TermEnter,WinEnter term://* startinsert
-  autocmd TermClose term://* stopinsert
-  autocmd TermClose term://*/bash,term://*/fish,term://*/zsh bw!
+  autocmd TermClose term://* stopinsert | setlocal readonly
+  autocmd TermClose term://*/bash,term://*/fish,term://*/zsh bwipeout!
 augroup END
 
 " ftdetect/xxx.vimのほうがいいかも
@@ -449,6 +450,11 @@ augroup fix-filetype
   autocmd!
   " autocmd BufNewFile,BufReadPost *.fish setfiletype sh
   autocmd BufNewFile,BufReadPost *.mcmeta setfiletype json
+augroup END
+
+augroup restore-cursor-pos
+  autocmd!
+  autocmd BufReadPost * if &filetype !=# 'gitcommit' && line ("'\"") > 0 && line ("'\"") <= line ("$") | execute "normal! g'\"" | endif
 augroup END
 
 augroup set-force
@@ -461,7 +467,8 @@ augroup dictionary
   autocmd FileType * if filereadable ($XDG_CONFIG_HOME . '/nvim/dictionary/' . &filetype . '.dict') | execute 'setlocal dictionary+=' . $XDG_CONFIG_HOME . '/nvim/dictionary/' . &filetype . '.dict' | endif
 augroup END
 
-augroup restore-cursor-pos
+augroup vimrc-incsearch-highlight
   autocmd!
-  autocmd BufReadPost * if line ("'\"") > 0 && line ("'\"") <= line ("$") | execute "normal! g'\"" | endif
+  autocmd CmdlineEnter /,\? set hlsearch
+  autocmd CmdlineLeave /,\? set nohlsearch
 augroup END

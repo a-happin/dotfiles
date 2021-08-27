@@ -30,9 +30,8 @@ vnoremap <MiddleMouse> <Nop>
 nnoremap Q <Nop>
 nnoremap gQ <Nop>
 
-" disable commandline window?
+" disable commandline window
 nnoremap q: <Nop>
-
 
 " --------------------------------
 "  挙動修正
@@ -89,7 +88,8 @@ inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') 
 " --------------------------------
 
 " 全部閉じて終了
-nnoremap <silent> <C-q> <Cmd>confirm qall<CR>
+" nnoremap <silent> <C-q> <Cmd>confirm qall<CR>
+nnoremap <silent> <M-q> <Cmd>confirm qall<CR>
 
 " ファイルチェックして再描画！
 nnoremap <C-l> <Cmd>checktime<CR><C-l>
@@ -138,7 +138,7 @@ nnoremap <Space>a a<Cmd>call mappings#insert_one()<CR>
 nnoremap <silent> <Space>q <Cmd>close<CR>
 
 " 保存
-nnoremap <Space>w <Cmd>w<CR>
+nnoremap <Space>w <Cmd>update<CR>
 
 " ファイルを開く
 " nnoremap <Space>e :<C-u>e<Space>
@@ -159,6 +159,8 @@ nnoremap <Space>P "+P
 " Split Horizontally
 nnoremap <Space>s <C-w>s
 
+nnoremap <Space>d lD
+
 " Run FZF
 " nnoremap <Space>f <Cmd>Files<CR>
 
@@ -170,6 +172,9 @@ nnoremap <Space>l $
 
 nnoremap <Space>; :
 xnoremap <Space>; :
+
+" nnoremap <Space>z <Cmd>echo 'hello'<CR>
+" nnoremap <Space>c <Cmd>close<CR>
 
 " Split Vertically
 nnoremap <Space>v <C-w>v
@@ -231,7 +236,7 @@ xmap <C-_> <Plug>Commentary
 "  netrw
 " --------------------------------
 " nnoremap <silent> <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
-nnoremap <C-e> <Cmd>Fern . -reveal=% -drawer -toggle<CR>
+nnoremap <M-e> <Cmd>Fern . -reveal=% -drawer -toggle<CR>
 
 
 " --------------------------------
