@@ -69,15 +69,17 @@ if status is-interactive
   # default options
   abbr --add -g la 'ls -lah'
   abbr --add -g ll 'ls -lah'
+  abbr --add -g exa 'exa -lah'
   abbr --add -g cp 'cp -iv'
   abbr --add -g mv 'mv -i'
   abbr --add -g rm 'rm -i'
   abbr --add -g rr 'rm -ri'
-  abbr --add -g ln 'ln -snfv'
+  abbr --add -g ln 'ln -snfv FILE LINK'
   abbr --add -g mkdir 'mkdir -p'
   abbr --add -g df 'df -h'
   abbr --add -g du 'du -h --max-depth 1'
   abbr --add -g ssh-keygen 'ssh-keygen -t ed255519 -f ~/.ssh/__DIRECTORY__ # mkdir before create'
+  abbr --add -g rsync 'rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with the \'/\' at the end.'
   abbr --add -g paccache 'paccache -r; paccache -ruk0'
   abbr --add -g funced 'funced --save'
 
