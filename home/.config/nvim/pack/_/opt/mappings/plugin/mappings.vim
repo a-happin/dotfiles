@@ -88,8 +88,8 @@ inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') 
 " --------------------------------
 
 " 全部閉じて終了
-" nnoremap <silent> <C-q> <Cmd>confirm qall<CR>
-nnoremap <silent> <M-q> <Cmd>confirm qall<CR>
+" nnoremap <C-q> <Cmd>confirm qall<CR>
+nnoremap <M-q> <Cmd>confirm qall<CR>
 
 " ファイルチェックして再描画！
 nnoremap <C-l> <Cmd>checktime<CR><C-l>
@@ -135,7 +135,7 @@ nnoremap <Space>i i<Cmd>call mappings#insert_one()<CR>
 nnoremap <Space>a a<Cmd>call mappings#insert_one()<CR>
 
 " 閉じる
-nnoremap <silent> <Space>q <Cmd>close<CR>
+nnoremap <Space>q <Cmd>close<CR>
 
 " 保存
 nnoremap <Space>w <Cmd>update<CR>
@@ -189,20 +189,20 @@ nnoremap <Space>n <Cmd>enew<CR>
 nnoremap <Space>, <Cmd>edit $MYVIMRC<CR>
 nnoremap <M-,> <Cmd>edit $MYVIMRC<CR>
 
-nnoremap <silent> <Space>1 <Cmd>setlocal cursorline! cursorcolumn!<CR>
-nnoremap <silent> <Space>2 <Cmd>setlocal relativenumber!<CR>
+nnoremap <Space>1 <Cmd>setlocal cursorline! cursorcolumn!<CR>
+nnoremap <Space>2 <Cmd>setlocal relativenumber!<CR>
 
-nnoremap <silent> <Space>3 <Cmd>nohlsearch<CR>
+" nnoremap <Space>3 <Cmd>nohlsearch<CR>
 
 " 行末
 nnoremap <Space>4 $
 
 nnoremap <Space>5 %
 
-nnoremap <silent> <Space>7 <Cmd>setlocal spell!<CR>
+nnoremap <Space>7 <Cmd>setlocal spell!<CR>
 
 nnoremap <Space>8 *
-" nnoremap <silent> <Space>0 <Cmd>setlocal paste!<CR>
+" nnoremap <Space>0 <Cmd>setlocal paste!<CR>
 
 
 " --------------------------------
@@ -235,7 +235,7 @@ xmap <C-_> <Plug>Commentary
 " --------------------------------
 "  netrw
 " --------------------------------
-" nnoremap <silent> <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
+" nnoremap <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
 nnoremap <M-e> <Cmd>Fern . -reveal=% -drawer -toggle<CR>
 
 

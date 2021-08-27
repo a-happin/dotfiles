@@ -80,7 +80,8 @@ command! -bar -nargs=1 LoadSession source $XDG_DATA_HOME/nvim/sessions/<args>.vi
 " 最後に保存してからのdiff
 command! -bar DiffOrig aboveleft vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis
 
-
+" 拡張子からテンプレートファイルを判別し読み込む
+command! -bar LoadTemplate 0r $XDG_CONFIG_HOME/nvim/template/.%:e
 
 " typo対策
 cnoreabbrev <expr> W (getcmdtype () ==# ":" && getcmdline () ==# "W") ? "w" : "W"
@@ -429,12 +430,7 @@ augroup END
 
 augroup reload-file
   autocmd!
-  autocmd InsertEnter,FocusGained * checktime
-augroup END
-
-augroup template
-  autocmd!
-  autocmd BufNewFile *.* silent! 0r $XDG_CONFIG_HOME/nvim/template/.%:e
+  autocmd InsertEnter,WinEnter,FocusGained * checktime
 augroup END
 
 " terminalを改善する
