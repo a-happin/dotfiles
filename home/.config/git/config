@@ -12,14 +12,19 @@
 	ff = only
 [push]
 	default = upstream
+[rebase]
+	autosquash = true
 [alias]
 	a = add -p
+	aa = add --all
 	alias = !git config --get-regexp ^alias\\. | sed 's/^alias\\.\\([^ ]*\\) /\\1\\\t => /'
 	amend = commit --amend
-	autosquash = rebase -i --autosquash
-	branchname = symbolic-ref --short HEAD
+	branch-mv = branch -m
+	branch-name = symbolic-ref --short HEAD
 	branches = !git branch -a | cut -c 3-
 	commitv = commit -v
+	conflict = diff --check
+	conflict-files = diff --name-only --diff-filter=U
 	d = diff
 	delete-current-branch = !git detach && git branch -d @{-1} && :
 	delete-merged-branch = !git merged | xargs git branch -d
@@ -30,7 +35,7 @@
 	e = config --global -e
 	f = "!_() { set \"$@\" $(git master) ; set -x; git fetch origin ${1}:${1}; }; _"
 	feature = "!_() { [[ -n $1 ]] && git switch -c feature/$1 ; }; _"
-	fixup = commit --fixup HEAD
+	fixup = commit --fixup
 	fetch-prune = fetch --prune
 	fzf = "!_() { local branch; branch=$(git branches | fzf --reverse -0 --height '10%') && git switch $branch ; }; _"
 	git = !git
@@ -42,10 +47,10 @@
 	merged = !git branch --merged | grep -Ev '\\*|master|develop|release|gh-pages' | tr -d '^ '
 	new = switch -c
 	newtag = tag -a
-	p = pull --rebase origin develop
+	pr = pull --rebase origin develop
 	progress = !git log --branches --since=midnight --date=iso --author=\"$(git config user.name)\"
 	progress1 = progress --pretty=format:%s
-	pulltag = pull --tags
+	pull-tags = pull --tags
 	pushf = push --force-with-lease
 	pushu = push -u origin HEAD
 	reset-to-head = reset --hard HEAD
@@ -64,6 +69,6 @@
 	unstage = reset HEAD --
 	untrack = rm --cache --
 	untracked = ls-files --others --exclude-standard
-	wip = commit -m \"WIP: \" --edit
+	wip = commit -m WIP
 	zip = !git archive --worktree-attributes --format=zip HEAD -o $(basename `pwd`).zip
 
