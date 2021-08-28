@@ -38,27 +38,32 @@ if status is-login
 end
 
 
-################################
-# variable
-################################
-
-set -g chino_opt '-std=c++2b -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -I./include -O2 -pipe'
-
-
-################################
-# function
-################################
-
-function runchino
-  clang++ $chino_opt -o /tmp/a.out $argv[1] && echo -e "\033[1mcompile suceeded.\033[0m" >&2 && /tmp/a.out $argv[2..-1]
-end
-
-
-################################
-# abbreviation
-################################
-
 if status is-interactive
+
+  ################################
+  # variable
+  ################################
+
+
+  set -g chino_opt '-std=c++2b -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -I./include -O2 -pipe'
+
+
+  ################################
+  # function
+  ################################
+
+  function runchino
+    clang++ $chino_opt -o /tmp/a.out $argv[1] && echo -e "\033[1mcompile suceeded.\033[0m" >&2 && /tmp/a.out $argv[2..-1]
+  end
+
+  if type -fq exa
+    alias ls='exa --icons --git'
+  end
+
+
+  ################################
+  # abbreviation
+  ################################
   # abbreviation
   abbr --add -g g 'git'
   abbr --add -g push 'git push'
@@ -161,34 +166,34 @@ if status is-interactive
   # global abbreviation
   context-abbr '**' 'G' '| grep'
   context-abbr '**' 'L' '| less'
-end
 
-################################
-# dev
-################################
+  ################################
+  # dev
+  ################################
 
-bind \ez commandline_test
-function commandline_test
-  echo
-  echo t = (commandline -t)
-  echo tc = (commandline -t -c)
-  echo b = (commandline)
-  echo p = (commandline -p)
-  echo pc = (commandline -pc)
-  echo j = (commandline -j)
-  echo poc = (commandline -poc | string join ' ')
-  echo pc = (commandline -pc)
-  commandline -f repaint
-end
+  bind \ez commandline_test
+  function commandline_test
+    echo
+    echo t = (commandline -t)
+    echo tc = (commandline -t -c)
+    echo b = (commandline)
+    echo p = (commandline -p)
+    echo pc = (commandline -pc)
+    echo j = (commandline -j)
+    echo poc = (commandline -poc | string join ' ')
+    echo pc = (commandline -pc)
+    commandline -f repaint
+  end
 
 
-################################
-# finally
-################################
+  ################################
+  # finally
+  ################################
 
-# Start X at login
-if status is-login
+  # Start X at login
+  if status is-login
     if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
-        startx -- -keeptty
+      startx -- -keeptty
     end
+  end
 end
