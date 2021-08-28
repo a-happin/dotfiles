@@ -116,24 +116,28 @@ if status is-interactive
   # sabbr 'jar' 'java -jar'
 
   # subcommand abbreviation
+  context-abbr 'git' 'discard' 'reset --hard @{u} # discard local changes'
   context-abbr 'git' 'clean' 'clean -df'
   context-abbr 'git' 'init' 'init && git commit --allow-empty -m "Initial commit."'
   context-abbr 'git' 'new' 'switch -c'
-  context-abbr 'git' 'ci' 'commit -v'
+  context-abbr 'git' 'cv' 'commit -v'
   context-abbr 'git' 'co' 'checkout'
   context-abbr 'git' 'pu' 'push -u origin HEAD'
-  context-abbr 'git' 'a' 'add -p'
+  context-abbr 'git' 'a' 'add --patch'
   context-abbr 'git' 's' 'status'
   context-abbr 'git' 'd' 'diff'
   context-abbr 'git' 'b' 'branch'
-  context-abbr 'git' 'p' 'pull --rebase origin develop'
-  context-abbr --eval 'git **' 'B' 'git symbolic-ref --short HEAD'
+  context-abbr 'git' 'f' 'fetch --prune'
+  context-abbr --eval 'git' 'sw' 'echo switch (fzf-git-branch)'
+  context-abbr --eval 'git' 'fixup' 'echo commit --fixup (fzf-git-commit)'
+  context-abbr --eval 'git' 'pick' 'echo cherry-pick (fzf-git-commit)'
+  context-abbr --eval 'git' 'fomm' 'echo fetch origin (set -l b (fzf-git-branch); echo $b:$b)'
+  context-abbr --eval 'git' 'pr' 'echo pull --rebase origin (git symbolic-ref --short HEAD)'
+  context-abbr --eval 'git **' 'B' 'fzf-git-branch'
+  context-abbr --eval 'git **' 'C' 'fzf-git-commit'
 
-  context-abbr 'cd' 'f' '(fzf-directory || printf .)'
-  context-abbr 'cd' 'g' '(fzf-git-repository || printf .)'
-
-  # prepend sudo
-  context-abbr -C 'nvim' '/etc/ssh/sshd_config' 'sudo nvim'
+  context-abbr --eval 'cd' 'f' 'fzf-directory'
+  context-abbr --eval 'cd' 'g' 'fzf-git-repository'
 
   # fake command
   context-abbr -C 'compile' '**.cpp' "clang++ $chino_opt"

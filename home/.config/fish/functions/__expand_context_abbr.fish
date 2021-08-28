@@ -28,18 +28,20 @@ function __expand_context_abbr
 
         # eval
         if test $eval_flag = 1
-          set phrase (eval $phrase 2> /dev/null | string join ' ')
+          set phrase (eval $phrase | string join ' ')
         end
 
         # replace command
         if test $replace_flag = 1
           commandline -poc | read -l command
           commandline -p -- (commandline -p | string replace -- "$command" $phrase)
+          commandline -f repaint
           break
 
         # replace itself
         else
           commandline -t -- $phrase
+          commandline -f repaint
           break
         end
 

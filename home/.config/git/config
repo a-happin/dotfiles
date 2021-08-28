@@ -15,7 +15,7 @@
 [rebase]
 	autosquash = true
 [alias]
-	a = add -p
+	a = add --patch
 	aa = add --all
 	alias = !git config --get-regexp ^alias\\. | sed 's/^alias\\.\\([^ ]*\\) /\\1\\\t => /'
 	amend = commit --amend
@@ -33,36 +33,34 @@
 	diff-words = diff --color-words='\\w+|[^[:space:]]'
 	discard-local-changes = reset --hard @{u}
 	e = config --global -e
-	f = "!_() { set \"$@\" $(git master) ; set -x; git fetch origin ${1}:${1}; }; _"
 	feature = "!_() { [[ -n $1 ]] && git switch -c feature/$1 ; }; _"
+	fetch-origin-master-master = "!_() { set \"$@\" $(git master) ; set -x; git fetch origin ${1}:${1}; }; _"
 	fixup = commit --fixup
 	fetch-prune = fetch --prune
-	fzf = "!_() { local branch; branch=$(git branches | fzf --reverse -0 --height '10%') && git switch $branch ; }; _"
 	git = !git
 	hash = rev-parse HEAD
-	i = rebase -i
 	ignore = "!_() { for i in \"$@\" ; do echo \"$i\" >> \"${GIT_PREFIX}.gitignore\"; done; }; _"
 	initial-commit = commit --allow-empty -m \"Initial commit.\"
+	log-today = !git log --branches --since=midnight --date=iso --author=\"$(git config user.name)\"
+	log-today-oneline = progress --pretty=format:%s
 	master = !git config init.defaultBranch || echo master
 	merged = !git branch --merged | grep -Ev '\\*|master|develop|release|gh-pages' | tr -d '^ '
 	new = switch -c
 	newtag = tag -a
 	pr = pull --rebase origin develop
-	progress = !git log --branches --since=midnight --date=iso --author=\"$(git config user.name)\"
-	progress1 = progress --pretty=format:%s
 	pull-tags = pull --tags
 	pushf = push --force-with-lease
 	pushu = push -u origin HEAD
 	reset-to-head = reset --hard HEAD
 	reset-to-remote = reset --hard @{u}
 	root = rev-parse --show-toplevel
-	s = !git stash list && git status && git log -1
+	st = !git stash list && git status
 	skip = update-index --skip-worktree
 	staged = diff --cached
 	stashes = stash list
 	t = tree -10
 	tags = tag
-	touch = commit --amend --no-edit --date=now
+	touch = commit --amend --date=now --no-edit
 	tree = log --graph --all --pretty=format:'%x09%C(auto)%h%d%C(reset) %C(cyan)-%C(reset) %s %C(blue)by %an%C(reset), %C(green)%ar%C(reset)'
 	uncommit = reset --soft HEAD~
 	unskip = update-index --no-skip-worktree
