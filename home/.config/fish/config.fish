@@ -131,7 +131,7 @@ if status is-interactive
   context-abbr --eval 'git' 'sw' 'echo switch (fzf-git-branch)'
   context-abbr --eval 'git' 'fixup' 'echo commit --fixup (fzf-git-commit)'
   context-abbr --eval 'git' 'cherry-pick' 'echo cherry-pick (fzf-git-commit)'
-  context-abbr --eval 'git' 'fomm' 'echo fetch origin (set -l b (fzf-git-branch); echo $b:$b)'
+  context-abbr --eval 'git' 'fomm' 'echo fetch origin (set -l b (fzf-git-branch); echo $b:$b) \# refresh local branch without checkout'
   context-abbr --eval 'git' 'pr' 'echo pull --rebase origin (git symbolic-ref --short HEAD)'
   context-abbr --eval 'git **' 'B' 'fzf-git-branch'
   context-abbr --eval 'git **' 'C' 'fzf-git-commit'
