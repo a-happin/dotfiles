@@ -162,7 +162,7 @@ nnoremap <Space>s <C-w>s
 nnoremap <Space>d lD
 
 " Run FZF
-" nnoremap <Space>f <Cmd>Files<CR>
+nnoremap <Space>f <Cmd>Files<CR>
 
 " git ls-files | fzf
 nnoremap <Space>g <Cmd>GFiles<CR>

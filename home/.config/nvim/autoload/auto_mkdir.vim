@@ -12,7 +12,7 @@ function! auto_mkdir#mkdir(dir, force) abort
             \ printf('"%s" does not exist. Create? [y/N]', a:dir),
             \ '',
             \)
-      if empty(result)
+      if result !~? '\v^y%[es]$'
         echohl WarningMsg
         echo 'Canceled'
         return
