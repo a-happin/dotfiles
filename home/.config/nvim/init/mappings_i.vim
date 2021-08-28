@@ -252,9 +252,9 @@ function! s:cr_key () abort
     let [prev, post] = s:getline ()
     if s:is_in_empty_parentheses (prev, post)
       return "\<CR>\<Up>\<End>\<CR>"
-    elseif post ==# ''
+    elseif post ==# '' && getline (line ('.') + 1) ==# ''
       for quot in s:quotations
-        if prev =~# '\v' . quot . '@<!' . quot . quot . quot . '$'
+        if prev =~# '\v' . quot . '@<!' . quot . '{3}$'
           return "\<CR>" . quot . quot . quot . "\<Up>\<End>\<CR>"
         endif
       endfor
