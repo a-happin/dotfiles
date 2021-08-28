@@ -57,7 +57,7 @@ if status is-interactive
   end
 
   if type -fq exa
-    alias ls='exa --icons --git'
+    alias ls='exa --git'
   end
 
 
