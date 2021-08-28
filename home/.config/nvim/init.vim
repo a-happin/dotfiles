@@ -18,15 +18,26 @@ if empty ($XDG_DATA_HOME)
   let $XDG_DATA_HOME = $HOME . '/.local/share'
 endif
 
+" *******************************
+" **  source
+" *******************************
 
+function! s:source (file) abort
+  execute 'source ' . $XDG_CONFIG_HOME . '/nvim/' . a:file
+endfunction
 
-call init#source ('init/set.vim')
-call init#source ('init/command.vim')
-call init#source ('init/plugin.vim')
-call init#source ('init/mappings.vim')
-call init#source ('init/autocmd.vim')
+call s:source ('init/set.vim')
+call s:source ('init/command.vim')
+call s:source ('init/plugin.vim')
+call s:source ('init/mappings.vim')
+call s:source ('init/autocmd.vim')
 
 filetype plugin indent on
 syntax enable
 
-call init#source ('init/colorscheme.vim')
+call s:source ('init/colorscheme.vim')
+
+augroup lazy-source
+  autocmd!
+  autocmd InsertEnter * ++once call s:source ('init/mappings_i.vim')
+augroup END
