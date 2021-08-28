@@ -62,7 +62,7 @@ augroup END
 
 augroup special-mapping
   autocmd!
-  autocmd FileType gitcommit nnoremap <buffer> <Space>q <Cmd>q<CR>
+  autocmd FileType git* nnoremap <buffer> <Space>q <Cmd>q<CR>
 augroup END
 
 augroup set-force
