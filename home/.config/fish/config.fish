@@ -37,6 +37,47 @@ if status is-login
   end
 end
 
+################################
+# first initialize
+################################
+
+if not set -Uq fish_greeting
+  # あいさつはいらない
+  set -U fish_greeting
+
+  # use default key bindings
+  set -U fish_key_bindings fish_default_key_bindings
+
+  # set colors
+  set -U fish_color_autosuggestion 969896
+  set -U fish_color_cancel -r
+  set -U fish_color_command c397d8
+  set -U fish_color_comment e7c547
+  set -U fish_color_cwd green
+  set -U fish_color_cwd_root red
+  set -U fish_color_end c397d8
+  set -U fish_color_error d54e53
+  set -U fish_color_escape 00a6b2
+  set -U fish_color_history_current --bold
+  set -U fish_color_host normal
+  set -U fish_color_host_remote yellow
+  set -U fish_color_match --background=brblue
+  set -U fish_color_normal normal
+  set -U fish_color_operator 00a6b2
+  set -U fish_color_param 7aa6da
+  set -U fish_color_quote b9ca4a
+  set -U fish_color_redirection 70c0b1
+  set -U fish_color_search_match 'bryellow' '--background=brblack'
+  set -U fish_color_selection 'white' '--bold' '--background=brblack'
+  set -U fish_color_status red
+  set -U fish_color_user brgreen
+  set -U fish_color_valid_path --underline
+  set -U fish_pager_color_completion normal
+  set -U fish_pager_color_description 'B3A06D' 'yellow'
+  set -U fish_pager_color_prefix 'white' '--bold' '--underline'
+  set -U fish_pager_color_progress 'brwhite' '--background=cyan'
+end
+
 
 if status is-interactive
 
@@ -57,7 +98,7 @@ if status is-interactive
   end
 
   if type -fq exa
-    alias ls='exa --git'
+    alias ls='exa'
   end
 
 
@@ -124,20 +165,23 @@ if status is-interactive
   context-abbr 'git' 'co' 'checkout'
   context-abbr 'git' 'pu' 'push -u origin HEAD'
   context-abbr 'git' 'a' 'add --patch'
+  context-abbr 'git' 'aa' 'add --all'
   context-abbr 'git' 's' 'status'
   context-abbr 'git' 'd' 'diff'
-  context-abbr 'git' 'b' 'branch'
   context-abbr 'git' 'f' 'fetch --prune'
   context-abbr --eval 'git' 'sw' 'echo switch (fzf-git-branch)'
   context-abbr --eval 'git' 'fixup' 'echo commit --fixup (fzf-git-commit)'
-  context-abbr --eval 'git' 'cherry-pick' 'echo cherry-pick (fzf-git-commit)'
   context-abbr --eval 'git' 'fomm' 'echo fetch origin (set -l b (fzf-git-branch); echo $b:$b) \# refresh local branch without checkout'
+  context-abbr --eval 'git rebase' '-i' 'echo -- -i (fzf-git-commit)'
   context-abbr --eval 'git' 'pr' 'echo pull --rebase origin (git symbolic-ref --short HEAD)'
+  context-abbr --eval 'git' '*pick' 'echo cherry-pick (fzf-git-commit)'
   context-abbr --eval 'git **' 'B' 'fzf-git-branch'
   context-abbr --eval 'git **' 'C' 'fzf-git-commit'
 
   context-abbr --eval 'cd' 'f' 'fzf-directory'
   context-abbr --eval 'cd' 'g' 'fzf-git-repository'
+
+  context-abbr 'sudo' 'e' "$EDITOR"
 
   # fake command
   context-abbr -C 'compile' '**.cpp' "clang++ $chino_opt"
