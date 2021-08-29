@@ -33,7 +33,7 @@ function! s:on_init () abort
   nmap <nowait><silent> qf <Plug>(coc-fix-current)
 
   " show documentation
-  nnoremap <silent> <F1> <Cmd>CocAction ('doHover')<CR>
+  nnoremap <silent> <F1> <Cmd>call CocAction ('doHover')<CR>
   nnoremap <silent> K <Cmd>call <SID>show_documentation ()<CR>
 
 
