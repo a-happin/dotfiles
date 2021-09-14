@@ -117,7 +117,7 @@ if status is-interactive
   abbr --add -g ll 'ls -lah'
   abbr --add -g exa 'exa -lah'
   abbr --add -g cp 'cp -iv'
-  abbr --add -g mv 'mv -i'
+  abbr --add -g mv 'mv -iv'
   abbr --add -g rm 'rm -i'
   abbr --add -g rr 'rm -ri'
   abbr --add -g ln 'ln -snfv FILE LINK'
