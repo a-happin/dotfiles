@@ -16,10 +16,11 @@ if status is-login
   set -gx XDG_CACHE_HOME "$HOME/.cache"
   set -gx XDG_DATA_HOME "$HOME/.local/share"
 
-  set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git'
+  set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --no-ignore --exclude .git'
 
   # prepend to $PATH
   set -g fish_user_paths "$HOME/bin"
+  set -a fish_user_paths "$HOME/.deno/bin"
 
   # Windows WSL
   if uname -r | string match -q -- '**Microsoft'

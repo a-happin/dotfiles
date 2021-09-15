@@ -34,6 +34,9 @@ xset r rate 400 45
 # keep screen on
 #xset dpms 0 0 0; xset s off
 
+# dropbox
+dropbox &
+
 # for VMware
 # しかし重いということに気がついた。残念。
 #vmware-user-suid-wrapper
