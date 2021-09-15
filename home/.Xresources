@@ -3,26 +3,33 @@
 *locale: true
 
 ! Xft フォント設定
-Xft.antialias: 1
-Xft.hinting: 1
 Xft.autohint: 0
+Xft.lcdfilter: lcddefault
 Xft.hintstyle: hintslight
-Xft.rgba: none
-Xft.lcdfilter: lcdnone
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
 
 ! ディスプレイと相談
-!Xft.dpi: 100
+! 今のモニタは109dpiだけどUIがでかくなりすぎるので100にした
+Xft.dpi: 100
 
-! fix Alt
-xterm*metaSendsEscape: true
 
-! scroll
+
+! *から始まるのははXTermとURxvtで共通の設定項目
+
+! ウインドウの大きさ (width)x(height)
+!*geometry: 96x36
+
+! 共通
 *saveLines: 10000
+*visualBell: true
+*scrollBar: false
+!*cursorBlink: true
+!*cursorUnderLine: true
 
 ! color
-!URxvt*depth: 32
 *background:  #1d1f21
-!URxvt*background:  [90]#1d1f21
 *foreground:  #c5c8c6
 *cursorColor: #93a1a1
 
@@ -51,20 +58,22 @@ xterm*metaSendsEscape: true
 *color7:  #707880
 *color15: #c5c8c6
 
+! 色深度
+!URxvt*depth: 32
+
 ! font
-URxvt*font: xft:Roboto Mono Medium:size=10:antialias=true, xft:M+ 1m:size=10:antialias=true,xft:Symbola:size=12
-!URxvt*letterSpace: -1
+!URxvt*font: xft:Roboto Mono Medium:size=10:antialias=true, xft:M+ 1m:size=10:antialias=true,xft:Symbola:size=12
+URxvt*font: xft:Roboto Mono Medium:size=9,xft:M+ 1m:size=9,xft:Symbola:size=12
 !URxvt*font: xft:Ricty:size=12:antialias=true, xft:Symbola:size=12
-!URxvt*letterSpace: -1
+!URxvt*letterSpace: 1
 
 ! font
-xterm*faceName: Inconsolata
-xterm*faceNameDoublesize: Ricty
-xterm*faceSize: 12
-xterm*cjkWidth: true
+xterm*faceName: xft:Inconsolata:size=10
+xterm*faceNameDoublesie: xft:Ricty:size=10
+xterm*faceSize: 10
+! xterm*cjkWidth: true
+!xterm*letterSpace: -1
 
-! hide scrollBar
-URxvt*scrollBar: false
 
 ! フォーカスを失った時にfadeColorでフェード(透過する%)
 URxvt*fadeColor: #000000
@@ -77,7 +86,7 @@ URxvt*shading: 20
 
 ! clickable url
 URxvt.perl-ext-common: default,matcher
-URxvt.url-launcher: /usr/bin/google-chrome-stable
+URxvt.url-launcher: xdg-open
 URxvt.matcher.button: 1
 
 ! fix key
@@ -93,6 +102,9 @@ URxvt.keysym.End: \033[F
 ! Disable iso14755 mode
 URxvt*iso14755: false
 
+! fix Alt
+xterm*metaSendsEscape: true
+
 ! scale height (default: 1.0)
 xterm*scaleHeight: 1.0
 
@@ -102,5 +114,4 @@ xterm*borderWidth: 0
 ! auto copy to clipboard
 xterm*selectToClipboard: true
 
-URxvt.visualBell: true
 
