@@ -10,7 +10,7 @@
         },
         "clang": {
           "extraArgs": [
-            "--std=c++20",
+            "-std=c++2b",
             "-Weverything",
             "-Wno-c++98-compat-pedantic",
             "-Wno-c11-extensions",
