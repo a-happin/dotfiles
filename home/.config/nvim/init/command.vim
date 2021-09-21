@@ -31,6 +31,9 @@ command! -bar DiffOrig aboveleft vert new | set buftype=nofile | read ++edit # |
 " 拡張子からテンプレートファイルを判別し読み込む
 command! -bar LoadTemplate 0r $XDG_CONFIG_HOME/nvim/template/.%:e
 
+" clang-formatにかける
+command! -bar -range=% ClangFormat <line1>,<line2>!clang-format
+
 " typo対策
 cnoreabbrev <expr> W (getcmdtype () ==# ":" && getcmdline () ==# "W") ? "w" : "W"
 
