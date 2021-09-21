@@ -143,7 +143,7 @@ function! s:begin_parenthesis (begin, end) abort
 
   let should_complete = 0
   " カーソル直下が空文字, 空白, ',' or ';'
-  if post =~# '\v^$|^[\s,;]'
+  if post =~# '\v^$|^\s|^[,;]'
     let should_complete = 1
   else
     " カーソル直下が括弧閉じ
@@ -187,7 +187,7 @@ function! s:quotation_key (key) abort
   let [prev, post] = s:getline ()
   if &filetype ==# 'vim' && prev =~# '\v^\s*$' && a:key ==# '"'
     return a:key
-  elseif post =~# '^' . a:key
+  elseif s:starts_with (post, a:key)
     return "\<Right>"
   else
     " カーソル直前が空文字 or 空白
@@ -243,7 +243,7 @@ endfunction
 
 " CR
 " カーソルが{}の間ならいい感じに改行
-" カーソル直前が3つの連続したquotなら6つにして真ん中で改行
+" カーソル直前が3つの連続したquotなら6つにして真ん中で改行 (終了にも反応してうざいので保留)
 " それ以外は改行
 function! s:cr_key () abort
   if pumvisible ()
@@ -252,12 +252,12 @@ function! s:cr_key () abort
     let [prev, post] = s:getline ()
     if s:is_in_empty_parentheses (prev, post)
       return "\<CR>\<Up>\<End>\<CR>"
-    elseif post ==# '' && getline (line ('.') + 1) ==# ''
-      for quot in s:quotations
-        if prev =~# '\v' . quot . '@<!' . quot . '{3}$'
-          return "\<CR>" . quot . quot . quot . "\<Up>\<End>\<CR>"
-        endif
-      endfor
+    " elseif post ==# '' && getline (line ('.') + 1) ==# ''
+    "   for quot in s:quotations
+    "     if prev =~# '\v' . quot . '@<!' . quot . '{3}$'
+    "       return "\<CR>" . quot . quot . quot . "\<Up>\<End>\<CR>"
+    "     endif
+    "   endfor
     endif
     return "\<CR>"
   endif
@@ -293,9 +293,9 @@ function! s:slash_key () abort
   let [prev, post] = s:getline ()
   if prev =~# '\v[/*\\]$'
     return "/"
-  elseif prev =~# '\v<$'
+  elseif s:ends_with (prev, '<')
     if &omnifunc != ''
-      return "/\<C-x>\<C-o>"
+      return "/\<C-x>\<C-o>\<C-n>\<C-y>\<C-o>=="
     else
       return "/"
     endif
