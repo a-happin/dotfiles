@@ -87,7 +87,7 @@ if status is-interactive
   ################################
 
 
-  set -g chino_opt '-std=c++2b -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -I./include -O2 -pipe'
+  set -g chino_opt -std=c++2b -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -I./include -O2 -pipe
 
 
   ################################
