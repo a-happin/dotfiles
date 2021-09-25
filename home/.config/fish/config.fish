@@ -129,6 +129,7 @@ if status is-interactive
   abbr --add -g rsync 'rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with the \'/\' at the end.'
   abbr --add -g paccache 'paccache -r; paccache -ruk0'
   abbr --add -g funced 'funced --save'
+  abbr --add -g history-delete ' history delete --case-sensitive --exact (history | fzf --multi || printf \':\')'
 
   # like a new command
   abbr --add -g fishrc "$EDITOR $XDG_CONFIG_HOME/fish/config.fish"
@@ -146,6 +147,7 @@ if status is-interactive
   if test $USER != 'root'
     abbr --add -g pacman 'sudo pacman'
     abbr --add -g systemctl 'sudo systemctl'
+    abbr --add -g apt 'sudo apt'
   end
 
   # typo
