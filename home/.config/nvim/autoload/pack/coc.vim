@@ -9,6 +9,14 @@ function! pack#coc#init () abort
         \ 'coc-deno',
         \ 'coc-fish',
         \]
+
+  let compile_options = filter (split ($CHINO_OPT, ' '), {idx, x -> x !~# '\v^-O|^-pipe$'})
+  call extend (compile_options, ['-Wno-unused-macros', '-Wno-unused-const-variable'])
+  let g:coc_user_config = {}
+  let g:coc_user_config['languageserver'] = {
+        \ 'ccls.initializationOptions.clang.extraArgs': compile_options
+        \  }
+
   augroup pack-coc-on-init
     autocmd!
     autocmd User CocNvimInit ++once call s:on_init ()
@@ -41,11 +49,13 @@ function! s:on_init () abort
   nmap <silent> <F2> <Plug>(coc-rename)
 
   " 補完開始
-  inoremap <silent><expr> <C-Space> coc#start()
+  inoremap <silent><expr> <C-Space> coc#refresh()
 
   augroup coc-config
     autocmd!
     autocmd CursorHold * silent call CocActionAsync ('highlight')
+    autocmd CursorHoldI *.cpp,*.hpp silent call CocActionAsync ('showSignatureHelp')
+    autocmd User CocJumpPlaceholder silent call CocActionAsync ('showSignatureHelp')
   augroup END
 endfunction
 

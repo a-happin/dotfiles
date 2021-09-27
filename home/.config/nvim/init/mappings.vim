@@ -145,6 +145,9 @@ nnoremap <Space>w <Cmd>update<CR>
 " nnoremap <Space>e <Cmd>Fern . -reveal=% -drawer -toggle<CR>
 nnoremap <Space>e <Cmd>Files<CR>
 
+" Restart coc.nvim
+nnoremap <Space>r <Cmd>CocRestart<CR>
+
 " Open New Tab
 nnoremap <Space>t <Cmd>tabnew<CR>
 
@@ -175,6 +178,9 @@ xnoremap <Space>; :
 
 " nnoremap <Space>z <Cmd>echo 'hello'<CR>
 " nnoremap <Space>c <Cmd>close<CR>
+
+" CocList
+nnoremap <Space>c <Cmd>CocList<CR>
 
 " Split Vertically
 nnoremap <Space>v <C-w>v

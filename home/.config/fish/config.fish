@@ -18,6 +18,8 @@ if status is-login
 
   set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --no-ignore --exclude .git'
 
+  set -gx CHINO_OPT -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I. -I./include "-I$HOME/work/gomi/include" -O2 -pipe
+
   # prepend to $PATH
   set -g fish_user_paths "$HOME/bin"
   set -a fish_user_paths "$HOME/.deno/bin"
@@ -87,7 +89,7 @@ if status is-interactive
   ################################
 
 
-  set -g chino_opt -std=c++2b -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -I./include -O2 -pipe
+  # set -g chino_opt -std=c++2b -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -I./include -O2 -pipe
 
 
   ################################
@@ -95,7 +97,7 @@ if status is-interactive
   ################################
 
   function runchino
-    clang++ $chino_opt -o /tmp/a.out $argv[1] && echo -e "\033[1mcompile suceeded.\033[0m" >&2 && /tmp/a.out $argv[2..-1]
+    clang++ $CHINO_OPT -o /tmp/a.out $argv[1] && echo -e "\033[1mcompile suceeded.\033[0m" >&2 && /tmp/a.out $argv[2..-1]
   end
 
   if type -fq exa
@@ -141,7 +143,7 @@ if status is-interactive
   abbr --add -g decrypt 'openssl aes-256-cbc -d -iter 100'
 
   # kawaii
-  abbr --add -g chino "clang++ $chino_opt"
+  abbr --add -g chino "clang++ $CHINO_OPT"
 
   # don't forget sudo
   if test $USER != 'root'
@@ -188,7 +190,7 @@ if status is-interactive
   context-abbr 'sudo' 'e' "$EDITOR"
 
   # fake command
-  context-abbr -C 'compile' '**.cpp' "clang++ $chino_opt"
+  context-abbr -C 'compile' '**.cpp' "clang++ $CHINO_OPT"
 
   context-abbr -C 'run' '**.cpp' 'runchino'
   context-abbr -C 'run' '**.ts' 'deno run --allow-all --unstable'

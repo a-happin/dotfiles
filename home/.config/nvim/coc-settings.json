@@ -7,18 +7,6 @@
       "initializationOptions": {
         "cache": {
           "directory": "/tmp/ccls"
-        },
-        "clang": {
-          "extraArgs": [
-            "-std=c++2b",
-            "-Weverything",
-            "-Wno-c++98-compat-pedantic",
-            "-Wno-c11-extensions",
-            "-Wno-unused-macros",
-            "-Wno-unused-const-variable",
-            "-pedantic-errors",
-            "-I./include"
-          ]
         }
       }
     }
