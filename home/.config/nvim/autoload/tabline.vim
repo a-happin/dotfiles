@@ -1,6 +1,6 @@
 scriptencoding=utf-8
 
-function! s:tabpage_label(n) abort
+function! s:tabpage_label (i, n) abort
   let highlight = a:n is tabpagenr () ? '%#TabLineSel#' : '%#TabLine#'
   let tabnumber = '%' . a:n . 'T'
   let bufs = tabpagebuflist (a:n)
@@ -18,8 +18,8 @@ function! s:tabpage_label(n) abort
   return highlight . tabnumber . ' ' . filename . modified . ' %T%#TabLineFill#'
 endfunction
 
-function! tabline#make() abort
-  let titles = map (range (1, tabpagenr ('$')), 's:tabpage_label(v:val)')
+function! tabline#make () abort
+  let titles = map (range (1, tabpagenr ('$')), function ('s:tabpage_label'))
   let tabpages = join (titles, '|') . '%#TabLineFill#'
   let close_button = '%#TabLine#%' . tabpagenr () . 'X x %X'
   return tabpages . '%=' . close_button

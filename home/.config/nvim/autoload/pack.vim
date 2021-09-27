@@ -11,6 +11,12 @@ function! pack#init () abort
   " plugin manager (required)
   call minpac#add ('k-takata/minpac', {'type': 'opt'})
 
+  " ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno
+  call minpac#add ('vim-denops/denops.vim', {'type': 'opt'})
+
+  " GhostText
+  call minpac#add ('gamoutatsumi/dps-ghosttext.vim', {'type': 'opt'})
+
   " LSP client
   call minpac#add ('neoclide/coc.nvim', {'type': 'opt', 'branch': 'release'})
 
@@ -67,6 +73,9 @@ function! pack#VimEnter (...) abort
   " ********************************
   call pack#coc#init ()
   packadd coc.nvim
+
+  " dps-ghosttext.vim
+  packadd dps-ghosttext.vim
 endfunction
 
 function! pack#CmdUndefined (cmd) abort

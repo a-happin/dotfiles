@@ -40,6 +40,7 @@ if isdirectory (s:minpac_dir)
   " *******************************
   " ftpluginなど、事前にロードが必要なもの
 
+  packadd denops.vim
   packadd vim-fish
 
 else
