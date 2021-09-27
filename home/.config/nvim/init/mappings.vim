@@ -135,7 +135,7 @@ nnoremap <Space>i i<Cmd>call mappings#insert_one()<CR>
 nnoremap <Space>a a<Cmd>call mappings#insert_one()<CR>
 
 " 閉じる
-nnoremap <Space>q <Cmd>close<CR>
+nnoremap <Space>q <Cmd>try<bar>close<bar>catch /:E444:/<bar>confirm qall<bar>endtry<CR>
 
 " 保存
 nnoremap <Space>w <Cmd>update<CR>
