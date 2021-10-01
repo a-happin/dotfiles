@@ -5,10 +5,10 @@ scriptencoding utf-8
 " *******************************
 
 " turn off IME when leave insert mode
-if executable ('fcitx-remote')
+if executable ('fcitx5-remote')
   augroup resetIME
     autocmd!
-    autocmd InsertLeave * silent !fcitx-remote -c
+    autocmd InsertLeave * silent !fcitx5-remote -c
   augroup END
 endif
 

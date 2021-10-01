@@ -309,7 +309,7 @@ bar {
 # - exec_always: exec when restart i3
 # キーリピート開始まで400[ms]、キーリピート間隔1/45[sec]
 exec_always --no-startup-id xset r rate 400 45
-exec_always --no-startup-id fcitx5
+exec_always --no-startup-id fcitx5 -d
 exec --no-startup-id dropbox
 exec --no-startup-id feh --no-fehbg --randomize --bg-max ~/Dropbox/image/illust/
 # imwheelはここで起動しないと失敗する(.xinitrcじゃだめ)
