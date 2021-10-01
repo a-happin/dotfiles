@@ -16,7 +16,7 @@ endif
 augroup auto-reload-vimrc
   autocmd!
   " autocmd BufWritePost init.vim ++nested source ${MYVIMRC}
-  autocmd BufWritePost */.config/nvim/* ++nested source $MYVIMRC | redraw | echomsg '*** Reloaded' $MYVIMRC '***'
+  autocmd BufWritePost */.config/nvim/*.vim ++nested source $MYVIMRC | redraw | echomsg '*** Reloaded' $MYVIMRC '***'
 augroup END
 
 "augroup auto_save
@@ -35,17 +35,17 @@ augroup reload-file
 augroup END
 
 " terminalを改善する
+" * 隠れたらbdelete!
 " interactive shellの場合,
-" * 名前をterm://Terminalに書き換える
+" * 名前をterm://*://Terminalに書き換える
 " * 自動で挿入モードに入る
 " * 終了時に即消す
-" 隠れたらbdelete!
 augroup fix-terminal
   autocmd!
   autocmd TermOpen term://* setlocal nonumber bufhidden=delete
-  autocmd TermOpen term://*/bash,term://*/fish,term://*/zsh file term://Terminal | startinsert
-  autocmd WinEnter term://Terminal startinsert
-  autocmd TermClose term://Terminal bdelete!
+  autocmd TermOpen term://*/bash,term://*/fish,term://*/zsh file %://Terminal | startinsert
+  autocmd WinEnter term://*://Terminal startinsert
+  autocmd TermClose term://*://Terminal bdelete!
 augroup END
 
 " ftdetect/xxx.vimのほうがいいかも
@@ -63,11 +63,6 @@ augroup END
 augroup special-mapping
   autocmd!
   autocmd FileType qf nnoremap <buffer> <CR> <CR>
-augroup END
-
-augroup set-force
-  autocmd!
-  autocmd FileType * setlocal formatoptions& formatoptions-=t formatoptions-=c formatoptions-=r formatoptions-=o formatoptions+=M iskeyword-=# iskeyword-=/
 augroup END
 
 augroup dictionary

@@ -89,7 +89,9 @@ inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') 
 
 " 全部閉じて終了
 " nnoremap <C-q> <Cmd>confirm qall<CR>
-nnoremap <M-q> <Cmd>confirm qall<CR>
+noremap <M-q> <Cmd>confirm qall<CR>
+tnoremap <M-q> <Cmd>confirm qall<CR>
+
 
 " ファイルチェックして再描画！
 nnoremap <C-l> <Cmd>checktime<CR><C-l>
@@ -149,7 +151,9 @@ nnoremap <Space>e <Cmd>Files<CR>
 nnoremap <Space>r <Cmd>CocRestart<CR>
 
 " Open New Tab
-nnoremap <Space>t <Cmd>tabnew<CR>
+" nnoremap <Space>t <Cmd>tabnew<CR>
+" Open Terminal
+nnoremap <Space>t <Cmd>terminal<CR>
 
 " 改行挿入
 nnoremap <Space>o o<Space><C-u><Esc>
@@ -160,7 +164,7 @@ nnoremap <Space>p "+p
 nnoremap <Space>P "+P
 
 " Split Horizontally
-nnoremap <Space>s <C-w>s
+" nnoremap <Space>s <C-w>s
 
 nnoremap <Space>d lD
 
@@ -183,20 +187,25 @@ xnoremap <Space>; :
 nnoremap <Space>c <Cmd>CocList<CR>
 
 " Split Vertically
-nnoremap <Space>v <C-w>v
+" nnoremap <Space>v <C-w>v
 
 " バッファ一覧
 nnoremap <Space>b <Cmd>Buffers<CR>
 
 " 新規
-nnoremap <Space>n <Cmd>enew<CR>
+nnoremap <Space>n <Nop>
+nnoremap <Space>nn <Cmd>enew<CR>
+nnoremap <Space>ns <Cmd>new<CR>
+nnoremap <Space>nv <Cmd>vnew<CR>
+nnoremap <Space>nt <Cmd>tabnew<CR>
 
 " open config file
 nnoremap <Space>, <Cmd>edit $MYVIMRC<CR>
-nnoremap <M-,> <Cmd>edit $MYVIMRC<CR>
+" nnoremap <M-,> <Cmd>edit $MYVIMRC<CR>
 
 nnoremap <Space>1 <Cmd>setlocal cursorline! cursorcolumn!<CR>
-nnoremap <Space>2 <Cmd>setlocal relativenumber!<CR>
+" nnoremap <Space>2 <Cmd>setlocal relativenumber!<CR>
+nnoremap <Space>2 @@
 
 " nnoremap <Space>3 <Cmd>nohlsearch<CR>
 
@@ -288,7 +297,7 @@ nnoremap <Plug>(dsurround)< "zci<<BS><Del><C-r><C-o>z<Esc>
 nmap <Plug>(dsurround)> <Plug>(dsurround)<
 " ""
 nnoremap <Plug>(dsurround)" "zci"<BS><Del><C-r><C-o>z<Esc>
-"Ma ''
+" ''
 nnoremap <Plug>(dsurround)' "zci'<BS><Del><C-r><C-o>z<Esc>
 " ``
 nnoremap <Plug>(dsurround)` "zci`<BS><Del><C-r><C-o>z<Esc>
@@ -297,23 +306,21 @@ nnoremap <Plug>(dsurround)` "zci`<BS><Del><C-r><C-o>z<Esc>
 " --------------------------------
 "  command mode
 " --------------------------------
+" NOTICE: cnoremapでは<silent>をつけると描画が反映されなくて困るのでつけないように。
 
 " 補完メニューが表示されているときの挙動修正
-cnoremap <silent><expr> <CR> wildmenumode () ? '<End>' : '<CR>'
-" cnoremap <silent><expr> <Left> wildmenumode () ? '<End>' : '<Left>'
-" cnoremap <silent><expr> <Right> wildmenumode () ? '<End>' : '<Right>'
+cnoremap <expr> <CR> wildmenumode () ? '<End>' : (getcmdtype () ==# ':' && getcmdline () ==# '') ? '<BS>' : '<CR>'
+cnoremap <expr> <Left> wildmenumode () ? '<End>' : '<Left>'
+cnoremap <expr> <Right> wildmenumode () ? '<End>' : '<Right>'
 
 " Better <C-n>/<C-p> in Command
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
-cnoremap <Up> <C-p>
+
+" <Up><Up>でHistory:を起動(fzf)
+cnoremap <expr> <Up> wildmenumode () ? '<C-p>' : (getcmdtype () ==# ':' && getcmdline () !=# '') ? '<C-u><Esc><Cmd>History:<CR>' : (getcmdtype () ==# '/' && getcmdline () !=# '') ? '<C-u><Esc><Cmd>History/<CR>' : '<C-p>'
 cnoremap <Down> <C-n>
 
-" draw cursor
-" cnoremap <Left> <Left><Cmd>redraw<CR>
-" cnoremap <Right> <Right><Cmd>redraw<CR>
-
-cnoremap <C-R> <Esc><Cmd>History:<CR>
 
 " --------------------------------
 "  Terminal

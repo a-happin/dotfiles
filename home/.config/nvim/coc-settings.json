@@ -6,7 +6,20 @@
       "rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/"],
       "initializationOptions": {
         "cache": {
-          "directory": "/tmp/ccls"
+          "directory": "/tmp/.ccls-cache"
+        },
+        "clang": {
+          "extraArgs": [
+            "-std=c++2b",
+            "-Weverything",
+            "-Wno-c++98-compat-pedantic",
+            "-Wno-c11-extensions",
+            "-Wno-unused-macros",
+            "-Wno-unused-const-variable",
+            "-pedantic-errors",
+            "-I./include",
+            "-I."
+          ]
         }
       }
     }

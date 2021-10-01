@@ -1,21 +1,22 @@
 scriptencoding utf-8
 
 function! open#open (arg) abort
+  let arg = shellescape (a:arg)
   if executable ('powershell.exe')
-    call system ('powershell.exe start ' . a:arg)
+    return system ('powershell.exe start ' . arg)
   elseif executable ('open')
-    call system ('open ' . a:arg)
+    call system ('open ' . arg)
   elseif executable ('xdg-open')
-    call system ('xdg-open ' . a:arg)
+    return system ('xdg-open ' . arg)
   else
-    echoerr "open#open: cannot open"
+    echoerr 'open#open: cannot open' . a:arg
   endif
 endfunction
 
-function! s:URIEncoding ()
-
+function! s:encodeURIComponent (x) abort
+  return denops#request ('util', 'encodeURIComponent', [a:x])
 endfunction
 
 function! open#google (arg) abort
-  return open#open ('https://www.google.com/search?q=' . a:arg)
+  return open#open ('https://www.google.com/search?q=' . s:encodeURIComponent (a:arg))
 endfunction

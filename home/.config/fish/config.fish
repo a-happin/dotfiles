@@ -19,7 +19,8 @@ if status is-login
 
   set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --no-ignore --exclude .git'
 
-  set -gx CHINO_OPT -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I. -I./include "-I$HOME/work/gomi/include" -O2 -pipe
+  # set i3-sensible-terminal
+  set -gx TERMINAL alacritty
 
   # prepend to $PATH
   set -g fish_user_paths "$HOME/bin"
@@ -89,7 +90,8 @@ if status is-interactive
   ################################
 
 
-  # set -g chino_opt -std=c++2b -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -I./include -O2 -pipe
+  # PATH以外の配列をexportするとバグり散らかすので仕方なく変数にする
+  set -g CHINO_OPT -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -I. -O2 -pipe
 
 
   ################################
