@@ -37,6 +37,14 @@ nnoremap q: <Nop>
 "  挙動修正
 " --------------------------------
 
+" Shift-Yで行末までヤンク
+nnoremap Y y$
+
+" 選択範囲をヤンクした文字列で上書き時にレジスタを汚さない
+" xnoremap p pgvy
+" xnoremap p "_xP
+xnoremap <expr> p 'pgv"' . v:register . 'y`>'
+
 " 入れ替え
 "nnoremap ; :
 "nnoremap : ;
@@ -60,17 +68,27 @@ nnoremap <silent> <expr> j v:count > 0 ? 'j' : 'gj'
 nnoremap <silent> <expr> k v:count > 0 ? 'k' : 'gk'
 xnoremap <silent> <expr> j v:count > 0 ? 'j' : 'gj'
 xnoremap <silent> <expr> k v:count > 0 ? 'k' : 'gk'
-nnoremap <silent> <expr> <Down> v:count > 0 ? 'j' : 'gj'
-nnoremap <silent> <expr> <Up>   v:count > 0 ? 'k' : 'gk'
-xnoremap <silent> <expr> <Down> v:count > 0 ? 'j' : 'gj'
-xnoremap <silent> <expr> <Up>   v:count > 0 ? 'k' : 'gk'
+noremap <silent> <expr> <Down> v:count > 0 ? 'j' : 'gj'
+noremap <silent> <expr> <Up>   v:count > 0 ? 'k' : 'gk'
 
+" Shift+Arrowキーの修正。Shiftの離し忘れで意図せずに急に飛ぶとつらい。
+noremap <S-Left> <Left>
+noremap <S-Right> <Right>
+noremap <S-Up> <Up>
+noremap <S-Down> <Down>
+
+" Switch to select mode
+inoremap <S-Left> <Left><C-o>gh
+inoremap <S-Right> <C-o>gh
+inoremap <S-Up> <Up>
+inoremap <S-Down> <Down>
 
 " ビジュアルモードでインデント調整時に選択範囲を解除しない
+" .(ドットリピート)はいいぞ
 "xnoremap < <gv
 "xnoremap > >gv
 
-nnoremap f<CR> $
+" nnoremap f<CR> $
 
 nnoremap # #*N
 
@@ -83,8 +101,20 @@ nnoremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\
 vnoremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^"
 inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^")
 
+
 " --------------------------------
 "  機能追加
+" --------------------------------
+
+" ファイルチェックして再描画！
+" nnoremap <C-l> <Cmd>checktime<CR><C-l>
+
+" 選択中にCtrl-Cでクリップボードにコピー
+vnoremap <C-c> "+y
+
+
+" --------------------------------
+"  機能追加(Alt+)
 " --------------------------------
 
 " 全部閉じて終了
@@ -92,20 +122,15 @@ inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') 
 noremap <M-q> <Cmd>confirm qall<CR>
 tnoremap <M-q> <Cmd>confirm qall<CR>
 
+" Open File Explorer
+" nnoremap <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
+nnoremap <M-e> <Cmd>Fern . -reveal=% -drawer -toggle<CR>
 
-" ファイルチェックして再描画！
-nnoremap <C-l> <Cmd>checktime<CR><C-l>
+" Toggle Terminal
+nnoremap <M-t> <Cmd>Hterminal<CR>
 
-" Shift-Yで行末までヤンク
-nnoremap Y y$
-
-" 選択範囲をヤンクした文字列で上書き時にレジスタを汚さない
-" xnoremap p pgvy
-" xnoremap p "_xP
-xnoremap <expr> p 'pgv"' . v:register . 'y`>'
-
-" 選択中にCtrl-Cでクリップボードにコピー
-vnoremap <C-c> "+y
+" Reload init.vim
+nnoremap <M-r> <Cmd>source $MYVIMRC<CR>
 
 " 移動系
 " 戻る
@@ -120,14 +145,34 @@ nnoremap <expr> <M-Down> '<Cmd>move .+' . (v:count > 0 ? v:count : 1) . '<CR>'
 xnoremap <M-Up> :move '<-2<CR>gv
 xnoremap <M-Down> :move '>+1<CR>gv
 
-" Open Terminal
-nnoremap <M-t> <Cmd>Hterminal<CR>
-
 " --------------------------------
 "  <Space>
 " --------------------------------
 
 nnoremap <Space><Esc> <Nop>
+
+nnoremap <Space>1 <Cmd>setlocal cursorline! cursorcolumn!<CR>
+" nnoremap <Space>2 <Cmd>setlocal relativenumber!<CR>
+nnoremap <Space>2 @@
+
+" nnoremap <Space>3 <Cmd>nohlsearch<CR>
+
+" 行末
+nnoremap <Space>4 $
+
+nnoremap <Space>5 %
+
+nnoremap <Space>7 <Cmd>setlocal spell!<CR>
+
+nnoremap <Space>8 *
+
+" 現在の括弧
+nnoremap <Space>9 F(
+nnoremap <Space>0 f)
+" nnoremap <Space>0 <Cmd>setlocal paste!<CR>
+
+" バッファを閉じる
+nnoremap <Space><BS> <Cmd>confirm bdelete<CR>
 
 " 現在のウインドウを新しいタブに移動
 nnoremap <Space><Tab> <C-w>T
@@ -145,7 +190,8 @@ nnoremap <Space>w <Cmd>update<CR>
 " ファイルを開く
 " nnoremap <Space>e :<C-u>e<Space>
 " nnoremap <Space>e <Cmd>Fern . -reveal=% -drawer -toggle<CR>
-nnoremap <Space>e <Cmd>Files<CR>
+" nnoremap <Space>e <Cmd>Files<CR>
+nnoremap <Space>e :<C-u>e <C-r>=expand('%')<CR>
 
 " Restart coc.nvim
 nnoremap <Space>r <Cmd>CocRestart<CR>
@@ -164,7 +210,7 @@ nnoremap <Space>p "+p
 nnoremap <Space>P "+P
 
 " Split Horizontally
-" nnoremap <Space>s <C-w>s
+nnoremap <Space>s <C-w>s
 
 nnoremap <Space>d lD
 
@@ -187,7 +233,7 @@ xnoremap <Space>; :
 nnoremap <Space>c <Cmd>CocList<CR>
 
 " Split Vertically
-" nnoremap <Space>v <C-w>v
+nnoremap <Space>v <C-w>v
 
 " バッファ一覧
 nnoremap <Space>b <Cmd>Buffers<CR>
@@ -203,21 +249,11 @@ nnoremap <Space>nt <Cmd>tabnew<CR>
 nnoremap <Space>, <Cmd>edit $MYVIMRC<CR>
 " nnoremap <M-,> <Cmd>edit $MYVIMRC<CR>
 
-nnoremap <Space>1 <Cmd>setlocal cursorline! cursorcolumn!<CR>
-" nnoremap <Space>2 <Cmd>setlocal relativenumber!<CR>
-nnoremap <Space>2 @@
+" source this
+nnoremap <Space>. <Cmd>source %<bar>echo 'sourced this file'<CR>
 
-" nnoremap <Space>3 <Cmd>nohlsearch<CR>
-
-" 行末
-nnoremap <Space>4 $
-
-nnoremap <Space>5 %
-
-nnoremap <Space>7 <Cmd>setlocal spell!<CR>
-
-nnoremap <Space>8 *
-" nnoremap <Space>0 <Cmd>setlocal paste!<CR>
+" ripgrep
+nnoremap <Space>/ <Cmd>Rg<CR>
 
 
 " --------------------------------
@@ -231,6 +267,7 @@ vnoremap <C-a> gg0oG$
 xnoremap all gg0oG$
 onoremap all <Cmd>normal! vgg0oG$<CR>
 
+" 現在の行(改行含まない)
 xnoremap il g_o0o
 onoremap il <Cmd>normal! v_o$h<CR>
 
@@ -245,13 +282,6 @@ onoremap il <Cmd>normal! v_o$h<CR>
 nmap <C-_> <Plug>CommentaryLine
 imap <C-_> <C-o><Plug>CommentaryLine
 xmap <C-_> <Plug>Commentary
-
-
-" --------------------------------
-"  netrw
-" --------------------------------
-" nnoremap <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
-nnoremap <M-e> <Cmd>Fern . -reveal=% -drawer -toggle<CR>
 
 
 " --------------------------------

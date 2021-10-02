@@ -22,4 +22,5 @@ function! pack#lightline#init () abort
         \     'inactive': ['filename', 'modified']
         \   }
         \ }
+  call lightline#coc#register ()
 endfunction

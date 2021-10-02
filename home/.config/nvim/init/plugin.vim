@@ -4,6 +4,10 @@ scriptencoding utf-8
 " **  plugin settings
 " *******************************
 
+" 不要なプラグインをロードしない
+" 読み込み前に読み込んだことにすることで読み込まないようにする
+let g:loaded_netrwPlugin = 1
+
 " 上のヘルプコメントを隠す
 let g:netrw_banner = 0
 " tree形式で表示
@@ -22,6 +26,7 @@ let g:netrw_altv = 1
 " **  minpac
 " *******************************
 
+if v:false
 let s:minpac_dir = $XDG_CACHE_HOME . '/nvim/minpac'
 execute 'set packpath^=' . s:minpac_dir
 
@@ -47,4 +52,5 @@ else
   call system ('git clone --depth 1 https://github.com/k-takata/minpac.git ' . s:minpac_dir . '/pack/minpac/opt/minpac')
   call pack#init ()
   call minpac#update ()
+endif
 endif

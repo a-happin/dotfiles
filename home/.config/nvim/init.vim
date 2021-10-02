@@ -30,6 +30,7 @@ endfunction
 call s:source ('init/set.vim')
 call s:source ('init/command.vim')
 call s:source ('init/plugin.vim')
+call s:source ('init/dein.vim')
 call s:source ('init/mappings.vim')
 call s:source ('init/autocmd.vim')
 

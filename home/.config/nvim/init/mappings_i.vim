@@ -294,7 +294,7 @@ function! s:slash_key () abort
   if prev =~# '\v[/*\\]$'
     return "/"
   elseif s:ends_with (prev, '<')
-    if &omnifunc != ''
+    if &omnifunc ==# 'htmlcomplete#CompleteTags'
       return "/\<C-x>\<C-o>\<C-n>\<C-y>\<C-o>=="
     else
       return "/"
