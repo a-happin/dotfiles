@@ -68,10 +68,10 @@ URxvt*font: xft:Roboto Mono Medium:size=9,xft:M+ 1m:size=9,xft:Symbola:size=12
 !URxvt*letterSpace: 1
 
 ! font
-xterm*faceName: xft:Inconsolata:size=10
+xterm*faceName: xft:Reboto Mono Medium:size=10
 xterm*faceNameDoublesie: xft:Ricty:size=10
-xterm*faceSize: 10
-! xterm*cjkWidth: true
+/* xterm*faceSize: 10 */
+xterm*cjkWidth: true
 !xterm*letterSpace: -1
 
 
