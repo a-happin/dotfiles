@@ -118,7 +118,7 @@ set list
 set listchars=tab:»\ ,trail:_,nbsp:%
 
 " 括弧の対応
-set matchpairs=(:),{:},[:],<:>
+set matchpairs=(:),{:},[:],<:>,「:」,『:』,（:）,【:】,《:》,〈:〉,［:］,‘:’,“:”
 
 " showmatchのジャンプ時間(1 = 0.1sec)
 "set matchtime=2

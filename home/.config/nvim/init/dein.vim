@@ -33,16 +33,8 @@ if dein#load_state (s:dein_directory)
   " fix https://github.com/neovim/neovim/issues/12587
   call dein#add ('antoinemadec/FixCursorHold.nvim')
 
-
-  " ********************************
-  " ** denops plugins
-  " ********************************
-  " ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno
-  call dein#add ('vim-denops/denops.vim')
-
-  " GhostText
-  call dein#add ('gamoutatsumi/dps-ghosttext.vim')
-
+  " fix https://github.com/neovim/neovim/issues/1716
+  " call dein#add ('lambdalisue/suda.vim')
 
   " ********************************
   " ** plugins
@@ -66,16 +58,37 @@ if dein#load_state (s:dein_directory)
   " fzf
   call dein#add ('junegunn/fzf.vim', {'on_event': 'VimEnter'})
 
+  " ********************************
+  " ** file explorer
+  " ********************************
   " fern
   call dein#add ('lambdalisue/fern.vim', {'hook_add': 'let g:fern#default_hidden = 1'})
+
+  " netrw hijack
   call dein#add ('lambdalisue/fern-hijack.vim')
 
+  " ********************************
+  " ** denops plugins
+  " ********************************
+  " ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno
+  call dein#add ('vim-denops/denops.vim')
+
+  " GhostText
+  call dein#add ('gamoutatsumi/dps-ghosttext.vim')
+
+  " Preview markdown on your browser
+  call dein#add ('kat0h/bufpreview.vim')
+
+  " ********************************
+  " ** lua plugins
+  " ********************************
+  " virtual text を利用したindent guide. No conceal らしいので採用
+  " call dein#add ('lukas-reineke/indent-blankline.nvim')
 
   " ********************************
   " ** ftplugin
+  " ** ftdetect, ftplugin, syntax定義のみ
   " ********************************
-  " ftdetect, ftplugin, syntax定義のみ
-
   " color codeを色で表示
   call dein#add ('gorodinskiy/vim-coloresque')
 
@@ -85,6 +98,9 @@ if dein#load_state (s:dein_directory)
   " fish shell script
   call dein#add ('dag/vim-fish')
 
+  " ********************************
+  " ** end
+  " ********************************
   call dein#end ()
   call dein#save_state ()
 endif

@@ -4,10 +4,18 @@ scriptencoding utf-8
 " **  plugin settings
 " *******************************
 
-" 不要なプラグインをロードしない
-" 読み込み前に読み込んだことにすることで読み込まないようにする
-let g:loaded_netrwPlugin = 1
+" Disable unnecessary default plugins
+" https://github.com/lambdalisue/dotfiles/blob/master/nvim/init.vim
+" NOTE: The Netrw is use to download a missing spellfile
+" let g:loaded_netrw             = 1
+" let g:loaded_netrwPlugin       = 1
+" let g:loaded_netrwSettings     = 1
+" let g:loaded_netrwFileHandlers = 1
 
+
+" *******************************
+" **  netrw settings
+" *******************************
 " 上のヘルプコメントを隠す
 let g:netrw_banner = 0
 " tree形式で表示
@@ -17,6 +25,10 @@ let g:netrw_sizestyle = "H"
 " 左右分割を右側に開く
 let g:netrw_altv = 1
 
+
+" *******************************
+" **  conceal?
+" *******************************
 " jsonのconcealを無効にする
 " 今はconceal自体を無効化しているのでコメントアウト
 " let g:vim_json_conceal = 0
