@@ -1,3 +1,3 @@
-function wallpaper
-  feh --no-fehbg --randomize --bg-max $argv
+function wallpaper --wraps=feh
+  feh --no-fehbg --randomize --bg-max --recursive $argv
 end

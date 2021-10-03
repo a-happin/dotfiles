@@ -311,7 +311,6 @@ bar {
 exec_always --no-startup-id xset r rate 400 45
 exec_always --no-startup-id fcitx5 -d
 exec --no-startup-id dropbox
-exec --no-startup-id feh --no-fehbg --randomize --bg-max ~/Dropbox/image/illust/
-# imwheelはここで起動しないと失敗する(.xinitrcじゃだめ)
+exec --no-startup-id feh --no-fehbg --randomize --bg-max --recursive ~/Dropbox/image/illust/
 exec_always --no-startup-id imwheel -k
-exec_always --no-startup-id picom -b
+exec --no-startup-id picom -b
