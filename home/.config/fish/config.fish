@@ -17,7 +17,7 @@ if status is-login
   set -gx XDG_CACHE_HOME "$HOME/.cache"
   set -gx XDG_DATA_HOME "$HOME/.local/share"
 
-  set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --no-ignore --exclude .git'
+  set -gx FZF_DEFAULT_COMMAND 'fd --hidden --no-ignore --exclude .git --type f'
 
   # set i3-sensible-terminal
   set -gx TERMINAL alacritty
@@ -125,11 +125,13 @@ if status is-interactive
   abbr --add -g mv 'mv -iv'
   abbr --add -g rm 'rm -i'
   abbr --add -g rr 'rm -ri'
+  abbr --add -g rrf 'rm -rf'
   abbr --add -g ln 'ln -snfv FILE LINK'
   abbr --add -g mkdir 'mkdir -p'
   abbr --add -g df 'df -h'
   abbr --add -g du 'du -h --max-depth 1'
-  abbr --add -g rg 'rg --hidden'
+  abbr --add -g fd 'fd --hidden --no-ignore --exclude .git'
+  abbr --add -g rg 'rg --hidden --no-ignore --glob \'!.git\''
   abbr --add -g ssh-keygen 'ssh-keygen -t ed255519 -f ~/.ssh/__DIRECTORY__ # mkdir before create'
   abbr --add -g rsync 'rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with the \'/\' at the end.'
   abbr --add -g paccache 'paccache -r; paccache -ruk0'
@@ -222,6 +224,7 @@ if status is-interactive
   # global abbreviation
   context-abbr '**' 'G' '| grep'
   context-abbr '**' 'L' '| less'
+  context-abbr --eval '**' '!!' 'history | head -1 || printf "!!"'
 
   ################################
   # dev
