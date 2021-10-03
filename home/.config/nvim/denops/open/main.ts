@@ -159,6 +159,7 @@ export async function main (denops: Denops): Promise <void> {
     },
   }
 
+  denops.cmd (`command! -bar OpenURI call denops#notify ('${denops.name}', 'openURI', [expand ('<cfile>')])`)
   denops.cmd (`command! -bar OpenGitHub call denops#notify ('${denops.name}', 'openGitHub', [expand ('<cfile>')])`)
   denops.cmd (`command! -bar -range=% Google call denops#notify ('${denops.name}', 'openGoogle', [expand ('<cfile>'), <line1>, <line2>])`)
   denops.cmd (`command! -bar -range=% GoogleEng call denops#notify ('${denops.name}', 'openGoogleEnglish', [expand ('<cfile>'), <line1>, <line2>])`)

@@ -6,6 +6,9 @@ scriptencoding utf-8
 " deinにはpluginをmergeしてruntimepathを短くする機能があるが、lazy loadになっているプラグインはこの機能が効かない(なんで！？)ので、
 " pluginフォルダ内に重い処理があるプラグインだけlazy loadをしよう。
 
+" *******************************
+" **  first setup
+" *******************************
 let s:dein_directory = $XDG_CACHE_HOME . '/dein'
 let s:dein_repo = s:dein_directory . '/repos/github.com/Shougo/dein.vim'
 
@@ -18,6 +21,9 @@ endif
 " Add the dein installation directory into runtimepath
 let &runtimepath = &runtimepath . ',' . s:dein_repo
 
+" *******************************
+" **  define
+" *******************************
 if dein#load_state (s:dein_directory)
   " dein#begin 内部で自動的に`filetype off`されるため手動でやる必要はない
   call dein#begin (s:dein_directory, [expand ('<sfile>')])
@@ -37,6 +43,19 @@ if dein#load_state (s:dein_directory)
   " call dein#add ('lambdalisue/suda.vim')
 
   " ********************************
+  " ** improve default behavior
+  " ********************************
+  " fern
+  call dein#add ('lambdalisue/fern.vim', {'hook_add': 'let g:fern#default_hidden = 1'})
+
+  " netrw hijack (requires fern.vim)
+  call dein#add ('lambdalisue/fern-hijack.vim')
+
+  " toggle comment
+  " autocmdをつかってくれ
+  call dein#add ('tpope/vim-commentary', {'on_event': 'VimEnter'})
+
+  " ********************************
   " ** plugins
   " ********************************
   " LSP client
@@ -51,21 +70,8 @@ if dein#load_state (s:dein_directory)
   " lightlineにcoc情報を表示する関数を提供する
   call dein#add ('josa42/vim-lightline-coc')
 
-  " toggle comment
-  " autocmdをつかってくれ
-  call dein#add ('tpope/vim-commentary', {'on_event': 'VimEnter'})
-
   " fzf
   call dein#add ('junegunn/fzf.vim', {'on_event': 'VimEnter'})
-
-  " ********************************
-  " ** file explorer
-  " ********************************
-  " fern
-  call dein#add ('lambdalisue/fern.vim', {'hook_add': 'let g:fern#default_hidden = 1'})
-
-  " netrw hijack
-  call dein#add ('lambdalisue/fern-hijack.vim')
 
   " ********************************
   " ** denops plugins
@@ -89,7 +95,7 @@ if dein#load_state (s:dein_directory)
   " ** ftplugin
   " ** ftdetect, ftplugin, syntax定義のみ
   " ********************************
-  " color codeを色で表示
+  " colorize color code
   call dein#add ('gorodinskiy/vim-coloresque')
 
   " C++
@@ -105,19 +111,22 @@ if dein#load_state (s:dein_directory)
   call dein#save_state ()
 endif
 
-" auto install
-if has('vim_starting') && dein#check_install ()
+" ********************************
+" ** lazy
+" ********************************
+if has ('vim_starting')
   augroup init-dein-check-install
     autocmd!
-    autocmd VimEnter * ++once call dein#install ()
+    autocmd VimEnter * ++once call s:onVimEnter ()
   augroup END
+else
+  call s:onVimEnter ()
 endif
-
-augroup init-dein
-  autocmd!
-  autocmd VimEnter * ++once call s:onVimEnter ()
-augroup END
 
 function! s:onVimEnter () "noabort
   " call lightline#update ()
+  if dein#check_install ()
+    call dein#install ()
+  endif
+  call pack#dein#check_and_uninstall ()
 endfunction

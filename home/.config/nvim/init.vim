@@ -1,12 +1,9 @@
 set encoding=utf-8
 scriptencoding utf-8
 
-filetype off
-
 " *******************************
 " **  env
 " *******************************
-
 if empty ($XDG_CONFIG_HOME)
   let $XDG_CONFIG_HOME = $HOME . '/.config'
 endif
@@ -19,10 +16,10 @@ if empty ($XDG_DATA_HOME)
   let $XDG_DATA_HOME = $HOME . '/.local/share'
 endif
 
+
 " *******************************
 " **  source
 " *******************************
-
 function! s:source (file) abort
   execute 'source ' . $XDG_CONFIG_HOME . '/nvim/' . a:file
 endfunction
@@ -31,15 +28,28 @@ call s:source ('init/set.vim')
 call s:source ('init/command.vim')
 call s:source ('init/plugin.vim')
 call s:source ('init/dein.vim')
-call s:source ('init/mappings.vim')
 call s:source ('init/autocmd.vim')
 
+
+" *******************************
+" **  last on startup
+" *******************************
 filetype plugin indent on
 syntax enable
 
 call s:source ('init/colorscheme.vim')
 
-augroup lazy-source
-  autocmd!
-  autocmd InsertEnter * ++once call s:source ('init/mappings_i.vim')
-augroup END
+
+" *******************************
+" **  lazy
+" *******************************
+if has ('vim_starting')
+  augroup init-lazy-source
+    autocmd!
+    autocmd VimEnter * ++once call s:source ('init/mappings.vim')
+    autocmd InsertEnter * ++once call s:source ('init/mappings_i.vim')
+  augroup END
+else
+  call s:source ('init/mappings.vim')
+  call s:source ('init/mappings_i.vim')
+endif

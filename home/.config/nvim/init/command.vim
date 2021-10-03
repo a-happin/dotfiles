@@ -32,8 +32,6 @@ command! -nargs=* -complete=shellcmd Hterminal botright new | resize 20 | termin
 command! -nargs=* -complete=shellcmd Vterminal botright vertical new | terminal <args>
 command! -nargs=* -complete=shellcmd Tterminal tabnew | terminal <args>
 
-" command! -bar GitHub call open#open ('https://github.com/' . expand ('<cfile>'))
-
 " カーソル位置のsyntax hightlight group
 command! -bar CurrentSyntax echo synIDattr(synID(line('.'), col('.'), 1), 'name')
 

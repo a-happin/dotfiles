@@ -33,6 +33,7 @@ nnoremap gQ <Nop>
 " disable commandline window
 nnoremap q: <Nop>
 
+
 " --------------------------------
 "  挙動修正
 " --------------------------------
@@ -101,6 +102,16 @@ nnoremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\
 vnoremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^"
 inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^")
 
+" ダブルクリックで選択
+nnoremap <expr> <2-LeftMouse> &buftype ==# 'help' ? '<2-LeftMouse>' : 'viw'
+nnoremap <3-LeftMouse> <Nop>
+nnoremap <4-LeftMouse> <Nop>
+vnoremap <2-LeftMouse> <Nop>
+vnoremap <3-LeftMouse> V
+vnoremap <4-LeftMouse> ip
+inoremap <2-LeftMouse> <C-o>viw<C-g>
+inoremap <3-LeftMouse> <Nop>
+inoremap <4-LeftMouse> <Nop>
 
 " --------------------------------
 "  機能追加
@@ -155,7 +166,7 @@ nnoremap <Space>1 <Cmd>setlocal cursorline! cursorcolumn!<CR>
 " nnoremap <Space>2 <Cmd>setlocal relativenumber!<CR>
 nnoremap <Space>2 @@
 
-" nnoremap <Space>3 <Cmd>nohlsearch<CR>
+nnoremap <Space>3 <Cmd>e #<CR>
 
 " 行末
 nnoremap <Space>4 $
@@ -243,7 +254,7 @@ nnoremap <Space>n <Nop>
 nnoremap <Space>nn <Cmd>enew<CR>
 nnoremap <Space>ns <Cmd>new<CR>
 nnoremap <Space>nv <Cmd>vnew<CR>
-nnoremap <Space>nt <Cmd>tabnew<CR>
+nnoremap <Space>n<Tab> <Cmd>tabnew<CR>
 
 " open config file
 nnoremap <Space>, <Cmd>edit $MYVIMRC<CR>
@@ -356,9 +367,17 @@ cnoremap <Down> <C-n>
 "  Terminal
 " --------------------------------
 
+" ターミナル内で<Esc>を押したいときが多いのでよくない
 "tnoremap <Esc><Esc> <C-\><C-n>
+
 " クリックでterminal windowを選択時にnormalモードに戻らないようにする
+tnoremap <LeftMouse> <LeftMouse><Cmd>if &buftype ==# 'terminal'<bar>startinsert<bar>endif<CR>
 tnoremap <LeftRelease> <Nop>
+tnoremap <2-LeftMouse> <Nop>
+tnoremap <3-LeftMouse> <Nop>
+tnoremap <4-LeftMouse> <Nop>
+
+" ウインドウ切り替え用
 tmap <C-w> <C-\><C-n><C-w>
 
 " {{{

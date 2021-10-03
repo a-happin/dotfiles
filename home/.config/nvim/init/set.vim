@@ -58,7 +58,7 @@ set completeopt=menuone,preview,noselect
 " c: command line editing
 set concealcursor=nc
 
-" if 0, disable c
+" if 0, disable conceal
 " 表示するなら2かな
 " 起動時の:introがなくなってしまうことに気づいて、寂しいので無効化する……。
 set conceallevel=0
