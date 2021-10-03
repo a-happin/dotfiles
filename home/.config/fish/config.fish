@@ -129,6 +129,7 @@ if status is-interactive
   abbr --add -g mkdir 'mkdir -p'
   abbr --add -g df 'df -h'
   abbr --add -g du 'du -h --max-depth 1'
+  abbr --add -g rg 'rg --hidden'
   abbr --add -g ssh-keygen 'ssh-keygen -t ed255519 -f ~/.ssh/__DIRECTORY__ # mkdir before create'
   abbr --add -g rsync 'rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with the \'/\' at the end.'
   abbr --add -g paccache 'paccache -r; paccache -ruk0'
@@ -150,7 +151,6 @@ if status is-interactive
   # don't forget sudo
   if test $USER != 'root'
     abbr --add -g pacman 'sudo pacman'
-    abbr --add -g systemctl 'sudo systemctl'
     abbr --add -g apt 'sudo apt'
   end
 
