@@ -128,5 +128,5 @@ function! s:onVimEnter () "noabort
   if dein#check_install ()
     call dein#install ()
   endif
-  call pack#dein#check_and_uninstall ()
+  silent call pack#dein#check_and_uninstall ()
 endfunction
