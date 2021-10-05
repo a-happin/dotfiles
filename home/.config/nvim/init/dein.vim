@@ -62,7 +62,7 @@ if dein#load_state (s:dein_directory)
   call dein#add ('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release', 'on_event': 'VimEnter', 'hook_source': 'call pack#coc#init ()'})
 
   " show git diff at SignColumn
-  call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter'})
+  call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter', 'hook_add': 'let g:gitgutter_map_keys = 0'})
 
   " customize statusline
   call dein#add ('itchyny/lightline.vim', {'hook_add': 'call pack#lightline#init ()'})

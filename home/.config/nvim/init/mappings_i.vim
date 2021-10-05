@@ -12,11 +12,47 @@ augroup END
 
 
 " --------------------------------
-" - disable
+"  disable
 " --------------------------------
 " Ctrl-Cによる挿入モードからの離脱を禁止
 " （InsertLeaveが呼ばれないので内部状態がおかしくなる）
 inoremap <C-c> <Nop>
+
+" なんか出てくるけど誰も望んでない
+inoremap <C-S-Insert> <Nop>
+
+
+" --------------------------------
+"  動作系
+" --------------------------------
+inoremap <S-Del> <C-o>de
+inoremap <C-Del> <C-o>de
+inoremap <C-S-Del> <C-o>de
+
+
+" --------------------------------
+"  移動系
+" --------------------------------
+
+" カーソルが急に飛ぶとつらいので修正
+" どうせならselect modeになってほしい
+" &keymodel contains 'startsel' && &selection ==# 'inclusive' のときの挙動がおかしいので修正
+inoremap <silent> <expr> <S-Left>   &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Left>oho<C-g>'     : '<S-Left><C-g>'  : '<Left>'
+inoremap <silent> <expr> <S-Right>  &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Right><Left><C-g>' : '<S-Right><C-g>' : '<Right>'
+inoremap <silent> <expr> <S-Up>     &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Up>oho<C-g>'       : '<S-Up><C-g>'    : '<Up>'
+inoremap <silent> <expr> <S-Down>   &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Down><Left><C-g>'  : '<S-Down><C-g>'  : '<Down>'
+inoremap <silent> <expr> <S-Home>   &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Home>oho<C-g>'     : '<S-Home><C-g>'  : '<Home>'
+inoremap <silent> <expr> <S-End>    &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-End><Left><C-g>'   : '<S-End><C-g>'   : '<End>'
+inoremap <silent> <expr> <C-S-Home> &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Home>oho<C-g>'     : '<S-Home><C-g>'  : '<Home>'
+inoremap <silent> <expr> <C-S-End>  &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-End><Left><C-g>'   : '<S-End><C-g>'   : '<End>'
+
+" 急に飛ばないで
+inoremap <C-Home> <Home>
+inoremap <C-End> <End>
+inoremap <PageUp> <C-x><C-y>
+inoremap <S-PageUp> <C-x><C-y>
+inoremap <PageDown> <C-x><C-e>
+inoremap <S-PageDown> <C-x><C-e>
 
 
 " --------------------------------
@@ -24,37 +60,37 @@ inoremap <C-c> <Nop>
 " --------------------------------
 
 " ポップアップ補完メニューが表示されているときは次の候補を選択
-inoremap <silent><expr> <Tab> <SID>tab_key ()
+inoremap <expr> <Tab> <SID>tab_key ()
 
 " ポップアップ補完メニューが表示されているときは前の候補を選択
 " それ以外はインデントを1つ下げる
-inoremap <silent><expr> <S-Tab> pumvisible () ? '<C-p>' : '<C-d>'
+inoremap <expr> <S-Tab> pumvisible () ? '<C-p>' : '<C-d>'
 
 " ポップアップ補完メニューが表示されているときは確定
-inoremap <silent><expr> <CR> <SID>cr_key ()
+inoremap <expr> <CR> <SID>cr_key ()
 
 " 括弧の対応の補完
-inoremap <silent><expr> ( <SID>begin_parenthesis ('(',')')
-inoremap <silent><expr> ) <SID>end_parenthesis   ('(',')')
-inoremap <silent><expr> { <SID>begin_parenthesis ('{','}')
-inoremap <silent><expr> } <SID>end_parenthesis   ('{','}')
-inoremap <silent><expr> [ <SID>begin_parenthesis ('[',']')
-inoremap <silent><expr> ] <SID>end_parenthesis   ('[',']')
+inoremap <expr> ( <SID>begin_parenthesis ('(',')')
+inoremap <expr> ) <SID>end_parenthesis   ('(',')')
+inoremap <expr> { <SID>begin_parenthesis ('{','}')
+inoremap <expr> } <SID>end_parenthesis   ('{','}')
+inoremap <expr> [ <SID>begin_parenthesis ('[',']')
+inoremap <expr> ] <SID>end_parenthesis   ('[',']')
 
 " クォーテーションの自動補完
-inoremap <silent><expr> " <SID>quotation_key ('"')
-inoremap <silent><expr> ' <SID>quotation_key ('''')
-inoremap <silent><expr> ` <SID>quotation_key ('`')
+inoremap <expr> " <SID>quotation_key ('"')
+inoremap <expr> ' <SID>quotation_key ('''')
+inoremap <expr> ` <SID>quotation_key ('`')
 
 " Backspace
-inoremap <silent><expr> <BS> <SID>backspace_key ()
+inoremap <expr> <BS> <SID>backspace_key ()
 "inoremap <expr><Del> delete_key ()
 
 " いいかんじの'/'
-inoremap <silent><expr> / <SID>slash_key ()
+inoremap <expr> / <SID>slash_key ()
 
 " スペースキー
-inoremap <silent><expr> <Space> <SID>space_key ()
+inoremap <expr> <Space> <SID>space_key ()
 
 " *******************************
 " **  function!
@@ -85,16 +121,16 @@ function! s:ends_with (str, x) abort
 endfunction
 
 let s:parens = [
-  \ ['(', ')'],
-  \ ['{', '}'],
-  \ ['[', ']'],
-  \ ['<', '>'],
+  \   ['(', ')'],
+  \   ['{', '}'],
+  \   ['[', ']'],
+  \   ['<', '>'],
   \ ]
 
 let s:quotations = [
-  \ '''',
-  \ '"',
-  \ '`',
+  \   '''',
+  \   '"',
+  \   '`',
   \ ]
 
 " 空の括弧の中にいるかどうか

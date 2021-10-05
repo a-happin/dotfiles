@@ -1,18 +1,43 @@
-scriptencoding utf-8
+"----------------------------------------------------------------------------------------------"
+" Commands \ Modes | Normal | Insert | Command | Visual | Select | Operator | Terminal | Lang? |
+"------------------|--------|--------|---------|--------|--------|----------|----------|-------|
+" map  / noremap   |   @    |   -    |    -    |   @    |   @    |    @     |    -     |   -   |
+" nmap / nnoremap  |   @    |   -    |    -    |   -    |   -    |    -     |    -     |   -   |
+" map! / noremap!  |   -    |   @    |    @    |   -    |   -    |    -     |    -     |   -   |
+" imap / inoremap  |   -    |   @    |    -    |   -    |   -    |    -     |    -     |   -   |
+" cmap / cnoremap  |   -    |   -    |    @    |   -    |   -    |    -     |    -     |   -   |
+" vmap / vnoremap  |   -    |   -    |    -    |   @    |   @    |    -     |    -     |   -   |
+" xmap / xnoremap  |   -    |   -    |    -    |   @    |   -    |    -     |    -     |   -   |
+" smap / snoremap  |   -    |   -    |    -    |   -    |   @    |    -     |    -     |   -   |
+" omap / onoremap  |   -    |   -    |    -    |   -    |   -    |    @     |    -     |   -   |
+" tmap / tnoremap  |   -    |   -    |    -    |   -    |   -    |    -     |    @     |   -   |
+" lmap / lnoremap  |   -    |  @(*)  |   @(*)  |   -    |   -    |    -     |    -     |   @   |
+"----------------------------------------------------------------------------------------------"
+" @(*): &iminsert == 1
 
-"---------------------------------------------------------------------------"
-" Commands \ Modes | Normal | Insert | Command | Visual | Select | Operator |
-"------------------|--------|--------|---------|--------|--------|----------|
-" map  / noremap   |    @   |   -    |    -    |   @    |   @    |    @     |
-" nmap / nnoremap  |    @   |   -    |    -    |   -    |   -    |    -     |
-" vmap / vnoremap  |    -   |   -    |    -    |   @    |   @    |    -     |
-" omap / onoremap  |    -   |   -    |    -    |   -    |   -    |    @     |
-" xmap / xnoremap  |    -   |   -    |    -    |   @    |   -    |    -     |
-" smap / snoremap  |    -   |   -    |    -    |   -    |   @    |    -     |
-" map! / noremap!  |    -   |   @    |    @    |   -    |   -    |    -     |
-" imap / inoremap  |    -   |   @    |    -    |   -    |   -    |    -     |
-" cmap / cnoremap  |    -   |   -    |    @    |   -    |   -    |    -     |
-"---------------------------------------------------------------------------"
+" 移動系コマンドはnoremapで定義->printable charaterの場合はsunmapする
+" noremalモードでなんやかんやするものはnnoremap
+" visualモードでなんやかんやするものはxnoremap
+" テキストオブジェクト: xnoremap & onoremap
+
+function! s:nxnoremap (lhs, rhs) "noabort
+  execute 'nnoremap' a:lhs a:rhs
+  execute 'xnoremap' a:lhs a:rhs
+endfunction
+
+function! s:noxnoremap (lhs, rhs) "noabort
+  execute 'noremap' a:lhs a:rhs
+  execute 'sunmap' a:lhs
+endfunction
+
+" 全モードで定義
+" lhs=<M-…>用
+" rhsは<Cmd>以外無理かも
+function! s:anoremap (lhs, rhs) "noabort
+  execute 'noremap' a:lhs a:rhs
+  execute 'noremap!' a:lhs a:rhs
+  execute 'tnoremap' a:lhs a:rhs
+endfunction
 
 " --------------------------------
 "  誤爆防止
@@ -20,11 +45,11 @@ scriptencoding utf-8
 
 " 保存せずに破棄の誤爆防止
 nnoremap ZQ <Nop>
+" 保存してウインドウを閉じる
 nnoremap ZZ <Nop>
 
 " 中ボタンによる貼り付けを無効
-nnoremap <MiddleMouse> <Nop>
-vnoremap <MiddleMouse> <Nop>
+noremap <MiddleMouse> <Nop>
 
 " disable Ex mode
 nnoremap Q <Nop>
@@ -33,26 +58,36 @@ nnoremap gQ <Nop>
 " disable commandline window
 nnoremap q: <Nop>
 
+" xと同じ
+nnoremap <Del> <Nop>
+nnoremap <S-Del> <Nop>
+nnoremap <C-Del> <Nop>
+
 
 " --------------------------------
-"  挙動修正
+"  不完全コマンド系
 " --------------------------------
-
-" Shift-Yで行末までヤンク
-nnoremap Y y$
-
-" 選択範囲をヤンクした文字列で上書き時にレジスタを汚さない
-" xnoremap p pgvy
-" xnoremap p "_xP
-xnoremap <expr> p 'pgv"' . v:register . 'y`>'
+" ただのキー入れ替えなど、単体で操作が完結しないタイプのmapping
 
 " 入れ替え
 "nnoremap ; :
 "nnoremap : ;
 "xnoremap ; :
 "xnoremap : ;
-nnoremap <CR> :
-xnoremap <CR> :
+" マイクラでチャットを開くキーをEnterにしている影響
+" ちなみにたまに困る(helpとか)
+call s:nxnoremap ('<CR>', ':')
+
+" --------------------------------
+"  コマンド/オペレータ系[Normal]
+" --------------------------------
+
+" Shift-Yで行末までヤンク
+" デフォルトがこれになったとかなんとか
+nnoremap Y y$
+
+" ファイルチェックして再描画！
+" nnoremap <C-l> <Cmd>checktime<CR><C-l>
 
 " Shift-Tabでインデントを1つ減らす
 "nnoremap <S-Tab> <<
@@ -63,87 +98,217 @@ nnoremap <S-Tab> gT
 nnoremap <C-w><Tab> gt
 nnoremap <C-w><S-Tab> gT
 
-" 見た目上での縦移動(wrapしてできた行を複数行とみなす？)
-" カウントを指定した場合は正しく移動
-nnoremap <silent> <expr> j v:count > 0 ? 'j' : 'gj'
-nnoremap <silent> <expr> k v:count > 0 ? 'k' : 'gk'
-xnoremap <silent> <expr> j v:count > 0 ? 'j' : 'gj'
-xnoremap <silent> <expr> k v:count > 0 ? 'k' : 'gk'
-noremap <silent> <expr> <Down> v:count > 0 ? 'j' : 'gj'
-noremap <silent> <expr> <Up>   v:count > 0 ? 'k' : 'gk'
-
-" Shift+Arrowキーの修正。Shiftの離し忘れで意図せずに急に飛ぶとつらい。
-noremap <S-Left> <Left>
-noremap <S-Right> <Right>
-noremap <S-Up> <Up>
-noremap <S-Down> <Down>
-
-" Switch to select mode
-inoremap <S-Left> <Left><C-o>gh
-inoremap <S-Right> <C-o>gh
-inoremap <S-Up> <Up>
-inoremap <S-Down> <Down>
-
-" ビジュアルモードでインデント調整時に選択範囲を解除しない
-" .(ドットリピート)はいいぞ
-"xnoremap < <gv
-"xnoremap > >gv
-
 " nnoremap f<CR> $
-
-nnoremap # #*N
-
-nnoremap G Gzz
 
 " nnoremap <F5> <Cmd>call system('deno run --allow-all ./generator.ts > fantasy.vim')\|Reload<CR>
 
-" インデントを考慮した<Home>
-nnoremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^"
-vnoremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^"
-inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^")
+" nnoremap <BS> <C-o>
 
-" ダブルクリックで選択
-nnoremap <expr> <2-LeftMouse> &buftype ==# 'help' ? '<2-LeftMouse>' : 'viw'
-nnoremap <3-LeftMouse> <Nop>
-nnoremap <4-LeftMouse> <Nop>
-vnoremap <2-LeftMouse> <Nop>
-vnoremap <3-LeftMouse> V
-vnoremap <4-LeftMouse> ip
-inoremap <2-LeftMouse> <C-o>viw<C-g>
-inoremap <3-LeftMouse> <Nop>
-inoremap <4-LeftMouse> <Nop>
 
 " --------------------------------
-"  機能追加
+"  コマンド/オペレータ系[Visual]
 " --------------------------------
-
-" ファイルチェックして再描画！
-" nnoremap <C-l> <Cmd>checktime<CR><C-l>
+" 選択範囲をヤンクした文字列で上書き時にレジスタを汚さない
+" xnoremap p pgvy
+" xnoremap p "_xP
+xnoremap <expr> p 'pgv"' . v:register . 'y`>'
 
 " 選択中にCtrl-Cでクリップボードにコピー
 vnoremap <C-c> "+y
 
+" 選択時はインデント調整にする
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+" ビジュアルモードでインデント調整時に選択範囲を解除しない
+"xnoremap < <gv
+"xnoremap > >gv
 
 " --------------------------------
-"  機能追加(Alt+)
+"  カーソル移動系
+" --------------------------------
+
+" 見た目上での縦移動(wrapしてできた行を複数行とみなす？)
+" カウントを指定した場合は正しく移動
+call s:noxnoremap ('<expr> j', 'v:count > 0 ? "j" : "gj"')
+call s:noxnoremap ('<expr> k', 'v:count > 0 ? "k" : "gk"')
+noremap <expr> <Down> v:count > 0 ? 'j' : 'gj'
+noremap <expr> <Up>   v:count > 0 ? 'k' : 'gk'
+
+" 末尾に移動した後スクロール位置を調整する
+call s:noxnoremap ('G', 'Gzz')
+
+" Shift+Arrowキーの修正。Shiftの離し忘れで意図せずに急に飛ぶとつらい。
+" set keymodel=startsel で解決. visual modeが開始するが
+" noremap <S-Left> <Left>
+" noremap <S-Right> <Right>
+" noremap <S-Up> <Up>
+" noremap <S-Down> <Down>
+
+" インデントを考慮した<Home>
+noremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^"
+inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^")
+
+" exclusive <End>
+noremap <expr> <End> &selection ==# 'inclusive' ? '<End><Left>' : '<End>'
+nunmap <End>
+noremap <expr> <S-End> &selection ==# 'inclusive' ? '<S-End><Left>' : '<S-End>'
+
+" <C-End>でinclusiveな<End>ができるようにする
+noremap <C-End> <End>
+noremap <C-S-End> <S-End>
+
+" うわ急に飛ぶな
+noremap <C-Home> <Home>
+noremap <C-S-Home> <S-Home>
+noremap <PageUp> <C-y>
+noremap <S-PageUp> <C-y>
+noremap <PageDown> <C-e>
+noremap <S-PageDown> <C-e>
+
+" 一瞬だけ
+function! s:flash_hlsearch_callback (_) abort
+  set nohlsearch
+  let s:flash_hlsearch_timer_id = 0
+endfunction
+function! s:flash_hlsearch () abort
+  call timer_stop (get (s:, 'flash_hlsearch_timer_id', 0))
+  set hlsearch
+  let s:flash_hlsearch_timer_id = timer_start (300, function ('s:flash_hlsearch_callback'))
+endfunction
+call s:noxnoremap ('*', '*<Cmd>call <SID>flash_hlsearch()<CR>')
+" 検索方向を*と揃える(&wrapscan ==# 1 のときじゃないと動作しない)
+call s:noxnoremap ('#', '#*N<Cmd>call <SID>flash_hlsearch()<CR>')
+call s:noxnoremap ('n', 'n<Cmd>call <SID>flash_hlsearch()<CR>')
+call s:noxnoremap ('N', 'N<Cmd>call <SID>flash_hlsearch()<CR>')
+
+
+" --------------------------------
+"  Mouse
+" --------------------------------
+
+" ダブルクリックで単語選択
+" トリプルクリックで行選択
+" クアドラプルクリックでパラグラフ選択(参考: VSCodeは全選択)
+function! s:double_click () abort
+  if &buftype ==# 'help'
+    return "\<2-LeftMouse>"
+  else
+    let c = matchstr (getline ('.'), '.', col ('.') - 1)
+    if c =~# '\v^\k$'
+      return "viw"
+    elseif c =~# '\v^[(){}[\]<>"''`]$'
+      return "va" . c
+    else
+      return "viW"
+    endif
+  endif
+endfunction
+nnoremap <silent> <expr> <2-LeftMouse> <SID>double_click ()
+nnoremap <3-LeftMouse> <Nop>
+nnoremap <4-LeftMouse> <Nop>
+vnoremap <2-LeftMouse> <Nop>
+" vnoremap <3-LeftMouse> V
+vnoremap <4-LeftMouse> ip
+
+" 挿入モードのときはSELECT MODEにする
+inoremap <silent> <expr> <2-LeftMouse> '<C-o>' . <SID>double_click () . '<C-g>'
+inoremap <3-LeftMouse> <Nop>
+inoremap <4-LeftMouse> <Nop>
+
+
+" --------------------------------
+"  テキストオブジェクト
+" --------------------------------
+
+" ビジュアルモードでCtrl-Aで全選択
+vnoremap <C-a> gg0oG$
+onoremap <C-a> <Cmd>normal! vgg0oG$<CR>
+
+" allテキストオブジェクト ファイル全体
+xnoremap all gg0oG$
+onoremap all <Cmd>normal! vgg0oG$<CR>
+
+" 現在の行(改行含まない)
+" 行の最後に移動するのにいろいろあった。
+" * $h …… &selection によって挙動が違う。空行かつhで行をまたぐ設定のときバグる
+" * g_ …… 末尾が空白だった場合に選択できない
+" また、カーソルが開始位置と終了位置どっちにあるかによって挙動が……など問題が結構ある。
+" 現在は裏技チックだがVisual Blockモードにすることで解決している
+xnoremap <silent> <expr> il (visualmode () ==# '<C-v>' ? '' : '<C-v>') . '0o$'
+onoremap il <Cmd>normal! <C-v>0o$<CR>
+
+"xnoremap <Space> gE<Space>f<Space>ow<BS>F<Space>
+
+" カーソル直下の文字が囲み文字だった場合に便利なテキストオブジェクト
+" auで囲み文字込み、iuで内側
+xnoremap <silent> <expr> au 'a' . matchstr (getline ('.'), '.', col ('.') - 1)
+onoremap <silent> <expr> au 'a' . matchstr (getline ('.'), '.', col ('.') - 1)
+xnoremap <silent> <expr> iu 'i' . matchstr (getline ('.'), '.', col ('.') - 1)
+onoremap <silent> <expr> iu 'i' . matchstr (getline ('.'), '.', col ('.') - 1)
+
+" Shiftって遠いよね
+xnoremap a<Space> aW
+onoremap a<Space> aW
+xnoremap i<Space> iW
+onoremap i<Space> iW
+
+
+" --------------------------------
+"  Alt key mappings
 " --------------------------------
 
 " 全部閉じて終了
-" nnoremap <C-q> <Cmd>confirm qall<CR>
-noremap <M-q> <Cmd>confirm qall<CR>
-tnoremap <M-q> <Cmd>confirm qall<CR>
+call s:anoremap ('<M-q>', '<Cmd>confirm qall<CR>')
+
+nnoremap <M-w> <C-w>
 
 " Open File Explorer
 " nnoremap <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
-nnoremap <M-e> <Cmd>Fern . -reveal=% -drawer -toggle<CR>
-
-" Toggle Terminal
-nnoremap <M-t> <Cmd>Hterminal<CR>
+call s:anoremap ('<M-e>', '<Cmd>Fern . -reveal=% -drawer -toggle<CR>')
 
 " Reload init.vim
 nnoremap <M-r> <Cmd>source $MYVIMRC<CR>
 
-" 移動系
+" Toggle Terminal
+nnoremap <M-t> <Cmd>Hterminal<CR>
+call s:anoremap ('<M-CR>', '<Cmd>ToggleTerminal<CR>')
+
+" LoadSession if current buffer is empty and it's the only buffer
+" SaveSession if others
+call s:anoremap ('<M-s>', '<Cmd>if bufnr ("$") ==# 1 && &modified ==# 0 && empty (&buftype)<bar>LoadSession default<bar>else<bar>SaveSession default<bar>endif<CR>')
+
+call s:anoremap ('<M-h>', '<Cmd>wincmd h<CR>')
+call s:anoremap ('<M-j>', '<Cmd>wincmd j<CR>')
+call s:anoremap ('<M-k>', '<Cmd>wincmd k<CR>')
+call s:anoremap ('<M-l>', '<Cmd>wincmd l<CR>')
+call s:anoremap ('<M-H>', '<Cmd>wincmd H<CR>')
+call s:anoremap ('<M-J>', '<Cmd>wincmd J<CR>')
+call s:anoremap ('<M-K>', '<Cmd>wincmd K<CR>')
+call s:anoremap ('<M-L>', '<Cmd>wincmd L<CR>')
+call s:anoremap ('<M-T>', '<Cmd>wincmd T<CR>')
+call s:anoremap ('<M-->', '<Cmd>resize -1<CR>')
+call s:anoremap ('<M-=>', '<Cmd>resize +1<CR>')
+call s:anoremap ('<M-<>', '<Cmd>vertical resize -1<CR>')
+call s:anoremap ('<M->>', '<Cmd>vertical resize +1<CR>')
+
+" switch tab
+call s:anoremap ('<M-1>', '<Cmd>1tabnext<CR>')
+call s:anoremap ('<M-2>', '<Cmd>2tabnext<CR>')
+call s:anoremap ('<M-3>', '<Cmd>3tabnext<CR>')
+call s:anoremap ('<M-4>', '<Cmd>4tabnext<CR>')
+call s:anoremap ('<M-5>', '<Cmd>5tabnext<CR>')
+call s:anoremap ('<M-6>', '<Cmd>6tabnext<CR>')
+call s:anoremap ('<M-7>', '<Cmd>7tabnext<CR>')
+call s:anoremap ('<M-8>', '<Cmd>8tabnext<CR>')
+call s:anoremap ('<M-9>', '<Cmd>9tabnext<CR>')
+call s:anoremap ('<M-0>', '<Cmd>$tabnext<CR>')
+" 下が動かないならこっちも
+" noremap <M-Tab> <Cmd>tabnext<CR>
+" doesn't work
+"noremap <M-S-Tab> <Cmd>tabprev<CR>
+
+
 " 戻る
 nnoremap <M-Left> <C-o>
 " 進む
@@ -153,8 +318,8 @@ nnoremap <M-Right> <C-i>
 nnoremap <expr> <M-Up> '<Cmd>move .-' . (v:count > 0 ? v:count + 1 : 2) . '<CR>'
 nnoremap <expr> <M-Down> '<Cmd>move .+' . (v:count > 0 ? v:count : 1) . '<CR>'
 " 範囲選択での入れ替え
-xnoremap <M-Up> :move '<-2<CR>gv
-xnoremap <M-Down> :move '>+1<CR>gv
+vnoremap <M-Up> :move '<-2<CR>gv
+vnoremap <M-Down> :move '>+1<CR>gv
 
 " --------------------------------
 "  <Space>
@@ -164,36 +329,40 @@ nnoremap <Space><Esc> <Nop>
 
 nnoremap <Space>1 <Cmd>setlocal cursorline! cursorcolumn!<CR>
 " nnoremap <Space>2 <Cmd>setlocal relativenumber!<CR>
-nnoremap <Space>2 @@
 
-nnoremap <Space>3 <Cmd>e #<CR>
+" execute macro
+nnoremap <Space>2 @q
 
-" 行末
-nnoremap <Space>4 $
+" switch to alternate buffer
+" nnoremap <Space>3 <Cmd>b #<CR>
+nnoremap <Space>3 <C-^>
 
-nnoremap <Space>5 %
-
+call s:noxnoremap ('<Space>4', '$')
+call s:noxnoremap ('<Space>5', '%')
+call s:noxnoremap ('<Space>6', '^')
 nnoremap <Space>7 <Cmd>setlocal spell!<CR>
-
-nnoremap <Space>8 *
+call s:noxnoremap ('<Space>8', '*<Cmd>call <SID>flash_hlsearch()<CR>')
 
 " 現在の括弧
-nnoremap <Space>9 F(
-nnoremap <Space>0 f)
-" nnoremap <Space>0 <Cmd>setlocal paste!<CR>
+call s:noxnoremap ('<Space>9', 'F(')
+call s:noxnoremap ('<Space>0', 'f)')
 
 " バッファを閉じる
-nnoremap <Space><BS> <Cmd>confirm bdelete<CR>
+" nnoremap <Space><BS> <Cmd>confirm bdelete<CR>
 
 " 現在のウインドウを新しいタブに移動
-nnoremap <Space><Tab> <C-w>T
+" nnoremap <Space><Tab> <C-w>T
+" 新しいタブ
+nnoremap <Space><Tab> <Cmd>tabnew<CR>
 
 " 空白1文字挿入
 nnoremap <Space>i i<Cmd>call mappings#insert_one()<CR>
 nnoremap <Space>a a<Cmd>call mappings#insert_one()<CR>
 
 " 閉じる
-nnoremap <Space>q <Cmd>try<bar>close<bar>catch /:E444:/<bar>confirm qall<bar>endtry<CR>
+" confirm q でいい説がある
+" nnoremap <Space>q <Cmd>try<bar>close<bar>catch /:E444:/<bar>confirm qall<bar>endtry<CR>
+nnoremap <Space>q <Cmd>confirm q<CR>
 
 " 保存
 nnoremap <Space>w <Cmd>update<CR>
@@ -210,7 +379,7 @@ nnoremap <Space>r <Cmd>CocRestart<CR>
 " Open New Tab
 " nnoremap <Space>t <Cmd>tabnew<CR>
 " Open Terminal
-nnoremap <Space>t <Cmd>terminal<CR>
+" nnoremap <Space>t <Cmd>terminal<CR>
 
 " 改行挿入
 nnoremap <Space>o o<Space><C-u><Esc>
@@ -223,7 +392,7 @@ nnoremap <Space>P "+P
 " Split Horizontally
 nnoremap <Space>s <C-w>s
 
-nnoremap <Space>d lD
+" nnoremap <Space>d lD
 
 " Run FZF
 nnoremap <Space>f <Cmd>Files<CR>
@@ -231,8 +400,10 @@ nnoremap <Space>f <Cmd>Files<CR>
 " git ls-files | fzf
 nnoremap <Space>g <Cmd>GFiles<CR>
 
-nnoremap <Space>h ^
-nnoremap <Space>l $
+" nnoremap <Space>h ^
+" nnoremap <Space>l $
+nnoremap <Space>h <C-o>
+nnoremap <Space>l <C-i>
 
 nnoremap <Space>; :
 xnoremap <Space>; :
@@ -258,31 +429,12 @@ nnoremap <Space>n<Tab> <Cmd>tabnew<CR>
 
 " open config file
 nnoremap <Space>, <Cmd>edit $MYVIMRC<CR>
-" nnoremap <M-,> <Cmd>edit $MYVIMRC<CR>
 
 " source this
-nnoremap <Space>. <Cmd>source %<bar>echo 'sourced this file'<CR>
+nnoremap <Space>. <Cmd>if expand ('%:e') ==# 'vim'<bar>source %<bar>echo 'sourced this file'<bar>endif<CR>
 
 " ripgrep
 nnoremap <Space>/ <Cmd>Rg<CR>
-
-
-" --------------------------------
-"  テキストオブジェクト
-" --------------------------------
-
-" ビジュアルモードでCtrl-Aで全選択
-vnoremap <C-a> gg0oG$
-
-" allテキストオブジェクト ファイル全体
-xnoremap all gg0oG$
-onoremap all <Cmd>normal! vgg0oG$<CR>
-
-" 現在の行(改行含まない)
-xnoremap il g_o0o
-onoremap il <Cmd>normal! v_o$h<CR>
-
-"xnoremap <Space> gE<Space>f<Space>ow<BS>F<Space>
 
 
 " --------------------------------
@@ -290,16 +442,24 @@ onoremap il <Cmd>normal! v_o$h<CR>
 " --------------------------------
 
 " Linuxでは<C-/>は<C-_>で設定しないといけないらしい
-nmap <C-_> <Plug>CommentaryLine
-imap <C-_> <C-o><Plug>CommentaryLine
-xmap <C-_> <Plug>Commentary
+" プラグインがないとき用の設定
+try
+  silent nnoremap <unique> <C-_> I//<Space><Esc>
+  silent vnoremap <unique> <C-_> I//<Space><Esc>
+  silent inoremap <unique> <C-_> <C-g>u<C-o>^//<Space>
+catch /:E227:/
+endtry
+
+" nmap <unique> <C-_> <Plug>CommentaryLine
+" xmap <unique> <C-_> <Plug>Commentary
+" imap <unique> <C-_> <C-o><Plug>CommentaryLine
 
 
 " --------------------------------
 "  surround
 " --------------------------------
 
-" 選択モードで選択中の範囲を囲む
+" Visualモードで選択中の範囲を囲む
 xmap s <Plug>(surround)
 " ()
 xnoremap sb "zc(<C-r><C-o>z)<Esc>
@@ -359,8 +519,12 @@ cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 
 " <Up><Up>でHistory:を起動(fzf)
-cnoremap <expr> <Up> wildmenumode () ? '<C-p>' : (getcmdtype () ==# ':' && getcmdline () !=# '') ? '<C-u><Esc><Cmd>History:<CR>' : (getcmdtype () ==# '/' && getcmdline () !=# '') ? '<C-u><Esc><Cmd>History/<CR>' : '<C-p>'
-cnoremap <Down> <C-n>
+" cnoremap <expr> <Up> wildmenumode () ? '<C-p>' : (getcmdtype () ==# ':' && getcmdline () !=# '') ? '<C-u><Esc><Cmd>History:<CR>' : (getcmdtype () ==# '/' && getcmdline () !=# '') ? '<C-u><Esc><Cmd>History/<CR>' : '<C-p>'
+" cnoremap <Up> <C-p>
+" cnoremap <Down> <C-n>
+
+" 変わったかどうかが分かりづらいので無効にしておく
+cnoremap <Insert> <Nop>
 
 
 " --------------------------------
@@ -378,14 +542,14 @@ tnoremap <3-LeftMouse> <Nop>
 tnoremap <4-LeftMouse> <Nop>
 
 " ウインドウ切り替え用
-tmap <C-w> <C-\><C-n><C-w>
+" tmap <C-w> <C-\><C-n><C-w>
 
 " {{{
 function! s:toggle_netrw () abort
   let exists_netrw = 0
   for i in range (1, bufnr ('$'))
     if getbufvar (i, '&filetype') == 'netrw'
-      execute 'bwipeout ' . i
+      execute 'bwipeout' i
       let exists_netrw = 1
       break
     endif

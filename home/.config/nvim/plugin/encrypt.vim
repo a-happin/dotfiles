@@ -3,22 +3,22 @@ scriptencoding utf-8
 augroup encrypt
   autocmd!
   autocmd BufReadPre *.encrypted setlocal buftype=acwrite
-  autocmd BufReadCmd *.encrypted call DecryptRead ()
-  autocmd BufWriteCmd *.encrypted call EncryptWrite ()
+  autocmd BufReadCmd *.encrypted call s:decrypt_read ()
+  autocmd BufWriteCmd *.encrypted call s:encrypt_write ()
 augroup END
 
-function! DecryptRead () abort
+function! s:decrypt_read () abort
   try
-    call inputsave()
+    call inputsave ()
     redraw | let password = inputsecret ('enter decryption password: ')
   finally
     call inputrestore ()
     redraw
   endtry
-  execute '%!openssl aes-256-cbc -d -iter 100 -k ' . password . ' -in ' . bufname ()
+  execute '%!openssl aes-256-cbc -d -iter 100 -k' password '-in' shellescape (bufname ())
 endfunction
 
-function! EncryptWrite () abort
+function! s:encrypt_write () abort
   try
     call inputsave ()
     redraw | let password = inputsecret ('enter encryption password: ')
@@ -28,8 +28,8 @@ function! EncryptWrite () abort
     redraw
   endtry
   if password ==# password2
-    execute 'write !openssl aes-256-cbc -e -iter 100 -k ' . password . ' -out ' . bufname ()
-    set nomodified
+    execute 'write !openssl aes-256-cbc -e -iter 100 -k' password '-out' shellescape (bufname ())
+    setlocal nomodified
   else
     echomsg 'password doesn''t match'
   endif

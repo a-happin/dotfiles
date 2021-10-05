@@ -34,18 +34,33 @@ augroup reload-file
   autocmd InsertEnter,WinEnter,FocusGained * checktime
 augroup END
 
+" *******************************
+" **  terminal
+" *******************************
 " terminalを改善する
-" * 隠れたらbdelete!
-" interactive shellの場合,
-" * 名前をterm://*://Terminalに書き換える
+" * 行番号を非表示にする
 " * 自動で挿入モードに入る
+" * ジョブが終了したterminalをbwipeoutする
+" interactive shellの場合,
+" * 名前をterm://*/[terminal]に書き換える
 " * 終了時に即消す
+function! s:init_terminal () abort
+  setlocal nonumber
+  startinsert
+  augroup terminal-auto-startinsert
+    autocmd! * <buffer>
+    autocmd BufEnter,WinEnter <buffer> startinsert
+    autocmd TermClose <buffer> autocmd! terminal-auto-startinsert * <buffer>
+  augroup END
+endfunction
+
 augroup fix-terminal
   autocmd!
-  autocmd TermOpen term://* setlocal nonumber bufhidden=delete
-  autocmd TermOpen term://*/bash,term://*/fish,term://*/zsh file %://Terminal | startinsert
-  autocmd WinEnter term://*://Terminal startinsert
-  autocmd TermClose term://*://Terminal bdelete!
+  autocmd TermOpen term://* call s:init_terminal ()
+  " 名前の変更, 変更前のバッファを吹き飛ばす
+  autocmd TermOpen term://*/{bash,fish,zsh,sh} file %/[terminal] | bwipeout! #
+  autocmd TermClose term://* setlocal bufhidden=wipe
+  autocmd TermClose term://*/\[terminal\] bwipeout!
 augroup END
 
 " ftdetect/xxx.vimのほうがいいかも
@@ -57,7 +72,7 @@ augroup END
 
 augroup restore-cursor-pos
   autocmd!
-  autocmd BufReadPost * if &filetype !=# 'gitcommit' && line ("'\"") > 0 && line ("'\"") <= line ("$") | execute "normal! g'\"" | endif
+  autocmd BufReadPost * if &filetype !=# 'gitcommit' && 0 < line ("'\"") && line ("'\"") <= line ("$") | execute "normal! g'\"" | endif
 augroup END
 
 augroup special-mapping

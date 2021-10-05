@@ -91,6 +91,8 @@ set formatoptions& formatoptions-=t formatoptions-=c formatoptions-=r formatopti
 " :bでバッファを切り替えるときに保存しなくてもよくなる
 set hidden
 
+set nohlsearch
+
 " 検索時に大文字と小文字を区別しない
 set ignorecase
 
@@ -105,6 +107,10 @@ set incsearch
 " ハイフン(-)もキーワードとみなす
 " @自体を追加したい場合は@-@とする(範囲指定)
 set iskeyword& iskeyword+=-
+
+" Special keysを押したときにvisual modeに移行する
+" Special keys: 矢印, <Home>, <End>, <Pageup>, <PageDown>
+set keymodel=startsel
 
 " show status line
 " if 2, always
@@ -153,8 +159,16 @@ set pumblend=0
 " show position of cursor
 set ruler
 
+" set selection=exclusive
+
+" visual modeに移行したときに自動的にselect modeに移行する
+" mouse: マウスを使ったとき
+" key: Special Keysを押したとき -- Special keys: 矢印, <Home>, <End>, <Pageup>, <PageDown>
+" cmd: v, V or <C-v>を押したとき
+" set selectmode=
+
 " session保存時に保存する情報
-set sessionoptions& sessionoptions+=resize
+set sessionoptions& sessionoptions+=localoptions,resize
 
 " 環境変数SHELLから自動で設定されるので設定の必要なし
 " set shell=fish

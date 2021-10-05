@@ -21,7 +21,7 @@ endif
 " **  source
 " *******************************
 function! s:source (file) abort
-  execute 'source ' . $XDG_CONFIG_HOME . '/nvim/' . a:file
+  execute 'source' $XDG_CONFIG_HOME . '/nvim/' . a:file
 endfunction
 
 call s:source ('init/set.vim')

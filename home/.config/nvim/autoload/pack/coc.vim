@@ -45,8 +45,8 @@ function! s:on_init () abort
 
   augroup coc-config
     autocmd!
-    autocmd CursorHold * silent call CocActionAsync ('highlight')
-    autocmd CursorHoldI * silent call CocActionAsync ('showSignatureHelp')
+    autocmd CursorHold *? silent call CocActionAsync ('highlight')
+    autocmd CursorHoldI *? silent call CocActionAsync ('showSignatureHelp')
     autocmd User CocJumpPlaceholder silent call CocActionAsync ('showSignatureHelp')
   augroup END
 endfunction
@@ -54,7 +54,7 @@ endfunction
 " show vim help
 function! s:show_documentation () abort
   if (index (['vim', 'help'], &filetype) >= 0)
-    execute 'help ' . expand ('<cword>')
+    execute 'help' expand ('<cword>')
   else
     call CocAction ('doHover')
   endif
