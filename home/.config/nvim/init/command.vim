@@ -7,14 +7,6 @@ function! s:cnoreabbrev (word, str) abort
   execute 'cnoreabbrev <expr>' a:word '(getcmdtype () ==# ":" && getcmdline () ==# "' . a:word . '") ? "' . a:str . '" : "' . a:word . '"'
 endfunction
 
-function! s:ripgrep_fzf (query, fullscreen) abort
-  let command_fmt = 'rg --hidden --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf (command_fmt, shellescape (a:query))
-  let reload_command = printf (command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:' . reload_command]}
-  call fzf#vim#grep (initial_command, 1, fzf#vim#with_preview (spec), a:fullscreen)
-endfunction
-
 " 現在のバッファがターミナル: hide
 " タブ内にターミナルがある  : そこに移動
 " 裏にターミナルがある      : 下にウインドウを生成->呼び出し O(バッファ数^2)なのなんとかならんか？
@@ -86,7 +78,6 @@ command! -bar -range=% ClangFormat <line1>,<line2>!clang-format
 "command! -bar -range=% ToSnakeCase <line1>,<line2>s/\v([a-z_]\@=)([A-Z])/\1_\l\2/g
 
 " ripgrepによるファイル横断検索
-command! -nargs=* -bang Rg call s:ripgrep_fzf (<q-args>, <bang>0)
 call s:cnoreabbrev ('rg', 'Rg')
 
 " typo対策
