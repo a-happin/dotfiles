@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-function! pack#lightline#init () abort
+function! plugin#lightline#init () abort
   let g:lightline = {
         \   'colorscheme': 'wombat',
         \   'enable': {'tabline': 0},

@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-function! pack#coc#init () abort
+function! plugin#coc#init () abort
   let g:coc_global_extensions = [
         \ 'coc-lists',
         \ 'coc-vimlsp',

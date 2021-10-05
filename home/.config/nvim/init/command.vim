@@ -43,6 +43,12 @@ function! s:toggle_terminal () abort
   endif
 endfunction
 
+"
+function! s:load_template () abort
+  let ext = expand ('%:e')
+  let template = $XDG_CONFIG_HOME . '/nvim/template/' . (ext ==# '' ? expand ('%:t') : '.' . ext)
+  execute '0r' template
+endfunction
 
 " *******************************
 " **  command
@@ -72,7 +78,7 @@ command! -bar -nargs=1 LoadSession source $XDG_DATA_HOME/nvim/sessions/<args>.vi
 command! -bar DiffOrig aboveleft vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis
 
 " 拡張子からテンプレートファイルを判別し読み込む
-command! -bar LoadTemplate execute '0r' $XDG_CONFIG_HOME . '/nvim/template/' . (expand ('%:e') ==# '' ? expand ('%:t') : expand ('%:e'))
+command! -bar LoadTemplate call s:load_template ()
 
 " clang-formatにかける
 command! -bar -range=% ClangFormat <line1>,<line2>!clang-format

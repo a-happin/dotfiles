@@ -169,10 +169,13 @@ noremap <S-PageDown> <C-e>
 " 一瞬だけ
 function! s:flash_hlsearch_callback (_) abort
   set nohlsearch
-  let s:flash_hlsearch_timer_id = 0
+  let s:flash_hlsearch_timer_id = 'invalid'
 endfunction
 function! s:flash_hlsearch () abort
-  call timer_stop (get (s:, 'flash_hlsearch_timer_id', 0))
+  let timer_id = get (s:, 'flash_hlsearch_timer_id', 'invalid')
+  if timer_id !=# 'invalid'
+    call timer_stop (timer_id)
+  endif
   set hlsearch
   let s:flash_hlsearch_timer_id = timer_start (300, function ('s:flash_hlsearch_callback'))
 endfunction

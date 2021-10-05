@@ -179,7 +179,7 @@ if status is-interactive
   context-abbr 'git' 'd' 'diff'
   context-abbr 'git' 'f' 'fetch --prune'
   context-abbr --eval 'git' 'sw' 'echo switch (fzf-git-branch)'
-  context-abbr --eval 'git' 'ct' 'echo commit -m (cat ~/.config/git/git-commit-prefix.txt | fzf --reverse --height=10% | awk \'{print $1}\') --edit -v'
+  # context-abbr --eval 'git' 'ct' 'echo commit -m (cat ~/.config/git/git-commit-prefix.txt | fzf --reverse --height=10% | awk \'{print $1}\') --edit -v'
   context-abbr --eval 'git' 'fixup' 'echo commit --fixup (fzf-git-commit)'
   context-abbr --eval 'git' 'fomm' 'echo fetch origin (set -l b (fzf-git-branch); echo $b:$b) \# refresh local branch without checkout'
   context-abbr --eval 'git rebase' '-i' 'echo -- -i (fzf-git-commit)'

@@ -59,13 +59,13 @@ if dein#load_state (s:dein_directory)
   " ** plugins
   " ********************************
   " LSP client
-  call dein#add ('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release', 'on_event': 'VimEnter', 'hook_source': 'call pack#coc#init ()'})
+  call dein#add ('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release', 'on_event': 'VimEnter', 'hook_source': 'call plugin#coc#init ()'})
 
   " show git diff at SignColumn
   call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter', 'hook_add': 'let g:gitgutter_map_keys = 0'})
 
   " customize statusline
-  call dein#add ('itchyny/lightline.vim', {'hook_add': 'call pack#lightline#init ()'})
+  call dein#add ('itchyny/lightline.vim', {'hook_add': 'call plugin#lightline#init ()'})
 
   " lightlineにcoc情報を表示する関数を提供する
   call dein#add ('josa42/vim-lightline-coc')
@@ -128,5 +128,5 @@ function! s:onVimEnter () "noabort
   if dein#check_install ()
     call dein#install ()
   endif
-  silent call pack#dein#check_and_uninstall ()
+  silent call plugin#dein#check_and_uninstall ()
 endfunction
