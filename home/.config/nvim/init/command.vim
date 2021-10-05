@@ -72,7 +72,7 @@ command! -bar -nargs=1 LoadSession source $XDG_DATA_HOME/nvim/sessions/<args>.vi
 command! -bar DiffOrig aboveleft vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis
 
 " 拡張子からテンプレートファイルを判別し読み込む
-command! -bar LoadTemplate 0r $XDG_CONFIG_HOME/nvim/template/.%:e
+command! -bar LoadTemplate execute '0r' $XDG_CONFIG_HOME . '/nvim/template/' . (expand ('%:e') ==# '' ? expand ('%:t') : expand ('%:e'))
 
 " clang-formatにかける
 command! -bar -range=% ClangFormat <line1>,<line2>!clang-format
