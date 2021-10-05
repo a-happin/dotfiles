@@ -453,11 +453,6 @@ try
 catch /:E227:/
 endtry
 
-" nmap <unique> <C-_> <Plug>CommentaryLine
-" xmap <unique> <C-_> <Plug>Commentary
-" imap <unique> <C-_> <C-o><Plug>CommentaryLine
-
-
 " --------------------------------
 "  surround
 " --------------------------------
