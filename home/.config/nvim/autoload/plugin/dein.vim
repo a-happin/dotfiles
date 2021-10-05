@@ -3,7 +3,7 @@ scriptencoding utf-8
 " utilities for dein.vim
 
 function! plugin#dein#force_reload () abort
-  call delete ($XDG_CACHE_HOME . '/dein/state_nvim.vim')
+  call dein#clear_state ()
   source $MYVIMRC
 endfunction
 
