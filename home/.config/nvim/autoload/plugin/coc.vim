@@ -46,7 +46,7 @@ function! s:on_init () abort
   augroup coc-config
     autocmd!
     autocmd CursorHold *? silent call CocActionAsync ('highlight')
-    autocmd CursorHoldI *? silent call CocActionAsync ('showSignatureHelp')
+    autocmd CursorHoldI *? if ! pumvisible () | silent call CocActionAsync ('showSignatureHelp') | endif
     autocmd User CocJumpPlaceholder silent call CocActionAsync ('showSignatureHelp')
   augroup END
 endfunction
