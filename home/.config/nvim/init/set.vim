@@ -231,6 +231,7 @@ set tabline=%!tabline#make()
 " tab width
 set tabstop=8
 
+" pumblend requires termguicolors
 if $TERM ==# 'alacritty'
   set termguicolors
   set pumblend=15
