@@ -231,6 +231,11 @@ set tabline=%!tabline#make()
 " tab width
 set tabstop=8
 
+if $TERM ==# 'alacritty'
+  set termguicolors
+  set pumblend=15
+endif
+
 " Time in milliseconds to wait for a mapped sequence to complete.
 set timeoutlen=2000
 

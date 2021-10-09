@@ -10,65 +10,66 @@ endif
 let g:colors_name = expand ('<sfile>:t:r')
 
 if &background ==# 'dark'
-  hi Normal ctermbg=none ctermfg=white guibg=none guifg=white
-  hi LineNr cterm=NONE ctermbg=none ctermfg=darkgray gui=NONE guibg=none guifg=darkgray
-  hi CursorLineNr cterm=bold ctermbg=black ctermfg=lightmagenta gui=bold guibg=black guifg=lightmagenta
+  hi Normal ctermbg=none ctermfg=white guibg=none guifg=#eaeaea
+  hi LineNr cterm=NONE ctermbg=none ctermfg=darkgray gui=NONE guibg=none guifg=#767676
+  hi CursorLineNr cterm=bold ctermbg=black ctermfg=lightmagenta gui=bold guibg=#2a2a2a guifg=lightmagenta
   hi Cursor cterm=reverse ctermbg=none ctermfg=lightmagenta gui=reverse guibg=none guifg=lightmagenta
-  hi CursorLine cterm=NONE ctermbg=black gui=NONE guibg=black
-  hi CursorColumn ctermbg=black guibg=black
+  hi CursorLine cterm=NONE ctermbg=black gui=NONE guibg=#2a2a2a
+  hi CursorColumn ctermbg=black guibg=#2a2a2a
   hi ColorColumn ctermbg=lightmagenta guibg=lightmagenta
   hi CocHighlightText cterm=underline gui=underline
-  hi StatusLine cterm=bold ctermbg=white ctermfg=black gui=bold guibg=white guifg=black
-  hi StatusLineNC cterm=NONE ctermbg=darkgray ctermfg=black gui=NONE guibg=darkgray guifg=black
+  hi StatusLine cterm=bold ctermbg=white ctermfg=black gui=bold guibg=#eaeaea guifg=#000000
+  hi StatusLineNC cterm=NONE ctermbg=darkgray ctermfg=black gui=NONE guibg=#767676 guifg=#000000
   hi Question ctermbg=none ctermfg=lightmagenta guibg=none guifg=lightmagenta
   hi ModeMsg cterm=bold ctermbg=none ctermfg=lightmagenta gui=bold guibg=none guifg=lightmagenta
   hi MoreMsg cterm=bold ctermbg=none ctermfg=lightmagenta gui=bold guibg=none guifg=lightmagenta
-  hi ErrorMsg cterm=bold ctermbg=none ctermfg=red gui=bold guibg=none guifg=red
-  hi WarningMsg cterm=bold ctermbg=none ctermfg=yellow gui=bold guibg=none guifg=yellow
-  hi Pmenu cterm=NONE ctermbg=black ctermfg=white gui=NONE guibg=black guifg=white
-  hi PmenuSel cterm=reverse ctermbg=black ctermfg=lightmagenta gui=reverse guibg=black guifg=lightmagenta
-  hi PmenuSbar ctermbg=darkgray ctermfg=none guibg=darkgray guifg=none
+  hi ErrorMsg cterm=bold ctermbg=none ctermfg=red gui=bold guibg=none guifg=#d54e53
+  hi WarningMsg cterm=bold ctermbg=none ctermfg=yellow gui=bold guibg=none guifg=#e7c547
+  hi Pmenu cterm=NONE ctermbg=black ctermfg=white gui=NONE guibg=#000000 guifg=#eaeaea
+  hi PmenuSel cterm=reverse ctermbg=black ctermfg=lightmagenta gui=reverse guibg=#000000 guifg=lightmagenta
+  hi PmenuSbar ctermbg=darkgray ctermfg=none guibg=#767676 guifg=none
   hi PmenuThumb ctermbg=lightmagenta ctermfg=none guibg=lightmagenta guifg=none
-  hi Directory ctermfg=blue guifg=blue
-  hi Visual ctermbg=lightmagenta ctermfg=black guibg=lightmagenta guifg=black
-  hi WildMenu cterm=bold,reverse ctermbg=black ctermfg=lightmagenta gui=bold,reverse guibg=black guifg=lightmagenta
+  hi Directory ctermfg=blue guifg=#7aa6da
+  hi Title cterm=bold ctermfg=lightmagenta gui=bold guifg=lightmagenta
+  hi Visual ctermbg=lightmagenta ctermfg=black guibg=lightmagenta guifg=#000000
+  hi WildMenu cterm=bold,reverse ctermbg=black ctermfg=lightmagenta gui=bold,reverse guibg=#000000 guifg=lightmagenta
   hi Comment ctermfg=243 guifg=#767676
-  hi Constant ctermfg=red guifg=red
-  hi String ctermfg=red guifg=red
-  hi Identifier cterm=NONE ctermfg=blue gui=NONE guifg=blue
-  hi Function ctermfg=blue guifg=blue
-  hi Statement cterm=bold ctermfg=magenta gui=bold guifg=magenta
-  hi Label ctermfg=magenta guifg=magenta
-  hi Operator cterm=bold ctermfg=magenta gui=bold guifg=magenta
-  hi PreProc ctermfg=magenta guifg=magenta
-  hi Type cterm=bold ctermfg=blue gui=bold guifg=blue
+  hi Constant ctermfg=red guifg=#d54e53
+  hi String ctermfg=red guifg=#d54e53
+  hi Identifier cterm=NONE ctermfg=blue gui=NONE guifg=#7aa6da
+  hi Function ctermfg=blue guifg=#7aa6da
+  hi Statement cterm=bold ctermfg=magenta gui=bold guifg=#c397d8
+  hi Label ctermfg=magenta guifg=#c397d8
+  hi Operator cterm=bold ctermfg=magenta gui=bold guifg=#c397d8
+  hi PreProc ctermfg=magenta guifg=#c397d8
+  hi Type cterm=bold ctermfg=blue gui=bold guifg=#7aa6da
   hi Special cterm=bold ctermfg=lightmagenta gui=bold guifg=lightmagenta
-  hi Error cterm=bold ctermbg=red ctermfg=black gui=bold guibg=red guifg=black
-  hi Todo cterm=bold ctermbg=yellow ctermfg=black gui=bold guibg=yellow guifg=black
+  hi Error cterm=bold ctermbg=red ctermfg=black gui=bold guibg=#d54e53 guifg=#000000
+  hi Todo cterm=bold ctermbg=yellow ctermfg=black gui=bold guibg=#e7c547 guifg=#000000
   hi Conceal ctermfg=lightmagenta guifg=lightmagenta
-  hi TabLine cterm=NONE ctermbg=black ctermfg=white gui=NONE guibg=black guifg=white
-  hi TabLineSel cterm=NONE ctermbg=lightmagenta ctermfg=black gui=NONE guibg=lightmagenta guifg=black
+  hi TabLine cterm=NONE ctermbg=black ctermfg=white gui=NONE guibg=#000000 guifg=#eaeaea
+  hi TabLineSel cterm=NONE ctermbg=lightmagenta ctermfg=black gui=NONE guibg=lightmagenta guifg=#000000
   hi TabLineFill cterm=NONE ctermbg=none ctermfg=none gui=NONE guibg=none guifg=none
   hi SpecialKey cterm=NONE ctermfg=lightmagenta gui=NONE guifg=lightmagenta
   hi NonText cterm=NONE ctermfg=lightmagenta gui=NONE guifg=lightmagenta
-  hi VertSplit cterm=NONE ctermbg=none ctermfg=darkgray gui=NONE guibg=none guifg=darkgray
-  hi IncSearch cterm=bold,reverse ctermbg=none ctermfg=white gui=bold,reverse guibg=none guifg=white
-  hi Search cterm=bold,reverse ctermbg=none ctermfg=white gui=bold,reverse guibg=none guifg=white
+  hi VertSplit cterm=NONE ctermbg=none ctermfg=darkgray gui=NONE guibg=none guifg=#767676
+  hi IncSearch cterm=bold,reverse ctermbg=none ctermfg=white gui=bold,reverse guibg=none guifg=#eaeaea
+  hi Search cterm=bold,reverse ctermbg=none ctermfg=yellow gui=bold,reverse guibg=none guifg=#e7c547
   hi MatchParen cterm=bold ctermbg=none ctermfg=lightcyan gui=bold guibg=none guifg=lightcyan
   hi Folded ctermbg=none ctermfg=lightmagenta guibg=none guifg=lightmagenta
   hi FoldColumn ctermbg=none ctermfg=lightmagenta guibg=none guifg=lightmagenta
   hi SignColumn ctermbg=none ctermfg=lightmagenta guibg=none guifg=lightmagenta
-  hi SpellBad ctermbg=red ctermfg=black guibg=red guifg=black
-  hi SpellCap ctermbg=blue ctermfg=black guibg=blue guifg=black
-  hi SpellLocal ctermbg=cyan ctermfg=black guibg=cyan guifg=black
-  hi SpellRare ctermbg=magenta ctermfg=black guibg=magenta guifg=black
-  hi DiffAdd ctermbg=green ctermfg=black guibg=green guifg=black
+  hi SpellBad ctermbg=red ctermfg=black guibg=#d54e53 guifg=#000000
+  hi SpellCap ctermbg=blue ctermfg=black guibg=#7aa6da guifg=#000000
+  hi SpellLocal ctermbg=cyan ctermfg=black guibg=#70c0b1 guifg=#000000
+  hi SpellRare ctermbg=magenta ctermfg=black guibg=#c397d8 guifg=#000000
+  hi DiffAdd ctermbg=green ctermfg=black guibg=#b9ca4a guifg=#000000
   hi DiffChange ctermbg=none guibg=none
-  hi DiffText ctermbg=yellow ctermfg=black guibg=yellow guifg=black
-  hi DiffDelete ctermbg=red ctermfg=black guibg=red guifg=black
-  hi diffAdded ctermbg=none ctermfg=green guibg=none guifg=green
-  hi diffRemoved ctermbg=none ctermfg=red guibg=none guifg=red
-  hi CocWarningSign ctermbg=none ctermfg=yellow guibg=none guifg=yellow
+  hi DiffText ctermbg=yellow ctermfg=black guibg=#e7c547 guifg=#000000
+  hi DiffDelete ctermbg=red ctermfg=black guibg=#d54e53 guifg=#000000
+  hi diffAdded ctermbg=none ctermfg=green guibg=none guifg=#b9ca4a
+  hi diffRemoved ctermbg=none ctermfg=red guibg=none guifg=#d54e53
+  hi CocWarningSign ctermbg=none ctermfg=yellow guibg=none guifg=#e7c547
 endif
 hi! link EndOfBuffer Ignore
 hi! link TermCursor Cursor

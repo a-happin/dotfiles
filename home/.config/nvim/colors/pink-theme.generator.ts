@@ -23,20 +23,24 @@ type HighlightArgument = {
 }
 
 const none = {cui: 'none', gui: 'none'}
-const black = {cui: 'black', gui: 'black'}
-const white = {cui: 'white', gui: 'white'}
-const darkgray = {cui: 'darkgray', gui: 'darkgray'}
-const gray = {cui: 'gray', gui: 'gray'}
-const red = {cui: 'red', gui: 'red'}
-const darkred = {cui: 'darkred', gui: 'darkred'}
-const blue = {cui: 'blue', gui: 'blue'}
-const green = {cui: 'green', gui: 'green'}
-const cyan = {cui: 'cyan', gui: 'cyan'}
-const purple = {cui: 'magenta', gui: 'magenta'}
-const magenta = {cui: 'magenta', gui: 'magenta'}
-const yellow = {cui: 'yellow', gui: 'yellow'}
-const orange = {cui: 'darkyellow', gui: 'darkyellow'}
-const lime = {cui: 'green', gui: 'green'}
+
+const black = {cui: 'black', gui: '#000000'}
+const darkred = {cui: 'darkred', gui: '#a54242'}
+const green = {cui: 'green', gui: '#b9ca4a'}
+const orange = {cui: 'darkyellow', gui: '#e78c45'}
+// const blue = {cui: 'blue', gui: '#7aa6da'}
+const purple = {cui: 'magenta', gui: '#c397d8'}
+const darkgray = {cui: 'darkgray', gui: '#767676'}
+
+const gray    = {cui: 'gray', gui: '#969896'}
+const red     = {cui: 'red', gui: '#d54e53'}
+const lime    = {cui: 'green', gui: '#b9ca4a'}
+const yellow  = {cui: 'yellow', gui: '#e7c547'}
+const blue    = {cui: 'blue', gui: '#7aa6da'}
+const magenta = {cui: 'magenta', gui: '#c397d8'}
+const cyan    = {cui: 'cyan', gui: '#70c0b1'}
+const white   = {cui: 'white', gui: '#eaeaea'}
+
 const pink = {cui: 225, gui: '#ffd7ff'}
 
 const lightcyan = {cui: 'lightcyan', gui: 'lightcyan'}
@@ -49,7 +53,8 @@ const accent_bg = black
 const sub_color = white
 const normal = white
 const normal_bg = none
-const cursorline_color = black
+const cursorline_color = {cui: 'black', gui: '#2a2a2a'}
+// const selection_color = {cui: }
 const directory_color = blue
 const comment_color = {cui: 243, gui: '#767676'}
 const constant_color = red
@@ -167,6 +172,8 @@ console.log (`if &background ==# 'dark'`)
   highlight ('Directory', {fg: directory_color})
 
 
+  // よくわかんないけどvimの関数名が該当していた
+  highlight ('Title', {fg: lightmagenta, attrs: ['bold']})
   // 選択中
   highlight ('Visual', {fg: accent_bg, bg: accent_color})
 
@@ -242,7 +249,7 @@ console.log (`if &background ==# 'dark'`)
   // インクリメンタル検索中かつ最初にマッチした場所
   highlight ('IncSearch', {fg: sub_color, bg: none, attrs: ['bold', 'reverse']})
   // 上記以外
-  highlight ('Search', {fg: sub_color, bg: none, attrs: ['bold', 'reverse']})
+  highlight ('Search', {fg: yellow, bg: none, attrs: ['bold', 'reverse']})
 
 
   // 対応する括弧

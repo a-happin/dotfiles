@@ -22,4 +22,5 @@ endtry
 
 " highlight Normal ctermbg=none
 " highlight CursorLineNr ctermfg=15
+highlight PmenuSel blend=0
 
