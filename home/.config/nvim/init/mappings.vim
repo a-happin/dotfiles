@@ -78,6 +78,17 @@ nnoremap <C-Del> <Nop>
 " ちなみにたまに困る(helpとか)
 call s:nxnoremap ('<CR>', ':')
 
+" digraphs
+call s:nxnoremap ('fj', 'f<C-k>j')
+call s:nxnoremap ('fz', 'f<C-k>z')
+call s:nxnoremap ('Fj', 'F<C-k>j')
+call s:nxnoremap ('Fz', 'F<C-k>z')
+call s:nxnoremap ('tj', 't<C-k>j')
+call s:nxnoremap ('tz', 't<C-k>z')
+call s:nxnoremap ('Tj', 'T<C-k>j')
+call s:nxnoremap ('Tz', 'T<C-k>z')
+
+
 " --------------------------------
 "  コマンド/オペレータ系[Normal]
 " --------------------------------

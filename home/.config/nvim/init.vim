@@ -46,10 +46,11 @@ call s:source ('init/colorscheme.vim')
 if has ('vim_starting')
   augroup init-lazy-source
     autocmd!
-    autocmd VimEnter * ++once call s:source ('init/mappings.vim')
+    autocmd VimEnter * ++once call s:source ('init/mappings.vim') | call s:source ('init/digraph.vim')
     autocmd InsertEnter * ++once call s:source ('init/mappings_i.vim')
   augroup END
 else
   call s:source ('init/mappings.vim')
   call s:source ('init/mappings_i.vim')
+  call s:source ('init/digraph.vim')
 endif
