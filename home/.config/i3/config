@@ -175,6 +175,12 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -f 'pango:Koruri SemiBold 9' -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Shutdown' 'systemctl poweroff' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit'"; exec --no-startup-id "sleep 10; killall i3-nagbar"
 
+# resize
+bindsym $mod+minus resize shrink height
+bindsym $mod+equal resize grow height
+bindsym $mod+shift+less resize shrink width
+bindsym $mod+shift+greater resize grow width
+
 set $layout_mode "Layout [h: horizontal], [v: vertical], [f: fullscreen], [F: floating], [s: stacking], [t: tabbed]"
 mode $layout_mode {
   # vimと逆
@@ -204,7 +210,7 @@ mode $layout_mode {
 bindsym $mod+w mode $layout_mode
 
 #define resize and move size unit
-set $size 5
+set $size 10
 
 # resize window (you can also use the mouse for that)
 set $resize_mode "Resize [hjkl: grow], [HJKL: shrink] [1: HD] [2: FullHD] [3: WQHD]"
