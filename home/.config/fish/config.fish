@@ -139,6 +139,7 @@ if status is-interactive
   abbr --add -g history-delete ' history delete --case-sensitive --exact (history | fzf --multi || printf \':\')'
 
   # like a new command
+  abbr --add -g memo "$EDITOR $HOME/Dropbox/note/note.md"
   abbr --add -g fishrc "$EDITOR $XDG_CONFIG_HOME/fish/config.fish"
   abbr --add -g nvimrc "$EDITOR $XDG_CONFIG_HOME/nvim/init.vim"
   abbr --add -g zshrc "$EDITOR $XDG_CONFIG_HOME/zsh/.zshrc"
