@@ -49,7 +49,8 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 # edit config
-bindsym $mod+comma exec --no-startup-id i3-sensible-terminal -e $EDITOR $XDG_CONFIG_HOME/i3/config
+# bindsym $mod+comma exec --no-startup-id "i3-sensible-terminal -e bash -c \\"cd $XDG_CONFIG_HOME/i3; $EDITOR config\\""
+bindsym $mod+comma exec --no-startup-id i3-sensible-terminal -e $EDITOR $XDG_CONFIG_HOME/i3/config -c "cd %:h"
 
 # kill focused window
 #bindsym $mod+Shift+q kill
@@ -315,7 +316,7 @@ bar {
 # - exec_always: exec when restart i3
 # キーリピート開始まで400[ms]、キーリピート間隔1/45[sec]
 exec_always --no-startup-id xset r rate 400 45
-exec_always --no-startup-id fcitx5 -d
+exec --no-startup-id fcitx5 -d
 exec --no-startup-id dropbox
 exec --no-startup-id feh --no-fehbg --randomize --bg-max --recursive ~/Dropbox/image/illust/
 exec_always --no-startup-id imwheel -k

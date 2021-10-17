@@ -111,6 +111,7 @@ if status is-interactive
   # abbreviation
   ################################
   # abbreviation
+  abbr --add -g q 'exit'
   abbr --add -g g 'git'
   abbr --add -g push 'git push'
   abbr --add -g pushu 'git push -u orgin HEAD'
@@ -127,6 +128,7 @@ if status is-interactive
   abbr --add -g rr 'rm -ri'
   abbr --add -g rrf 'rm -rf'
   abbr --add -g ln 'ln -snfv FILE LINK'
+  abbr --add -g rmlink 'unlink'
   abbr --add -g mkdir 'mkdir -p'
   abbr --add -g df 'df -h'
   abbr --add -g du 'du -h --max-depth 1'
@@ -136,14 +138,15 @@ if status is-interactive
   abbr --add -g rsync 'rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with the \'/\' at the end.'
   abbr --add -g paccache 'paccache -r; paccache -ruk0'
   abbr --add -g funced 'funced --save'
-  abbr --add -g history-delete ' history delete --case-sensitive --exact (history | fzf --multi || printf \':\')'
+  abbr --add -g history-delete ' history delete --case-sensitive --exact (history | fzf --multi || printf :)'
 
   # like a new command
-  abbr --add -g memo "$EDITOR $HOME/Dropbox/note/note.md"
-  abbr --add -g fishrc "$EDITOR $XDG_CONFIG_HOME/fish/config.fish"
-  abbr --add -g nvimrc "$EDITOR $XDG_CONFIG_HOME/nvim/init.vim"
-  abbr --add -g zshrc "$EDITOR $XDG_CONFIG_HOME/zsh/.zshrc"
-  abbr --add -g bashrc "$EDITOR $HOME/.bashrc"
+  abbr --add -g note "$EDITOR -c \"cd %:h\" $HOME/Dropbox/note/note.md"
+  abbr --add -g fishrc "$EDITOR -c \"cd %:h\" $XDG_CONFIG_HOME/fish/config.fish"
+  abbr --add -g nvimrc "$EDITOR -c \"cd %:h\" $XDG_CONFIG_HOME/nvim/init.vim"
+  abbr --add -g zshrc "$EDITOR -c \"cd %:h\" $XDG_CONFIG_HOME/zsh/.zshrc"
+  abbr --add -g bashrc "$EDITOR -c \"cd %:h\" $HOME/.bashrc"
+  abbr --add -g i3config "$EDITOR -c \"cd %:h\" $XDG_CONFIG_HOME/i3/config"
   abbr --add -g gitconfig 'git config --global -e'
   abbr --add -g encrypt 'openssl aes-256-cbc -e -iter 100'
   abbr --add -g decrypt 'openssl aes-256-cbc -d -iter 100'
