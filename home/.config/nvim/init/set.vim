@@ -232,7 +232,7 @@ set tabline=%!tabline#make()
 set tabstop=8
 
 " pumblend requires termguicolors
-if $TERM ==# 'alacritty'
+if $TERM !=# 'rxvt-unicode-256color'
   set termguicolors
   set pumblend=15
 endif
