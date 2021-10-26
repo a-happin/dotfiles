@@ -77,6 +77,8 @@ command! -bar -range=% ClangFormat <line1>,<line2>!clang-format
 
 "command! -bar -range=% ToSnakeCase <line1>,<line2>s/\v([a-z_]\@=)([A-Z])/\1_\l\2/g
 
+command! -bar GetWindowsClipboard let @" = system ('powershell.exe get-clipboard | sed -z ''s/\r\n$//''')
+
 " ripgrepによるファイル横断検索
 call s:cnoreabbrev ('rg', 'Rg')
 

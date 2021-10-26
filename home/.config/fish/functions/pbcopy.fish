@@ -1,6 +1,6 @@
 function pbcopy
   if command -q pbcopy
-    pbcopy
+    command pbcopy
   else if command -q clip.exe
     clip.exe
   else if command -q xsel
