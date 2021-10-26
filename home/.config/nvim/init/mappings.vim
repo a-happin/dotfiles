@@ -400,8 +400,8 @@ nnoremap <Space>o o<Space><C-u><Esc>
 nnoremap <Space>O O<Space><C-u><Esc>
 
 " Paste from clipboard
-nnoremap <Space>p "+p
-nnoremap <Space>P "+P
+nnoremap <Space>p <Cmd>GetWindowsClipboard<CR>p
+nnoremap <Space>P <Cmd>GetWindowsClipboard<CR>P
 
 " Split Horizontally
 nnoremap <Space>s <C-w>s
