@@ -57,6 +57,9 @@
 	skip = update-index --skip-worktree
 	staged = diff --cached
 	stashes = stash list
+	submodule-add-local = "!_() { git submodule add $(git -C $1 url) $1; }; _"
+	submodule-deinit = "!_() { git submodule deinit -f $1; git rm -fv ${GIT_PREFIX}$1; rm -rfv .git/modules/$1; }; _"
+	submodule-update = submodule foreach git pull
 	t = tree -10
 	tags = tag
 	touch = commit --amend --date=now --no-edit
@@ -66,6 +69,7 @@
 	unstage = reset HEAD --
 	untrack = rm --cache --
 	untracked = ls-files --others --exclude-standard
+	url = config --get remote.origin.url
 	wip = commit -m WIP
 	zip = !git archive --worktree-attributes --format=zip HEAD -o $(basename `pwd`).zip
 

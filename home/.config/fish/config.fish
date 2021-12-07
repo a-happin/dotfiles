@@ -114,7 +114,7 @@ if status is-interactive
   abbr --add -g q 'exit'
   abbr --add -g g 'git'
   abbr --add -g push 'git push'
-  abbr --add -g pushu 'git push -u orgin HEAD'
+  abbr --add -g pushu 'git push -u origin HEAD'
   abbr --add -g commit 'git commit -v'
   abbr --add -g e "$EDITOR"
 
@@ -201,7 +201,7 @@ if status is-interactive
   context-abbr -C 'compile' '**.cpp' "clang++ $CHINO_OPT"
 
   context-abbr -C 'run' '**.cpp' 'runchino'
-  context-abbr -C 'run' '**.ts' 'deno run --allow-all --unstable'
+  context-abbr -C 'run' '**.ts' 'deno run (test -e import_map.json && printf \'%s\' \'--import-map=import_map.json\') --allow-all --unstable'
   context-abbr -C 'run' '**.jar' 'java -jar'
 
   context-abbr -C 'extract' '**.tar.bz2' 'tar -jxvf'
