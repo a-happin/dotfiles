@@ -32,9 +32,9 @@
 	diff-words = diff --color-words='\\w+|[^[:space:]]'
 	discard-local-changes = reset --hard @{u}
 	e = config --global -e
-	feature = "!_() { [[ -n $1 ]] && git switch -c feature/$1 ; }; _"
+	feature = "!_() { [[ -n $1 ]] && git switch -c feature/$1; }; _"
 	fixup = commit --fixup
-	fomm = "!_() { set \"$@\" $(git master) ; set -x; git fetch origin ${1}:${1}; }; _"
+	fomm = "!_() { set \"$@\" $(git master) ; set -x; git fetch origin $1:$1; }; _"
 	fetch-prune = fetch --prune
 	git = !git
 	hash = rev-parse HEAD
@@ -59,7 +59,7 @@
 	stashes = stash list
 	submodule-add-local = "!_() { git submodule add $(git -C $1 url) $1; }; _"
 	submodule-deinit = "!_() { git submodule deinit -f $1; git rm -fv ${GIT_PREFIX}$1; rm -rfv .git/modules/$1; }; _"
-	submodule-update = submodule foreach git pull
+	submodule-pull = submodule foreach git pull
 	t = tree -10
 	tags = tag
 	touch = commit --amend --date=now --no-edit
