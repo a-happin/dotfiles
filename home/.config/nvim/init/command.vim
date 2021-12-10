@@ -52,6 +52,7 @@ command! -bar PackUpdate call pack#init () | call minpac#update ()
 command! -bar PackClean call pack#init () | call minpac#clean ()
 
 command! -bar Reload source ${MYVIMRC}
+command! -bar Note edit ~/Dropbox/note/note.md | lcd %:h
 
 " terminal
 command! -nargs=* -complete=shellcmd Hterminal botright 20new | terminal <args>
@@ -84,6 +85,9 @@ call s:cnoreabbrev ('rg', 'Rg')
 
 " typo対策
 call s:cnoreabbrev ('W', 'w')
+
+" abbreviation
+call s:cnoreabbrev ('note', 'Note')
 
 " root権限に昇格して書き込み
 " neovimでは機能しない https://github.com/neovim/neovim/issues/8217 ←won't fix……
