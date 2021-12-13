@@ -24,6 +24,7 @@ if status is-login
 
   # prepend to $PATH
   set -g fish_user_paths "$HOME/bin"
+  set -a fish_user_paths "$HOME/.cargo/bin"
   set -a fish_user_paths "$HOME/.deno/bin"
 
   # Windows WSL
