@@ -135,7 +135,7 @@ if status is-interactive
   abbr --add -g du 'du -h --max-depth 1'
   abbr --add -g fd 'fd --hidden --no-ignore --exclude .git'
   abbr --add -g rg 'rg --hidden --no-ignore --glob \'!.git\''
-  abbr --add -g ssh-keygen 'ssh-keygen -t ed25519 -f ~/.ssh/__DIRECTORY__ # mkdir before create'
+  abbr --add -g ssh-keygen 'ssh-keygen -t ed25519 -f ~/.ssh/__DIRECTORY__/id_ed25519 # mkdir before create'
   abbr --add -g rsync 'rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with the \'/\' at the end.'
   abbr --add -g paccache 'paccache -r; paccache -ruk0; yay --aur -Sc'
   abbr --add -g funced 'funced --save'
