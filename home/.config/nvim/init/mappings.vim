@@ -489,6 +489,29 @@ xnoremap <Plug>(surround)" "zc"<C-r><C-o>z"<Esc>
 xnoremap <Plug>(surround)' "zc'<C-r><C-o>z'<Esc>
 " ``
 xnoremap <Plug>(surround)` "zc`<C-r><C-o>z`<Esc>
+"
+xnoremap <Plug>(surround)~ "zc~<C-r><C-o>z~<Esc>
+xnoremap <Plug>(surround)! "zc!<C-r><C-o>z!<Esc>
+xnoremap <Plug>(surround)@ "zc@<C-r><C-o>z@<Esc>
+xnoremap <Plug>(surround)# "zc#<C-r><C-o>z#<Esc>
+xnoremap <Plug>(surround)$ "zc$<C-r><C-o>z$<Esc>
+xnoremap <Plug>(surround)% "zc%<C-r><C-o>z%<Esc>
+xnoremap <Plug>(surround)^ "zc^<C-r><C-o>z^<Esc>
+xnoremap <Plug>(surround)& "zc&<C-r><C-o>z&<Esc>
+xnoremap <Plug>(surround)* "zc*<C-r><C-o>z*<Esc>
+xnoremap <Plug>(surround)- "zc-<C-r><C-o>z-<Esc>
+xnoremap <Plug>(surround)_ "zc_<C-r><C-o>z_<Esc>
+xnoremap <Plug>(surround)= "zc=<C-r><C-o>z=<Esc>
+xnoremap <Plug>(surround)+ "zc+<C-r><C-o>z+<Esc>
+xnoremap <Plug>(surround)<bar> "zc<bar><C-r><C-o>z<bar><Esc>
+xnoremap <Plug>(surround); "zc;<C-r><C-o>z;<Esc>
+xnoremap <Plug>(surround): "zc:<C-r><C-o>z:<Esc>
+xnoremap <Plug>(surround), "zc,<C-r><C-o>z,<Esc>
+xnoremap <Plug>(surround). "zc.<C-r><C-o>z.<Esc>
+xnoremap <Plug>(surround)/ "zc/<C-r><C-o>z/<Esc>
+xnoremap <Plug>(surround)? "zc?<C-r><C-o>z?<Esc>
+xnoremap <Plug>(surround)<Space> "zc<Space><C-r><C-o>z<Space><Esc>
+xnoremap <Plug>(surround)<CR> "zc<CR><C-r><C-o>z<CR><Esc>
 
 " 囲んでいる括弧を削除する
 nmap ds <Plug>(dsurround)
@@ -511,6 +534,8 @@ nnoremap <Plug>(dsurround)" "zci"<BS><Del><C-r><C-o>z<Esc>
 nnoremap <Plug>(dsurround)' "zci'<BS><Del><C-r><C-o>z<Esc>
 " ``
 nnoremap <Plug>(dsurround)` "zci`<BS><Del><C-r><C-o>z<Esc>
+" //
+nnoremap <Plug>(dsurround)/ "zci/<BS><Del><C-r><C-o>z<Esc>
 
 
 " --------------------------------

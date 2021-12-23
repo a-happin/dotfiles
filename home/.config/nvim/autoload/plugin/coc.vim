@@ -8,6 +8,7 @@ function! plugin#coc#init () abort
         \ 'coc-tsserver',
         \ 'coc-deno',
         \ 'coc-fish',
+        \ 'coc-rust-analyzer',
         \]
   augroup pack-coc-on-init
     autocmd!

@@ -91,6 +91,19 @@ if dein#load_state (s:dein_directory)
   " virtual text を利用したindent guide. No conceal らしいので採用
   " call dein#add ('lukas-reineke/indent-blankline.nvim')
 
+
+  " ********************************
+  " ** treesitter
+  " ********************************
+  call dein#add ('nvim-treesitter/nvim-treesitter', {'merged': v:false, 'on_event': 'VimEnter', 'hook_source': 'lua require "init/nvim-treesitter"', 'hook_post_source': 'call dein#source (["playground", "nvim-ts-rainbow"])', 'hook_post_update': ':TSUpdate'})
+
+  " treesitter playground
+  call dein#add ('nvim-treesitter/playground', {'lazy': v:true})
+
+  " colorize parens
+  call dein#add ('p00f/nvim-ts-rainbow', {'lazy': v:true})
+
+
   " ********************************
   " ** ftplugin
   " ** ftdetect, ftplugin, syntax定義のみ
@@ -99,10 +112,17 @@ if dein#load_state (s:dein_directory)
   call dein#add ('gorodinskiy/vim-coloresque')
 
   " C++
-  call dein#add ('octol/vim-cpp-enhanced-highlight')
+  "call dein#add ('octol/vim-cpp-enhanced-highlight')
 
   " fish shell script
-  call dein#add ('dag/vim-fish')
+  "call dein#add ('dag/vim-fish')
+
+  " ********************************
+  " ** indent
+  " ********************************
+  " javascript, typescript
+  " 微妙だったので無効化
+  " call dein#add ('jason0x43/vim-js-indent')
 
   " ********************************
   " ** end

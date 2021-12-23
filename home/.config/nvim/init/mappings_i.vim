@@ -283,7 +283,11 @@ endfunction
 " それ以外は改行
 function! s:cr_key () abort
   if pumvisible ()
-    return "\<C-y>"
+    if v:completed_item == {}
+      return "\<C-y>\<CR>"
+    else
+      return "\<C-y>"
+    endif
   else
     let [prev, post] = s:getline ()
     if s:is_in_empty_parentheses (prev, post)
