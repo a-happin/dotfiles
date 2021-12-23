@@ -95,10 +95,13 @@ if dein#load_state (s:dein_directory)
   " ********************************
   " ** treesitter
   " ********************************
-  call dein#add ('nvim-treesitter/nvim-treesitter', {'merged': v:false, 'on_event': 'VimEnter', 'hook_source': 'lua require "init/nvim-treesitter"', 'hook_post_source': 'call dein#source (["playground", "nvim-ts-rainbow"])', 'hook_post_update': ':TSUpdate'})
+  call dein#add ('nvim-treesitter/nvim-treesitter', {'merged': v:false, 'on_event': 'VimEnter', 'hook_source': 'lua require "init/nvim-treesitter"', 'hook_post_source': 'call dein#source (["playground", "nvim-treesitter-textobjects", "nvim-ts-rainbow"])', 'hook_post_update': ':TSUpdate'})
 
   " treesitter playground
   call dein#add ('nvim-treesitter/playground', {'lazy': v:true})
+
+  " textobject
+  call dein#add ('nvim-treesitter/nvim-treesitter-textobjects', {'lazy': v:true})
 
   " colorize parens
   call dein#add ('p00f/nvim-ts-rainbow', {'lazy': v:true})
