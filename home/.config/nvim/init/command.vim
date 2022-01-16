@@ -39,7 +39,16 @@ endfunction
 function! s:load_template () abort
   let ext = expand ('%:e')
   let template = $XDG_CONFIG_HOME . '/nvim/template/' . (ext ==# '' ? expand ('%:t') : '.' . ext)
-  execute '0r' template
+  if filereadable (template)
+    execute '0r' template
+  else
+    let template_vim = template . '.vim'
+    if filereadable (template_vim)
+      execute 'source' template_vim
+    else
+      echoerr 'template file not found'
+    endif
+  endif
 endfunction
 
 " *******************************
@@ -75,6 +84,12 @@ command! -bar LoadTemplate call s:load_template ()
 
 " clang-formatにかける
 command! -bar -range=% ClangFormat <line1>,<line2>!clang-format
+
+" rustfmtにかける
+command! -bar -range=% RustFormat <line1>,<line2>!rustfmt
+
+" Rename
+command! -bar -nargs=1 -complete=file Rename try | saveas <args> | call delete (expand ('#')) | catch | file # | echoerr 'Rename failed.' | endtry
 
 "command! -bar -range=% ToSnakeCase <line1>,<line2>s/\v([a-z_]\@=)([A-Z])/\1_\l\2/g
 
