@@ -58,7 +58,7 @@
 	staged = diff --cached
 	stashes = stash list
 	submodule-add-local = "!_() { git submodule add $(git -C $1 url) $1; }; _"
-	submodule-deinit = "!_() { git submodule deinit -f $1; git rm -f ${GIT_PREFIX}$1; rm -rfv .git/modules/$1; }; _"
+	submodule-deinit = "!_() { git submodule deinit -f $1; git rm -f ${GIT_PREFIX}$1; rm -rf .git/modules/$1; }; _"
 	submodule-pull = submodule foreach git pull
 	t = tree -10
 	tags = tag
