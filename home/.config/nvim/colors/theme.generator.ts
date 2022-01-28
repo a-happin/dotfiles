@@ -47,8 +47,9 @@ const lightcyan = {cui: 'lightcyan', gui: 'lightcyan'}
 const lightyellow = {cui: 'lightyellow', gui: 'lightyellow'}
 const lightgreen = {cui: 'lightgreen', gui: 'lightgreen'}
 const lightmagenta = {cui: 'lightmagenta', gui: 'lightmagenta'}
+const wombat_blue = {cui: 'blue', gui: '#8ac6f2'}
 
-const accent_color = lightmagenta
+const accent_color = wombat_blue
 const accent_bg = black
 const sub_color = white
 const normal = white
