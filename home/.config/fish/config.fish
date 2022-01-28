@@ -171,7 +171,7 @@ if status is-interactive
   # sabbr 'jar' 'java -jar'
 
   # subcommand abbreviation
-  context-abbr 'git' 'discard' 'reset --hard @{u} # discard local changes'
+  context-abbr 'git' 'discard' 'reset --hard HEAD'
   context-abbr 'git' 'clean' 'clean -df'
   context-abbr 'git' 'init' 'init && git commit --allow-empty -m "Initial commit."'
   context-abbr 'git' 'new' 'switch -c'

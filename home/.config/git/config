@@ -20,12 +20,17 @@
 [alias]
 	a = add --patch
 	aa = add --all
+	add-as-submodule = "!_() { \
+		[[ $# -eq 1 ]] || return; \
+		set -- \"${@%/}\"; set -- \"${@/#/${GIT_PREFIX}}\"; \
+		git submodule add $(git -C \"$1\" url) \"$1\"; \
+	}; _"
 	alias = !git config --get-regexp ^alias\\. | sed 's/^alias\\.\\([^ ]*\\) /\\1\\\t => /'
 	amend = commit --amend
 	branch-mv = branch -m
 	branch-name = symbolic-ref --short HEAD
 	branches = !git branch -a | cut -c 3-
-	conflict = diff --check
+	conflicts = diff --check
 	conflict-files = diff --name-only --diff-filter=U
 	d = diff
 	delete-current-branch = !git detach && git branch -d @{-1} && :
@@ -33,19 +38,21 @@
 	detach = checkout --detach
 	diff-filename = diff --name-only
 	diff-words = diff --color-words='\\w+|[^[:space:]]'
+	discard = reset --hard HEAD
 	discard-local-changes = reset --hard @{u}
 	e = config --global -e
-	feature = "!_() { [[ -n $1 ]] && git switch -c feature/$1; }; _"
+	feature = "!_() { [[ -n $1 ]] && git switch -c \"feature/$1\"; }; _"
 	fixup = commit --fixup
-	fomm = "!_() { set \"$@\" $(git master) ; set -x; git fetch origin $1:$1; }; _"
+	fomm = "!_() { set -- \"$@\" $(git master) ; set -x; git fetch origin \"$1:$1\"; }; _"
 	fetch-prune = fetch --prune
 	git = !git
 	hash = rev-parse HEAD
-	ignore = "!_() { for i in \"$@\" ; do echo \"$i\" >> \"${GIT_PREFIX}.gitignore\"; done; }; _"
+	ignore = "!_() { for i in \"$@\"; do printf '%s\n' \"/${GIT_PREFIX}$i\" >> .gitignore; done; }; _"
 	initial-commit = commit --allow-empty -m \"Initial commit.\"
+	keep-ours = "!_() { for i in \"$@\"; do printf '%s\n' \"/${GIT_PREFIX}$i merge=ours\" >> .gitattributes; done; }; _"
 	log-today = !git log --branches --since=midnight --date=iso --author=\"$(git config user.name)\"
 	log-today-oneline = progress --pretty=format:%s
-	master = !git config init.defaultBranch || echo master
+	master = !git config init.defaultBranch || printf 'master'
 	merged = !git branch --merged | grep -Ev '\\*|master|develop|release|gh-pages' | tr -d '^ '
 	new = switch -c
 	newtag = tag -a
@@ -55,19 +62,67 @@
 	pushu = push -u origin HEAD
 	reset-to-head = reset --hard HEAD
 	reset-to-remote = reset --hard @{u}
+	rg = !rg --hidden --glob '!.git'
 	root = rev-parse --show-toplevel
+	shallow-clone = clone --depth 1
+	shallow-clone-recursive = clone --depth 1 --recurse-submodules --shallow-submodules
 	st = !git stash list && git status
 	skip = update-index --skip-worktree
 	staged = diff --cached
 	stashes = stash list
-	submodule-add-local = "!_() { git submodule add $(git -C $1 url) $1; }; _"
-	submodule-deinit = "!_() { git submodule deinit -f $1; git rm -f ${GIT_PREFIX}$1; rm -rf .git/modules/$1; }; _"
+	submodule-add-shallow = submodule add --depth 1
+	submodule-debug = "!_() { \
+		bat .gitmodules; \
+		git config --get-regexp '^submodule\\.'; \
+		fd --hidden --no-ignore '^config$' .git/modules -X bat; \
+		git submodule foreach 'bat .git'; \
+		}; _"
+	submodule-diff = submodule foreach git diff
+	submodule-rm = "!_() { \
+		[[ $# -eq 1 ]] || return; \
+		set -- \"${@%/}\"; set -- \"${@/#/${GIT_PREFIX}}\"; \
+		[[ -f \"$1/.git\" ]] && set -- \"$@\" $(sed 's/^gitdir: \\(\\.\\.\\/\\)\\+//' \"$1/.git\"); \
+		git submodule deinit -f \"$1\"; \
+		git rm -f \"$1\"; \
+		[[ -n $2 ]] && rm -rf \"$2\" || :; \
+	}; _"
+	submodule-mv = "!_() { \
+		[[ $# -eq 2 ]] || return; \
+		set -- \"${@%/}\"; set -- \"${@/#/${GIT_PREFIX}}\"; \
+		set -- \"$@\" $(git submodule-name \"$1\"); \
+		[[ -n $3 ]] || return; \
+		mkdir -p $(dirname \"$2\"); \
+		git mv \"$1\" \"$2\" || return; \
+		shift 2; \
+		set -- \"$1\" $(git config -f .gitmodules \"submodule.$1.path\"); \
+		git config --rename-section \"submodule.$1\" \"submodule.$2\"; \
+		git config -f .gitmodules --rename-section \"submodule.$1\" \"submodule.$2\"; \
+		mkdir -p \".git/modules/$2\"; \
+		mv \".git/modules/$1/\"* \".git/modules/$2/.\" && rmdir \".git/modules/$1\"; \
+		git config -f \".git/modules/$2/config\" core.worktree $(realpath --relative-to \".git/modules/$2\" \"$2\"); \
+		printf 'gitdir: %s\n' $(realpath --relative-to \"$2\" \".git/modules/$2\") > \"$2/.git\"; \
+		git add .gitmodules; \
+	}; _"
+	submodule-name = "!_() { \
+		[[ $# -eq 1 ]] || return; \
+		set -- \"${@%/}\"; set -- \"${@/#/${GIT_PREFIX}}\"; \
+		git config -f .gitmodules --get-regexp '^submodule\\..*\\.path$' | grep '\\.path '$1'$' | sed 's?^submodule\\.\\(.*\\)\\.path '$1'$?\\1?';\
+	}; _"
 	submodule-pull = submodule foreach git pull
+	submodule-status = submodule foreach git status
+	submodule-update-shallow = submodule update --depth 1
+	submodule-url = "!_() { \
+		[[ $# -eq 1 ]] || return; \
+		set -- \"${@%/}\"; set -- \"${@/#/${GIT_PREFIX}}\"; \
+		set -- $(git submodule-name \"$1\"); \
+		git config -f .gitmodules \"submodule.$1.url\"; \
+	}; _"
 	t = tree -10
 	tags = tag
 	touch = commit --amend --date=now --no-edit
 	tree = log --graph --all --pretty=format:'%x09%C(auto)%h%d%C(reset) %C(cyan)-%C(reset) %s %C(blue)by %an%C(reset), %C(green)%ar%C(reset)'
 	uncommit = reset --soft HEAD~
+	unshallow = fetch --unshallow
 	unskip = update-index --no-skip-worktree
 	unstage = reset HEAD --
 	untrack = rm --cache --
