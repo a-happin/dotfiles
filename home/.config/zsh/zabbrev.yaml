@@ -1,0 +1,304 @@
+abbrevs:
+  # normal abbreviation
+  - abbr: 'q'
+    snippet: 'exit'
+  - abbr: 'g'
+    snippet: 'git'
+  - abbr: 'push'
+    snippet: 'git push'
+  - abbr: 'pushu'
+    snippet: 'git push -u origin HEAD'
+  - abbr: 'commit'
+    snippet: 'git commit -v'
+  - abbr: 'e'
+    snippet: '${EDITOR}'
+    evaluate: true
+  - abbr: 'la'
+    snippet: 'ls -lah'
+  - abbr: 'll'
+    snippet: 'ls -lah'
+
+  # default options
+  - abbr: 'exa'
+    snippet: '-lah'
+    operation: append
+  - abbr: 'cp'
+    snippet: '-iv'
+    operation: append
+  - abbr: 'mv'
+    snippet: '-iv'
+    operation: append
+  - abbr: 'rm'
+    snippet: '-iv'
+    operation: append
+  - abbr: 'rr'
+    snippet: 'rmdir'
+  - abbr: 'rrf'
+    snippet: 'rm -rf'
+  - abbr: 'ln'
+    snippet: '-snfv FILE LINK'
+    operation: append
+  - abbr: 'rmlink'
+    snippet: 'unlink'
+  - abbr: 'mkdir'
+    snippet: '-p'
+    operation: append
+  - abbr: 'df'
+    snippet: '-h'
+    operation: append
+  - abbr: 'du'
+    snippet: '-h --max-depth 1'
+    operation: append
+  - abbr: 'fd'
+    snippet: '--hidden --no-ignore --exclude .git'
+    operation: append
+  - abbr: 'rg'
+    snippet: "--hidden --no-ignore --glob '!.git'"
+    operation: append
+  - abbr: 'rsync'
+    snippet: "-avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with '/' at the end."
+    operation: append
+  - abbr: 'paccache'
+    snippet: "paccache -r; paccache -ruk0; yay --aur -Sc"
+  - abbr: 'g++'
+    snippet: '-std=c++2b -Wall -Wextra -pedantic-errors -I./include -O2 -pipe'
+    operation: append
+  - abbr: 'clang++'
+    snippet: '-std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
+    operation: append
+
+  # zsh
+  - abbr: 'type'
+    snippet: '-as'
+    operation: append
+  - abbr: 'historygrep'
+    snippet: 'history | grep'
+  - abbr: 'historyedit'
+    snippet: '${EDITOR} ${HISTFILE}'
+    evaluate: true
+
+  # fix typo
+  - abbr: ':q'
+    snippet: 'exit'
+  - abbr: 'vscode'
+    snippet: 'code'
+  - abbr: 'exho'
+    snippet: 'echo'
+
+  # prepend sudo
+  - abbr: 'pacman'
+    snippet: 'sudo'
+    operation: prepend
+  - abbr: 'apt'
+    snippet: 'sudo'
+    operation: prepend
+
+  # subcommand
+  - context: 'git'
+    abbr: 'c'
+    snippet: 'commit'
+  - context: 'git'
+    abbr: 'cv'
+    snippet: 'commit -v'
+  - context: 'git'
+    abbr: 'co'
+    snippet: 'checkout'
+  - context: 'git'
+    abbr: 'pu'
+    snippet: 'push -u origin HEAD'
+  - context: 'git'
+    abbr: 'pr'
+    snippet: 'pull --rebase origin $(git symbolic-ref --short HEAD)'
+    evaluate: true
+  - context: 'git'
+    abbr: 'a'
+    snippet: 'add --patch'
+  - context: 'git'
+    abbr: 'aa'
+    snippet: 'add --all'
+  - context: 'git'
+    abbr: 's'
+    snippet: 'stash list && git status'
+  - context: 'git'
+    abbr: 'd'
+    snippet: 'diff'
+  - context: 'git'
+    abbr: 'f'
+    snippet: 'fetch --prune'
+  - context: 'git'
+    abbr: 'new'
+    snippet: 'switch -c'
+  - context: 'git'
+    abbr: 'discard'
+    snippet: 'reset --hard HEAD'
+  - context: 'git'
+    abbr: 'clean'
+    snippet: '-df'
+    operation: append
+  - context: 'git'
+    abbr: 'init'
+    snippet: '&& git commit --allow-empty -m "Initial commit."'
+    operation: append
+  - context: 'git'
+    abbr: 'sw'
+    snippet: 'switch $(fzf-git-branch)'
+    evaluate: true
+  - context: 'git'
+    abbr: 'fomm'
+    snippet: fetch origin $(local b=$(fzf-git-branch); printf '%s:%s' "$b" "$b")
+    evaluate: true
+  - context: 'git'
+    abbr: 'fixup'
+    snippet: commit --fixup $(fzf-git-commit)
+    evaluate: true
+  - context: 'git'
+    abbr: 'pick'
+    snippet: cherry-pick $(fzf-git-commit)
+    evaluate: true
+  - context: 'git'
+    abbr: 'i'
+    snippet: rebase -i $(fzf-git-commit)
+    evaluate: true
+  - context: 'git'
+    abbr: 'B'
+    global: true
+    snippet: $(fzf-git-branch)
+    evaluate: true
+  - context: 'git'
+    abbr: 'C'
+    global: true
+    snippet: $(fzf-git-commit)
+    evaluate: true
+
+  # fake command
+  - context: 'compile'
+    abbr-regex: '\.cpp$'
+    snippet: 'clang++ $CHINO_OPT'
+    operation: replace-command
+    evaluate: true
+
+  - context: 'extract'
+    abbr-regex: '\.tar\.bz2$'
+    snippet: 'tar -jxvf'
+    operation: replace-command
+  - context: 'extract'
+    abbr-regex: '\.tar\.gz$'
+    snippet: 'tar -zxvf'
+    operation: replace-command
+  - context: 'extract'
+    abbr-regex: '\.tar\.xz$'
+    snippet: 'tar -Jxvf'
+    operation: replace-command
+  - context: 'extract'
+    abbr-regex: '\.tbz2$'
+    snippet: 'tar -jxvf'
+    operation: replace-command
+  - context: 'extract'
+    abbr-regex: '\.tgz$'
+    snippet: 'tar -zxvf'
+    operation: replace-command
+  - context: 'extract'
+    abbr-regex: '\.tar$'
+    snippet: 'tar -xvf'
+    operation: replace-command
+  - context: 'extract'
+    abbr-regex: '\.bz2$'
+    snippet: 'bzip2 -dc'
+    operation: replace-command
+  - context: 'extract'
+    abbr-regex: '\.zip$'
+    snippet: 'unzip'
+    operation: replace-command
+  - context: 'extract'
+    abbr-regex: '\.rar$'
+    snippet: 'unrar x'
+    operation: replace-command
+  - context: 'extract'
+    abbr-regex: '\.gz$'
+    snippet: 'gzip -dc'
+    operation: replace-command
+  - context: 'extract'
+    abbr-regex: '\.xz$'
+    snippet: 'xz -d'
+    operation: replace-command
+
+  - context: 'compress'
+    abbr-regex: '\.tar\.bz2$'
+    snippet: 'tar -jcvf'
+    operation: replace-command
+  - context: 'compress'
+    abbr-regex: '\.tar\.gz$'
+    snippet: 'tar -zcvf'
+    operation: replace-command
+  - context: 'compress'
+    abbr-regex: '\.tar\.xz$'
+    snippet: 'tar -Jcvf'
+    operation: replace-command
+  - context: 'compress'
+    abbr-regex: '\.tbz2$'
+    snippet: 'tar -jcvf'
+    operation: replace-command
+  - context: 'compress'
+    abbr-regex: '\.tgz$'
+    snippet: 'tar -zcvf'
+    operation: replace-command
+  - context: 'compress'
+    abbr-regex: '\.tar$'
+    snippet: 'tar -cvf'
+    operation: replace-command
+  - context: 'compress'
+    abbr-regex: '\.zip$'
+    snippet: 'zip -r'
+    operation: replace-command
+  - context: 'compress'
+    abbr-regex: '\.rar$'
+    snippet: 'rar a'
+    operation: replace-command
+
+  # associated command(behaves like a suffix alias)
+  - abbr-regex: '\.jar$'
+    snippet: 'java -jar'
+    operation: prepend
+  - abbr-regex: '\.cpp$'
+    snippet: 'chino -o /tmp/a.out $1 && /tmp/a.out'
+    operation: replace-all
+    evaluate: true
+  - abbr-regex: '\.ts$'
+    snippet: $([[ -f import_map.json ]] && printf '%s' "deno run --import-map=import_map.json" || printf '%s' "deno run") --allow-all --unstable
+    operation: prepend
+    evaluate: true
+
+  # like a function
+  - context: 'ssh-keygen'
+    abbr-regex: '^[^-].*'
+    snippet: 'mkdir -p ~/.ssh/$1 && ssh-keygen -t ed25519 -f ~/.ssh/$1/id_ed25519'
+    operation: replace-all
+    evaluate: true
+  - context: 'mkdircd'
+    abbr-regex: '.*'
+    snippet: 'mkdir -p $1 && cd $1'
+    operation: replace-all
+    evaluate: true
+  - context: 'trash'
+    abbr-regex: '.*'
+    snippet: 'mkdir -p /tmp/trash; mv -fv $1 /tmp/trash'
+    operation: replace-all
+    evaluate: true
+
+  # global abbreviation
+  - abbr: '>null'
+    snippet: '>/dev/null 2>&1'
+    global: true
+
+  # global abbreviation with context
+
+  # as one pleases
+  - context: 'cd'
+    abbr: 'f'
+    snippet: $(fzf-directory)
+    evaluate: true
+  - context: 'cd'
+    abbr: 'g'
+    snippet: $(fzf-git-repository)
+    evaluate: true
+

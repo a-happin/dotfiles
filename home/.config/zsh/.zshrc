@@ -10,7 +10,7 @@ then
   autoload -Uz _zinit
   (( ${+_comps} )) && _comps[zinit]=_zinit
 else
-  mkdir -p ${ZINIT[HOME_DIR]} && git clone --depth 1 https://github.com/zdharma/zinit.git ${ZINIT[HOME_DIR]}/bin
+  mkdir -p ${ZINIT[HOME_DIR]} && git clone --depth 1 https://github.com/zdharma-continuum/zinit.git ${ZINIT[HOME_DIR]}/bin
 fi
 
 ########################################
@@ -18,52 +18,13 @@ fi
 ########################################
 
 #------------------------------
-# HISTFILE
-#------------------------------
-mkdir -p ${XDG_DATA_HOME}/zsh && export HISTFILE=${XDG_DATA_HOME}/zsh/history
-
-#------------------------------
-# EDITOR
-#------------------------------
-#type nvim > /dev/null 2>&1 && export EDITOR=nvim
-#alias vim='printf "vimがいいのですか？でもnvimを起動しますね。" && read -k1 && nvim'
-
-#------------------------------
-# VISUAL
-#------------------------------
-#type nvim > /dev/null 2>&1 && export VISUAL=nvim
-
-#------------------------------
-# XDG_CONFIG_HOME
-#------------------------------
-# export XDG_CONFIG_HOME=${HOME}/.config
-# export XDG_CACHE_HOME=${HOME}/.cache
-# export XDG_DATA_HOME=${HOME}/.local/share
-
-#------------------------------
-# VTE_CJK_WIDTH
-#------------------------------
-#export VTE_CJK_WIDTH=1
-
-#------------------------------
-# PATH
-#------------------------------
-export PATH="${PATH}:${HOME}/bin"
-#export LD_LIBRARY_PATH="${HOME}/lib"
-
-#------------------------------
-# fzf
-#------------------------------
-export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
-
-#------------------------------
 # ?
 #------------------------------
 # 3秒以上かかった処理は詳細表示
 REPORTTIME=2
 
-# 補完候補が多いときに尋ねない
-LISTMAX=1000
+# 補完候補がウインドウからはみ出るときに尋ねる
+LISTMAX=0
 
 ########################################
 # autoload
@@ -198,6 +159,9 @@ setopt transient_rprompt
 # history
 #------------------------------
 
+# HISTFILE
+mkdir -p ${XDG_DATA_HOME}/zsh && export HISTFILE=${XDG_DATA_HOME}/zsh/history
+
 # メモリに保持するhistroy
 export HISTSIZE=10000
 
@@ -270,7 +234,7 @@ zstyle ':completion:*' completer _expand _oldlist _complete _match _approximate 
 # 補完キャッシュを使う
 zstyle ':completion:*' use-cache true
 
-# 詳細な情報を使う
+# おせっかいな補完候補を表示する
 zstyle ':completion:*' verbose yes
 
 # ../ の後は今いるディレクトリを補完しない
@@ -279,12 +243,11 @@ zstyle ':completion:*' ignore-parents parent pwd ..
 # sudo の後のコマンド名補完
 zstyle ':completion:*:sudo:*' command-path /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin /opt/bin
 
-# ps の後のプロセス名補完
+# プロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
 # 補完してほしくないファイルは補完しない
 zstyle ':completion:*:*:nvim:*:*files' ignored-patterns '*?.out' '*?.o' '*?.hi' '*?~' '*\#'
-zstyle ':completion:*' ignored-patterns '.git'
 
 # オプション表示時のseparator
 # add --> add paths to the index
@@ -297,113 +260,39 @@ zstyle ':completion:*' insert-tab false
 zstyle ':zle:*' word-chars ' /@#$%^&*-+=;:{}[]()<>,.|\\'
 zstyle ':zle:*' word-style unspecified
 
-
 ########################################
 # alias
 ########################################
 
-#------------------------------
-# 環境依存
-#------------------------------
-case ${OSTYPE} in
-  darwin*)
-    # ここに Mac 向けの設定
-    alias ls='\ls -G -F'
-    ;;
-  linux*)
-    # ここに Linux 向けの設定
-    alias ls='\ls --color=auto -F'
-    alias pbcopy='xsel --clipboard --input'
-    alias pbpaste='xsel --clipboard --output'
-    alias open=xdg-open
-    ;;
-esac
-
-# WSL Windows
-if [[ $(uname -r) =~ Microsoft$ ]]
-then
-  export DISPLAY=localhost:0
-
-  # windows用open
-  function win-open ()
-  {
-    if [[ $# -eq 1 ]]
-    then
-      cmd.exe /c start $(wslpath -m $(readlink -f "$1"))
-    else
-      echoerr Error: win-open: 引数を正しく指定してください。
-      echoerr "Usage: win-open [file/path]"
-      return 1;
-    fi
-  }
-
-  alias pbcopy=clip.exe
-  alias pbpaste='powershell.exe get-clipboard'
-  alias open=win-open
-
-  alias explorer=explorer.exe
-  alias java=java.exe
-  alias deno=deno.exe
-  alias ffmpeg=ffmpeg.exe
-  alias ffprobe=ffprobe.exe
-  alias ffplay=ffplay.exe
-fi
-
-#------------------------------
-# common alias
-#------------------------------
-alias la='ls -A'
-alias ll='ls -l -A'
+type exa >/dev/null 2>&1 && alias ls='exa'
 alias grep='\grep --color=auto'
-
-alias cp='\cp -i'
-alias mv='\mv -i'
-alias rm='\rm -i'
-alias rr='\rm -ri'
-
-alias type='\type -as'
 
 # sudo でaliasが使えるようにする
 alias sudo='sudo '
 
-# alias fcrontab='fcrontab -i'
-
 alias history='\history 0'
-alias historygrep='\history 0 | grep'
-
-#alias addp='\git add -p'
-#alias gommit='\git commit -v'
-#alias commit='\git commit -v'
-#alias checkout='\git checkout'
-#alias push='\git push'
-#alias fetch='\git fetch'
-# alias g='subsh git'
-
-alias encrypt='openssl aes-256-cbc -e -iter 100'
-alias decrypt='openssl aes-256-cbc -d -iter 100'
 
 # set wallpaper
-alias wallpaper='feh --no-fehbg --randomize --bg-max'
+alias wallpaper='feh --no-fehbg --randomize --bg-max --recursive'
 
-# alias vscode=code
-
-alias nvimrc='${EDITOR} ${XDG_CONFIG_HOME}/nvim/init.vim'
-alias zshrc='${EDITOR} ${XDG_CONFIG_HOME}/zsh/.zshrc'
-alias gitconfig='git config --global -e'
+alias reload='exec zsh'
 alias relogin='exec zsh -l'
 
-#chinoopt='-std=c++2a -Weverything -Wno-c++98-compat-pedantic -pedantic-errors -O2 -pipe'
-clang_warnings='-Weverything -Wno-c++98-compat-pedantic'
-gcc_warnings='-Wall -Wextra -Wcast-align -Wcast-qual -Wconversion -Wdelete-non-virtual-dtor -Wdisabled-optimization -Wdouble-promotion -Wfloat-equal -Wformat -Wformat-nonliteral -Wformat-security -Wformat-signedness -Winit-self -Wlogical-op -Wmissing-declarations -Wmultichar -Wnoexcept -Wnon-virtual-dtor -Wold-style-cast -Woverloaded-virtual -Wpacked -Wpadded -Wpointer-arith -Wredundant-decls -Wreorder -Wshadow -Wsign-promo -Wswitch-default -Wswitch-enum -Wunsafe-loop-optimizations'
-#alias chino='clang++ ${=chinoopt}'
-alias chino='clang++ -std=c++23 -pedantic-errors -Weverything -Wno-c++98-compat-pedantic -I ~/work/kizuna/include -O2 -pipe'
-alias c++14-clang='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c++11-compat-pedantic -pedantic-errors -O2 -pipe'
-alias c++17-clang='clang++ -std=c++17 -Weverything -Wno-c++98-compat-pedantic -Wno-c++11-compat-pedantic -Wno-c++14-compat-pedantic -pedantic-errors -O2 -pipe'
-alias c++2a-clang='clang++ -std=c++2a -Weverything -Wno-c++98-compat-pedantic -Wno-c++11-compat-pedantic -Wno-c++14-compat-pedantic -Wno-c++17-compat-pedantic -pedantic-errors -O2 -pipe'
-
-alias c++14-gcc='g++ -std=c++14 ${=gcc_warnings} -pedantic-errors -O2 -pipe'
-
+alias chino='clang++ -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
 alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -Wno-unused-const-variable -pedantic-errors -g -O0 -pipe -DLOCAL -DDEBUG'
+
+# alias fcrontab='fcrontab -i'
+
+alias note='${EDITOR} -c "cd %:h" ${HOME}/Dropbox/note/note.md'
+alias nvimrc='${EDITOR} -c "cd %:h" ${XDG_CONFIG_HOME}/nvim/init.vim'
+alias fishrc='${EDITOR} -c "cd %:h" ${XDG_CONFIG_HOME}/fish/config.fish'
+alias zshrc='${EDITOR} -c "cd %:h" ${XDG_CONFIG_HOME}/zsh/.zshrc'
+alias bashrc='${EDITOR} -c "cd %:h" ${HOME}.bashrc'
+alias i3config='${EDITOR} -c "cd %:h" ${XDG_CONFIG_HOME}/i3/config'
+alias gitconfig='git config --global -e'
+
+# alias encrypt='openssl aes-256-cbc -e -iter 100'
+# alias decrypt='openssl aes-256-cbc -d -iter 100'
 
 # typo
 #alias exho=echo
@@ -420,7 +309,6 @@ alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wn
 # suffix alias
 #------------------------------
 alias -s {mp3,flac,m4a}=music-play
-alias -s py=python3
 alias -s hs=runhaskell
 alias -s c=my-runc
 alias -s {cpp,cxx,cc}=runchino
@@ -455,10 +343,6 @@ function my-runc ()
   my-cc -o /tmp/a.out "$@" && /tmp/a.out
 }
 
-#function my-runcxx ()
-#{
-#  my-cxx -o /tmp/a.out "$1" && shift && /tmp/a.out "$@"
-#}
 
 function runchino ()
 {
@@ -493,12 +377,6 @@ function valgrind_cpp ()
 #------------------------------
 # utility function
 #------------------------------
-function mkdircd ()
-{
-  [[ -d "$@" ]] && echoerr "${fg_bold[red]}$@" already exists.
-  mkdir -p -- "$@" && cd -- "$@"
-}
-
 # ぐぐる
 function google ()
 {
@@ -509,13 +387,6 @@ function google ()
 function hoogle ()
 {
   [[ -z $* ]] && set -- `head -1` && open "https://www.haskell.org/hoogle/?hoogle=$*"
-}
-
-# /tmp/trash に移動
-function trash ()
-{
-  mkdir -p /tmp/trash
-  mv -fv "$@" /tmp/trash
 }
 
 # stderrへのecho、ついでに終了コード1
@@ -529,58 +400,6 @@ function echoerr ()
 function music-play ()
 {
   mplayer "$@" || echoerr Error: cannot play.
-}
-
-# 拡張子から圧縮形式を判別して解凍
-function extract ()
-{
-  if [[ -z $1 || -n $2 ]]
-  then
-    \type -f extract >&2
-  else
-    case "$1" in
-      *.tgz | *.tar.gz) tar -zxvf "$1" ;;
-      *.tbz2 | *.tar.bz2) tar -jxvf "$1" ;;
-      *.tar.xz) tar -Jxvf "$1" ;;
-      *.tar) tar -xvf "$1" ;;
-      *.gz) gzip -dc "$1" ;;
-      *.bz2) bzip2 -dc "$1" ;;
-      *.xz) xz -d "$1" ;;
-      *.zip) unzip "$1" ;;
-      *.rar) unrar x "$1" ;;
-      *) echoerr Error: unknown suffix. ;;
-    esac
-  fi
-}
-
-# 拡張子に合った圧縮形式で圧縮
-function compress ()
-{
-  case "$1" in
-    *.tgz | *.tar.gz) tar -zcvf "$@" ;;
-    *.tbz2 | *.tar.bz2) tar -jcvf "$@" ;;
-    *.tar.xz) tar -Jcvf "$@" ;;
-    *.tar) tar -cvf "$@" ;;
-    *.zip) zip -r "$@" ;;
-    *.rar) rar a "$@" ;;
-    *) echoerr Error: unknown suffix. ;;
-  esac
-}
-
-# デコードして編集（してエンコード）
-function decrypt-edit ()
-{
-  decrypt -in "$1" -out "$1~" && ${EDITOR} "$1~"
-  if [[ $? -ne 0 ]]
-  then
-    return 1
-  fi
-  encrypt -in "$1~" -out "$1"
-  if [[ $? -ne 0 ]]
-  then
-    return 1
-  fi
-  rm -f "$1~"
 }
 
 # ~以下のすべてのリポジトリに対してgit statusを実行
@@ -611,27 +430,31 @@ function color-palette ()
 #------------------------------
 function fzf-file ()
 {
-  fd --type f --hidden --follow --exclude .git | fzf --ansi --preview 'bat --color=always --line-range :500 {}'
+  fd --type f --hidden --no-ignore --exclude .git "$@" | fzf --multi --preview 'bat --color=always --style=numbers --line-range :500 {}'
 }
-
 function fzf-directory ()
 {
-  fd --type d --hidden --follow | fzf --preview 'exa -lha --time-style long-iso --color=always {}'
+  fd --type d --hidden --no-ignore --exclude .git "$@" | fzf --multi --preview 'exa -lha --time-style long-iso --color=always {}'
 }
-
-function fzf-changed ()
-{
-  git diff --name-only | fzf --multi --preview 'git diff --color=always {}'
-}
-
 function fzf-process ()
 {
   ps -ef | sed 1d | fzf --multi | awk '{print $2}'
 }
-
+function fzf-git-branch ()
+{
+  git branch --all | cut -c 3- | fzf --reverse -0 --height 60%
+}
+function fzf-git-commit ()
+{
+  git log --graph --all --oneline --color=always | fzf --ansi --no-sort --reverse --tiebreak index -0 --height=60% --preview "git show --color=always \$(printf '%s' {} | grep -io '[0-9a-f]\{7,\}' | head -1)" | \grep -io '[0-9a-f]\{7,\}' | head -1
+}
+function fzf-git-changed ()
+{
+  git diff --name-only --relative | fzf --multi --preview 'git diff --color=always -- {}'
+}
 function fzf-git-repository ()
 {
-  fd --type d --hidden --follow '^.git$' ~ -x dirname | fzf --multi --preview 'git -c color.status=always -C {} status'
+  fd --type d --hidden '^.git$' ~ -x dirname | fzf --multi --preview 'git -c color.status=always -C {} status'
 }
 
 ########################################
@@ -679,7 +502,7 @@ function decorate-branch ()
 
     if read line
     then
-      branch_name=${${line}#* }
+      branch_name="${${line}#* }"
       while IFS= read line
       do
         case "${line[1,2]}" in
@@ -701,10 +524,10 @@ function decorate-branch ()
       else
         printf "%s" "%{${fg_bold[cyan]}%}"
       fi
-      printf "(%s)" ${branch_name}
-      [[ ${staged} -ne 0 ]] && printf "%s %d staged" "%{${fg_bold[green]}%}" ${staged}
-      [[ ${modified} -ne 0 ]] && printf "%s %d modified" "%{${fg_bold[yellow]}%}" ${modified}
-      [[ ${untracked} -ne 0 ]] && printf "%s %d untracked" "%{${fg_bold[red]}%}" ${untracked}
+      printf "(%s)" "${branch_name}"
+      [[ ${staged} -ne 0 ]] && printf "%s %d staged" "%{${fg_bold[green]}%}" "${staged}"
+      [[ ${modified} -ne 0 ]] && printf "%s %d modified" "%{${fg_bold[yellow]}%}" "${modified}"
+      [[ ${untracked} -ne 0 ]] && printf "%s %d untracked" "%{${fg_bold[red]}%}" "${untracked}"
     fi
   }
 }
@@ -728,6 +551,7 @@ function decorate-prompt ()
 function precmd ()
 {
   PROMPT="$(decorate-prompt)"
+  # RPROMPT='[zsh]'
 }
 
 #------------------------------
@@ -771,10 +595,13 @@ type zinit > /dev/null 2>&1 && {
   # zinitはプラグインの中の補完用のファイルを自動で探索し、シンボリックリンクを使ってfpathに追加する特殊な機能があります。
   # なので、プラグインの中のfpath追加を使わずにzinitに面倒を見させるのほうが高速となります。
   # zinit ice wait lucid fblock ; zinit light zsh-users/zsh-completions
-  zinit ice wait lucid ; zinit light zdharma/fast-syntax-highlighting
+  zinit ice wait lucid ; zinit light zdharma-continuum/fast-syntax-highlighting
   zinit ice wait lucid ; zinit light zsh-users/zsh-autosuggestions
-  zinit ice wait lucid ver"feature/auto_remove_slash" atload"source ${ZDOTDIR}/abbrev.zsh" ; zinit light a-happin/zsh-abbrev-alias
 }
+
+# abbreviation
+type zabbrev >/dev/null 2>&1 && eval "$(zabbrev init --bind-keys)"
+
 
 [[ -d /usr/share/fzf ]] && {
   source /usr/share/fzf/key-bindings.zsh
