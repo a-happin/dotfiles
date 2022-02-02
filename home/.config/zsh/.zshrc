@@ -605,7 +605,6 @@ type zabbrev >/dev/null 2>&1 && eval "$(zabbrev init --bind-keys)"
 
 
 [[ -d /usr/share/fzf ]] && {
-  source /usr/share/fzf/key-bindings.zsh
   source /usr/share/fzf/completion.zsh
 }
 
