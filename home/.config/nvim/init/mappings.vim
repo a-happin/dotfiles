@@ -450,6 +450,9 @@ nnoremap <Space>. <Cmd>if expand ('%:e') ==# 'vim'<bar>source %<bar>echo 'source
 " ripgrep
 nnoremap <Space>/ <Cmd>Rg<CR>
 
+" 選択中の文字列で検索をかける
+xnoremap <Space>/ "sy/\V<C-r>=escape(@s, '/')<CR><CR><Cmd>call <SID>flash_hlsearch()<CR>
+
 
 " --------------------------------
 "  commentout
