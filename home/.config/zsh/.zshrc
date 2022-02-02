@@ -283,12 +283,13 @@ alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wn
 
 # alias fcrontab='fcrontab -i'
 
-alias note='${EDITOR} -c "cd %:h" ${HOME}/Dropbox/note/note.md'
-alias nvimrc='${EDITOR} -c "cd %:h" ${XDG_CONFIG_HOME}/nvim/init.vim'
-alias fishrc='${EDITOR} -c "cd %:h" ${XDG_CONFIG_HOME}/fish/config.fish'
-alias zshrc='${EDITOR} -c "cd %:h" ${XDG_CONFIG_HOME}/zsh/.zshrc'
-alias bashrc='${EDITOR} -c "cd %:h" ${HOME}.bashrc'
-alias i3config='${EDITOR} -c "cd %:h" ${XDG_CONFIG_HOME}/i3/config'
+alias note='${EDITOR} -c "cd %:h" "${HOME}/Dropbox/note/note.md"'
+alias nvimrc='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/nvim/init.vim"'
+alias zshrc='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/zsh/.zshrc"'
+alias fishrc='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/fish/config.fish"'
+alias bashrc='${EDITOR} -c "cd %:h" "${HOME}.bashrc"'
+alias zabbrevconfig='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/zsh/zabbrev.yaml"'
+alias i3config='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/i3/config"'
 alias gitconfig='git config --global -e'
 
 # alias encrypt='openssl aes-256-cbc -e -iter 100'

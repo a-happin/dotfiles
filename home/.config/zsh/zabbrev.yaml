@@ -17,8 +17,10 @@ abbrevs:
     snippet: 'ls -lah'
   - abbr: 'll'
     snippet: 'ls -lah'
+  - abbr: 'clone'
+    snippet: 'git clone --depth 1 --recurse-submodules --shallow-submodules'
 
-  # default options
+  # add default options
   - abbr: 'exa'
     snippet: '-lah'
     operation: append
@@ -93,13 +95,25 @@ abbrevs:
     snippet: 'sudo'
     operation: prepend
 
+  # prepend cd
+  - abbr: '..'
+    snippet: 'cd'
+    operation: prepend
+
+
   # subcommand
+  - context: 'git'
+    abbr: 'b'
+    snippet: 'branch'
   - context: 'git'
     abbr: 'c'
     snippet: 'commit'
   - context: 'git'
     abbr: 'cv'
     snippet: 'commit -v'
+  - context: 'git'
+    abbr: 'cm'
+    snippet: 'commit -m'
   - context: 'git'
     abbr: 'co'
     snippet: 'checkout'
@@ -115,7 +129,7 @@ abbrevs:
     snippet: 'add --patch'
   - context: 'git'
     abbr: 'aa'
-    snippet: 'add --all'
+    snippet: 'add -v --all'
   - context: 'git'
     abbr: 's'
     snippet: 'stash list && git status'
@@ -137,8 +151,7 @@ abbrevs:
     operation: append
   - context: 'git'
     abbr: 'init'
-    snippet: '&& git commit --allow-empty -m "Initial commit."'
-    operation: append
+    snippet: 'init && git commit --allow-empty -m "Initial commit."'
   - context: 'git'
     abbr: 'sw'
     snippet: 'switch $(fzf-git-branch)'
@@ -159,6 +172,12 @@ abbrevs:
     abbr: 'i'
     snippet: rebase -i $(fzf-git-commit)
     evaluate: true
+  # external command
+  - context: 'git'
+    abbr: 'destroy'
+    snippet: 'rm -rf .git'
+    operation: replace-all
+  # global abbreviation
   - context: 'git'
     abbr: 'B'
     global: true
@@ -170,12 +189,16 @@ abbrevs:
     snippet: $(fzf-git-commit)
     evaluate: true
 
+  - context: 'zabbrev'
+    abbr: 'update'
+    operation: replace-all
+    snippet: ' cargo uninstall zabbrev; cargo install --path ~/work/zabbrev'
+
   # fake command
   - context: 'compile'
     abbr-regex: '\.cpp$'
-    snippet: 'clang++ $CHINO_OPT'
+    snippet: 'chino'
     operation: replace-command
-    evaluate: true
 
   - context: 'extract'
     abbr-regex: '\.tar\.bz2$'
@@ -289,8 +312,6 @@ abbrevs:
   - abbr: '>null'
     snippet: '>/dev/null 2>&1'
     global: true
-
-  # global abbreviation with context
 
   # as one pleases
   - context: 'cd'
