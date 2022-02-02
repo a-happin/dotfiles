@@ -39,17 +39,21 @@ augroup END
 " *******************************
 " terminalを改善する
 " * 行番号を非表示にする
-" * 自動で挿入モードに入る
+" * 自動でTERMINALモードに入る
 " * ジョブが終了したterminalをbwipeoutする
 " interactive shellの場合,
 " * 名前をterm://*/[terminal]に書き換える
 " * 終了時に即消す
 function! s:init_terminal () abort
-  setlocal nonumber
-  startinsert
+  setlocal nonumber norelativenumber
+  if mode () =~# 'i'
+    call feedkeys("\<Esc>i")
+  else
+    startinsert
+  endif
   augroup terminal-auto-startinsert
     autocmd! * <buffer>
-    autocmd BufEnter,WinEnter <buffer> startinsert
+    autocmd BufEnter,WinEnter <buffer> if mode () =~# 'i' | call feedkeys("\<Esc>i") | else | startinsert | endif
     autocmd TermClose <buffer> autocmd! terminal-auto-startinsert * <buffer>
   augroup END
 endfunction
