@@ -19,7 +19,7 @@
 	autosquash = true
 [alias]
 	a = add --patch
-	aa = add --all
+	aa = add -v --all
 	add-as-submodule = "!_() { \
 		[[ $# -eq 1 ]] || return; \
 		set -- \"${@%/}\"; set -- \"${@/#/${GIT_PREFIX}}\"; \

@@ -275,7 +275,7 @@ onoremap i<Space> iW
 " 全部閉じて終了
 call s:anoremap ('<M-q>', '<Cmd>confirm qall<CR>')
 
-nnoremap <M-w> <C-w>
+nmap <M-w> <C-w>
 
 " Open File Explorer
 " nnoremap <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
