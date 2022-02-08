@@ -373,7 +373,7 @@ abbrevs:
     evaluate: true
 
   - context: 'mkdircd'
-    abbr-prefix: '.*'
+    abbr-prefix: ''
     replace-all: 'mkdir -p $1 && cd $1'
     evaluate: true
 
