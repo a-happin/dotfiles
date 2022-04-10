@@ -469,17 +469,27 @@ bindkey -d
 bindkey -e
 
 # Ctrl+arrow key
-bindkey "^[[1;5C" forward-word
-bindkey "^[[1;5D" backward-word
+  ## Ubuntu
+  bindkey "^[[1;5C" forward-word
+  bindkey "^[[1;5D" backward-word
 
 # HOME,ENDで移動する
-bindkey "^[[H" beginning-of-line
-bindkey "^[[F" end-of-line
-bindkey "^[[1~" beginning-of-line
-bindkey "^[[4~" end-of-line
+  ## Arch Linux
+  bindkey "^[[H" beginning-of-line
+  bindkey "^[[F" end-of-line
+  ## Ubuntu
+  bindkey "^[OH" beginning-of-line
+  bindkey "^[OF" end-of-line
+  ## ?
+  # bindkey "^[[1~" beginning-of-line
+  # bindkey "^[[4~" end-of-line
 
 # Deleteキーで消す
 bindkey "^[[3~" delete-char
+
+# Ctrl+BackSpace
+  ## Ubuntu
+  bindkey "^H" backward-kill-word
 
 # Shift+Tabで逆順補完
 bindkey "^[[Z" reverse-menu-complete
