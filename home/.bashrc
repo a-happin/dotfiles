@@ -8,4 +8,7 @@
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
-shopt -q login_shell && type fish > /dev/null 2>&1 && exec fish -l || exec fish
+type fish > /dev/null 2>&1 && {
+  shopt -q login_shell && exec fish -l || exec fish
+}
+:
