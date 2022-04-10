@@ -62,6 +62,7 @@
 	pushu = push -u origin HEAD
 	reset-to-head = reset --hard HEAD
 	reset-to-remote = reset --hard @{u}
+	remote-convert-to-ssh-url = !git remote set-url origin $(git remote get-url origin | sed 's%^https://github.com/%git@github.com:%')
 	rg = !rg --hidden --glob '!.git'
 	root = rev-parse --show-toplevel
 	shallow-clone = clone --depth 1
