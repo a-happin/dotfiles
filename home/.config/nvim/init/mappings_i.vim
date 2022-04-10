@@ -29,6 +29,7 @@ inoremap <S-Del> <C-o>de
 inoremap <C-Del> <C-o>de
 inoremap <C-S-Del> <C-o>de
 
+inoremap <C-h> <C-w>
 
 " --------------------------------
 "  移動系
