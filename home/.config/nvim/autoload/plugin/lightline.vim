@@ -10,11 +10,9 @@ function! plugin#lightline#init () abort
         \       ['readonly', 'absolutepath', 'modified']
         \     ],
         \     'right': [
-        \       ['coc_errors', 'coc_warnings', 'coc_info', 'coc_hints', 'coc_hints'],
         \       ['lineinfo'],
         \       ['percent'],
         \       ['fileformat', 'fileencoding', 'filetype'],
-        \       ['coc_status']
         \     ]
         \   },
         \   'tab': {
@@ -22,5 +20,5 @@ function! plugin#lightline#init () abort
         \     'inactive': ['filename', 'modified']
         \   }
         \ }
-  call lightline#coc#register ()
+  " call lightline#coc#register ()
 endfunction

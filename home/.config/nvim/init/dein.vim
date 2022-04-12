@@ -59,16 +59,19 @@ if dein#load_state (s:dein_directory)
   " ** plugins
   " ********************************
   " LSP client
-  call dein#add ('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release', 'on_event': 'VimEnter', 'hook_source': 'call plugin#coc#init ()'})
+  " call dein#add ('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release', 'on_event': 'VimEnter', 'hook_source': 'call plugin#coc#init ()'})
+  call dein#add ('neovim/nvim-lspconfig', {'on_lua': 'lspconfig'})
+  call dein#add ('williamboman/nvim-lsp-installer', {'on_lua': 'nvim-lsp-installer', 'hook_add': 'lua require "init/lsp"'})
 
   " show git diff at SignColumn
   call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter', 'hook_add': 'let g:gitgutter_map_keys = 0'})
 
   " customize statusline
-  call dein#add ('itchyny/lightline.vim', {'hook_add': 'call plugin#lightline#init ()'})
+  " call dein#add ('itchyny/lightline.vim', {'hook_add': 'call plugin#lightline#init ()'})
+  call dein#add ('nvim-lualine/lualine.nvim', {'on_lua': 'lualine', 'hook_add': 'lua require "init/lualine"'})
 
   " lightlineにcoc情報を表示する関数を提供する
-  call dein#add ('josa42/vim-lightline-coc')
+  " call dein#add ('josa42/vim-lightline-coc')
 
   " fzf
   call dein#add ('junegunn/fzf.vim', {'on_event': 'VimEnter', 'hook_source': 'call plugin#fzf#init ()'})
@@ -95,16 +98,16 @@ if dein#load_state (s:dein_directory)
   " ********************************
   " ** treesitter
   " ********************************
-  call dein#add ('nvim-treesitter/nvim-treesitter', {'merged': v:false, 'on_event': 'VimEnter', 'hook_source': 'lua require "init/nvim-treesitter"', 'hook_post_source': 'call dein#source (["playground", "nvim-treesitter-textobjects", "nvim-ts-rainbow"])', 'hook_post_update': ':TSUpdate'})
+  call dein#add ('nvim-treesitter/nvim-treesitter', {'lazy': 1, 'on_lua': 'nvim-treesitter', 'hook_post_update': ':TSUpdateSync'})
 
   " treesitter playground
-  call dein#add ('nvim-treesitter/playground', {'lazy': v:true})
+  call dein#add ('nvim-treesitter/playground', {'depends': ['nvim-treesitter']})
 
   " textobject
-  call dein#add ('nvim-treesitter/nvim-treesitter-textobjects', {'lazy': v:true})
+  call dein#add ('nvim-treesitter/nvim-treesitter-textobjects', {'depends': ['nvim-treesitter']})
 
   " colorize parens
-  call dein#add ('p00f/nvim-ts-rainbow', {'lazy': v:true})
+  call dein#add ('p00f/nvim-ts-rainbow', {'depends': ['nvim-treesitter']})
 
 
   " ********************************
@@ -147,6 +150,7 @@ else
 endif
 
 function! s:onVimEnter () "noabort
+  lua require 'init/nvim-treesitter'
   " call lightline#update ()
   if dein#check_install ()
     call dein#install ()

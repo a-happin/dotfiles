@@ -6,7 +6,7 @@ require 'nvim-treesitter.configs'.setup {
 
   indent = {
     enable = true,
-    disable = {'cpp'}
+    disable = {'cpp'},
   },
 
   textobjects = {
@@ -26,7 +26,8 @@ require 'nvim-treesitter.configs'.setup {
   rainbow = {
     enable = true,
     extended_mode = true,
+    max_file_lines = 1000,
   },
 
-  ensure_installed = 'maintained',
+  ensure_installed = 'all',
 }
