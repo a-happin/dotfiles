@@ -14,8 +14,18 @@ local on_attach = function (_, bufnr)
   -- hover
   buf_set_keymap ('n', '<F1>', [[<Cmd>lua vim.lsp.buf.hover ()<CR>]], opts)
   buf_set_keymap ('n', 'K', [[<Cmd>lua vim.lsp.buf.hover ()<CR>]], opts)
+  -- signature_help
+  buf_set_keymap ('i', '<F1>', [[<Cmd>lua vim.lsp.buf.signature_help ()<CR>]], opts)
   -- rename
   buf_set_keymap ('n', '<F2>', [[<Cmd>lua vim.lsp.buf.rename ()<CR>]], opts)
+
+  -- TODO: 動いてないので要調査
+  vim.cmd [[
+    augroup init-lspconfig
+      autocmd! * <buffer>
+      autocmd CursorHold <buffer> ++nested lua vim.lsp.buf.document_highlight ()
+    augroup END
+  ]]
 end
 
 local lsp_installer = require 'nvim-lsp-installer'
