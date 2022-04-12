@@ -83,10 +83,10 @@ if dein#load_state (s:dein_directory)
   call dein#add ('vim-denops/denops.vim')
 
   " GhostText
-  call dein#add ('gamoutatsumi/dps-ghosttext.vim')
+  call dein#add ('gamoutatsumi/dps-ghosttext.vim', {'depends': ['denops.vim']})
 
   " Preview markdown on your browser
-  call dein#add ('kat0h/bufpreview.vim')
+  call dein#add ('kat0h/bufpreview.vim', {'depends': ['denops.vim']})
 
   " ********************************
   " ** lua plugins
@@ -98,7 +98,7 @@ if dein#load_state (s:dein_directory)
   " ********************************
   " ** treesitter
   " ********************************
-  call dein#add ('nvim-treesitter/nvim-treesitter', {'lazy': 1, 'on_lua': 'nvim-treesitter', 'hook_post_update': ':TSUpdateSync'})
+  call dein#add ('nvim-treesitter/nvim-treesitter', {'on_lua': 'nvim-treesitter','hook_add': 'lua require "init/nvim-treesitter"', 'hook_post_update': ':TSUpdateSync'})
 
   " treesitter playground
   call dein#add ('nvim-treesitter/playground', {'depends': ['nvim-treesitter']})
@@ -150,7 +150,6 @@ else
 endif
 
 function! s:onVimEnter () "noabort
-  lua require 'init/nvim-treesitter'
   " call lightline#update ()
   if dein#check_install ()
     call dein#install ()
