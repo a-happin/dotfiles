@@ -65,7 +65,7 @@ inoremap <expr> <Tab> <SID>tab_key ()
 
 " ポップアップ補完メニューが表示されているときは前の候補を選択
 " それ以外はインデントを1つ下げる
-inoremap <expr> <S-Tab> pumvisible () ? '<C-p>' : '<C-d>'
+inoremap <expr> <S-Tab> pumvisible () ? '<C-p>' : pum#visible() ? '<Cmd>pum#map#select_relative (-1)<CR>' : '<C-d>'
 
 " ポップアップ補完メニューが表示されているときは確定
 inoremap <expr> <CR> <SID>cr_key ()
@@ -263,10 +263,16 @@ endfunction
 function! s:tab_key () abort
   if pumvisible ()
     return "\<C-n>"
+  elseif pum#visible ()
+    return "\<Cmd>call pum#map#select_relative (+1)\<CR>"
   else
     let [prev, post] = s:getline ()
     if prev =~# '\v\k$'
-      return "\<C-n>"
+      if luaeval ('vim.lsp.buf.server_ready ()')
+        return "\<Cmd>call ddc#map#manual_complete ()\<CR>"
+      else
+        return "\<C-n>"
+      endif
     elseif prev =~# '\v/$'
       return "\<C-x>\<C-f>"
     elseif prev ==# '' && post ==# ''
@@ -289,6 +295,12 @@ function! s:cr_key () abort
     else
       return "\<C-y>"
     endif
+  elseif pum#visible ()
+    " if v:completed_item == {}
+      " return "\<Cmd>call pum#map#confirm()\<CR>\<CR>"
+    " else
+      return "\<Cmd>call pum#map#confirm()\<CR>"
+    " endif
   else
     let [prev, post] = s:getline ()
     if s:is_in_empty_parentheses (prev, post)

@@ -49,7 +49,7 @@ if dein#load_state (s:dein_directory)
   call dein#add ('lambdalisue/fern.vim', {'hook_add': 'let g:fern#default_hidden = 1'})
 
   " netrw hijack (requires fern.vim)
-  call dein#add ('lambdalisue/fern-hijack.vim', {'depends': ['fern.vim']})
+  call dein#add ('lambdalisue/fern-hijack.vim')
 
   " toggle comment
   " autocmdをつかってくれ
@@ -83,10 +83,32 @@ if dein#load_state (s:dein_directory)
   call dein#add ('vim-denops/denops.vim')
 
   " GhostText
-  call dein#add ('gamoutatsumi/dps-ghosttext.vim', {'depends': ['denops.vim']})
+  call dein#add ('gamoutatsumi/dps-ghosttext.vim')
 
   " Preview markdown on your browser
-  call dein#add ('kat0h/bufpreview.vim', {'depends': ['denops.vim']})
+  call dein#add ('kat0h/bufpreview.vim')
+
+  " ********************************
+  " ** ddc plugins
+  " ********************************
+  " original popup menu completion
+  call dein#add ('Shougo/pum.vim')
+
+  " completion framework
+  call dein#add ('Shougo/ddc.vim', {'on_event': 'InsertEnter', 'hook_source': 'call plugin#ddc#init ()'})
+
+  " ddc source
+  " nvim-lsp
+  call dein#add ('Shougo/ddc-nvim-lsp')
+  " around cursor
+  call dein#add ('Shougo/ddc-around')
+
+  " matcher
+  call dein#add ('tani/ddc-fuzzy')
+  " call dein#add ('Shougo/ddc-matcher_head')
+
+  " sorter
+  " call dein#add ('Shougo/ddc-sorter_rank')
 
   " ********************************
   " ** lua plugins
@@ -101,13 +123,13 @@ if dein#load_state (s:dein_directory)
   call dein#add ('nvim-treesitter/nvim-treesitter', {'on_lua': 'nvim-treesitter','hook_add': 'lua require "init/nvim-treesitter"', 'hook_post_update': ':TSUpdateSync'})
 
   " treesitter playground
-  call dein#add ('nvim-treesitter/playground', {'depends': ['nvim-treesitter']})
+  " call dein#add ('nvim-treesitter/playground', {'depends': ['nvim-treesitter']})
 
   " textobject
   call dein#add ('nvim-treesitter/nvim-treesitter-textobjects', {'depends': ['nvim-treesitter']})
 
   " colorize parens
-  call dein#add ('p00f/nvim-ts-rainbow', {'depends': ['nvim-treesitter']})
+  " call dein#add ('p00f/nvim-ts-rainbow', {'depends': ['nvim-treesitter']})
 
 
   " ********************************
@@ -146,7 +168,7 @@ if has ('vim_starting')
     autocmd VimEnter * ++once call s:onVimEnter ()
   augroup END
 else
-  call s:onVimEnter ()
+  " call s:onVimEnter ()
 endif
 
 function! s:onVimEnter () "noabort

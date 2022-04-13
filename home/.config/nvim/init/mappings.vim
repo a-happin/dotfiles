@@ -177,6 +177,12 @@ noremap <S-PageUp> <C-y>
 noremap <PageDown> <C-e>
 noremap <S-PageDown> <C-e>
 
+" ジャンプせずに検索する
+function! s:asterisk () abort
+  let cword = escape (expand ('<cword>'), '~"\.^$[]*')
+  return 'ge/\<' . cword . '\>' . "\<CR>"
+endfunction
+
 " 一瞬だけ
 function! s:flash_hlsearch_callback (_) abort
   set nohlsearch
@@ -190,9 +196,9 @@ function! s:flash_hlsearch () abort
   set hlsearch
   let s:flash_hlsearch_timer_id = timer_start (300, function ('s:flash_hlsearch_callback'))
 endfunction
-call s:noxnoremap ('*', '*<Cmd>call <SID>flash_hlsearch()<CR>')
-" 検索方向を*と揃える(&wrapscan ==# 1 のときじゃないと動作しない)
-call s:noxnoremap ('#', '#*N<Cmd>call <SID>flash_hlsearch()<CR>')
+call s:noxnoremap ('<expr> *', '<SID>asterisk() . "<Cmd>call <SID>flash_hlsearch()<CR>"')
+" 検索方向を*と揃える
+call s:noxnoremap ('<expr> #', '<SID>asterisk() . "<Cmd>call <SID>flash_hlsearch()<CR>"')
 call s:noxnoremap ('n', 'n<Cmd>call <SID>flash_hlsearch()<CR>')
 call s:noxnoremap ('N', 'N<Cmd>call <SID>flash_hlsearch()<CR>')
 
@@ -355,7 +361,7 @@ call s:noxnoremap ('<Space>4', '$')
 call s:noxnoremap ('<Space>5', '%')
 call s:noxnoremap ('<Space>6', '^')
 nnoremap <Space>7 <Cmd>setlocal spell!<CR>
-call s:noxnoremap ('<Space>8', '*<Cmd>call <SID>flash_hlsearch()<CR>')
+call s:noxnoremap ('<expr> <Space>8', '<SID>asterisk() . "<Cmd>call <SID>flash_hlsearch()<CR>"')
 
 " 現在の括弧
 call s:noxnoremap ('<Space>9', 'F(')
