@@ -68,3 +68,26 @@ if (vim.fn.executable ('deno')) then
     },
   }
 end
+
+if (vim.fn.executable ('ccls')) then
+  lspconfig.ccls.setup {
+    on_attach = on_attach,
+    init_options = {
+      cache = {
+        directory = '/tmp/.ccls-cache',
+      },
+      clang = {
+        extraArgs = {
+          '-std=c++2b',
+          '-Weverything',
+          '-Wno-c++98-compat-pedantic',
+          '-Wno-c11-extension',
+          '-Wno-unused-macros',
+          '-Wno-unused-const-variable',
+          '-pedantic-errors',
+          '-I./include',
+        },
+      },
+    },
+  }
+end
