@@ -45,6 +45,7 @@ augroup END
 " * 名前をterm://*/[terminal]に書き換える
 " * 終了時に即消す
 function! s:init_terminal () abort
+  setfiletype terminal
   setlocal nonumber norelativenumber
   if mode () =~# 'i'
     call feedkeys("\<Esc>i")

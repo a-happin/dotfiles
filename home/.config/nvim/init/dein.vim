@@ -49,7 +49,7 @@ if dein#load_state (s:dein_directory)
   call dein#add ('lambdalisue/fern.vim', {'hook_add': 'let g:fern#default_hidden = 1'})
 
   " netrw hijack (requires fern.vim)
-  call dein#add ('lambdalisue/fern-hijack.vim')
+  call dein#add ('lambdalisue/fern-hijack.vim', {'depends': ['fern.vim']})
 
   " toggle comment
   " autocmdをつかってくれ

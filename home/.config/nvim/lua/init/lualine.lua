@@ -1,3 +1,11 @@
+local terminal_extension = {
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {{'filename', file_status = false, path = 0, icon_enabled = false}},
+  },
+  filetypes = {'terminal'}
+}
+
 require 'lualine'.setup {
   options = {
     theme = 'ayu_mirage',
@@ -11,5 +19,6 @@ require 'lualine'.setup {
     lualine_y = { 'filetype', { 'encoding', separator = ' ', padding = { left = 1, right = 0 } }, {'fileformat', symbols = {unix = 'LF', dos = 'CRLF', mac = 'CR'}} },
     lualine_z = {{'location', separator = ''}, {'progress', padding = {left = 0, right = 1}}},
   },
+  extensions = {'fern', terminal_extension}
 }
 
