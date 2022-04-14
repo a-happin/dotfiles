@@ -65,7 +65,7 @@ inoremap <expr> <Tab> <SID>tab_key ()
 
 " ポップアップ補完メニューが表示されているときは前の候補を選択
 " それ以外はインデントを1つ下げる
-inoremap <expr> <S-Tab> pumvisible () ? '<C-p>' : pum#visible() ? '<Cmd>pum#map#select_relative (-1)<CR>' : '<C-d>'
+inoremap <expr> <S-Tab> pumvisible () ? '<C-p>' : pum#visible() ? '<Cmd>call pum#map#select_relative (-1)<CR>' : '<C-d>'
 
 " ポップアップ補完メニューが表示されているときは確定
 inoremap <expr> <CR> <SID>cr_key ()

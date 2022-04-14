@@ -13,6 +13,7 @@ function! plugin#ddc#init () abort
         \ 'nvim-lsp': {
         \   'mark': 'lsp',
         \   'forceCompletionPattern': '\.\w|:\w*|->\w*',
+        \   'ignoreCase': v:true,
         \ },
         \})
   call ddc#custom#patch_global ('sourceParams', {
