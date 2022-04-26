@@ -20,25 +20,26 @@ if status is-login
   set -gx FZF_DEFAULT_COMMAND 'fd --hidden --no-ignore --exclude .git --type f'
 
   # set i3-sensible-terminal
-  set -gx TERMINAL alacritty
+  type -fq alacritty && set -gx TERMINAL alacritty
 
   # prepend to $PATH
-  set -g fish_user_paths "$HOME/bin"
-  set -a fish_user_paths "$HOME/.cargo/bin"
-  set -a fish_user_paths "$HOME/.deno/bin"
+  set -g fish_user_paths
+  test -d "$HOME/bin" && set -a fish_user_paths "$HOME/bin"
+  test -d "$HOME/.cargo/bin" && set -a fish_user_paths "$HOME/.cargo/bin"
+  test -d "$HOME/.deno/bin" && set -a fish_user_paths "$HOME/.deno/bin"
+  test -d "$HOME/.nodebrew/current/bin" && set -a fish_user_paths "$HOME/.nodebrew/current/bin"
+  test -d "$HOME/.fzf/bin" && set -a fish_user_paths "$HOME/.fzf/bin"
 
-  # Windows WSL
+  # WSL1
   if uname -r | string match -q -- '**Microsoft'
-    set -a fish_user_paths "$HOME/.nodebrew/current/bin"
-    set -a fish_user_paths "$HOME/.fzf/bin"
     set -gx DISPLAY 'localhost:0'
+    alias open='powershell.exe start'
 
-    alias java='java.exe'
     alias explorer='explorer.exe'
+    alias java='java.exe'
     alias ffmpeg='ffmpeg.exe'
     alias ffprobe='ffprobe.exe'
     alias ffplay='ffplay.exe'
-    alias open='powershell.exe start'
   end
 end
 
@@ -123,10 +124,11 @@ if status is-interactive
   abbr --add -g la 'ls -lah'
   abbr --add -g ll 'ls -lah'
   abbr --add -g exa 'exa -lah'
+  abbr --add -g clone 'git clone --depth 1 --recurse-submodules --shallow-submodules'
   abbr --add -g cp 'cp -iv'
   abbr --add -g mv 'mv -iv'
-  abbr --add -g rm 'rm -i'
-  abbr --add -g rr 'rm -ri'
+  abbr --add -g rm 'rm -iv'
+  abbr --add -g rr 'rmdir'
   abbr --add -g rrf 'rm -rf'
   abbr --add -g ln 'ln -snfv FILE LINK'
   abbr --add -g rmlink 'unlink'
@@ -135,9 +137,10 @@ if status is-interactive
   abbr --add -g du 'du -h --max-depth 1'
   abbr --add -g fd 'fd --hidden --no-ignore --exclude .git'
   abbr --add -g rg 'rg --hidden --no-ignore --glob \'!.git\''
-  abbr --add -g ssh-keygen 'ssh-keygen -t ed25519 -f ~/.ssh/__DIRECTORY__/id_ed25519 # mkdir before create'
   abbr --add -g rsync 'rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with the \'/\' at the end.'
   abbr --add -g paccache 'paccache -r; paccache -ruk0; yay --aur -Sc'
+
+  # fish
   abbr --add -g funced 'funced --save'
   abbr --add -g history-delete ' history delete --case-sensitive --exact (history | fzf --multi || printf :)'
 
@@ -155,11 +158,14 @@ if status is-interactive
   # kawaii
   abbr --add -g chino "clang++ $CHINO_OPT"
 
-  # don't forget sudo
+  # prepend sudo
   if test $USER != 'root'
     abbr --add -g pacman 'sudo pacman'
     abbr --add -g apt 'sudo apt'
   end
+
+  # prepend cd
+  abbr --add -g .. 'cd ..'
 
   # typo
   abbr --add -g :q 'exit'
@@ -170,66 +176,88 @@ if status is-interactive
   # sabbr 'cpp' 'runchino'
   # sabbr 'jar' 'java -jar'
 
+  # fix options
+  context-abbr --replace-context --eval 'rm -iv' '**' 'test -d $argv[1] && printf "%s" "rm -riv" || printf "%s" "rm -iv"'
+
   # subcommand abbreviation
-  context-abbr 'git' 'discard' 'reset --hard HEAD'
-  context-abbr 'git' 'clean' 'clean -df'
-  context-abbr 'git' 'init' 'init && git commit --allow-empty -m "Initial commit."'
-  context-abbr 'git' 'new' 'switch -c'
-  context-abbr 'git' 'cv' 'commit -v'
-  context-abbr 'git' 'co' 'checkout'
-  context-abbr 'git' 'pu' 'push -u origin HEAD'
   context-abbr 'git' 'a' 'add --patch'
   context-abbr 'git' 'aa' 'add --all'
+  context-abbr 'git' 'b' 'branch'
+  context-abbr 'git' 'c' 'commit'
+  context-abbr 'git' 't' 'tree -10'
+  context-abbr 'git' 'cv' 'commit -v'
+  context-abbr 'git' 'cm' 'commit -m'
+  context-abbr 'git' 'co' 'checkout'
+  context-abbr 'git' 'pu' 'push -u origin HEAD'
+  context-abbr --eval 'git' 'pr' 'echo pull --rebase origin (git symbolic-ref --short HEAD)'
   context-abbr 'git' 's' 'status'
   context-abbr 'git' 'd' 'diff'
   context-abbr 'git' 'f' 'fetch --prune'
+  context-abbr 'git' 'amend' 'commit --amend'
+  context-abbr 'git' 'touch' 'commit --amend --date=now --no-edit'
+  context-abbr 'git' 'new' 'switch -c'
+  context-abbr 'git' 'hash' 'rev-parse HEAD'
+  context-abbr 'git' 'discard' 'reset --hard HEAD'
+  context-abbr --append 'git' 'clean' '-df'
+  context-abbr --append 'git' 'init' '&& git commit --allow-empty -m "Initial commit."'
   context-abbr --eval 'git' 'sw' 'echo switch (fzf-git-branch)'
-  # context-abbr --eval 'git' 'ct' 'echo commit -m (cat ~/.config/git/git-commit-prefix.txt | fzf --reverse --height=10% | awk \'{print $1}\') --edit -v'
   context-abbr --eval 'git' 'fixup' 'echo commit --fixup (fzf-git-commit)'
   context-abbr --eval 'git' 'fomm' 'echo fetch origin (set -l b (fzf-git-branch); echo $b:$b) \# refresh local branch without checkout'
-  context-abbr --eval 'git rebase' '-i' 'echo -- -i (fzf-git-commit)'
-  context-abbr --eval 'git' 'pr' 'echo pull --rebase origin (git symbolic-ref --short HEAD)'
   context-abbr --eval 'git' '*pick' 'echo cherry-pick (fzf-git-commit)'
-  context-abbr --eval 'git **' 'B' 'fzf-git-branch'
-  context-abbr --eval 'git **' 'C' 'fzf-git-commit'
+  context-abbr --eval 'git rebase' '-i' 'echo -- -i (fzf-git-commit)'
+  context-abbr --global 'git push' '-f' '--force-with-lease'
+  context-abbr --replace-all 'git' 'destroy' 'rm -rf .git'
+  context-abbr --replace-all 'git' 'rg' 'rg --hidden --glob \'!.git\''
+  context-abbr --global --eval 'git **' 'B' 'fzf-git-branch'
+  context-abbr --global --eval 'git **' 'C' 'fzf-git-commit'
 
   context-abbr --eval 'cd' 'f' 'fzf-directory'
   context-abbr --eval 'cd' 'g' 'fzf-git-repository'
 
   context-abbr 'sudo' 'e' "$EDITOR"
 
+  # associated command
+  context-abbr --prepend '' '**.cpp' 'runchino'
+  context-abbr --prepend '' '**.ts' 'deno run --allow-all --unstable'
+  context-abbr --prepend '' '**.jar' 'java -jar'
+  context-abbr --prepend '' '**.bat' 'cmd.exe /c'
+  context-abbr --prepend '' '**.ps1' 'powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File'
   # fake command
-  context-abbr -C 'compile' '**.cpp' "clang++ $CHINO_OPT"
+  context-abbr --replace-context 'compile' '**.cpp' "clang++ $CHINO_OPT"
 
-  context-abbr -C 'run' '**.cpp' 'runchino'
-  context-abbr -C 'run' '**.ts' 'deno run (test -e import_map.json && printf \'%s\' \'--import-map=import_map.json\') --allow-all --unstable'
-  context-abbr -C 'run' '**.jar' 'java -jar'
+  context-abbr --replace-context 'run' '**.cpp' 'runchino'
+  context-abbr --replace-context 'run' '**.ts' 'deno run (test -e import_map.json && printf \'%s\' \'--import-map=import_map.json\') --allow-all --unstable'
+  context-abbr --replace-context 'run' '**.jar' 'java -jar'
 
-  context-abbr -C 'extract' '**.tar.bz2' 'tar -jxvf'
-  context-abbr -C 'extract' '**.tar.gz' 'tar -zxvf'
-  context-abbr -C 'extract' '**.tar.xz' 'tar -Jxvf'
-  context-abbr -C 'extract' '**.tbz2' 'tar -jxvf'
-  context-abbr -C 'extract' '**.tgz' 'tar -zxvf'
-  context-abbr -C 'extract' '**.tar' 'tar -xvf'
-  context-abbr -C 'extract' '**.bz2' 'bzip2 -dc'
-  context-abbr -C 'extract' '**.zip' 'unzip'
-  context-abbr -C 'extract' '**.rar' 'unrar x'
-  context-abbr -C 'extract' '**.gz' 'gzip -dc'
-  context-abbr -C 'extract' '**.xz' 'xz -d'
+  context-abbr --replace-context 'extract' '**.tar.bz2' 'tar -jxvf'
+  context-abbr --replace-context 'extract' '**.tar.gz' 'tar -zxvf'
+  context-abbr --replace-context 'extract' '**.tar.xz' 'tar -Jxvf'
+  context-abbr --replace-context 'extract' '**.tbz2' 'tar -jxvf'
+  context-abbr --replace-context 'extract' '**.tgz' 'tar -zxvf'
+  context-abbr --replace-context 'extract' '**.tar' 'tar -xvf'
+  context-abbr --replace-context 'extract' '**.bz2' 'bzip2 -dc'
+  context-abbr --replace-context 'extract' '**.zip' 'unzip'
+  context-abbr --replace-context 'extract' '**.rar' 'unrar x'
+  context-abbr --replace-context 'extract' '**.gz' 'gzip -dc'
+  context-abbr --replace-context 'extract' '**.xz' 'xz -d'
 
-  context-abbr -C 'compress' '**.tar.bz2' 'tar -jcvf'
-  context-abbr -C 'compress' '**.tar.gz' 'tar -zcvf'
-  context-abbr -C 'compress' '**.tar.xz' 'tar -Jcvf'
-  context-abbr -C 'compress' '**.tbz2' 'tar -jcvf'
-  context-abbr -C 'compress' '**.tgz' 'tar -zcvf'
-  context-abbr -C 'compress' '**.tar' 'tar -cvf'
-  context-abbr -C 'compress' '**.zip' 'zip -r'
-  context-abbr -C 'compress' '**.rar' 'rar a'
+  context-abbr --replace-context 'compress' '**.tar.bz2' 'tar -jcvf'
+  context-abbr --replace-context 'compress' '**.tar.gz' 'tar -zcvf'
+  context-abbr --replace-context 'compress' '**.tar.xz' 'tar -Jcvf'
+  context-abbr --replace-context 'compress' '**.tbz2' 'tar -jcvf'
+  context-abbr --replace-context 'compress' '**.tgz' 'tar -zcvf'
+  context-abbr --replace-context 'compress' '**.tar' 'tar -cvf'
+  context-abbr --replace-context 'compress' '**.zip' 'zip -r'
+  context-abbr --replace-context 'compress' '**.rar' 'rar a'
+
+  context-abbr --replace-all --eval 'my-ssh-keygen' '**' 'printf "%s" "mkdir -p ~/.ssh/$argv[1] && chmod 700 ~/.ssh/$argv[1] && ssh-keygen -t ed25519 -f ~/.ssh/$argv[1]/id_ed25519 -N \'\'"'
+  context-abbr --replace-all --eval 'mkdircd' '**' 'printf "%s" "mkdir -p $argv[1] && cd $argv[1]"'
+  context-abbr --replace-all --eval 'trash' '**' 'printf "%s" "mkdir -p /tmp/trash && mv -fv $argv[1] /tmp/trash"'
 
   # global abbreviation
-  context-abbr '**' 'G' '| grep'
-  context-abbr '**' 'L' '| less'
-  context-abbr --eval '**' '!!' 'history | head -1 || printf "!!"'
+  #context-abbr --global '' 'G' '| grep'
+  #context-abbr --global '' 'L' '| less'
+  context-abbr --global --eval '' '!!' 'history | head -1 || printf "!!"'
 
   ################################
   # dev

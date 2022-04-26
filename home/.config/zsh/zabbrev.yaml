@@ -366,10 +366,16 @@ abbrevs:
     prepend: $([[ -f import_map.json ]] && printf '%s' "deno run --import-map=import_map.json" || printf '%s' "deno run") --allow-all --unstable
     evaluate: true
 
+  - abbr-suffix: '.bat'
+    prepend: 'cmd.exe /c'
+
+  - abbr-suffix: '.ps1'
+    prepend: 'powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File'
+
   # like a function
-  - context: 'ssh-keygen'
+  - context: 'my-ssh-keygen'
     abbr-regex: '^[^-].*'
-    replace-all: 'mkdir -p ~/.ssh/$1 && ssh-keygen -t ed25519 -f ~/.ssh/$1/id_ed25519'
+    replace-all: 'mkdir -p ~/.ssh/$1 && chmod 700 ~/.ssh/$1 && ssh-keygen -t ed25519 -f ~/.ssh/$1/id_ed25519'
     evaluate: true
 
   - context: 'mkdircd'
