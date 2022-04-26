@@ -1,7 +1,16 @@
 #------------------------------
-# USER_PATH
+# PATH
 #------------------------------
-local USER_PATH="${HOME}/bin:${HOME}/.cargo/bin:${HOME}/.deno/bin"
+USER_PATH=
+[[ -d "${HOME}/bin" ]] && USER_PATH="${USER_PATH}:${HOME}/bin"
+[[ -d "${HOME}/.cargo/bin" ]] && USER_PATH="${USER_PATH}:${HOME}/.cargo/bin"
+[[ -d "${HOME}/.deno/bin" ]] && USER_PATH="${USER_PATH}:${HOME}/.deno/bin"
+[[ -d "${HOME}/.nodebrew/current/bin" ]] && USER_PATH="${USER_PATH}:${HOME}/.nodebrew/current/bin"
+[[ -d "${HOME}/.fzf/bin" ]] && USER_PATH="${USER_PATH}:${HOME}/.fzf/bin"
+[[ -n "$USER_PATH" ]] && export PATH="${USER_PATH}:${PATH}"
+unset USER_PATH
+
+#export LD_LIBRARY_PATH="${HOME}/lib"
 
 
 #------------------------------
@@ -21,46 +30,6 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --no-ignore --exclude .git'
 #------------------------------
 type alacritty >/dev/null 2>&1 && export TERMINAL='alacritty'
 
-
-#------------------------------
-# 環境依存
-#------------------------------
-case ${OSTYPE} in
-  darwin*)
-    # ここに Mac 向けの設定
-    # alias ls='\ls -G -F'
-    ;;
-  linux*)
-    # ここに Linux 向けの設定
-    # alias ls='\ls --color=auto -F'
-    alias pbcopy='xsel --clipboard --input'
-    alias pbpaste='xsel --clipboard --output'
-    alias open=xdg-open
-    ;;
-esac
-
-# WSL Windows
-if [[ $(uname -r) =~ Microsoft$ ]]
-then
-  USER_PATH="${USER_PATH}:${HOME}/.nodebrew/current/bin:${HOME}/.fzf/bin"
-  export DISPLAY=localhost:0
-
-  alias pbcopy=clip.exe
-  alias pbpaste='powershell.exe get-clipboard'
-  alias open='powershell.exe start'
-
-  alias explorer=explorer.exe
-  alias java=java.exe
-  alias ffmpeg=ffmpeg.exe
-  alias ffprobe=ffprobe.exe
-  alias ffplay=ffplay.exe
-fi
-
-#------------------------------
-# PATH
-#------------------------------
-export PATH="${USER_PATH}:${PATH}"
-#export LD_LIBRARY_PATH="${HOME}/lib"
 
 #------------------------------
 # launch X

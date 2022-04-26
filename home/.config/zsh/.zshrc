@@ -233,6 +233,7 @@ zstyle ':completion:*' completer _expand _oldlist _complete _match _approximate 
 
 # 補完キャッシュを使う
 zstyle ':completion:*' use-cache true
+zstyle ':completion:*' cache-path '${XDG_CACHE_HOME}/zsh/.zcompcache'
 
 # おせっかいな補完候補を表示する
 zstyle ':completion:*' verbose yes
@@ -322,7 +323,6 @@ alias -s rar='unrar x'
 alias -s jar='java -jar'
 # alias -s encrypted='decrypt-edit'
 alias -s ts='deno run --allow-all --unstable'
-type wine > /dev/null 2>&1 && alias -s exe='wine'
 
 
 ########################################
@@ -613,6 +613,49 @@ type zinit > /dev/null 2>&1 && {
 # abbreviation
 type zabbrev >/dev/null 2>&1 && eval "$(zabbrev init --bind-keys)"
 
+
+########################################
+# 環境依存
+########################################
+case $(uname -r) in
+  *Microsoft)
+    # WSL1
+    export DISPLAY=localhost:0
+
+    alias pbcopy=clip.exe
+    alias pbpaste='powershell.exe get-clipboard'
+    alias open='powershell.exe start'
+
+    alias explorer=explorer.exe
+    alias java=java.exe
+    alias ffmpeg=ffmpeg.exe
+    alias ffprobe=ffprobe.exe
+    alias ffplay=ffplay.exe
+
+    alias -s bat='cmd.exe /c'
+    alias -s ps1='powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File'
+    ;;
+  *microsoft*)
+    # WSL2
+    ;;
+  *)
+    case ${OSTYPE} in
+      darwin*)
+        # Mac
+        # alias ls='\ls -G -F'
+        ;;
+      linux*)
+        # linux
+        # alias ls='\ls --color=auto -F'
+        alias pbcopy='xsel --clipboard --input'
+        alias pbpaste='xsel --clipboard --output'
+        alias open=xdg-open
+
+        type wine > /dev/null 2>&1 && alias -s exe='wine'
+        ;;
+    esac
+    ;;
+esac
 
 [[ -d /usr/share/fzf ]] && {
   source /usr/share/fzf/completion.zsh
