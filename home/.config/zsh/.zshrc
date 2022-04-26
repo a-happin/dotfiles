@@ -623,7 +623,7 @@ case $(uname -r) in
     export DISPLAY=localhost:0
 
     alias pbcopy=clip.exe
-    alias pbpaste='powershell.exe get-clipboard'
+    alias pbpaste='powershell.exe get-clipboard | sed -z '\''s/\r\n$//'\'
     alias open='powershell.exe start'
 
     alias explorer=explorer.exe

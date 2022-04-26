@@ -95,10 +95,3 @@ augroup vimrc-incsearch-highlight
   autocmd CmdlineEnter /,\? set hlsearch
   autocmd CmdlineLeave /,\? set nohlsearch
 augroup END
-
-if executable ('clip.exe')
-  augroup vimrc-windows-clip
-    autocmd!
-    autocmd TextYankPost * call system ('clip.exe', @")
-  augroup END
-endif

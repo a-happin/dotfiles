@@ -401,6 +401,9 @@ nnoremap <Space>r <Cmd>CocRestart<CR>
 " Open Terminal
 " nnoremap <Space>t <Cmd>terminal<CR>
 
+" Copy to clipboard
+call s:nxnoremap ('<Space>y', 'y<Cmd>call system(''clip.exe'', @")<CR>')
+
 " 改行挿入
 nnoremap <Space>o o<Space><C-u><Esc>
 nnoremap <Space>O O<Space><C-u><Esc>
