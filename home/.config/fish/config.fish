@@ -7,16 +7,17 @@ if status is-login
   # バグるのでやめといたほうがいい
   # set -gx SHELL (type -P fish)
 
-  type -fq nvim && begin
-    set -gx EDITOR nvim
-    set -gx VISUAL nvim
-  end
-
   # XDG Base Directory
   set -gx XDG_CONFIG_HOME "$HOME/.config"
   set -gx XDG_CACHE_HOME "$HOME/.cache"
   set -gx XDG_DATA_HOME "$HOME/.local/share"
 
+  type -fq nvim && begin
+    set -gx EDITOR nvim
+    set -gx VISUAL nvim
+  end
+
+  # fzf
   set -gx FZF_DEFAULT_COMMAND 'fd --hidden --no-ignore --exclude .git --type f'
 
   # set i3-sensible-terminal
@@ -139,6 +140,8 @@ if status is-interactive
   abbr --add -g rg 'rg --hidden --no-ignore --glob \'!.git\''
   abbr --add -g rsync 'rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with the \'/\' at the end.'
   abbr --add -g paccache 'paccache -r; paccache -ruk0; yay --aur -Sc'
+  abbr --add -g g++ 'g++ -std=c++2b -Wall -Wextra -pedantic-errors -I./include -O2 -pipe'
+  abbr --add -g clang++ 'clang++ -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
 
   # fish
   abbr --add -g funced 'funced --save'
@@ -208,8 +211,8 @@ if status is-interactive
   context-abbr --global 'git push' '-f' '--force-with-lease'
   context-abbr --replace-all 'git' 'destroy' 'rm -rf .git'
   context-abbr --replace-all 'git' 'rg' 'rg --hidden --glob \'!.git\''
-  context-abbr --global --eval 'git **' 'B' 'fzf-git-branch'
-  context-abbr --global --eval 'git **' 'C' 'fzf-git-commit'
+  context-abbr --global --eval 'git' 'B' 'fzf-git-branch'
+  context-abbr --global --eval 'git' 'C' 'fzf-git-commit'
 
   context-abbr --eval 'cd' 'f' 'fzf-directory'
   context-abbr --eval 'cd' 'g' 'fzf-git-repository'
