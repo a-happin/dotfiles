@@ -91,8 +91,6 @@ if status is-interactive
   ################################
   # variable
   ################################
-
-
   # PATH以外の配列をexportするとバグり散らかすので仕方なく変数にする
   set -g CHINO_OPT -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -I. -O2 -pipe
 
@@ -100,10 +98,7 @@ if status is-interactive
   ################################
   # function
   ################################
-
-  function runchino
-    clang++ $CHINO_OPT -o /tmp/a.out $argv[1] && echo -e "\033[1mcompile suceeded.\033[0m" >&2 && /tmp/a.out $argv[2..-1]
-  end
+  alias chino="clang++ $CHINO_OPT"
 
   if type -fq exa
     alias ls='exa'
@@ -115,17 +110,19 @@ if status is-interactive
   ################################
   # abbreviation
   abbr --add -g q 'exit'
+  abbr --add -g e "$EDITOR"
   abbr --add -g g 'git'
   abbr --add -g push 'git push'
   abbr --add -g pushu 'git push -u origin HEAD'
+  abbr --add -g clone 'git clone --depth 1 --recurse-submodules --shallow-submodules'
   abbr --add -g commit 'git commit -v'
-  abbr --add -g e "$EDITOR"
-
-  # default options
+  abbr --add -g reload 'exec fish'
+  abbr --add -g relogin 'exec fish -l'
   abbr --add -g la 'ls -lah'
   abbr --add -g ll 'ls -lah'
+
+  # default options
   abbr --add -g exa 'exa -lah'
-  abbr --add -g clone 'git clone --depth 1 --recurse-submodules --shallow-submodules'
   abbr --add -g cp 'cp -iv'
   abbr --add -g mv 'mv -iv'
   abbr --add -g rm 'rm -iv'
@@ -142,6 +139,7 @@ if status is-interactive
   abbr --add -g paccache 'paccache -r; paccache -ruk0; yay --aur -Sc'
   abbr --add -g g++ 'g++ -std=c++2b -Wall -Wextra -pedantic-errors -I./include -O2 -pipe'
   abbr --add -g clang++ 'clang++ -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
+  abbr --add -g curl 'curl -fsSL'
 
   # fish
   abbr --add -g funced 'funced --save'
@@ -158,9 +156,6 @@ if status is-interactive
   abbr --add -g encrypt 'openssl aes-256-cbc -e -iter 100'
   abbr --add -g decrypt 'openssl aes-256-cbc -d -iter 100'
 
-  # kawaii
-  abbr --add -g chino "clang++ $CHINO_OPT"
-
   # prepend sudo
   if test $USER != 'root'
     abbr --add -g pacman 'sudo pacman'
@@ -173,11 +168,6 @@ if status is-interactive
   # typo
   abbr --add -g :q 'exit'
   abbr --add -g vscode code
-
-  # suffix abbreviation
-  # sabbr 'ts' 'deno run --allow-all'
-  # sabbr 'cpp' 'runchino'
-  # sabbr 'jar' 'java -jar'
 
   # fix options
   context-abbr --replace-context --eval 'rm -iv' '**' 'test -d $argv[1] && printf "%s" "rm -riv" || printf "%s" "rm -iv"'
@@ -193,7 +183,7 @@ if status is-interactive
   context-abbr 'git' 'co' 'checkout'
   context-abbr 'git' 'pu' 'push -u origin HEAD'
   context-abbr --eval 'git' 'pr' 'echo pull --rebase origin (git symbolic-ref --short HEAD)'
-  context-abbr 'git' 's' 'status'
+  context-abbr 'git' 's' 'stash list && git status'
   context-abbr 'git' 'd' 'diff'
   context-abbr 'git' 'f' 'fetch --prune'
   context-abbr 'git' 'amend' 'commit --amend'
@@ -201,8 +191,8 @@ if status is-interactive
   context-abbr 'git' 'new' 'switch -c'
   context-abbr 'git' 'hash' 'rev-parse HEAD'
   context-abbr 'git' 'discard' 'reset --hard HEAD'
-  context-abbr --append 'git' 'clean' '-df'
-  context-abbr --append 'git' 'init' '&& git commit --allow-empty -m "Initial commit."'
+  context-abbr 'git' 'clean' 'clean -df'
+  context-abbr 'git' 'init' 'init && git commit --allow-empty -m "Initial commit."'
   context-abbr --eval 'git' 'sw' 'echo switch (fzf-git-branch)'
   context-abbr --eval 'git' 'fixup' 'echo commit --fixup (fzf-git-commit)'
   context-abbr --eval 'git' 'fomm' 'echo fetch origin (set -l b (fzf-git-branch); echo $b:$b) \# refresh local branch without checkout'
@@ -220,16 +210,16 @@ if status is-interactive
   context-abbr 'sudo' 'e' "$EDITOR"
 
   # associated command
-  context-abbr --prepend '' '**.cpp' 'runchino'
-  context-abbr --prepend '' '**.ts' 'deno run --allow-all --unstable'
+  context-abbr --replace-all --eval '' '**.cpp' 'printf \'%s\' "chino -o /tmp/a.out $argv[1] && /tmp/a.out"'
+  context-abbr --prepend --eval '' '**.ts' 'printf \'%s\' "deno run $(test -e import_map.json && printf \'%s\' \'--import-map=import_map.json \')--allow-all --unstable"'
   context-abbr --prepend '' '**.jar' 'java -jar'
   context-abbr --prepend '' '**.bat' 'cmd.exe /c'
   context-abbr --prepend '' '**.ps1' 'powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File'
   # fake command
-  context-abbr --replace-context 'compile' '**.cpp' "clang++ $CHINO_OPT"
+  context-abbr --replace-context 'compile' '**.cpp' "chino"
 
-  context-abbr --replace-context 'run' '**.cpp' 'runchino'
-  context-abbr --replace-context 'run' '**.ts' 'deno run (test -e import_map.json && printf \'%s\' \'--import-map=import_map.json\') --allow-all --unstable'
+  context-abbr --replace-all --eval 'run' '**.cpp' 'printf \'%s\' "chino -o /tmp/a.out $argv[1] && /tmp/a.out"'
+  context-abbr --replace-context --eval 'run' '**.ts' 'printf \'%s\' "deno run $(test -e import_map.json && printf \'%s\' \'--import-map=import_map.json \')--allow-all --unstable"'
   context-abbr --replace-context 'run' '**.jar' 'java -jar'
 
   context-abbr --replace-context 'extract' '**.tar.bz2' 'tar -jxvf'
