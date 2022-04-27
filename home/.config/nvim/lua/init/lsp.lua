@@ -25,7 +25,7 @@ local on_attach = function (_, bufnr)
   vim.cmd [[
     augroup init-lspconfig
       autocmd! * <buffer>
-      autocmd CursorHold <buffer> ++nested lua vim.lsp.buf.document_highlight ()
+      autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight ()
     augroup END
   ]]
 end

@@ -122,7 +122,7 @@ if dein#load_state (s:dein_directory)
   " ********************************
   " ** treesitter
   " ********************************
-  call dein#add ('nvim-treesitter/nvim-treesitter', {'on_lua': 'nvim-treesitter','hook_add': 'lua require "init/nvim-treesitter"', 'hook_post_update': ':TSUpdateSync'})
+  call dein#add ('nvim-treesitter/nvim-treesitter', {'on_lua': 'nvim-treesitter','hook_add': 'lua require "init/nvim-treesitter"'})
 
   " treesitter playground
   " call dein#add ('nvim-treesitter/playground', {'depends': ['nvim-treesitter']})
