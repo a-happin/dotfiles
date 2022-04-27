@@ -18,6 +18,8 @@ local on_attach = function (_, bufnr)
   buf_set_keymap ('i', '<F1>', [[<Cmd>lua vim.lsp.buf.signature_help ()<CR>]], opts)
   -- rename
   buf_set_keymap ('n', '<F2>', [[<Cmd>lua vim.lsp.buf.rename ()<CR>]], opts)
+  -- quickfix
+  buf_set_keymap ('n', 'qf', [[<Cmd>lua vim.lsp.buf.code_action()<CR>]], opts)
 
   -- TODO: 動いてないので要調査
   vim.cmd [[
