@@ -1,414 +1,464 @@
 abbrevs:
   # normal abbreviation
   - abbr: 'q'
-    replace-self: 'exit'
-
-  - abbr: 'g'
-    replace-self: 'git'
-
-  - abbr: 'push'
-    replace-self: 'git push'
-
-  - abbr: 'pushu'
-    replace-self: 'git push -u origin HEAD'
-
-  - abbr: 'commit'
-    replace-self: 'git commit -v'
+    snippet: 'exit'
 
   - abbr: 'e'
-    replace-self: '${EDITOR}'
+    snippet: '${EDITOR}'
     evaluate: true
 
-  - abbr: 'la'
-    replace-self: 'ls -lah'
+  - abbr: 'g'
+    snippet: 'git'
 
-  - abbr: 'll'
-    replace-self: 'ls -lah'
+  - abbr: 'push'
+    snippet: 'git push'
+
+  - abbr: 'pushu'
+    snippet: 'git push -u origin HEAD'
 
   - abbr: 'clone'
-    replace-self: 'git clone --depth 1 --recurse-submodules --shallow-submodules'
+    snippet: 'git clone --depth 1 --recurse-submodules --shallow-submodules'
+
+  - abbr: 'commit'
+    snippet: 'git commit -v'
+
+  - abbr: 'reload'
+    snippet: 'exec zsh'
+
+  - abbr: 'relogin'
+    snippet: 'exec zsh -l'
+
+  - abbr: 'la'
+    snippet: 'ls -lah'
+
+  - abbr: 'll'
+    snippet: 'ls -lah'
 
   - abbr: '['
-    replace-self: '[[ 🐣 ]]'
+    snippet: '[[ 🐣 ]]'
     cursor: '🐣'
 
   - abbr: '[['
-    replace-self: '[[ 🐣 ]]'
+    snippet: '[[ 🐣 ]]'
     cursor: '🐣'
 
   # add default options
   - abbr: 'exa'
-    append: '-lah'
+    snippet: 'exa -lah'
 
   - abbr: 'cp'
-    append: '-iv'
+    snippet: 'cp -iv'
 
   - abbr: 'mv'
-    append: '-iv'
+    snippet: 'mv -iv'
 
   - abbr: 'rm'
-    append: '-iv'
+    snippet: 'rm -iv'
 
   - abbr: 'rr'
-    replace-self: 'rmdir'
+    snippet: 'rmdir'
 
   - abbr: 'rrf'
-    replace-self: 'rm -rf'
+    snippet: 'rm -rf'
 
   - abbr: 'ln'
-    append: '-snfv FILE LINK'
+    snippet: 'ln -snfv FILE LINK'
 
   - abbr: 'rmlink'
-    replace-self: 'unlink'
+    snippet: 'unlink'
 
   - abbr: 'mkdir'
-    append: '-p'
+    snippet: 'mkdir -p'
 
   - abbr: 'df'
-    append: '-h'
+    snippet: 'df -h'
 
   - abbr: 'du'
-    append: '-h --max-depth 1'
+    snippet: 'du -h --max-depth 1'
 
   - abbr: 'fd'
-    append: '--hidden --no-ignore --exclude .git'
+    snippet: 'fd --hidden --no-ignore --exclude .git'
 
   - abbr: 'rg'
-    append: "--hidden --no-ignore --glob '!.git'"
+    snippet: "rg --hidden --no-ignore --glob '!.git'"
 
   - abbr: 'rsync'
-    append: "-avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with '/' at the end."
+    snippet: "rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with '/' at the end."
 
   - abbr: 'paccache'
-    replace-self: "paccache -r; paccache -ruk0; yay --aur -Sc"
+    snippet: "paccache -r; paccache -ruk0; yay --aur -Sc"
 
   - abbr: 'g++'
-    append: '-std=c++2b -Wall -Wextra -pedantic-errors -I./include -O2 -pipe'
+    snippet: 'g++ -std=c++2b -Wall -Wextra -pedantic-errors -I./include -O2 -pipe'
 
   - abbr: 'clang++'
-    append: '-std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
+    snippet: 'clang++ -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
+
+  - abbr: 'curl'
+    snippet: 'curl -fsSL'
 
   # zsh
   - abbr: 'type'
-    append: '-as'
+    snippet: 'type -as'
 
   - abbr: 'historygrep'
-    replace-self: 'history | grep'
+    snippet: 'history | grep'
 
   - abbr: 'historyedit'
-    replace-self: '${EDITOR} ${HISTFILE}'
+    snippet: '${EDITOR} ${HISTFILE}'
     evaluate: true
 
-  # fix typo
-  - abbr: ':q'
-    replace-self: 'exit'
+  - context: 'zabbrev'
+    abbr: 'update'
+    snippet: 'cargo uninstall zabbrev; cargo install --path ~/work/zabbrev'
+    operation: replace-all
 
-  - abbr: 'vscode'
-    replace-self: 'code'
-
-  - abbr: 'exho'
-    replace-self: 'echo'
-
-  # fix options
-  - context: 'rm -iv'
-    abbr-suffix: ''
-    replace-context: rm $([[ -d $1 ]] && printf '%s' '-riv' || printf '%s' '-iv')
+  - context: 'zabbrev'
+    abbr: 'config'
+    snippet: '${EDITOR} ~/.config/zsh/zabbrev.yaml'
+    operation: replace-all
     evaluate: true
 
   # prepend sudo
   - abbr: 'pacman'
-    prepend: 'sudo'
+    snippet: 'sudo'
+    operation: prepend
 
   - abbr: 'apt'
-    prepend: 'sudo'
+    snippet: 'sudo'
+    operation: prepend
 
   # prepend cd
   - abbr: '..'
-    prepend: 'cd'
+    snippet: 'cd'
+    operation: prepend
 
+  # typo
+  - abbr: ':q'
+    snippet: 'exit'
+
+  - abbr: 'vscode'
+    snippet: 'code'
+
+  - abbr: 'exho'
+    snippet: 'echo'
+
+  # fix options
+  - context: 'rm -iv'
+    abbr-suffix: ''
+    snippet: rm $([[ -d $1 ]] && printf '%s' '-riv' || printf '%s' '-iv')
+    operation: replace-context
+    evaluate: true
 
   # subcommand
   - context: 'git'
-    abbr: 'b'
-    replace-self: 'branch'
-
-  - context: 'git'
-    abbr: 'c'
-    replace-self: 'commit'
-
-  - context: 'git'
-    abbr: 't'
-    replace-self: 'tree -10'
-
-  - context: 'git'
-    abbr: 'cv'
-    replace-self: 'commit -v'
-
-  - context: 'git'
-    abbr: 'cm'
-    replace-self: 'commit -m'
-
-  - context: 'git'
-    abbr: 'co'
-    replace-self: 'checkout'
-
-  - context: 'git'
-    abbr: 'pu'
-    replace-self: 'push -u origin HEAD'
-
-  - context: 'git'
-    abbr: 'pr'
-    replace-self: 'pull --rebase origin $(git symbolic-ref --short HEAD)'
-    evaluate: true
-
-  - context: 'git'
     abbr: 'a'
-    replace-self: 'add --patch'
+    snippet: 'add --patch'
 
   - context: 'git'
     abbr: 'aa'
-    replace-self: 'add -v --all'
+    snippet: 'add -v --all'
+
+  - context: 'git'
+    abbr: 'b'
+    snippet: 'branch'
+
+  - context: 'git'
+    abbr: 'c'
+    snippet: 'commit'
+
+  - context: 'git'
+    abbr: 't'
+    snippet: 'tree -10'
+
+  - context: 'git'
+    abbr: 'cv'
+    snippet: 'commit -v'
+
+  - context: 'git'
+    abbr: 'cm'
+    snippet: 'commit -m'
+
+  - context: 'git'
+    abbr: 'co'
+    snippet: 'checkout'
+
+  - context: 'git'
+    abbr: 'pu'
+    snippet: 'push -u origin HEAD'
+
+  - context: 'git'
+    abbr: 'pr'
+    snippet: 'pull --rebase origin $(git symbolic-ref --short HEAD)'
+    evaluate: true
 
   - context: 'git'
     abbr: 's'
-    replace-self: 'stash list && git status'
+    snippet: 'stash list && git status'
 
   - context: 'git'
     abbr: 'd'
-    replace-self: 'diff'
+    snippet: 'diff'
 
   - context: 'git'
     abbr: 'f'
-    replace-self: 'fetch --prune'
+    snippet: 'fetch --prune'
 
   - context: 'git'
     abbr: 'amend'
-    replace-self: 'commit --amend'
+    snippet: 'commit --amend'
 
   - context: 'git'
     abbr: 'touch'
-    replace-self: 'commit --amend --date=now --no-edit'
+    snippet: 'commit --amend --date=now --no-edit'
 
   - context: 'git'
     abbr: 'new'
-    replace-self: 'switch -c'
+    snippet: 'switch -c'
 
   - context: 'git'
     abbr: 'hash'
-    replace-self: 'rev-parse HEAD'
+    snippet: 'rev-parse HEAD'
 
   - context: 'git'
     abbr: 'discard'
-    replace-self: 'reset --hard HEAD'
+    snippet: 'reset --hard HEAD'
 
   - context: 'git'
     abbr: 'clean'
-    append: '-df'
+    snippet: 'clean -df'
 
   - context: 'git'
     abbr: 'init'
-    replace-self: 'init && git commit --allow-empty -m "Initial commit."'
+    snippet: 'init && git commit --allow-empty -m "Initial commit."'
 
   - context: 'git'
     abbr: 'sw'
-    replace-self: 'switch $(fzf-git-branch)'
+    snippet: 'switch $(fzf-git-branch)'
     evaluate: true
 
   - context: 'git'
     abbr: 'fomm'
-    replace-self: fetch origin $(local b=$(fzf-git-branch); printf '%s:%s' "$b" "$b")
+    snippet: fetch origin $(local b=$(fzf-git-branch); printf '%s:%s' "$b" "$b")
     evaluate: true
     redraw: true
 
   - context: 'git'
     abbr: 'fixup'
-    replace-self: commit --fixup $(fzf-git-commit)
+    snippet: commit --fixup $(fzf-git-commit)
     evaluate: true
     redraw: true
 
   - context: 'git'
     abbr: 'pick'
-    replace-self: cherry-pick $(fzf-git-commit)
+    snippet: cherry-pick $(fzf-git-commit)
     evaluate: true
     redraw: true
 
   - context: 'git rebase'
     abbr: '-i'
-    replace-self: -i $(fzf-git-commit)
+    snippet: -i $(fzf-git-commit)
     evaluate: true
     redraw: true
 
   - context: 'git push'
     abbr: '-f'
-    replace-self: --force-with-lease
+    snippet: --force-with-lease
     global: true
 
   # external command
   - context: 'git'
     abbr: 'destroy'
-    replace-all: 'rm -rf .git'
+    snippet: 'rm -rf .git'
+    operation: replace-all
 
   - context: 'git'
     abbr: 'rg'
-    replace-all: "rg --hidden --glob '!.git'"
+    snippet: "rg --hidden --glob '!.git'"
+    operation: replace-all
 
   # global abbreviation
   - context: 'git'
     abbr: 'B'
     global: true
-    replace-self: $(fzf-git-branch)
+    snippet: $(fzf-git-branch)
     evaluate: true
     redraw: true
 
   - context: 'git'
     abbr: 'C'
     global: true
-    replace-self: $(fzf-git-commit)
+    snippet: $(fzf-git-commit)
     evaluate: true
     redraw: true
 
-  - context: 'zabbrev'
-    abbr: 'update'
-    replace-all: ' cargo uninstall zabbrev; cargo install --path ~/work/zabbrev'
+  # associated command(behaves like a suffix alias)
+  - abbr-suffix: '.jar'
+    snippet: 'java -jar'
+    operation: prepend
+
+  - abbr-suffix: '.cpp'
+    snippet: 'chino -o /tmp/a.out $1 && /tmp/a.out'
+    operation: replace-all
+    evaluate: true
+
+  - abbr-suffix: '.ts'
+    snippet: $([[ -f import_map.json ]] && printf '%s' "deno run --import-map=import_map.json" || printf '%s' "deno run") --allow-all --unstable
+    operation: prepend
+    evaluate: true
+
+  - abbr-suffix: '.bat'
+    snippet: 'cmd.exe /c'
+    operation: prepend
+
+  - abbr-suffix: '.ps1'
+    snippet: 'powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File'
+    operation: prepend
 
   # fake command
   - context: 'compile'
     abbr-suffix: '.cpp'
-    replace-first: 'chino'
+    snippet: 'chino'
+    operation: replace-context
 
   # extract
   - context: 'extract'
     abbr-suffix: '.tar.bz2'
-    replace-first: 'tar -jxvf'
+    snippet: 'tar -jxvf'
+    operation: replace-context
 
   - context: 'extract'
     abbr-suffix: '.tar.gz'
-    replace-first: 'tar -zxvf'
+    snippet: 'tar -zxvf'
+    operation: replace-context
 
   - context: 'extract'
     abbr-suffix: '.tar.xz'
-    replace-first: 'tar -Jxvf'
+    snippet: 'tar -Jxvf'
+    operation: replace-context
 
   - context: 'extract'
     abbr-suffix: '.tbz2'
-    replace-first: 'tar -jxvf'
+    snippet: 'tar -jxvf'
+    operation: replace-context
 
   - context: 'extract'
     abbr-suffix: '.tgz'
-    replace-first: 'tar -zxvf'
+    snippet: 'tar -zxvf'
+    operation: replace-context
 
   - context: 'extract'
     abbr-suffix: '.tar'
-    replace-first: 'tar -xvf'
+    snippet: 'tar -xvf'
+    operation: replace-context
 
   - context: 'extract'
     abbr-suffix: '.bz2'
-    replace-first: 'bzip2 -dc'
+    snippet: 'bzip2 -dc'
+    operation: replace-context
 
   - context: 'extract'
     abbr-suffix: '.zip'
-    replace-first: 'unzip'
+    snippet: 'unzip'
+    operation: replace-context
 
   - context: 'extract'
     abbr-suffix: '.rar'
-    replace-first: 'unrar x'
+    snippet: 'unrar x'
+    operation: replace-context
 
   - context: 'extract'
     abbr-suffix: '.gz'
-    replace-first: 'gzip -dc'
+    snippet: 'gzip -dc'
+    operation: replace-context
 
   - context: 'extract'
     abbr-suffix: '.xz'
-    replace-first: 'xz -d'
+    snippet: 'xz -d'
+    operation: replace-context
 
   - context: 'compress'
     abbr-suffix: '.tar.bz2'
-    replace-first: 'tar -jcvf'
+    snippet: 'tar -jcvf'
+    operation: replace-context
 
   # compress
   - context: 'compress'
     abbr-suffix: '.tar.gz'
-    replace-first: 'tar -zcvf'
+    snippet: 'tar -zcvf'
+    operation: replace-context
 
   - context: 'compress'
     abbr-suffix: '.tar.xz'
-    replace-first: 'tar -Jcvf'
+    snippet: 'tar -Jcvf'
+    operation: replace-context
 
   - context: 'compress'
     abbr-suffix: '.tbz2'
-    replace-first: 'tar -jcvf'
+    snippet: 'tar -jcvf'
+    operation: replace-context
 
   - context: 'compress'
     abbr-suffix: '.tgz'
-    replace-first: 'tar -zcvf'
+    snippet: 'tar -zcvf'
+    operation: replace-context
 
   - context: 'compress'
     abbr-suffix: '.tar'
-    replace-first: 'tar -cvf'
+    snippet: 'tar -cvf'
+    operation: replace-context
 
   - context: 'compress'
     abbr-suffix: '.zip'
-    replace-first: 'zip -r'
+    snippet: 'zip -r'
+    operation: replace-context
 
   - context: 'compress'
     abbr-suffix: '.rar'
-    replace-first: 'rar a'
+    snippet: 'rar a'
+    operation: replace-context
 
-  # associated command(behaves like a suffix alias)
-  - abbr-suffix: '.jar'
-    prepend: 'java -jar'
-
-  - abbr-suffix: '.cpp'
-    replace-all: 'chino -o /tmp/a.out $1 && /tmp/a.out'
-    evaluate: true
-
-  - abbr-suffix: '.ts'
-    prepend: $([[ -f import_map.json ]] && printf '%s' "deno run --import-map=import_map.json" || printf '%s' "deno run") --allow-all --unstable
-    evaluate: true
-
-  - abbr-suffix: '.bat'
-    prepend: 'cmd.exe /c'
-
-  - abbr-suffix: '.ps1'
-    prepend: 'powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File'
 
   # like a function
   - context: 'my-ssh-keygen'
-    abbr-regex: '^[^-].*'
-    replace-all: 'mkdir -p ~/.ssh/$1 && chmod 700 ~/.ssh/$1 && ssh-keygen -t ed25519 -f ~/.ssh/$1/id_ed25519'
+    abbr-prefix: ''
+    snippet: mkdir -p ~/.ssh/$1 && chmod 700 ~/.ssh/$1 && ssh-keygen -t ed25519 -f ~/.ssh/$1/id_ed25519 -N ''
+    operation: replace-all
     evaluate: true
 
   - context: 'mkdircd'
     abbr-prefix: ''
-    replace-all: 'mkdir -p $1 && cd $1'
+    snippet: 'mkdir -p $1 && cd $1'
+    operation: replace-all
     evaluate: true
 
   - context: 'trash'
     abbr-prefix: ''
-    replace-all: 'mkdir -p /tmp/trash; mv -fv $1 /tmp/trash'
+    snippet: 'mkdir -p /tmp/trash; mv -fv $1 /tmp/trash'
+    operation: replace-all
     evaluate: true
 
   # global abbreviation
   - abbr: '>null'
-    replace-self: '>/dev/null 2>&1'
+    snippet: '>/dev/null 2>&1'
     global: true
 
   # as one pleases
   - context: 'cd'
     abbr: 'f'
-    replace-self: $(fzf-directory)
+    snippet: $(fzf-directory)
     evaluate: true
     redraw: true
 
   - context: 'cd'
     abbr: 'g'
-    replace-self: $(fzf-git-repository)
+    snippet: $(fzf-git-repository)
     evaluate: true
     redraw: true
 
   - context: ''
     abbr-suffix: ':coffee:'
-    replace-self: ${1%:coffee:}☕
+    snippet: ${1%:coffee:}☕
     global: true
     evaluate: true
 

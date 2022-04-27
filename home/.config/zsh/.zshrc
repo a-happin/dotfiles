@@ -276,9 +276,6 @@ alias history='\history 0'
 # set wallpaper
 alias wallpaper='feh --no-fehbg --randomize --bg-max --recursive'
 
-alias reload='exec zsh'
-alias relogin='exec zsh -l'
-
 alias chino='clang++ -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
 alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -Wno-unused-const-variable -pedantic-errors -g -O0 -pipe -DLOCAL -DDEBUG'
 
@@ -289,7 +286,6 @@ alias nvimrc='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/nvim/init.vim"'
 alias zshrc='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/zsh/.zshrc"'
 alias fishrc='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/fish/config.fish"'
 alias bashrc='${EDITOR} -c "cd %:h" "${HOME}.bashrc"'
-alias zabbrevconfig='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/zsh/zabbrev.yaml"'
 alias i3config='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/i3/config"'
 alias gitconfig='git config --global -e'
 
