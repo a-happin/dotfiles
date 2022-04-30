@@ -1,16 +1,26 @@
 #------------------------------
 # PATH
 #------------------------------
-USER_PATH=
-[[ -d "${HOME}/bin" ]] && USER_PATH="${USER_PATH}:${HOME}/bin"
-[[ -d "${HOME}/.cargo/bin" ]] && USER_PATH="${USER_PATH}:${HOME}/.cargo/bin"
-[[ -d "${HOME}/.deno/bin" ]] && USER_PATH="${USER_PATH}:${HOME}/.deno/bin"
-[[ -d "${HOME}/.nodebrew/current/bin" ]] && USER_PATH="${USER_PATH}:${HOME}/.nodebrew/current/bin"
-[[ -d "${HOME}/.fzf/bin" ]] && USER_PATH="${USER_PATH}:${HOME}/.fzf/bin"
-[[ -n "$USER_PATH" ]] && export PATH="${USER_PATH}:${PATH}"
-unset USER_PATH
+typeset -U path
+path=(
+  "${HOME}/bin"(N-/)
+  "${HOME}/.cargo/bin"(N-/)
+  "${HOME}/.deno/bin"(N-/)
+  "${HOME}/.nodebrew/current/bin"(N-/)
+  "${HOME}/.fzf/bin"(N-/)
+  "${path[@]}"
+)
 
 #export LD_LIBRARY_PATH="${HOME}/lib"
+
+
+#------------------------------
+# EDITOR
+#------------------------------
+type nvim > /dev/null 2>&1 && {
+  export EDITOR=nvim
+  export VISUAL=nvim
+}
 
 
 #------------------------------

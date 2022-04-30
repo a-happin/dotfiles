@@ -1,4 +1,10 @@
 #------------------------------
+# startuptime
+#------------------------------
+# zmodload zsh/zprof && zprof
+
+
+#------------------------------
 # XDG Base Directory
 #------------------------------
 export XDG_CONFIG_HOME=${HOME}/.config
@@ -11,11 +17,8 @@ export XDG_DATA_HOME=${HOME}/.local/share
 export ZDOTDIR=${XDG_CONFIG_HOME}/zsh
 
 #------------------------------
-# EDITOR
+# disable auto compinit
 #------------------------------
-type nvim > /dev/null 2>&1 && {
-  export EDITOR=nvim
-  export VISUAL=nvim
-}
+skip_global_compinit=1
 
 :

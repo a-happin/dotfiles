@@ -1,0 +1,384 @@
+#------------------------------
+# zstyle
+#------------------------------
+
+# 補完で小文字を大文字にマッチさせる
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-z}{A-Z}={A-Za-z}'
+
+# 補完メニューを選択できるようにする
+zstyle ':completion:*:default' menu select=2
+
+# 補完候補をグループ化
+zstyle ':completion:*' group-name ''
+
+# 補完候補の説明表示
+zstyle ':completion:*' format '%B%F{12}%d%f%b'
+zstyle ':completion:*:warnings' format '%F{11}%BNo matches for:%b %d%f'
+
+# 補完候補に色をつける
+# zstyle ':completion:*:default' list-colors ""
+zstyle ':completion:*' list-colors 'di=01;34' 'ln=01;36' 'so=01;35' 'ex=01;32' 'bd=40;33;01' 'cd=40;33;01'
+
+# 補完候補の指定
+# _expand: グロブや変数の展開を行う。
+# _oldlist: 前回の補完結果を再利用する。
+# _complete: 普通の補完関数
+# _match: globを展開しないで候補の一覧から補完する。
+# _history: ヒストリのコマンドも補完候補とする。
+# _ignored: 補完候補に出さないと指定したものも補完候補とする。
+# _approximate: 似ている補完候補も補完候補とする。
+# _prefix: カーソル以降を無視してカーソル位置までで補完する。
+zstyle ':completion:*' completer _expand _oldlist _complete _match _approximate _prefix
+
+# 補完キャッシュを使う
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' cache-path '${XDG_CACHE_HOME}/zsh/.zcompcache'
+
+# おせっかいな補完候補を表示する
+zstyle ':completion:*' verbose yes
+
+# ../ の後は今いるディレクトリを補完しない
+zstyle ':completion:*' ignore-parents parent pwd ..
+
+# sudo の後のコマンド名補完
+zstyle ':completion:*:sudo:*' command-path /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin /opt/bin
+
+# プロセス名補完
+zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
+
+# 補完してほしくないファイルは補完しない
+zstyle ':completion:*:*:nvim:*:*files' ignored-patterns '*?.out' '*?.o' '*?.hi' '*?~' '*\#'
+
+# オプション表示時のseparator
+# add --> add paths to the index
+zstyle ':completion:*' list-separator '-->'
+
+# 何も入力されていないときのTabでTabが挿入されるのを抑制
+zstyle ':completion:*' insert-tab false
+
+# 単語区切り文字
+zstyle ':zle:*' word-chars ' /@#$%^&*-+=;:{}[]()<>,.|\\'
+zstyle ':zle:*' word-style unspecified
+
+
+#------------------------------
+# alias
+#------------------------------
+type exa >/dev/null 2>&1 && alias ls='exa'
+alias grep='\grep --color=auto'
+
+# sudo でaliasが使えるようにする
+alias sudo='sudo '
+
+alias history='\history 0'
+
+# set wallpaper
+alias wallpaper='feh --no-fehbg --randomize --bg-max --recursive'
+
+alias chino='clang++ -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
+alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -Wno-unused-const-variable -pedantic-errors -g -O0 -pipe -DLOCAL -DDEBUG'
+
+# alias fcrontab='fcrontab -i'
+
+alias note='${EDITOR} -c "cd %:h" "${HOME}/Dropbox/note/note.md"'
+alias nvimrc='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/nvim/init.vim"'
+alias zshrc='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/zsh/.zshrc"'
+alias fishrc='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/fish/config.fish"'
+alias bashrc='${EDITOR} -c "cd %:h" "${HOME}.bashrc"'
+alias i3config='${EDITOR} -c "cd %:h" "${XDG_CONFIG_HOME}/i3/config"'
+alias gitconfig='git config --global -e'
+
+# alias encrypt='openssl aes-256-cbc -e -iter 100'
+# alias decrypt='openssl aes-256-cbc -d -iter 100'
+
+# typo
+#alias exho=echo
+# alias :q=exit
+
+
+#------------------------------
+# global alias
+#------------------------------
+# alias -g GREP='| grep'
+# alias -g SED='| sed'
+# alias -g COPY='| pbcopy'
+
+
+#------------------------------
+# suffix alias
+#------------------------------
+alias -s {mp3,flac,m4a}=music-play
+alias -s hs=runhaskell
+alias -s c=my-runc
+alias -s {cpp,cxx,cc}=runchino
+alias -s ml=ocaml
+alias -s html=open
+alias -s {tgz,tbz2,gz,bz2,xz}=extract
+alias -s tar='tar xvf'
+alias -s zip='unzip'
+alias -s rar='unrar x'
+alias -s jar='java -jar'
+# alias -s encrypted='decrypt-edit'
+alias -s ts='deno run --allow-all --unstable'
+
+
+#------------------------------
+# compile function
+#------------------------------
+alias my-cc='clang -std=c11 -Wall -Wextra -pedantic-errors -O2 -pipe'
+
+#function my-cxx ()
+#{
+#  clang++ -std=c++1z -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -pedantic-errors -O2 -stdlib=libc++ -I../include -Iinclude "$@" -lc++abi
+#}
+
+my-runc ()
+{
+  my-cc -o /tmp/a.out "$@" && /tmp/a.out
+}
+
+
+runchino ()
+{
+  chino -o /tmp/a.out "$@" && echo -e "\033[1mcompile succedded.\033[0m" >&2 && /tmp/a.out
+}
+
+atcoder-run ()
+{
+  atcoder-cc -o ./a.out "$1" && shift && ./a.out "$@"
+}
+
+# sandbox用(?)
+my-ghc ()
+{
+  if [[ -e .cabal-sandbox ]]
+  then
+    ghc -package-db .cabal-sandbox/*.conf.d "$@"
+  else
+    ghc "$@"
+  fi
+}
+
+
+#------------------------------
+# debug function
+#------------------------------
+valgrind_cpp ()
+{
+  atcoder-cc -o ./a.out "$1" && valgrind ./a.out
+}
+
+
+#------------------------------
+# utility function
+#------------------------------
+# ぐぐる
+google ()
+{
+  [[ -z $* ]] && set -- `head -1` && open "https://www.google.com/#q=$*"
+}
+
+# ほぐる
+hoogle ()
+{
+  [[ -z $* ]] && set -- `head -1` && open "https://www.haskell.org/hoogle/?hoogle=$*"
+}
+
+# stderrへのecho、ついでに終了コード1
+echoerr ()
+{
+  echo "$@" >&2
+  return 1
+}
+eprintf ()
+{
+  printf "$@" >&2
+}
+
+# ♪
+music-play ()
+{
+  mplayer "$@" || echoerr Error: cannot play.
+}
+
+# ~以下のすべてのリポジトリに対してgit statusを実行
+# .cacheは除外
+git-status-all ()
+{
+  local i
+  find ~ -name .cache -prune -o -name .git -type d -exec dirname {} \; | while read i
+  do
+    printf "%s\n" "$i"
+    \git -C "$i" status -s
+  done
+}
+
+color-palette ()
+{
+  local c
+  for c in {000..255}
+  do
+    echo -n "\e[38;5;${c}m $c"
+    [[ $(($c%16)) -eq 15 ]] && echo
+  done
+  echo
+}
+
+#------------------------------
+# fzf function
+#------------------------------
+fzf-file ()
+{
+  fd --type f --hidden --no-ignore --exclude .git "$@" | fzf --multi --preview 'bat --color=always --style=numbers --line-range :500 {}'
+}
+fzf-directory ()
+{
+  fd --type d --hidden --no-ignore --exclude .git "$@" | fzf --multi --preview 'exa -lha --time-style long-iso --color=always {}'
+}
+fzf-process ()
+{
+  ps -ef | sed 1d | fzf --multi | awk '{print $2}'
+}
+fzf-git-branch ()
+{
+  git branch --all | cut -c 3- | fzf --reverse -0 --height 60%
+}
+fzf-git-commit ()
+{
+  git log --graph --all --oneline --color=always | fzf --ansi --no-sort --reverse --tiebreak index -0 --height=60% --preview "git show --color=always \$(printf '%s' {} | grep -io '[0-9a-f]\{7,\}' | head -1)" | \grep -io '[0-9a-f]\{7,\}' | head -1
+}
+fzf-git-changed ()
+{
+  git diff --name-only --relative | fzf --multi --preview 'git diff --color=always -- {}'
+}
+fzf-git-repository ()
+{
+  fd --type d --hidden '^.git$' ~ -x dirname | fzf --multi --preview 'git -c color.status=always -C {} status'
+}
+
+
+#------------------------------
+# subsh
+#------------------------------
+autoload -Uz add-zsh-hook
+
+__precmd_for_subsh ()
+{
+  [[ -n "${SUBSH}" ]] && print -z "${SUBSH} "
+}
+
+add-zsh-hook precmd "__precmd_for_subsh"
+
+subsh ()
+{
+  export SUBSH="$*"
+}
+
+
+#------------------------------
+# keybind
+#------------------------------
+# reset
+# bindkey -d
+
+# Emacs風キーバインド
+bindkey -e
+
+# Ctrl+arrow key
+  ## Ubuntu
+  bindkey "^[[1;5C" forward-word
+  bindkey "^[[1;5D" backward-word
+
+# HOME,ENDで移動する
+  ## Arch Linux
+  bindkey "^[[H" beginning-of-line
+  bindkey "^[[F" end-of-line
+  ## Ubuntu
+  bindkey "^[OH" beginning-of-line
+  bindkey "^[OF" end-of-line
+  ## ?
+  # bindkey "^[[1~" beginning-of-line
+  # bindkey "^[[4~" end-of-line
+
+# Deleteキーで消す
+bindkey "^[[3~" delete-char
+
+# Ctrl+BackSpace
+  ## Ubuntu
+  bindkey "^H" backward-kill-word
+
+# Shift+Tabで逆順補完
+bindkey "^[[Z" reverse-menu-complete
+
+
+# abbreviation
+type zabbrev >/dev/null 2>&1 && eval "$(zabbrev init --bind-keys)"
+
+
+#------------------------------
+# 環境依存
+#------------------------------
+case $(uname -r) in
+  *Microsoft)
+    # WSL1
+    export DISPLAY=localhost:0
+
+    alias pbcopy=clip.exe
+    alias pbpaste='powershell.exe get-clipboard | sed -z '\''s/\r\n$//'\'
+    alias open='powershell.exe start'
+
+    alias explorer=explorer.exe
+    alias java=java.exe
+    alias ffmpeg=ffmpeg.exe
+    alias ffprobe=ffprobe.exe
+    alias ffplay=ffplay.exe
+
+    alias -s bat='cmd.exe /c'
+    alias -s ps1='powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File'
+    ;;
+  *microsoft*)
+    # WSL2
+    ;;
+  *)
+    case ${OSTYPE} in
+      darwin*)
+        # Mac
+        # alias ls='\ls -G -F'
+        ;;
+      linux*)
+        # linux
+        # alias ls='\ls --color=auto -F'
+        alias pbcopy='xsel --clipboard --input'
+        alias pbpaste='xsel --clipboard --output'
+        alias open=xdg-open
+
+        type wine > /dev/null 2>&1 && alias -s exe='wine'
+        ;;
+    esac
+    ;;
+esac
+
+[[ -d /usr/share/fzf ]] && {
+  source /usr/share/fzf/completion.zsh
+}
+
+
+#------------------------------
+# autoload
+#------------------------------
+
+# 先方予測機能
+#autoload -Uz predict-on && predict-on
+
+# 単語の区切り文字を設定
+autoload -Uz select-word-style && select-word-style default
+
+# run-help
+alias run-help > /dev/null 2>&1 && unalias run-help
+autoload -Uz run-help run-help-git run-help-openssl run-help-sudo
+
+# 補完を有効にする
+# autoload -Uz compinit && compinit
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+zpcompinit
