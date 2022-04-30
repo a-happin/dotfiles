@@ -224,9 +224,12 @@ color-palette ()
   echo
 }
 
+
 #------------------------------
-# fzf function
+# fzf
 #------------------------------
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --no-ignore --exclude .git'
+
 fzf-file ()
 {
   fd --type f --hidden --no-ignore --exclude .git "$@" | fzf --multi --preview 'bat --color=always --style=numbers --line-range :500 {}'

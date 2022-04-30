@@ -30,12 +30,6 @@ type nvim > /dev/null 2>&1 && {
 
 
 #------------------------------
-# fzf
-#------------------------------
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --no-ignore --exclude .git'
-
-
-#------------------------------
 # set i3-sensible-terminal
 #------------------------------
 type alacritty >/dev/null 2>&1 && export TERMINAL='alacritty'
