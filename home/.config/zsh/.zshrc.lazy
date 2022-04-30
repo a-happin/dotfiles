@@ -127,7 +127,7 @@ alias -s ts='deno run --allow-all --unstable'
 #------------------------------
 alias my-cc='clang -std=c11 -Wall -Wextra -pedantic-errors -O2 -pipe'
 
-#function my-cxx ()
+#my-cxx ()
 #{
 #  clang++ -std=c++1z -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -pedantic-errors -O2 -stdlib=libc++ -I../include -Iinclude "$@" -lc++abi
 #}
