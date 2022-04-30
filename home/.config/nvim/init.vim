@@ -29,7 +29,9 @@ call s:source ('init/command.vim')
 call s:source ('init/plugin.vim')
 call s:source ('init/dein.vim')
 call s:source ('init/autocmd.vim')
-
+if system ('uname -r') =~? 'microsoft'
+  call s:source ('init/wsl.vim')
+endif
 
 " *******************************
 " **  last on startup

@@ -394,7 +394,7 @@ nnoremap <Space>w <Cmd>update<CR>
 nnoremap <Space>e :<C-u>e <C-r>=expand('%')<CR>
 
 " Restart coc.nvim
-nnoremap <Space>r <Cmd>CocRestart<CR>
+" nnoremap <Space>r <Cmd>CocRestart<CR>
 
 " Open New Tab
 " nnoremap <Space>t <Cmd>tabnew<CR>
@@ -402,15 +402,15 @@ nnoremap <Space>r <Cmd>CocRestart<CR>
 " nnoremap <Space>t <Cmd>terminal<CR>
 
 " Copy to clipboard
-call s:nxnoremap ('<Space>y', 'y<Cmd>call system(''clip.exe'', @")<CR>')
+" call s:nxnoremap ('<Space>y', '"wy')
 
 " 改行挿入
 nnoremap <Space>o o<Space><C-u><Esc>
 nnoremap <Space>O O<Space><C-u><Esc>
 
 " Paste from clipboard
-call s:nxnoremap ('<Space>p', '<Cmd>GetWindowsClipboard<CR>p')
-call s:nxnoremap ('<Space>P', '<Cmd>GetWindowsClipboard<CR>P')
+" call s:nxnoremap ('<Space>p', '<Cmd>GetWindowsClipboard<CR>p')
+" call s:nxnoremap ('<Space>P', '<Cmd>GetWindowsClipboard<CR>P')
 
 " Split Horizontally
 nnoremap <Space>s <C-w>s
@@ -586,6 +586,10 @@ tnoremap <LeftRelease> <Nop>
 tnoremap <2-LeftMouse> <Nop>
 tnoremap <3-LeftMouse> <Nop>
 tnoremap <4-LeftMouse> <Nop>
+
+" 中クリックで貼り付け
+tnoremap <MiddleMouse> <C-\><C-n>pi
+tnoremap <MiddleRelease> <Nop>
 
 " ウインドウ切り替え用
 " tmap <C-w> <C-\><C-n><C-w>

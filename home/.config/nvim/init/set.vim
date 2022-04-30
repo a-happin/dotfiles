@@ -31,7 +31,7 @@ set nobackup
 set cinoptions& cinoptions+=:0,g0,t0,+0
 
 " share clipboard
-if has('unnamedplus')
+if has ('unnamedplus')
   set clipboard=unnamedplus,unnamed
 else
   set clipboard=unnamed
