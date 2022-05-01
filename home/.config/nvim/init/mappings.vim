@@ -437,8 +437,8 @@ xnoremap <Space>; :
 " CocList
 nnoremap <Space>c <Cmd>CocList<CR>
 
-" Split Vertically
-nnoremap <Space>v <C-w>v
+" select last searched text
+nnoremap <Space>v gn
 
 " バッファ一覧
 nnoremap <Space>b <Cmd>Buffers<CR>
@@ -460,7 +460,7 @@ nnoremap <Space>. <Cmd>if expand ('%:e') ==# 'vim'<bar>source %<bar>echo 'source
 nnoremap <Space>/ <Cmd>Rg<CR>
 
 " 選択中の文字列で検索をかける
-xnoremap <Space>/ "sy/\V<C-r>=escape(@s, '/')<CR><CR><Cmd>call <SID>flash_hlsearch()<CR>
+xnoremap <Space>/ "sy/\V<C-r>=escape(@s, '\/')<CR><CR><Cmd>call <SID>flash_hlsearch()<CR>
 
 
 " --------------------------------
