@@ -418,6 +418,10 @@ abbrevs:
     snippet: 'rar a'
     operation: replace-context
 
+  # minecraft gameoutput
+  - context: ''
+    abbr: 'gameoutput'
+    snippet: 'less +F ../../../logs/latest.log'
 
   # like a function
   - context: 'my-ssh-keygen'
