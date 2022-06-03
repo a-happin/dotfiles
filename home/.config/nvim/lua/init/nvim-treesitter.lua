@@ -23,11 +23,11 @@ require 'nvim-treesitter.configs'.setup {
     },
   },
 
-  -- rainbow = {
-  --   enable = true,
-  --   extended_mode = true,
-  --   max_file_lines = 1000,
-  -- },
+  rainbow = {
+    enable = true,
+    extended_mode = true,
+    max_file_lines = 1000,
+  },
 
-  ensure_installed = 'all',
+  ensure_installed = {'bash', 'c', 'cmake', 'cpp', 'css', 'fish', 'go', 'haskell', 'help', 'html', 'http', 'java', 'javascript', 'jsdoc', 'json', 'kotlin', 'latex', 'llvm', 'lua', 'make', 'markdown', 'ninja', 'perl', 'php', 'python', 'regex', 'ruby', 'rust', 'scss', 'toml', 'typescript', 'vim', 'yaml'},
 }
