@@ -1,5 +1,3 @@
-scriptencoding utf-8
-
 " ここに書かないと機能しない？
 " init.vimに書いてると/usr/share/nvim/runtime/ftplugin/* に普通に上書きされる
 

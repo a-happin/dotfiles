@@ -1,5 +1,3 @@
-scriptencoding utf-8
-
 " 最後に選択したテキストを取得
 " - マルチバイト文字対応
 " - Unicode合成文字を無視(https://ja.wikipedia.org/wiki/%E5%90%88%E6%88%90%E6%B8%88%E3%81%BF%E6%96%87%E5%AD%97)

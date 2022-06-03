@@ -1,5 +1,3 @@
-scriptencoding utf-8
-
 " utilities for dein.vim
 
 function! plugin#dein#force_reload () abort

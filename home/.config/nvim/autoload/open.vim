@@ -1,5 +1,3 @@
-scriptencoding utf-8
-
 function! open#open (arg) abort
   let arg = shellescape (a:arg)
   if executable ('powershell.exe')

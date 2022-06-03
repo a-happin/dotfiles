@@ -1,5 +1,3 @@
-scriptencoding utf-8
-
 function! plugin#coc#init () abort
   let g:coc_global_extensions = [
         \ 'coc-lists',

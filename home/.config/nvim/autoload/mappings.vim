@@ -1,5 +1,3 @@
-scriptencoding utf-8
-
 " 挿入モードに入るが1文字入力したら即抜ける
 function! mappings#insert_one ()
   augroup mappings-insert-one

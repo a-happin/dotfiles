@@ -1,5 +1,3 @@
-scriptencoding utf-8
-
 function! auto_mkdir#mkdir (dir, force) abort
   if empty (a:dir) || a:dir =~# '^\w\+://' || isdirectory (a:dir) || a:dir =~# '^suda:'
       return

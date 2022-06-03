@@ -1,5 +1,3 @@
-scriptencoding=utf-8
-
 function! s:tabpage_label (i, n) abort
   let highlight = a:n is tabpagenr () ? '%#TabLineSel#' : '%#TabLine#'
   let tabnumber = '%' . a:n . 'T ' . a:n
