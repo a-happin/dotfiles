@@ -94,8 +94,8 @@ augroup vimrc-incsearch-highlight
   autocmd CmdlineLeave /,\? set nohlsearch
 augroup END
 
-" augroup macro-recording
-"   autocmd!
-"   autocmd RecordingEnter * nnoremap <nowait> q q
-"   autocmd RecordingLeave * nunmap q
-" augroup END
+augroup macro-recording
+  autocmd!
+  autocmd RecordingEnter * nnoremap <nowait> q q
+  autocmd RecordingLeave * nunmap q
+augroup END
