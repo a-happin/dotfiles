@@ -23,7 +23,6 @@ BinPackArguments: false
 BinPackParameters: false
 BitFieldColonSpacing: Both
 BreakBeforeBinaryOperators: NonAssignment
-BreakBeforeBraces: Allman
 BreakBeforeConceptDeclarations: true
 BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: BeforeComma
@@ -36,31 +35,31 @@ Cpp11BracedListStyle: true
 DeriveLineEnding: true
 DerivePointerAlignment: false
 DisableFormat: false
-# EmptyLineAfterAccessModifier: Never
+EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: LogicalBlock
 FixNamespaceComments: true
 IncludeBlocks: Preserve
-# IndentAccessModifiers: false
+IndentAccessModifiers: false
 IndentCaseBlocks: true
 IndentCaseLabels: false
 IndentExternBlock: Indent
-IndentGotoLabels: false
-IndentPPDirectives: AfterHash
-IndentRequires: true
+IndentGotoLabels: true
+IndentPPDirectives: BeforeHash
+IndentRequires: false
 IndentWidth: 2
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: true
-# LambdaBodyIndentation: Signature
+LambdaBodyIndentation: Signature
 Language: Cpp
 MaxEmptyLinesToKeep: 2
 NamespaceIndentation: All
-# PPIndentWidth: -1
+PPIndentWidth: -1
 # PackConstructorInitializers: Never
 PointerAlignment: Middle
-# ReferenceAlignment: Middle
+ReferenceAlignment: Middle
 ReflowComments: false
-# ShortNamespaceLines: 0
-# SortIncludes: Never
+ShortNamespaceLines: 0
+SortIncludes: Never
 SortUsingDeclarations: false
 SpaceAfterCStyleCast: true
 SpaceAfterLogicalNot: true
@@ -77,7 +76,7 @@ SpaceBeforeSquareBrackets: false
 SpaceInEmptyBlock: false
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 1
-# SpacesInAngles: Never
+SpacesInAngles: Never
 SpacesInCStyleCastParentheses: false
 SpacesInConditionalStatement: false
 SpacesInParentheses: false
