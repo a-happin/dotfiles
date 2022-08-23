@@ -15,6 +15,7 @@ require 'lualine'.setup {
   options = {
     theme = 'ayu_mirage',
     always_divide_middle = true,
+    globalstatus = true,
   },
   sections = {
     lualine_a = {'mode', skkstatus},
@@ -26,4 +27,3 @@ require 'lualine'.setup {
   },
   extensions = {'fern', terminal_extension}
 }
-

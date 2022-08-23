@@ -58,15 +58,16 @@ if dein#load_state (s:dein_directory)
   " ********************************
   " LSP client
   " call dein#add ('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release', 'on_event': 'VimEnter', 'hook_source': 'call plugin#coc#init ()'})
-  call dein#add ('neovim/nvim-lspconfig', {'on_lua': 'lspconfig'})
-  call dein#add ('williamboman/nvim-lsp-installer', {'on_lua': 'nvim-lsp-installer', 'hook_add': 'lua require "init/lsp"'})
+  call dein#add ('neovim/nvim-lspconfig')
+  call dein#add ('williamboman/mason.nvim')
+  call dein#add ('williamboman/mason-lspconfig.nvim', {'hook_add': 'lua require "init/lsp"'})
 
   " show git diff at SignColumn
   call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter', 'hook_add': 'let g:gitgutter_map_keys = 0'})
 
   " customize statusline
   " call dein#add ('itchyny/lightline.vim', {'hook_add': 'call plugin#lightline#init ()'})
-  call dein#add ('nvim-lualine/lualine.nvim', {'on_lua': 'lualine', 'hook_add': 'lua require "init/lualine"'})
+  call dein#add ('nvim-lualine/lualine.nvim', {'hook_add': 'lua require "init/lualine"'})
 
   " lightlineにcoc情報を表示する関数を提供する
   " call dein#add ('josa42/vim-lightline-coc')
@@ -120,13 +121,13 @@ if dein#load_state (s:dein_directory)
   " ********************************
   " ** treesitter
   " ********************************
-  call dein#add ('nvim-treesitter/nvim-treesitter', {'on_event': 'VimEnter', 'hook_post_source': 'lua require "init/nvim-treesitter"'})
+  call dein#add ('nvim-treesitter/nvim-treesitter', {'hook_add': 'lua require "init/nvim-treesitter"'})
 
   " treesitter playground
   " call dein#add ('nvim-treesitter/playground', {'depends': ['nvim-treesitter']})
 
   " textobject
-  call dein#add ('nvim-treesitter/nvim-treesitter-textobjects', {'depends': ['nvim-treesitter']})
+  call dein#add ('nvim-treesitter/nvim-treesitter-textobjects')
 
   " colorize parens
   " call dein#add ('p00f/nvim-ts-rainbow', {'depends': ['nvim-treesitter']})
