@@ -3,6 +3,7 @@
 #define FOR(...)   FOR_IMPL (__VA_ARGS__)
 #define rep(i,n)   FOR (i, size_t{}, static_cast <size_t> (n))
 #define ALL(x)     begin (x), end (x)
+#define dump(...)  cerr << #__VA_ARGS__ << " = " << (__VA_ARGS__) << "\n"
 using namespace std;
 using ll = int64_t;
 
