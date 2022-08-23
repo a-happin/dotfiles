@@ -184,7 +184,7 @@ set shortmess& shortmess+=c
 " display inputting command on lower right
 set showcmd
 
-" 現在の入力モードを表示しない(プラグインでstatuslineに表示するようにしたので)
+" 現在の入力モードを表示する(プラグインでstatuslineに表示するようにしたが、プラグインがバグると困るので…)
 set showmode
 
 " 括弧入力時に対応する括弧に一瞬ジャンプしない（うざい）

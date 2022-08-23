@@ -99,3 +99,13 @@ augroup macro-recording
   autocmd RecordingEnter * nnoremap <nowait> q q
   autocmd RecordingLeave * nunmap q
 augroup END
+
+" lualineが描画されるとintroが消えるバグがあるのでlualineの描画を遅らせる
+augroup lazy-intro
+  autocmd!
+  if argc () ==# 0
+    autocmd InsertEnter * ++once lua require 'init/lualine'
+  else
+    autocmd VimEnter * ++once lua require 'init/lualine'
+  endif
+augroup END

@@ -67,7 +67,8 @@ if dein#load_state (s:dein_directory)
 
   " customize statusline
   " call dein#add ('itchyny/lightline.vim', {'hook_add': 'call plugin#lightline#init ()'})
-  call dein#add ('nvim-lualine/lualine.nvim', {'hook_add': 'lua require "init/lualine"'})
+  call dein#add ('nvim-lualine/lualine.nvim')
+
 
   " lightlineにcoc情報を表示する関数を提供する
   " call dein#add ('josa42/vim-lightline-coc')
