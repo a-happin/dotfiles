@@ -26,7 +26,9 @@ set nobackup
 " g0 アクセス修飾子のインデントを深くしない
 " t0 templateのインデントを深くしない
 " +0 namespace内、クラス内のtemplateのインデントを深くしない
-set cinoptions& cinoptions+=:0,g0,t0,+0
+" (0 括弧が閉じていないとき、閉じていない括弧からのインデント量を0にする
+" Ws (0指定時に閉じていない括弧からではなく非空白文字からのインデント量をshiftwidthにする
+set cinoptions& cinoptions+=:0,g0,t0,+0,(0,Ws
 
 " share clipboard
 if has ('unnamedplus')
