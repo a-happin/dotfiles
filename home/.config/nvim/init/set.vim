@@ -21,6 +21,11 @@ set backspace=indent,eol,start
 " don't create backup file
 set nobackup
 
+" :  :で自動インデントしない
+" 0# 行頭の#で自動インデントしない
+" e  elseで自動インデントしない
+set cinkeys& cinkeys-=: cinkeys-=0# cinkeys-=e
+
 " Cのインデントオプション
 " :0 Labelのインデントを深くしない
 " g0 アクセス修飾子のインデントを深くしない
@@ -28,7 +33,8 @@ set nobackup
 " +0 namespace内、クラス内のtemplateのインデントを深くしない
 " (0 括弧が閉じていないとき、閉じていない括弧からのインデント量を0にする
 " Ws (0指定時に閉じていない括弧からではなく非空白文字からのインデント量をshiftwidthにする
-set cinoptions& cinoptions+=:0,g0,t0,+0,(0,Ws
+" m1 括弧閉じのインデントを浅くする(?)
+set cinoptions& cinoptions+=:0,g0,t0,+0,(0,Ws,m1
 
 " share clipboard
 if has ('unnamedplus')
