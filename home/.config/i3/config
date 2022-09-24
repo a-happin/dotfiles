@@ -39,6 +39,8 @@ client.focused          #bcbbfa #bbdbfa #000000 #2e9ef4   #285577
 # border 1px, disable titlebar
 default_border pixel 1
 default_floating_border pixel 1
+# since 4.21 ↑ does not work
+for_window [class="^.*"] border pixel 1
 
 # hide borders adjacent to the screen
 hide_edge_borders both
