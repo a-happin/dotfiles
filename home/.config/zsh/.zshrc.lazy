@@ -59,6 +59,8 @@ zstyle ':completion:*' insert-tab false
 # 単語区切り文字
 zstyle ':zle:*' word-chars ' /@#$%^&*-+=;:{}[]()<>,.|\\'
 zstyle ':zle:*' word-style unspecified
+## スラッシュを除く
+WORDCHARS=${WORDCHARS//[\/]}
 
 
 #------------------------------
