@@ -308,6 +308,9 @@ bindkey -e
 # Deleteキーで消す
 bindkey "^[[3~" delete-char
 
+# Ctrl+Deleteでカーソル位置の単語を消す
+bindkey "^[[3;5~" delete-word
+
 # Ctrl+BackSpace
   ## Ubuntu
   bindkey "^H" backward-kill-word
