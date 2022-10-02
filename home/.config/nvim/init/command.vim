@@ -91,6 +91,9 @@ command! -bar -nargs=1 -complete=file Rename try | saveas <args> | call delete (
 
 "command! -bar -range=% ToSnakeCase <line1>,<line2>s/\v([a-z_]\@=)([A-Z])/\1_\l\2/g
 
+" reset lsp
+command! -bar LspReset lua vim.diagnostic.reset ()
+
 " ripgrepによるファイル横断検索
 call s:cnoreabbrev ('rg', 'Rg')
 

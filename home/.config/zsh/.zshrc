@@ -133,6 +133,12 @@ HISTSIZE=1000
 # ファイルに保持するhistory
 SAVEHIST=100000
 
+# 即座に履歴ファイルにコマンドを書き込む(zshを複数開いている場合などに有効)
+setopt inc_append_history
+
+# ヒストリーファイルを共有する
+setopt share_history
+
 # コマンドラインだけではなく実行時刻と実行時間も保存する
 setopt extended_history
 
@@ -141,6 +147,9 @@ setopt hist_ignore_dups
 
 # 古いものと同じなら古い方を削除
 setopt hist_ignore_all_dups
+
+# 履歴がいっぱいになると重複から優先的に削除
+setopt hist_expire_dups_first
 
 # 戦闘がスペースで始まる場合は追加しない
 setopt hist_ignore_space
@@ -154,14 +163,14 @@ setopt hist_verify
 # historyコマンドは履歴に保存しない
 setopt hist_no_store
 
+# 関数定義をヒストリに保存しない
+setopt hist_no_functions
+
 # 保管時にヒストリを展開
 setopt hist_expand
 
-# 即座に履歴ファイルにコマンドを書き込む(zshを複数開いている場合などに有効)
-setopt inc_append_history
-
-# ヒストリーファイルを共有する
-setopt share_history
+# ヒストリエディタでスクロールができないときにbeep音を鳴らさない
+setopt no_hist_beep
 
 
 #------------------------------

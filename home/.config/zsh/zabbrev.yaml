@@ -102,10 +102,10 @@ abbrevs:
     snippet: 'type -as'
 
   - abbr: 'historygrep'
-    snippet: 'history | grep'
+    snippet: ' history 0 | grep'
 
   - abbr: 'historyedit'
-    snippet: '${EDITOR} ${HISTFILE}'
+    snippet: ' ${EDITOR} ${HISTFILE}'
     evaluate: true
 
   - context: 'zabbrev'

@@ -72,12 +72,12 @@ alias grep='\grep --color=auto'
 # sudo でaliasが使えるようにする
 alias sudo='sudo '
 
-alias history='\history 0'
+alias history='\history -f -D -i'
 
 # set wallpaper
 alias wallpaper='feh --no-fehbg --randomize --bg-max --recursive'
 
-alias chino='clang++ -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
+alias chino='clang++ -std=c++2b -stdlib=libc++ -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
 alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -Wno-unused-const-variable -pedantic-errors -g -O0 -pipe -DLOCAL -DDEBUG'
 
 # alias fcrontab='fcrontab -i'
