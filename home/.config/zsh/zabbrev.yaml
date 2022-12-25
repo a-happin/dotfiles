@@ -217,6 +217,10 @@ abbrevs:
     snippet: 'switch -c'
 
   - context: 'git'
+    abbr: 'newtag'
+    snippet: 'tag -a'
+
+  - context: 'git'
     abbr: 'hash'
     snippet: 'rev-parse HEAD'
 
