@@ -104,7 +104,7 @@ augroup END
 augroup lazy-intro
   autocmd!
   if argc () ==# 0
-    autocmd InsertEnter * ++once lua require 'init/lualine'
+    autocmd InsertEnter,BufReadPost * ++once lua require 'init/lualine'
   else
     autocmd VimEnter * ++once lua require 'init/lualine'
   endif
