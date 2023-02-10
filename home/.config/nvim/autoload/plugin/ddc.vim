@@ -1,6 +1,7 @@
 
 function! plugin#ddc#init () abort
-  call ddc#custom#patch_global ('completionMenu', 'pum.vim')
+  call ddc#custom#patch_global ('ui', 'native')
+  " call ddc#custom#patch_global ('completionMenu', 'pum.vim')
   call ddc#custom#patch_global ('autoCompleteEvents', ['TextChangedI', 'TextChangedP'])
   call ddc#custom#patch_global ('sources', ['nvim-lsp', 'around', 'skkeleton'])
   call ddc#custom#patch_global ('sourceOptions', {

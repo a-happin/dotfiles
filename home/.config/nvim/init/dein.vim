@@ -97,6 +97,9 @@ if dein#load_state (s:dein_directory)
   " completion framework
   call dein#add ('Shougo/ddc.vim', {'on_event': 'InsertEnter', 'hook_source': 'call plugin#ddc#init ()'})
 
+  " UI
+  call dein#add ('Shougo/ddc-ui-native')
+
   " ddc source
   " nvim-lsp
   call dein#add ('Shougo/ddc-nvim-lsp')
