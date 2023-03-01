@@ -48,14 +48,14 @@ mason.setup {
   },
 }
 mason_lspconfig.setup {
-  ensure_installed = { 'vimls', 'jsonls', 'sumneko_lua' }
+  ensure_installed = { 'vimls', 'jsonls', 'lua_ls' }
 }
 
 for _, server in ipairs(mason_lspconfig.get_installed_servers ()) do
   local opts = {}
   opts.on_attach = on_attach
 
-  if server == 'sumneko_lua' then
+  if server == 'lua_ls' then
     opts.settings = {
       Lua = {
         runtime = {version = 'LuaJIT', path = vim.split (package.path, ';')},
@@ -73,21 +73,22 @@ end
 -- end)
 
 
-if (vim.fn.executable ('deno')) then
-  lspconfig.denols.setup {
-    on_attach = on_attach,
-    init_options = {
-      lint = false,
-      unstable = true,
-    },
-  }
-end
-
 local function root_pattern_or_dirname(...)
   local patterns = { ... }
   return function (filename)
     return lspconfig.util.root_pattern (unpack (patterns)) (filename) or lspconfig.util.path.dirname (filename)
   end
+end
+
+if (vim.fn.executable ('deno')) then
+  lspconfig.denols.setup {
+    on_attach = on_attach,
+    root_dir = root_pattern_or_dirname ('deno.json', 'deno.jsonc'),
+    init_options = {
+      lint = false,
+      unstable = true,
+    },
+  }
 end
 
 if (vim.fn.executable ('ccls')) then
