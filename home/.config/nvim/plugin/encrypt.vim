@@ -6,14 +6,16 @@ augroup encrypt
 augroup END
 
 function! s:decrypt_read () abort
-  try
-    call inputsave ()
-    redraw | let password = inputsecret ('enter decryption password: ')
-  finally
-    call inputrestore ()
-    redraw
-  endtry
-  execute '%!openssl aes-256-cbc -d -iter 100 -k' password '-in' shellescape (bufname ())
+  if filereadable (bufname ())
+    try
+      call inputsave ()
+      redraw | let password = inputsecret ('enter decryption password: ')
+    finally
+      call inputrestore ()
+      redraw
+    endtry
+    execute '%!openssl aes-256-cbc -d -iter 100 -k' password '-in' shellescape (bufname ())
+  endif
 endfunction
 
 function! s:encrypt_write () abort
