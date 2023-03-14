@@ -233,7 +233,7 @@ abbrevs:
     snippet: 'clean -df'
 
   - context: 'git'
-    abbr: 'init'
+    abbr: 'initc'
     snippet: 'init && git commit --allow-empty -m "Initial commit."'
 
   - context: 'git'
@@ -269,6 +269,21 @@ abbrevs:
     abbr: '-f'
     snippet: --force-with-lease
     global: true
+
+  - context: 'git subtree add'
+    abbr-regex: '^[^-]'
+    snippet: '--prefix=$1 $1'
+    evaluate: true
+
+  - context: 'git subtree pull'
+    abbr-regex: '^[^-]'
+    snippet: '--prefix=$1 $1'
+    evaluate: true
+
+  - context: 'git subtree push'
+    abbr-regex: '^[^-]'
+    snippet: '--prefix=$1 $1'
+    evaluate: true
 
   # external command
   - context: 'git'
@@ -307,9 +322,8 @@ abbrevs:
     evaluate: true
 
   - abbr-suffix: '.ts'
-    snippet: $([[ -f import_map.json ]] && printf '%s' "deno run --import-map=import_map.json" || printf '%s' "deno run") --allow-all --unstable
+    snippet: 'deno run --allow-all --unstable'
     operation: prepend
-    evaluate: true
 
   - abbr-suffix: '.bat'
     snippet: 'cmd.exe /c'
