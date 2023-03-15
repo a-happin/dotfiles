@@ -74,7 +74,7 @@ if dein#load_state (s:dein_directory)
   " call dein#add ('josa42/vim-lightline-coc')
 
   " fzf
-  call dein#add ('junegunn/fzf.vim', {'on_event': 'VimEnter', 'hook_source': 'call plugin#fzf#init ()'})
+  call dein#add ('junegunn/fzf.vim', {'on_event': 'VimEnter', 'hook_source': 'call plugin#fzf#init ()', 'hook_add': 'if filereadable (expand ("~/.fzf/plugin/fzf.vim")) | set rtp+=~/.fzf/ | endif'})
 
   " ********************************
   " ** denops plugins
