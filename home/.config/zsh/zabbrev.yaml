@@ -270,6 +270,12 @@ abbrevs:
     snippet: --force-with-lease
     global: true
 
+  - context: 'git tag -a'
+    abbr-prefix: 'v'
+    snippet: -m 'version ${1#v}'
+    operation: append
+    evaluate: true
+
   - context: 'git subtree add'
     abbr-regex: '^[^-]'
     snippet: '--prefix=$1 $1'
