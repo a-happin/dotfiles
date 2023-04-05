@@ -279,7 +279,7 @@ onoremap i<Space> iW
 " --------------------------------
 
 " 全部閉じて終了
-call s:anoremap ('<M-Shift-q>', '<Cmd>confirm qall<CR>')
+call s:anoremap ('<M-Q>', '<Cmd>confirm qall<CR>')
 call s:anoremap ('<M-q>', '<Cmd>confirm q<CR>')
 
 nmap <M-w> <C-w>
