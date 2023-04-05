@@ -2,6 +2,9 @@ local lspconfig = require 'lspconfig'
 local mason = require 'mason'
 local mason_lspconfig = require 'mason-lspconfig'
 
+-- not to move cursor into floating window
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with (vim.lsp.handlers.hover, { focusable = false })
+
 local on_attach = function (_, bufnr)
   local function buf_set_keymap (...) vim.api.nvim_buf_set_keymap (bufnr, ...) end
   local function buf_set_option (...) vim.api.nvim_buf_set_option (bufnr, ...) end
