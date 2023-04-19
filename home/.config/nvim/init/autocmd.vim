@@ -116,6 +116,7 @@ augroup macro-recording
 augroup END
 
 " lualineが描画されるとintroが消えるバグがあるのでlualineの描画を遅らせる
+" https://github.com/nvim-lualine/lualine.nvim/issues/773
 augroup lazy-intro
   autocmd!
   if argc () ==# 0

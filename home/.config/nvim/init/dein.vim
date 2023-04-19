@@ -38,7 +38,7 @@ if dein#load_state (s:dein_directory)
   call dein#add ('antoinemadec/FixCursorHold.nvim')
 
   " fix https://github.com/neovim/neovim/issues/1716
-  " call dein#add ('lambdalisue/suda.vim')
+  call dein#add ('lambdalisue/suda.vim')
 
   " ********************************
   " ** improve default behavior
