@@ -28,6 +28,9 @@ abbrevs:
   - abbr: 'relogin'
     snippet: 'exec zsh -l'
 
+  - abbr: 'ls'
+    snippet: 'ls -lah'
+
   - abbr: 'la'
     snippet: 'ls -lah'
 
