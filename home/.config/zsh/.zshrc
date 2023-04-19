@@ -22,7 +22,7 @@ LISTMAX=0
 setopt always_last_prompt
 
 # ディレクトリ名だけでcdする
-setopt auto_cd
+# setopt auto_cd
 
 # TAB連打で次の候補を選択
 setopt auto_menu
