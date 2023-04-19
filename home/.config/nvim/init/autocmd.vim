@@ -17,10 +17,25 @@ augroup auto-reload-vimrc
   autocmd BufWritePost */.config/nvim/*.vim ++nested source $MYVIMRC | redraw | echomsg '*** Reloaded' $MYVIMRC '***'
 augroup END
 
-"augroup auto_save
-"  autocmd!
-"  autocmd TextChanged,InsertLeave * silent call auto_save#save ()
-"augroup END
+function! s:auto_save () abort
+  if &modified && !&readonly && filewritable (expand ('%'))
+    update
+    doautocmd BufWritePost
+  endif
+endfunction
+
+function! s:enable_auto_save () abort
+  augroup auto_save_buffer
+    autocmd! * <buffer>
+    autocmd! TextChanged,InsertLeave <buffer> silent call s:auto_save ()
+  augroup END
+endfunction
+
+augroup auto_save
+ autocmd!
+ autocmd FileType rust silent call s:enable_auto_save()
+ " autocmd TextChanged,InsertLeave *.rs silent call auto_save#save ()
+augroup END
 
 augroup auto_mkdir
   autocmd!
