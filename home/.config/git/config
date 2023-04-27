@@ -61,6 +61,7 @@
 	pull-tags = pull --tags
 	pushf = push --force-with-lease
 	pushu = push -u origin HEAD
+	reset-author-all = rebase -r --root --exec 'git commit --amend --allow-empty --no-edit --reset-author'
 	reset-to-head = reset --hard HEAD
 	reset-to-remote = reset --hard @{u}
 	remote-convert-to-ssh-url = !git remote set-url origin $(git remote get-url origin | sed 's%^https://github.com/%git@github.com:%')
