@@ -186,7 +186,7 @@ bindsym $mod+equal resize grow height
 bindsym $mod+shift+less resize shrink width
 bindsym $mod+shift+greater resize grow width
 
-set $layout_mode "Layout [h: horizontal], [v: vertical], [f: fullscreen], [F: floating], [s: stacking], [t: tabbed]"
+set $layout_mode "Layout [h: horizontal], [v: vertical], [f: fullscreen], [F: floating], [s: stacking], [t: tabbed], [S: sticky]"
 mode $layout_mode {
   # vimと逆
 
@@ -208,6 +208,9 @@ mode $layout_mode {
   # tabbed
   bindsym t layout tabbed
 
+  # toggle sticky
+  bindsym Shift+s sticky toggle
+
   # back to normal: Enter or Escape
   bindsym Return mode "default"
   bindsym Escape mode "default"
@@ -218,7 +221,7 @@ bindsym $mod+e mode $layout_mode
 set $size 10
 
 # resize window (you can also use the mouse for that)
-set $resize_mode "Resize [hjkl: grow], [HJKL: shrink] [1: HD] [2: FullHD] [3: WQHD] [4: 1286x760] [5: 768x432+31]"
+set $resize_mode "Resize [hjkl: grow], [HJKL: shrink] [1: HD] [2: FullHD] [3: WQHD] [4: 1286x760] [5: 768x432+31] [6: 768x432]"
 mode $resize_mode {
   # These bindings trigger as soon as you enter the resize mode
 
@@ -252,6 +255,7 @@ mode $resize_mode {
   bindsym 3 resize set 2560 px 1440 px
   bindsym 4 resize set 1286 px 760 px
   bindsym 5 resize set 768 px 463 px
+  bindsym 6 resize set 768 px 432 px
 
   # change mode
   bindsym m mode $move_mode
@@ -313,7 +317,7 @@ mode $wallpaper_mode {
 bindsym $mod+w mode $wallpaper_mode
 
 # make picture in picture sticky
-for_window [class="^Google-chrome$" title="^動画再生 - Google Chrome$"] floating enable; sticky enable
+# for_window [class="^Google-chrome$" title="^動画再生 - Google Chrome$"] floating enable; sticky enable
 
 # Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
 bar {
