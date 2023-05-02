@@ -77,6 +77,9 @@ alias history='\history -f -D -i'
 # set wallpaper
 alias wallpaper='feh --no-fehbg --randomize --bg-max --recursive'
 
+# xrandr
+alias x-reset-mode='xrandr --output $(xrandr | grep '\''connected primary'\'' | awk '\''{print $1}'\'') --mode $(xrandr | grep '\'' +'\'' | head -1 | awk '\''{print $1}'\'')'
+
 alias chino='clang++ -std=c++2b -stdlib=libc++ -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
 alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -Wno-unused-const-variable -pedantic-errors -g -O0 -pipe -DLOCAL -DDEBUG'
 
