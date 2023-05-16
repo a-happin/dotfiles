@@ -302,10 +302,13 @@ mode $move_mode {
 bindsym $mod+m mode $move_mode
 
 # wallpaper manager
-set $wallpaper_mode "Wallpaper [r: random], [p: toggle picom]"
+set $wallpaper_mode "Wallpaper [r: random], [l: latest], [p: toggle picom]"
 mode $wallpaper_mode {
   # random
   bindsym r exec --no-startup-id feh --no-fehbg --randomize --bg-max --recursive ~/Dropbox/image/illust
+
+  # latest
+  bindsym l exec --no-startup-id feh --no-fehbg --bg-max $(fd --hidden --no-ignore --exclude .git --type file . ~/Dropbox/image/illust --exec-batch ls -t1 | head -1)
 
   # toggle picom
   bindsym p exec --no-startup-id killall picom || picom -b
