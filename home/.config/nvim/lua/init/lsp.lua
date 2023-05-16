@@ -105,7 +105,7 @@ if (vim.fn.executable ('ccls')) then
       clang = {
         extraArgs = {
           '-std=c++2b',
-          '-stdlib=libc++',
+          -- '-stdlib=libc++',
           '-Weverything',
           '-Wno-c++98-compat-pedantic',
           '-Wno-c11-extension',
