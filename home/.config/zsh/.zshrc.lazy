@@ -145,7 +145,7 @@ my-runc ()
 
 runchino ()
 {
-  chino -o /tmp/a.out "$@" && echo -e "\033[1mcompile succedded.\033[0m" >&2 && /tmp/a.out
+  chino -o /tmp/a.out "$@" && echo -e "\033[1mcompile succeded.\033[0m" >&2 && /tmp/a.out
 }
 
 atcoder-run ()
