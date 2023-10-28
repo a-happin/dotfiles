@@ -1,10 +1,10 @@
 
 augroup wsl-yank
   autocmd!
-  autocmd TextYankPost * if v:event.regname ==# 'w' | call system ('clip.exe', @w) | endif
+  autocmd TextYankPost * if v:event.regname ==# 'w' | call system ('iconv -f utf-8 -t cp932 | clip.exe', @w) | endif
 augroup END
 
-command! -bar GetWindowsClipboard let @" = join (systemlist ('powershell.exe get-clipboard | sed -z ''s/\r\n/\n/g'''), "\n")
+command! -bar GetWindowsClipboard let @" = join (systemlist ('powershell.exe get-clipboard | iconv -f cp932 | sed -z ''s/\r\n/\n/g'''), "\n")
 
 nnoremap <Space>y "wy
 xnoremap <Space>y "wy
