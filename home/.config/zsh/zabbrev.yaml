@@ -272,6 +272,12 @@ abbrevs:
     evaluate: true
     redraw: true
 
+  - context: 'git'
+    abbr: 'af'
+    snippet: add --intent-to-add $(local selected=$({ git diff --name-only --relative; git untracked } | fzf --multi --preview='git diff --color=always -- {} | bat --color=always {}'); printf '%s; git add --patch %s' "$selected" "$selected")
+    evaluate: true
+    redraw: true
+
   - context: 'git push'
     abbr: '-f'
     snippet: --force-with-lease
