@@ -111,6 +111,7 @@ if (vim.fn.executable ('ccls')) then
           '-Wno-c11-extension',
           '-Wno-unused-macros',
           '-Wno-unused-const-variable',
+          '-Wno-unsafe-buffer-usage',
           '-pedantic-errors',
           '-I./include',
         },
