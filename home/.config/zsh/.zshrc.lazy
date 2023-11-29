@@ -334,6 +334,8 @@ case $(uname -r) in
     # WSL1
     export DISPLAY=localhost:0
 
+    wsl.exe --user root --exec /etc/wslstart.sh
+
     alias pbcopy=clip.exe
     alias pbpaste='powershell.exe get-clipboard | sed -z '\''s/\r\n$//'\'
     alias open='powershell.exe start'
