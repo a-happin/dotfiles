@@ -297,6 +297,13 @@ bindkey -e
   bindkey "^[[1;5C" forward-word
   bindkey "^[[1;5D" backward-word
 
+# Shift+arrow key
+  ## Arch Linux
+  bindkey -s "^[[1;2A" ""
+  bindkey -s "^[[1;2B" ""
+  bindkey "^[[1;2C" forward-word
+  bindkey "^[[1;2D" backward-word
+
 # HOME,ENDで移動する
   ## Arch Linux
   bindkey "^[[H" beginning-of-line
