@@ -49,6 +49,14 @@ function! s:load_template () abort
   endif
 endfunction
 
+
+function! s:keep_cursor (cmd) abort
+  let cursor = winsaveview ()
+  execute 'keeppatterns keepjumps ' . a:cmd
+  call winrestview (cursor)
+endfunction
+
+
 " *******************************
 " **  command
 " *******************************
@@ -84,7 +92,7 @@ command! -bar LoadTemplate call s:load_template ()
 command! -bar -range=% ClangFormat <line1>,<line2>!clang-format
 
 " rustfmtにかける
-command! -bar -range=% RustFormat <line1>,<line2>!rustfmt
+command! -bar -range=% RustFormat call s:keep_cursor ("<line1>,<line2>!rustfmt")
 
 " Rename
 command! -bar -nargs=1 -complete=file Rename try | saveas <args> | call delete (expand ('#')) | catch | file # | echoerr 'Rename failed.' | endtry
@@ -106,3 +114,6 @@ call s:cnoreabbrev ('note', 'Note')
 " root権限に昇格して書き込み
 " neovimでは機能しない https://github.com/neovim/neovim/issues/8217 ←won't fix……
 call s:cnoreabbrev ('w!!', 'w !sudo tee > /dev/null %')
+
+" そのバッファのpwdをファイルのあるディレクトリに変更する
+call s:cnoreabbrev ('lcdh', 'lcd %:h')
