@@ -9,12 +9,12 @@ function! plugin#ddc#init () abort
         \   'matchers': ['matcher_fuzzy'],
         \   'sorters': ['sorter_fuzzy'],
         \   'converters': ['converter_fuzzy'],
-        \ },
-        \ 'around': {'mark': 'A'},
-        \ 'lsp': {
-        \   'mark': 'lsp',
-        \   'forceCompletionPattern': '\w|:\w*|->\w*',
         \   'ignoreCase': v:true,
+        \ },
+        \ 'around': {'mark': '[around]'},
+        \ 'lsp': {
+        \   'mark': '[lsp]',
+        \   'forceCompletionPattern': '\w|:\w*|->\w*',
         \ },
         \})
   call ddc#custom#patch_global ('sourceParams', {
@@ -22,3 +22,4 @@ function! plugin#ddc#init () abort
         \})
   call ddc#enable ()
 endfunction
+
