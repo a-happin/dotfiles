@@ -119,7 +119,7 @@ if dein#load_state (s:dein_directory)
   " ** lua plugins
   " ********************************
   " virtual text を利用したindent guide. No conceal らしいので採用
-  " call dein#add ('lukas-reineke/indent-blankline.nvim')
+  call dein#add ('lukas-reineke/indent-blankline.nvim', {'hook_add': 'lua require "init/indent-blankline"'})
 
 
   " ********************************
@@ -142,7 +142,8 @@ if dein#load_state (s:dein_directory)
   " ** ftdetect, ftplugin, syntax定義のみ
   " ********************************
   " colorize color code
-  call dein#add ('gorodinskiy/vim-coloresque')
+  " call dein#add ('gorodinskiy/vim-coloresque')
+  call dein#add ('norcalli/nvim-colorizer.lua', {'hook_add': 'lua require "colorizer".setup ()'})
 
   " C++
   "call dein#add ('octol/vim-cpp-enhanced-highlight')

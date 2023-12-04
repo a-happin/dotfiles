@@ -33,6 +33,9 @@ inoremap <C-h> <C-w>
 "  移動系
 " --------------------------------
 
+inoremap <Down> <C-o>gj
+inoremap <Up> <C-o>gk
+
 " カーソルが急に飛ぶとつらいので修正
 " どうせならselect modeになってほしい
 " &keymodel contains 'startsel' && &selection ==# 'inclusive' のときの挙動がおかしいので修正

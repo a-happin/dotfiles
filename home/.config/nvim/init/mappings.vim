@@ -527,28 +527,38 @@ xnoremap <Plug>(surround)<Space> "zc<Space><C-r><C-o>z<Space><Esc>
 xnoremap <Plug>(surround)<CR> "zc<CR><C-r><C-o>z<CR><Esc>
 
 " 囲んでいる括弧を削除する
-nmap ds <Plug>(dsurround)
+function! s:dsurround () abort
+    let c = getcharstr ()
+    if c =~# '\v[bB(){}[\]<>"''`/]'
+      return "\"zca" . c . "\<C-r>=trim (substitute (@z, '\\v^.|.$', '', 'g'))\<CR>\<Esc>"
+    else
+      return ""
+    endif
+endfunction
+
+" nmap ds <Plug>(dsurround)
+nnoremap <expr> ds <SID>dsurround ()
 " ()
-nnoremap <Plug>(dsurround)b "zcib<BS><Del><C-r><C-o>z<Esc>
-nnoremap <Plug>(dsurround)( "zci(<BS><Del><C-r><C-o>z<Esc>
-nmap <Plug>(dsurround)) <Plug>(dsurround)(
-" {}
-nnoremap <Plug>(dsurround){ "zci{<BS><Del><C-r><C-o>z<Esc>
-nmap <Plug>(dsurround)} <Plug>(dsurround){
-" []
-nnoremap <Plug>(dsurround)[ "zci[<BS><Del><C-r><C-o>z<Esc>
-nmap <Plug>(dsurround)] <Plug>(dsurround)[
-" <>
-nnoremap <Plug>(dsurround)< "zci<<BS><Del><C-r><C-o>z<Esc>
-nmap <Plug>(dsurround)> <Plug>(dsurround)<
-" ""
-nnoremap <Plug>(dsurround)" "zci"<BS><Del><C-r><C-o>z<Esc>
-" ''
-nnoremap <Plug>(dsurround)' "zci'<BS><Del><C-r><C-o>z<Esc>
-" ``
-nnoremap <Plug>(dsurround)` "zci`<BS><Del><C-r><C-o>z<Esc>
-" //
-nnoremap <Plug>(dsurround)/ "zci/<BS><Del><C-r><C-o>z<Esc>
+" nnoremap <Plug>(dsurround)b "zcab<C-r>=<SID>dsurround(@z)<CR><Esc>
+" nnoremap <Plug>(dsurround)( "zca(<C-r>=<SID>dsurround(@z)<CR><Esc>
+" nmap <Plug>(dsurround)) <Plug>(dsurround)(
+" " {}
+" nnoremap <Plug>(dsurround){ "zca{<C-r>=<SID>dsurround(@z)<CR><Esc>
+" nmap <Plug>(dsurround)} <Plug>(dsurround){
+" " []
+" nnoremap <Plug>(dsurround)[ "zca[<C-r>=<SID>dsurround(@z)<CR><Esc>
+" nmap <Plug>(dsurround)] <Plug>(dsurround)[
+" " <>
+" nnoremap <Plug>(dsurround)< "zca<<C-r>=<SID>dsurround(@z)<CR><Esc>
+" nmap <Plug>(dsurround)> <Plug>(dsurround)<
+" " ""
+" nnoremap <Plug>(dsurround)" "zca"<C-r>=<SID>dsurround(@z)<CR><Esc>
+" " ''
+" nnoremap <Plug>(dsurround)' "zca'<C-r>=<SID>dsurround(@z)<CR><Esc>
+" " ``
+" nnoremap <Plug>(dsurround)` "zca`<C-r>=<SID>dsurround(@z)<CR><Esc>
+" " //
+" nnoremap <Plug>(dsurround)/ "zca/<C-r>=<SID>dsurround(@z)<CR><Esc>
 
 
 " --------------------------------
@@ -614,3 +624,5 @@ function! s:toggle_netrw () abort
   endif
 endfunction
 " }}}
+
+
