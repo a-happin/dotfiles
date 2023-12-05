@@ -234,6 +234,9 @@ set noswapfile
 
 set tabline=%!tabline#make()
 
+" 同時に開けるタブ数(未調査)
+set tabpagemax=50
+
 " tab width
 set tabstop=8
 

@@ -63,7 +63,8 @@ if dein#load_state (s:dein_directory)
   call dein#add ('williamboman/mason-lspconfig.nvim', {'hook_add': 'lua require "init/lsp"'})
 
   " show git diff at SignColumn
-  call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter', 'hook_add': 'let g:gitgutter_map_keys = 0'})
+  " call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter', 'hook_add': 'let g:gitgutter_map_keys = 0'})
+  call dein#add ('lewis6991/gitsigns.nvim', {'hook_add': 'lua require "gitsigns".setup { signs = { add = { text = "+" }, change = { text = "~" } } }'})
 
   " customize statusline
   " call dein#add ('itchyny/lightline.vim', {'hook_add': 'call plugin#lightline#init ()'})
@@ -142,6 +143,7 @@ if dein#load_state (s:dein_directory)
   " ** ftdetect, ftplugin, syntax定義のみ
   " ********************************
   " colorize color code
+  " なんか動いてなさそう？
   " call dein#add ('gorodinskiy/vim-coloresque')
   call dein#add ('norcalli/nvim-colorizer.lua', {'hook_add': 'lua require "colorizer".setup ()'})
 
