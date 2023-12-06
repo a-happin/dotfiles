@@ -9,7 +9,6 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -46,6 +45,57 @@ default_floating_border pixel 1
 
 # hide borders adjacent to the screen
 hide_edge_borders both
+
+
+# --------------------------------
+# - for_window
+# --------------------------------
+
+# make picture in picture sticky
+# for_window [class="^Google-chrome$" title="^動画再生 - Google Chrome$"] floating enable; sticky enable
+
+
+# --------------------------------
+# - exec
+# --------------------------------
+
+# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
+bar {
+  position top
+  font pango:Koruri Bold 8
+  status_command i3status -c ${HOME}/.config/i3/i3statusconfig
+
+  colors {
+      background #000000
+      statusline #ffffff
+      separator #666666
+
+      focused_workspace  #88b8f6 #88b8f6 #000000
+      # active_workspaceはマルチモニター環境じゃないと見えない
+      active_workspace   #000000 #5f676a #ffffff
+      inactive_workspace #000000 #000000 #888888
+      urgent_workspace   #f58c80 #f58c80 #000000
+  }
+}
+
+# exec
+# - exec: exec once
+# - exec_always: exec when restart i3
+# キーリピート開始まで200[ms]、キーリピート間隔1/45[sec]
+exec_always --no-startup-id xset r rate 200 45
+exec --no-startup-id fcitx5 -d
+exec --no-startup-id dropbox
+exec --no-startup-id feh --no-fehbg --randomize --bg-max --recursive ~/Dropbox/image/illust/
+# https://askubuntu.com/questions/421645/imwheel-destroys-back-forth-navigation-buttons-from-my-mouse
+exec_always --no-startup-id imwheel -k -b 45
+exec --no-startup-id picom -b
+
+
+# --------------------------------
+# - key settings
+# --------------------------------
+
+set $mod Mod4
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -94,12 +144,6 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
-
-# split in horizontal orientation
-# bindsym $mod+Shift+v split h
-
-# split in vertical orientation
-# bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -173,18 +217,58 @@ bindsym Mod1+Sys_Req exec --no-startup-id scrot --silent --focused --exec 'mkdir
 # 範囲選択
 bindsym --release Shift+Print exec --no-startup-id scrot --silent --select --freeze --exec 'mkdir -p ~/screenshot && mv $f ~/screenshot && notify-send "screenshot(range)" $f'
 
-# reload the configuration file
-bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -f 'pango:Koruri SemiBold 9' -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Shutdown' 'systemctl poweroff' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit'"; exec --no-startup-id "sleep 7; killall i3-nagbar"
 
-# resize
-bindsym $mod+minus resize shrink height
-bindsym $mod+equal resize grow height
-bindsym $mod+shift+less resize shrink width
-bindsym $mod+shift+greater resize grow width
+# reload the configuration file
+# bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# bindsym $mod+Shift+r restart
+
+
+# exit i3 (logs you out of your X session)
+set $exit_mode "exit [k]: lock, [l]: logout, [r]: reboot, [s]: shutdown"
+mode $exit_mode {
+  bindsym k mode "default"; exec --no-startup-id i3lock
+  bindsym l mode "default"; exit
+  bindsym r mode "default"; exec --no-startup-id systemctl reboot
+  bindsym s mode "default"; exec --no-startup-id systemctl poweroff
+
+  # bindsym h mode "default"; exec --no-startup-id systemctl hibernate
+  # bindsym u mode "default"; exec --no-startup-id systemctl suspend
+
+  bindsym Return mode "default"; exec --no-startup-id killall i3-nagbar
+  bindsym Escape mode "default"; exec --no-startup-id killall i3-nagbar
+}
+bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -f 'pango:Koruri SemiBold 9' -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Shutdown' 'systemctl poweroff' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit' -b 'Lock' 'i3lock'"; mode $exit_mode
+
+# control i3
+set $i3_mode "i3 [c: edit i3config], [r: reload config] → [r: restart i3]"
+mode $i3_mode {
+  bindsym c mode "default"; exec --no-startup-id i3-sensible-terminal -e $EDITOR $XDG_CONFIG_HOME/i3/config -c "cd %:h"
+  # reload the configuration file
+  bindsym --release r reload; mode $i3_mode2
+
+  # bindsym $mod+l mode "default"; exit
+  # bindsym $mod+r mode "default"; exec --no-startup-id systemctl reboot
+  # bindsym $mod+s mode "default"; exec --no-startup-id systemctl poweroff
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+i mode $i3_mode
+
+set $i3_mode2 "i3 [c: edit i3config], [r: restart i3]"
+mode $i3_mode2 {
+  bindsym c mode "default"; exec --no-startup-id i3-sensible-terminal -e $EDITOR $XDG_CONFIG_HOME/i3/config -c "cd %:h"
+  # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+  bindsym --release r mode "default"; restart
+
+  # bindsym $mod+l mode "default"; exit
+  # bindsym $mod+r mode "default"; exec --no-startup-id systemctl reboot
+  # bindsym $mod+s mode "default"; exec --no-startup-id systemctl poweroff
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
 
 set $layout_mode "Layout [h: horizontal], [v: vertical], [f: fullscreen], [F: floating], [s: stacking], [t: tabbed], [S: sticky]"
 mode $layout_mode {
@@ -216,6 +300,30 @@ mode $layout_mode {
   bindsym Escape mode "default"
 }
 bindsym $mod+e mode $layout_mode
+
+
+set $split_mode "Split [h: horizontal], [v: vertical]"
+mode $split_mode {
+  # vimに合わせる
+
+  # split in vertical orientation
+  bindsym h mode "default"; split v
+
+  # split in horizontal orientation
+  bindsym v mode "default"; split h
+
+  # back to normal: Enter or Escape
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+v mode $split_mode
+
+
+# resize
+bindsym $mod+minus resize shrink height
+bindsym $mod+equal resize grow height
+bindsym $mod+Shift+less resize shrink width
+bindsym $mod+Shift+greater resize grow width
 
 #define resize and move size unit
 set $size 10
@@ -302,13 +410,17 @@ mode $move_mode {
 bindsym $mod+m mode $move_mode
 
 # wallpaper manager
-set $wallpaper_mode "Wallpaper [r: random], [l: latest], [p: toggle picom]"
+set $wallpaper_mode "Wallpaper [r: random], [l: latest], [f: fzf], [p: toggle picom]"
 mode $wallpaper_mode {
   # random
   bindsym r exec --no-startup-id feh --no-fehbg --randomize --bg-max --recursive ~/Dropbox/image/illust
 
   # latest
-  bindsym l exec --no-startup-id feh --no-fehbg --bg-max $(fd --hidden --no-ignore --exclude .git --type file . ~/Dropbox/image/illust --exec-batch ls -t1 | head -1)
+  bindsym l mode "default"; exec --no-startup-id feh --no-fehbg --bg-max $(fd --hidden --no-ignore --exclude .git --type file . ~/Dropbox/image/illust --exec-batch ls -t1 | head -1)
+
+  # fzf
+  # i3-sensible-terminal -e sh -c とその後の""も必須…ないとすぐプロセスが死ぬ(原因不明)
+  bindsym f mode "default"; exec --no-startup-id i3-sensible-terminal -e sh -c "fd --hidden --no-ignore --exclude .git --type file . ~/Dropbox/image/illust | fzf --multi | feh -x --auto-zoom --draw-filename --filelist - --action 'feh --no-fehbg --bg-max %F && kill -KILL %V'"
 
   # toggle picom
   bindsym p exec --no-startup-id killall picom || picom -b
@@ -318,37 +430,3 @@ mode $wallpaper_mode {
   bindsym Escape mode "default"
 }
 bindsym $mod+w mode $wallpaper_mode
-
-# make picture in picture sticky
-# for_window [class="^Google-chrome$" title="^動画再生 - Google Chrome$"] floating enable; sticky enable
-
-# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
-bar {
-  position top
-  font pango:Koruri Bold 8
-  status_command i3status -c ${HOME}/.config/i3/i3statusconfig
-
-  colors {
-      background #000000
-      statusline #ffffff
-      separator #666666
-
-      focused_workspace  #88b8f6 #88b8f6 #000000
-      # active_workspaceはマルチモニター環境じゃないと見えない
-      active_workspace   #000000 #5f676a #ffffff
-      inactive_workspace #000000 #000000 #888888
-      urgent_workspace   #f58c80 #f58c80 #000000
-  }
-}
-
-# exec
-# - exec: exec once
-# - exec_always: exec when restart i3
-# キーリピート開始まで200[ms]、キーリピート間隔1/45[sec]
-exec_always --no-startup-id xset r rate 200 45
-exec --no-startup-id fcitx5 -d
-exec --no-startup-id dropbox
-exec --no-startup-id feh --no-fehbg --randomize --bg-max --recursive ~/Dropbox/image/illust/
-# https://askubuntu.com/questions/421645/imwheel-destroys-back-forth-navigation-buttons-from-my-mouse
-exec_always --no-startup-id imwheel -k -b 45
-exec --no-startup-id picom -b
