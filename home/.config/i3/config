@@ -197,6 +197,7 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
+
 # control volume
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -3%
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +3%
@@ -205,6 +206,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 # control screen brightness
 #bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
 #bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10
+
 
 # screenshot
 # 画面全体
@@ -225,12 +227,12 @@ bindsym --release Shift+Print exec --no-startup-id scrot --silent --select --fre
 
 
 # exit i3 (logs you out of your X session)
-set $exit_mode "exit [k]: lock, [l]: logout, [r]: reboot, [s]: shutdown"
+set $exit_mode "exit [k: lock], [l: logout], [r: reboot], [s: shutdown]"
 mode $exit_mode {
-  bindsym k mode "default"; exec --no-startup-id i3lock
-  bindsym l mode "default"; exit
-  bindsym r mode "default"; exec --no-startup-id systemctl reboot
-  bindsym s mode "default"; exec --no-startup-id systemctl poweroff
+  bindsym --release k mode "default"; exec --no-startup-id i3lock
+  bindsym --release l mode "default"; exit
+  bindsym --release r mode "default"; exec --no-startup-id systemctl reboot
+  bindsym --release s mode "default"; exec --no-startup-id systemctl poweroff
 
   # bindsym h mode "default"; exec --no-startup-id systemctl hibernate
   # bindsym u mode "default"; exec --no-startup-id systemctl suspend
@@ -238,7 +240,8 @@ mode $exit_mode {
   bindsym Return mode "default"; exec --no-startup-id killall i3-nagbar
   bindsym Escape mode "default"; exec --no-startup-id killall i3-nagbar
 }
-bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -f 'pango:Koruri SemiBold 9' -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Shutdown' 'systemctl poweroff' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit' -b 'Lock' 'i3lock'"; mode $exit_mode
+bindsym --release $mod+Shift+e exec --no-startup-id "i3-nagbar -f 'pango:Koruri SemiBold 9' -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Shutdown' 'systemctl poweroff' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit' -b 'Lock' 'i3lock'"; mode $exit_mode
+
 
 # control i3
 set $i3_mode "i3 [c: edit i3config], [r: reload config] → [r: restart i3]"
@@ -269,6 +272,7 @@ mode $i3_mode2 {
   bindsym Return mode "default"
   bindsym Escape mode "default"
 }
+
 
 set $layout_mode "Layout [h: horizontal], [v: vertical], [f: fullscreen], [F: floating], [s: stacking], [t: tabbed], [S: sticky]"
 mode $layout_mode {
