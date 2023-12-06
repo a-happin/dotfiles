@@ -63,6 +63,9 @@ nnoremap <Del> <Nop>
 nnoremap <S-Del> <Nop>
 nnoremap <C-Del> <Nop>
 
+" helpを開かないようにする
+nnoremap <F1> <Nop>
+inoremap <F1> <Nop>
 
 " --------------------------------
 "  不完全コマンド系
