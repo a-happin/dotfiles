@@ -42,6 +42,8 @@ augroup auto_mkdir
   autocmd BufWritePre * call auto_mkdir#mkdir (expand ('<afile>:p:h'), v:cmdbang)
 augroup END
 
+" たしか外部での変更を検知する設定
+" set autoread だけじゃだめなのか…
 augroup reload-file
   autocmd!
   autocmd InsertEnter,WinEnter,FocusGained * checktime

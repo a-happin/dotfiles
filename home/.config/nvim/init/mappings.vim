@@ -180,6 +180,11 @@ noremap <S-PageUp> <C-y>
 noremap <PageDown> <C-e>
 noremap <S-PageDown> <C-e>
 
+" (前|次)のquickfix
+nnoremap [q <Cmd>cprev<CR>
+nnoremap ]q <Cmd>cnext<CR>
+
+
 " ジャンプせずに検索する
 function! s:asterisk () abort
   let cword = escape (expand ('<cword>'), '~"\.^$[]*')
@@ -282,8 +287,9 @@ onoremap i<Space> iW
 " --------------------------------
 
 " 全部閉じて終了
-call s:anoremap ('<M-Q>', '<Cmd>confirm qall<CR>')
-call s:anoremap ('<M-q>', '<Cmd>confirm q<CR>')
+"call s:anoremap ('<M-Q>', '<Cmd>confirm qall<CR>')
+call s:anoremap ('<M-q>', '<Cmd>confirm qall<CR>')
+"call s:anoremap ('<M-q>', '<Cmd>confirm q<CR>')
 
 nmap <M-w> <C-w>
 
@@ -377,7 +383,7 @@ call s:noxnoremap ('<Space>0', 'f)')
 " 現在のウインドウを新しいタブに移動
 " nnoremap <Space><Tab> <C-w>T
 " 新しいタブ
-nnoremap <Space><Tab> <Cmd>tabnew<CR>
+"nnoremap <Space><Tab> <Cmd>tabnew<CR>
 
 " 空白1文字挿入
 nnoremap <Space>i i<Cmd>call mappings#insert_one()<CR>
@@ -404,6 +410,9 @@ nnoremap <Space>e :<C-u>e <C-r>=expand('%')<CR>
 " nnoremap <Space>t <Cmd>tabnew<CR>
 " Open Terminal
 " nnoremap <Space>t <Cmd>terminal<CR>
+" Move to new tab
+" nnoremap <Space>t <Cmd>wincmd T<CR>
+nnoremap <Space>t <C-w>T
 
 " Copy to clipboard
 " call s:nxnoremap ('<Space>y', '"wy')
@@ -427,10 +436,12 @@ nnoremap <Space>f <Cmd>Files<CR>
 " git ls-files | fzf
 nnoremap <Space>g <Cmd>GFiles<CR>
 
-" nnoremap <Space>h ^
-" nnoremap <Space>l $
-nnoremap <Space>h <C-o>
-nnoremap <Space>l <C-i>
+" wrap考慮の行頭、行末移動
+nnoremap <Space>h g^
+nnoremap <Space>l g$
+" 戻る、進む
+" nnoremap <Space>h <C-o>
+" nnoremap <Space>l <C-i>
 
 nnoremap <Space>; :
 xnoremap <Space>; :
@@ -455,7 +466,7 @@ nnoremap <Space>nv <Cmd>vnew<CR>
 nnoremap <Space>n<Tab> <Cmd>tabnew<CR>
 
 " open config file
-nnoremap <Space>, <Cmd>edit $MYVIMRC<CR>
+nnoremap <Space>, <Cmd>tabnew $MYVIMRC \| lcd %:h<CR>
 
 " source this
 nnoremap <Space>. <Cmd>if expand ('%:e') ==# 'vim'<bar>source %<bar>echo 'sourced this file'<bar>endif<CR>
@@ -484,54 +495,86 @@ endtry
 "  surround
 " --------------------------------
 
+let s:pairs = {
+  \ 'b': ['(', ')'],
+  \ '(': ['(', ')'],
+  \ ')': ['(', ')'],
+  \ 'B': ['{', '}'],
+  \ '{': ['{', '}'],
+  \ '}': ['{', '}'],
+  \ '[': ['[', ']'],
+  \ ']': ['[', ']'],
+  \ '<': ['<', '>'],
+  \ '>': ['<', '>'],
+  \}
+
+function! s:surround () abort
+  let c = getcharstr ()
+  " 制御文字(0x80で始まる)と<Esc>はなにもしない
+  if c[0] ==# "\x80" || c ==# "\<Esc>"
+    return ""
+  endif
+
+  let [start, end] = get (s:pairs, c, [c, c])
+  " return "\"zc" . start . "\<C-r>\<C-o>z" . end . "\<Cmd>call cursor(0, col ('.') - strlen (getreg ('z')))\<CR>\<Esc>"
+  return "\"zc" . start . "\<C-r>\<C-o>z" . end . "\<Esc>"
+endfunction
+
 " Visualモードで選択中の範囲を囲む
-xmap s <Plug>(surround)
-" ()
-xnoremap sb "zc(<C-r><C-o>z)<Esc>
-xnoremap <Plug>(surround)( "zc(<C-r><C-o>z)<Esc>
-xmap <Plug>(surround)) <Plug>(surround)(
-" {}
-xnoremap <Plug>(surround){ "zc{<C-r><C-o>z}<Esc>
-xmap <Plug>(surround)} <Plug>(surround){
-" []
-xnoremap <Plug>(surround)[ "zc[<C-r><C-o>z]<Esc>
-xmap <Plug>(surround)] <Plug>(surround)[
-" <>
-xnoremap <Plug>(surround)< "zc<<C-r><C-o>z><Esc>
-xmap <Plug>(surround)> <Plug>(surround)<
-" ""
-xnoremap <Plug>(surround)" "zc"<C-r><C-o>z"<Esc>
-" ''
-xnoremap <Plug>(surround)' "zc'<C-r><C-o>z'<Esc>
-" ``
-xnoremap <Plug>(surround)` "zc`<C-r><C-o>z`<Esc>
-"
-xnoremap <Plug>(surround)~ "zc~<C-r><C-o>z~<Esc>
-xnoremap <Plug>(surround)! "zc!<C-r><C-o>z!<Esc>
-xnoremap <Plug>(surround)@ "zc@<C-r><C-o>z@<Esc>
-xnoremap <Plug>(surround)# "zc#<C-r><C-o>z#<Esc>
-xnoremap <Plug>(surround)$ "zc$<C-r><C-o>z$<Esc>
-xnoremap <Plug>(surround)% "zc%<C-r><C-o>z%<Esc>
-xnoremap <Plug>(surround)^ "zc^<C-r><C-o>z^<Esc>
-xnoremap <Plug>(surround)& "zc&<C-r><C-o>z&<Esc>
-xnoremap <Plug>(surround)* "zc*<C-r><C-o>z*<Esc>
-xnoremap <Plug>(surround)- "zc-<C-r><C-o>z-<Esc>
-xnoremap <Plug>(surround)_ "zc_<C-r><C-o>z_<Esc>
-xnoremap <Plug>(surround)= "zc=<C-r><C-o>z=<Esc>
-xnoremap <Plug>(surround)+ "zc+<C-r><C-o>z+<Esc>
-xnoremap <Plug>(surround)<bar> "zc<bar><C-r><C-o>z<bar><Esc>
-xnoremap <Plug>(surround); "zc;<C-r><C-o>z;<Esc>
-xnoremap <Plug>(surround): "zc:<C-r><C-o>z:<Esc>
-xnoremap <Plug>(surround), "zc,<C-r><C-o>z,<Esc>
-xnoremap <Plug>(surround). "zc.<C-r><C-o>z.<Esc>
-xnoremap <Plug>(surround)/ "zc/<C-r><C-o>z/<Esc>
-xnoremap <Plug>(surround)? "zc?<C-r><C-o>z?<Esc>
-xnoremap <Plug>(surround)<Space> "zc<Space><C-r><C-o>z<Space><Esc>
-xnoremap <Plug>(surround)<CR> "zc<CR><C-r><C-o>z<CR><Esc>
+" xmap s <Plug>(surround)
+xnoremap <expr> s <SID>surround ()
+
+"" ()
+"xnoremap sb "zc(<C-r><C-o>z)<Esc>
+"xnoremap <Plug>(surround)( "zc(<C-r><C-o>z)<Esc>
+"xmap <Plug>(surround)) <Plug>(surround)(
+"" {}
+"xnoremap <Plug>(surround){ "zc{<C-r><C-o>z}<Esc>
+"xmap <Plug>(surround)} <Plug>(surround){
+"" []
+"xnoremap <Plug>(surround)[ "zc[<C-r><C-o>z]<Esc>
+"xmap <Plug>(surround)] <Plug>(surround)[
+"" <>
+"xnoremap <Plug>(surround)< "zc<<C-r><C-o>z><Esc>
+"xmap <Plug>(surround)> <Plug>(surround)<
+"" ""
+"xnoremap <Plug>(surround)" "zc"<C-r><C-o>z"<Esc>
+"" ''
+"xnoremap <Plug>(surround)' "zc'<C-r><C-o>z'<Esc>
+"" ``
+"xnoremap <Plug>(surround)` "zc`<C-r><C-o>z`<Esc>
+""
+"xnoremap <Plug>(surround)~ "zc~<C-r><C-o>z~<Esc>
+"xnoremap <Plug>(surround)! "zc!<C-r><C-o>z!<Esc>
+"xnoremap <Plug>(surround)@ "zc@<C-r><C-o>z@<Esc>
+"xnoremap <Plug>(surround)# "zc#<C-r><C-o>z#<Esc>
+"xnoremap <Plug>(surround)$ "zc$<C-r><C-o>z$<Esc>
+"xnoremap <Plug>(surround)% "zc%<C-r><C-o>z%<Esc>
+"xnoremap <Plug>(surround)^ "zc^<C-r><C-o>z^<Esc>
+"xnoremap <Plug>(surround)& "zc&<C-r><C-o>z&<Esc>
+"xnoremap <Plug>(surround)* "zc*<C-r><C-o>z*<Esc>
+"xnoremap <Plug>(surround)- "zc-<C-r><C-o>z-<Esc>
+"xnoremap <Plug>(surround)_ "zc_<C-r><C-o>z_<Esc>
+"xnoremap <Plug>(surround)= "zc=<C-r><C-o>z=<Esc>
+"xnoremap <Plug>(surround)+ "zc+<C-r><C-o>z+<Esc>
+"xnoremap <Plug>(surround)<bar> "zc<bar><C-r><C-o>z<bar><Esc>
+"xnoremap <Plug>(surround); "zc;<C-r><C-o>z;<Esc>
+"xnoremap <Plug>(surround): "zc:<C-r><C-o>z:<Esc>
+"xnoremap <Plug>(surround), "zc,<C-r><C-o>z,<Esc>
+"xnoremap <Plug>(surround). "zc.<C-r><C-o>z.<Esc>
+"xnoremap <Plug>(surround)/ "zc/<C-r><C-o>z/<Esc>
+"xnoremap <Plug>(surround)? "zc?<C-r><C-o>z?<Esc>
+"xnoremap <Plug>(surround)<Space> "zc<Space><C-r><C-o>z<Space><Esc>
+"xnoremap <Plug>(surround)<CR> "zc<CR><C-r><C-o>z<CR><Esc>
 
 " 囲んでいる括弧を削除する
 function! s:dsurround () abort
     let c = getcharstr ()
+    " 制御文字(0x80で始まる)と<Esc>はなにもしない
+    if c[0] ==# "\x80" || c ==# "\<Esc>"
+      return ""
+    endif
+
     if c =~# '\v[bB(){}[\]<>"''`/]'
       return "\"zca" . c . "\<C-r>=trim (substitute (@z, '\\v^.|.$', '', 'g'))\<CR>\<Esc>"
     else
@@ -585,6 +628,14 @@ cnoremap <C-n> <Down>
 
 " 変わったかどうかが分かりづらいので無効にしておく
 cnoremap <Insert> <Nop>
+
+" <C-d>でHistory:を起動(fzf)
+cnoremap <expr> <C-d> wildmenumode () ? '<C-d>' : (getcmdtype () ==# ':' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>History:<CR>' : (getcmdtype () ==# '/' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>History/<CR>' : '<C-d>'
+
+" 自動エスケープ
+" 参考 :help search-offset
+cnoremap <expr> / getcmdtype () ==# '/' ? '\/' : '/'
+cnoremap <expr> ? getcmdtype () ==# '?' ? '\?' : '?'
 
 
 " --------------------------------
