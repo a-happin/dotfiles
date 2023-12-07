@@ -4,6 +4,7 @@ local mason_lspconfig = require 'mason-lspconfig'
 
 -- not to move cursor into floating window
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with (vim.lsp.handlers.hover, { focusable = false })
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with (vim.lsp.handlers.signature_help, { focusable = false })
 
 local on_attach = function (_, bufnr)
   local function buf_set_keymap (...) vim.api.nvim_buf_set_keymap (bufnr, ...) end
