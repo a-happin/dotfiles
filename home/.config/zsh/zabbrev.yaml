@@ -16,6 +16,9 @@ abbrevs:
   - abbr: 'pushu'
     snippet: 'git push -u origin HEAD'
 
+  - abbr: 'pull'
+    snippet: 'git pull'
+
   - abbr: 'clone'
     snippet: 'git clone --depth 1 --recurse-submodules --shallow-submodules'
 
