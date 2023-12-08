@@ -357,6 +357,9 @@ vnoremap <M-Down> :move '>+1<CR>gv
 
 nnoremap <Space><Esc> <Nop>
 
+" 移動せずに大文字小文字変換
+nnoremap <Space>` g~l
+
 nnoremap <Space>1 <Cmd>setlocal cursorline! cursorcolumn!<CR>
 " nnoremap <Space>2 <Cmd>setlocal relativenumber!<CR>
 
