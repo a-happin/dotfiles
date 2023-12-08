@@ -249,6 +249,15 @@ endif
 " Time in milliseconds to wait for a mapped sequence to complete.
 set timeoutlen=2000
 
+if has('persistent_undo') && &undodir !=# ''
+  " dirの方はデフォルトでセットされているのでなにもしなくていい
+  " set undodir
+  call mkdir (&undodir, 'p', 0700)
+
+  " undo履歴をファイルに保存する(ファイル名を変更した場合は履歴が失われる(らしい)ので注意)
+  set undofile
+endif
+
 " CursorHoldの発動ラグ
 set updatetime=300
 
@@ -265,7 +274,8 @@ set whichwrap=
 set wildchar=<Tab>
 
 " マクロとkeymapping時に<Tab>を押すとwildmenu表示
-set wildcharm=<Tab>
+" よくわからない
+" set wildcharm=<Tab>
 
 " When set case is ignored when completing file names and directories.
 set wildignorecase

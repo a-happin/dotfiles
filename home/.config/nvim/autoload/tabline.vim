@@ -19,6 +19,7 @@ endfunction
 function! tabline#make () abort
   let titles = map (range (1, tabpagenr ('$')), function ('s:tabpage_label'))
   let tabpages = join (titles, '') . '%#TabLineFill#'
-  let close_button = '%#TabLine#%' . tabpagenr () . 'X x %X'
-  return tabpages . '%=' . close_button
+  " let close_button = '%#TabLine#%' . tabpagenr () . 'X x %X'
+  " return tabpages . '%=' . close_button
+  return tabpages
 endfunction

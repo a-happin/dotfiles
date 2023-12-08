@@ -18,7 +18,7 @@ augroup auto-reload-vimrc
 augroup END
 
 function! s:auto_save () abort
-  if &modified && !&readonly && filewritable (expand ('%'))
+  if &modified && !&readonly && &buftype ==# '' && filewritable (expand ('%'))
     update
     doautocmd BufWritePost
   endif
@@ -111,11 +111,12 @@ augroup vimrc-incsearch-highlight
   autocmd CmdlineLeave /,\? set nohlsearch
 augroup END
 
-augroup macro-recording
-  autocmd!
-  autocmd RecordingEnter * nnoremap <nowait> q q
-  autocmd RecordingLeave * nunmap q
-augroup END
+" 意味をなしていない
+" augroup macro-recording
+"   autocmd!
+"   autocmd RecordingEnter * nnoremap <nowait> q q
+"   autocmd RecordingLeave * nunmap q
+" augroup END
 
 " lualineが描画されるとintroが消えるバグがあるのでlualineの描画を遅らせる
 " https://github.com/nvim-lualine/lualine.nvim/issues/773
