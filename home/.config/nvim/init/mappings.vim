@@ -453,7 +453,8 @@ xnoremap <Space>; :
 " nnoremap <Space>c <Cmd>close<CR>
 
 " CocList
-nnoremap <Space>c <Cmd>CocList<CR>
+" LSP側でcode_actionを発火するように割り当てている
+" nnoremap <Space>c <Cmd>CocList<CR>
 
 " select last searched text
 nnoremap <Space>v gn

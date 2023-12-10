@@ -25,8 +25,9 @@ local on_attach = function (_, bufnr)
   vim.keymap.set ('i', '<F1>', vim.lsp.buf.signature_help, opts)
   -- rename
   vim.keymap.set ('n', '<F2>', vim.lsp.buf.rename, opts)
-  -- quickfix
-  vim.keymap.set ('n', 'qf', vim.lsp.buf.code_action, opts)
+  -- code_action
+  -- vim.keymap.set ('n', 'qf', vim.lsp.buf.code_action, opts)
+  vim.keymap.set ('n', '<Space>c', vim.lsp.buf.code_action, opts)
 
   -- TODO: 動いてないので要調査
   vim.cmd [[
