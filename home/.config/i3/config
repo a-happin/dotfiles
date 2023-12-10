@@ -169,6 +169,13 @@ bindsym $mod+c focus child
 # toggle bar
 bindsym $mod+b bar mode toggle
 
+# scratchpad
+bindsym $mod+n scratchpad show
+bindsym $mod+Shift+n move scratchpad
+
+# lock?
+bindsym $mod+semicolon; exec --no-startup-id i3lock
+
 # switch to workspace
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
@@ -207,6 +214,9 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 #bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
 #bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10
 
+# debuglog
+#bindsym $mod+x debuglog toggle
+
 
 # screenshot
 # 画面全体
@@ -237,8 +247,8 @@ mode $exit_mode {
   # bindsym h mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id systemctl hibernate
   # bindsym u mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id systemctl suspend
 
-  bindsym Return mode "default"; exec --no-startup-id killall i3-nagbar
   bindsym Escape mode "default"; exec --no-startup-id killall i3-nagbar
+  bindsym Return mode "default"; exec --no-startup-id killall i3-nagbar
 }
 bindsym --release $mod+Shift+e exec --no-startup-id "i3-nagbar -f 'pango:Koruri SemiBold 9' -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Shutdown' 'systemctl poweroff' -B 'Reboot' 'systemctl reboot' -B 'Logout' 'i3-msg exit' -B 'Lock' 'i3lock'"; mode $exit_mode
 
@@ -254,8 +264,8 @@ mode $i3_mode {
   # bindsym $mod+r mode "default"; exec --no-startup-id systemctl reboot
   # bindsym $mod+s mode "default"; exec --no-startup-id systemctl poweroff
 
-  bindsym Return mode "default"
   bindsym Escape mode "default"
+  bindsym Return mode "default"
 }
 bindsym $mod+i mode $i3_mode
 
@@ -269,8 +279,8 @@ mode $i3_mode2 {
   # bindsym $mod+r mode "default"; exec --no-startup-id systemctl reboot
   # bindsym $mod+s mode "default"; exec --no-startup-id systemctl poweroff
 
-  bindsym Return mode "default"
   bindsym Escape mode "default"
+  bindsym Return mode "default"
 }
 
 
@@ -300,8 +310,8 @@ mode $layout_mode {
   bindsym Shift+s sticky toggle
 
   # back to normal: Enter or Escape
-  bindsym Return mode "default"
   bindsym Escape mode "default"
+  bindsym Return mode "default"
 }
 bindsym $mod+e mode $layout_mode
 
@@ -317,8 +327,8 @@ mode $split_mode {
   bindsym v mode "default"; split h
 
   # back to normal: Enter or Escape
-  bindsym Return mode "default"
   bindsym Escape mode "default"
+  bindsym Return mode "default"
 }
 bindsym $mod+v mode $split_mode
 
@@ -374,8 +384,8 @@ mode $resize_mode {
   bindsym $mod+m mode $move_mode
 
   # back to normal: Enter or Escape
-  bindsym Return mode "default"
   bindsym Escape mode "default"
+  bindsym Return mode "default"
 }
 bindsym $mod+r mode $resize_mode
 
@@ -408,8 +418,8 @@ mode $move_mode {
   bindsym $mod+r mode $resize_mode
 
   # back to normal: Enter or Escape
-  bindsym Return mode "default"
   bindsym Escape mode "default"
+  bindsym Return mode "default"
 }
 bindsym $mod+m mode $move_mode
 
@@ -430,7 +440,7 @@ mode $wallpaper_mode {
   bindsym p exec --no-startup-id killall picom || picom -b
 
   # back to normal: Enter or Escape
-  bindsym Return mode "default"
   bindsym Escape mode "default"
+  bindsym Return mode "default"
 }
 bindsym $mod+w mode $wallpaper_mode
