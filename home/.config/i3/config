@@ -229,18 +229,18 @@ bindsym --release Shift+Print exec --no-startup-id scrot --silent --select --fre
 # exit i3 (logs you out of your X session)
 set $exit_mode "exit [k: lock], [l: logout], [r: reboot], [s: shutdown]"
 mode $exit_mode {
-  bindsym --release k mode "default"; exec --no-startup-id i3lock
-  bindsym --release l mode "default"; exit
-  bindsym --release r mode "default"; exec --no-startup-id systemctl reboot
-  bindsym --release s mode "default"; exec --no-startup-id systemctl poweroff
+  bindsym --release k mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id i3lock
+  bindsym --release l mode "default"; exec --no-startup-id killall i3-nagbar; exit
+  bindsym --release r mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id systemctl reboot
+  bindsym --release s mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id systemctl poweroff
 
-  # bindsym h mode "default"; exec --no-startup-id systemctl hibernate
-  # bindsym u mode "default"; exec --no-startup-id systemctl suspend
+  # bindsym h mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id systemctl hibernate
+  # bindsym u mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id systemctl suspend
 
   bindsym Return mode "default"; exec --no-startup-id killall i3-nagbar
   bindsym Escape mode "default"; exec --no-startup-id killall i3-nagbar
 }
-bindsym --release $mod+Shift+e exec --no-startup-id "i3-nagbar -f 'pango:Koruri SemiBold 9' -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Shutdown' 'systemctl poweroff' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit' -b 'Lock' 'i3lock'"; mode $exit_mode
+bindsym --release $mod+Shift+e exec --no-startup-id "i3-nagbar -f 'pango:Koruri SemiBold 9' -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Shutdown' 'systemctl poweroff' -B 'Reboot' 'systemctl reboot' -B 'Logout' 'i3-msg exit' -B 'Lock' 'i3lock'"; mode $exit_mode
 
 
 # control i3
