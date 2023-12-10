@@ -111,12 +111,12 @@ augroup vimrc-incsearch-highlight
   autocmd CmdlineLeave /,\? set nohlsearch
 augroup END
 
-" 意味をなしていない
-" augroup macro-recording
-"   autocmd!
-"   autocmd RecordingEnter * nnoremap <nowait> q q
-"   autocmd RecordingLeave * nunmap q
-" augroup END
+" qfが定義されていると何故か機能しないけど、q:だけなら機能する(??)
+augroup macro-recording
+  autocmd!
+  autocmd RecordingEnter * nnoremap <nowait> q q
+  autocmd RecordingLeave * nunmap q
+augroup END
 
 " lualineが描画されるとintroが消えるバグがあるのでlualineの描画を遅らせる
 " https://github.com/nvim-lualine/lualine.nvim/issues/773
