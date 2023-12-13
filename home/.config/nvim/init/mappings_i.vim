@@ -271,7 +271,7 @@ function! s:tab_key () abort
     return "\<Cmd>call pum#map#select_relative (+1)\<CR>"
   else
     let [prev, post] = s:getline ()
-    if prev =~# '\v\k$|:$|->$'
+    if prev =~# '\v\k$|:$|->$|\.$'
       if luaeval ('vim.lsp.buf.server_ready ()')
         return "\<Cmd>call ddc#map#manual_complete ()\<CR>"
       else

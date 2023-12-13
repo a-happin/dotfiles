@@ -107,6 +107,7 @@ call s:cnoreabbrev ('rg', 'Rg')
 
 " typo対策
 call s:cnoreabbrev ('W', 'w')
+call s:cnoreabbrev ('newtab', 'tabnew')
 
 " abbreviation
 call s:cnoreabbrev ('note', 'Note')
