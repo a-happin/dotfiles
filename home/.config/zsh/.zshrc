@@ -293,13 +293,15 @@ zshaddhistory ()
     '') return 1 ;;
     :) return 1 ;;
     ls) return 1 ;;
+    pwd) return 1 ;;
     history) return 1 ;;
+    type) return 1 ;;
     *) ;;
   esac
 
   # typeの結果をそのまま返す
   # 存在しないコマンドは追加しない
-  \type -as "$cmd" > /dev/null 2>&1
+  \type "$cmd" > /dev/null 2>&1
 }
 
 
