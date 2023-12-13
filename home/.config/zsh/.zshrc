@@ -137,7 +137,8 @@ SAVEHIST=100000
 setopt inc_append_history
 
 # ヒストリーファイルを共有する
-setopt share_history
+# inc_append_historyと一緒にするとよくない(？)
+# setopt share_history
 
 # コマンドラインだけではなく実行時刻と実行時間も保存する
 setopt extended_history
