@@ -72,7 +72,7 @@ alias grep='\grep --color=auto'
 # sudo でaliasが使えるようにする
 alias sudo='sudo '
 
-alias history='\history -f -D -i'
+# alias history='\history -f -D -i'
 
 # set wallpaper
 alias wallpaper='feh --no-fehbg --randomize --bg-max --recursive'

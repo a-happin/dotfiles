@@ -140,7 +140,8 @@ setopt inc_append_history
 # inc_append_historyと一緒にするとよくない(？)
 # setopt share_history
 
-# コマンドラインだけではなく実行時刻と実行時間も保存する
+# コマンドラインだけではなく実行開始時刻と実行時間(経過秒数)も保存する
+# ※ inc_append_historyがONになっていると経過秒数はすべて0になる
 setopt extended_history
 
 # 直前と同じコマンドラインは追加しない
@@ -151,6 +152,9 @@ setopt hist_ignore_all_dups
 
 # 履歴がいっぱいになると重複から優先的に削除
 setopt hist_expire_dups_first
+
+# 多分だけどヒストリIO時にロックする？(パフォーマンスが向上するらしい)
+setopt hist_fcntl_lock
 
 # 戦闘がスペースで始まる場合は追加しない
 setopt hist_ignore_space
@@ -259,6 +263,44 @@ preexec ()
 # {
 #   la
 # }
+
+#------------------------------
+# zshaddhistory
+#------------------------------
+# ヒストリ追加直前(コマンド実行前)に呼ばれる
+# この関数が失敗(0以外)を返すとヒストリに追加されない
+zshaddhistory ()
+{
+  # 複数コマンドはヒストリに追加する
+  local line="${1%$'\n'}"
+  case "$line" in
+    '') return 1 ;;
+    \ *) return 1 ;;
+    *\;*) return 0 ;;
+    *\&*) return 0 ;;
+    *\|*) return 0 ;;
+    *\(*) return 0 ;;
+    *\`*) return 0 ;;
+    *$'\n'*) return 0 ;;
+    *\<*) return 0 ;;
+    *\>*) return 0 ;;
+    *) ;;
+  esac
+
+  # 単純かつ副作用のないコマンドは追加しない
+  local cmd="${line%% *}"
+  case "$cmd" in
+    '') return 1 ;;
+    :) return 1 ;;
+    ls) return 1 ;;
+    history) return 1 ;;
+    *) ;;
+  esac
+
+  # typeの結果をそのまま返す
+  # 存在しないコマンドは追加しない
+  \type -as "$cmd" > /dev/null 2>&1
+}
 
 
 #------------------------------
