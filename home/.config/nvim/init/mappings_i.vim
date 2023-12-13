@@ -24,8 +24,8 @@ inoremap <C-S-Insert> <Nop>
 "  動作系
 " --------------------------------
 inoremap <S-Del> <C-o>de
-inoremap <C-Del> <C-o>de
-inoremap <C-S-Del> <C-o>de
+inoremap <C-Del> <C-o>dE
+inoremap <C-S-Del> <C-o>dE
 
 inoremap <C-h> <C-w>
 
@@ -217,13 +217,16 @@ endfunction
 
 
 " quotation
-" vimscriptの場合は行頭はコメントなので補完しない
+" vimscriptかつ行頭の場合はコメントなので補完しない
+" rustかつprevに'<'が含まれている場合はlifetimeの可能性が高いため補完しない
 " カーソル位置に同じ文字がある場合は<Right>
 " 直前と直後に空白や括弧しかない場合は補完する
 " それ以外は補完しない
 function! s:quotation_key (key) abort
   let [prev, post] = s:getline ()
   if &filetype ==# 'vim' && prev =~# '\v^\s*$' && a:key ==# '"'
+    return a:key
+  elseif &filetype ==# 'rust' && prev =~# '<' && a:key ==# ''''
     return a:key
   elseif s:starts_with (post, a:key)
     return "\<Right>"
@@ -268,7 +271,7 @@ function! s:tab_key () abort
     return "\<Cmd>call pum#map#select_relative (+1)\<CR>"
   else
     let [prev, post] = s:getline ()
-    if prev =~# '\v\k$'
+    if prev =~# '\v\k$|:$|->$'
       if luaeval ('vim.lsp.buf.server_ready ()')
         return "\<Cmd>call ddc#map#manual_complete ()\<CR>"
       else

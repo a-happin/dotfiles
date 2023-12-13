@@ -139,6 +139,13 @@ set matchpairs=(:),{:},[:],<:>,「:」,『:』,（:）,【:】,《:》,〈:〉,�
 " 'a' means enable in all mode
 set mouse=ar
 
+" 有効にしたいけど壊れてる
+" set mousefocus
+
+" ホイールのスクロール量
+" default=ver:3,hor:6
+set mousescroll=ver:5,hor:6
+
 " show line number
 set number
 
@@ -274,8 +281,7 @@ set whichwrap=
 set wildchar=<Tab>
 
 " マクロとkeymapping時に<Tab>を押すとwildmenu表示
-" よくわからない
-" set wildcharm=<Tab>
+set wildcharm=<Tab>
 
 " When set case is ignored when completing file names and directories.
 set wildignorecase

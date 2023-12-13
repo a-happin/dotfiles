@@ -440,8 +440,8 @@ nnoremap <Space>f <Cmd>Files<CR>
 nnoremap <Space>g <Cmd>GFiles<CR>
 
 " wrap考慮の行頭、行末移動
-nnoremap <Space>h g^
-nnoremap <Space>l g$
+call s:nxnoremap ('<Space>h', 'g^')
+call s:nxnoremap ('<Space>l', 'g$')
 " 戻る、進む
 " nnoremap <Space>h <C-o>
 " nnoremap <Space>l <C-i>
@@ -633,8 +633,8 @@ cnoremap <C-n> <Down>
 " 変わったかどうかが分かりづらいので無効にしておく
 cnoremap <Insert> <Nop>
 
-" <C-d>でHistory:を起動(fzf)
-cnoremap <expr> <C-d> wildmenumode () ? '<C-d>' : (getcmdtype () ==# ':' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>History:<CR>' : (getcmdtype () ==# '/' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>History/<CR>' : '<C-d>'
+" 未入力+<Tab>でHistory:を起動(fzf)
+cnoremap <expr> <Tab> wildmenumode () ? '<Tab>' : (getcmdtype () ==# ':' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>History:<CR>' : (getcmdtype () ==# '/' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>History/<CR>' : '<Tab>'
 
 " 自動エスケープ
 " 参考 :help search-offset
