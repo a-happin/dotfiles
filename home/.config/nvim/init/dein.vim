@@ -64,7 +64,7 @@ if dein#load_state (s:dein_directory)
 
   " show git diff at SignColumn
   " call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter', 'hook_add': 'let g:gitgutter_map_keys = 0'})
-  call dein#add ('lewis6991/gitsigns.nvim', {'hook_add': 'lua require "gitsigns".setup { signs = { add = { text = "+" }, change = { text = "~" } } }'})
+  call dein#add ('lewis6991/gitsigns.nvim', {'hook_add': 'lua require "gitsigns".setup { signs = { add = { text = "+" }, change = { text = "~" } }, attach_to_untracked = false }'})
 
   " customize statusline
   " call dein#add ('itchyny/lightline.vim', {'hook_add': 'call plugin#lightline#init ()'})
