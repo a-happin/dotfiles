@@ -85,7 +85,11 @@ command! -bar -nargs=1 SaveSession call mkdir ($XDG_DATA_HOME . '/nvim/sessions'
 command! -bar -nargs=1 LoadSession source $XDG_DATA_HOME/nvim/sessions/<args>.vim
 
 " 最後に保存してからのdiff
-command! -bar DiffOrig aboveleft vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis
+command! -bar DiffOrig aboveleft vert new | setlocal buftype=nofile bufhidden=delete noswapfile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis
+
+" 最後のコミットからのdiff
+command! -bar GitDiff belowright vert new | setlocal buftype=nofile bufhidden=delete noswapfile | setfiletype gitcommit | execute 'read ++edit !git diff #' | normal! gg
+command! -bar GitDiff2 aboveleft vert new | setlocal buftype=nofile bufhidden=delete noswapfile | execute '%!git show HEAD:./' . shellescape (expand ('#')) | diffthis | wincmd p | diffthis
 
 " 拡張子からテンプレートファイルを判別し読み込む
 command! -bar LoadTemplate call s:load_template ()
