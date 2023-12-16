@@ -17,6 +17,14 @@ augroup auto-reload-vimrc
   autocmd BufWritePost */.config/nvim/*.vim ++nested source $MYVIMRC | redraw | echomsg '*** Reloaded' $MYVIMRC '***'
 augroup END
 
+" ファイル保存時のハッシュ値と同じだったらmodifiedフラグをresetするs
+" 衝突した場合？知らん
+augroup check_hash
+  autocmd!
+  autocmd BufReadPost,BufModifiedSet * if &modifiable && !&modified | let b:my_hash = sha256 (join (getline (1, '$'), '\n')) | endif
+  autocmd TextChanged,InsertLeave * if &modified && sha256 (join (getline (1, '$'), '\n')) ==# get (b:, 'my_hash', '') | setlocal nomodified | endif
+augroup END
+
 function! s:auto_save () abort
   if &modified && !&readonly && &buftype ==# '' && filewritable (expand ('%'))
     update
