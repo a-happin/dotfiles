@@ -29,5 +29,5 @@ call s:add_digraph ('z[', '『')
 call s:add_digraph ('z]', '』')
 call s:add_digraph ('z-', '〜')
 
-" call s:add_digraph ('zz', '💤')
+call s:add_digraph ('zz', '💤')
 

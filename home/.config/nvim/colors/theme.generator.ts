@@ -215,11 +215,17 @@ console.log (`if &background ==# 'dark'`)
   highlight ('Type', {fg: type_color, attrs: ['bold']})
 
   // 特殊記号? vimの<CR>や行継続\が対応していた
-  highlight ('Special', {fg: special_color, attrs: ['bold']})
+  highlight ('Special', {fg: constant_color, attrs: ['bold']})
   // \nなどのエスケープシークエンス
   highlight ('SpecialChar', {fg: constant_color, attrs: ['bold']})
+  // ???
+  highlight ('Tag', {fg: special_color, attrs: ['bold']})
   // 括弧、コンマなど
   highlight ('Delimiter', {fg: gray, attrs: ['bold']})
+  // ???
+  highlight ('SpecialComment', {fg: special_color, attrs: ['bold']})
+  // ???
+  highlight ('Debug', {fg: special_color, attrs: ['bold']})
 
   // エラー 確認できず
   highlight ('Error', {fg: black, bg: error_red, attrs: ['bold']})
@@ -422,4 +428,8 @@ hi! link typescriptIdentifier Statement
 hi! link typescriptMessage Normal
 hi! link typescriptNull Constant
 hi! link typescriptParens Normal
+hi! link @namespace.vim Function
+hi! link @variable.vim Function
+hi! link @variable.builtin.vim Function
+hi! link @property.vim Function
 `)

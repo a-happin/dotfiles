@@ -357,6 +357,9 @@ vnoremap <M-Down> :move '>+1<CR>gv
 
 nnoremap <Space><Esc> <Nop>
 
+" カーソル下のsyntax highlight表示
+nnoremap <Space><F1> <Cmd>Inspect<CR>
+
 " 移動せずに大文字小文字変換
 nnoremap <Space>` g~l
 

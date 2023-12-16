@@ -43,9 +43,12 @@ if &background ==# 'dark'
   hi Operator cterm=bold ctermfg=gray gui=bold guifg=#969896
   hi PreProc ctermfg=magenta guifg=#c397d8
   hi Type cterm=bold ctermfg=blue gui=bold guifg=#7aa6da
-  hi Special cterm=bold ctermfg=cyan gui=bold guifg=#70c0b1
+  hi Special cterm=bold ctermfg=darkyellow gui=bold guifg=#e78c45
   hi SpecialChar cterm=bold ctermfg=darkyellow gui=bold guifg=#e78c45
+  hi Tag cterm=bold ctermfg=cyan gui=bold guifg=#70c0b1
   hi Delimiter cterm=bold ctermfg=gray gui=bold guifg=#969896
+  hi SpecialComment cterm=bold ctermfg=cyan gui=bold guifg=#70c0b1
+  hi Debug cterm=bold ctermfg=cyan gui=bold guifg=#70c0b1
   hi Error cterm=bold ctermbg=red ctermfg=black gui=bold guibg=#d54e53 guifg=#000000
   hi Todo cterm=bold ctermbg=yellow ctermfg=black gui=bold guibg=#e7c547 guifg=#000000
   hi Conceal ctermfg=blue guifg=#8ac6f2
@@ -108,6 +111,7 @@ hi! link vimHiGroup Statement
 hi! link vimHiTerm Identifier
 hi! link vimMapModKey Special
 hi! link vimOption Identifier
+hi! link vimUserFunc Function
 hi! link vimVar Normal
 hi! link xmlAttrib Constant
 hi! link xmlAttribPunct Statement
@@ -193,4 +197,8 @@ hi! link typescriptIdentifier Statement
 hi! link typescriptMessage Normal
 hi! link typescriptNull Constant
 hi! link typescriptParens Normal
+hi! link @namespace.vim Function
+hi! link @variable.vim Function
+hi! link @variable.builtin.vim Function
+hi! link @property.vim Function
 
