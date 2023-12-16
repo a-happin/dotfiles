@@ -128,8 +128,8 @@ if dein#load_state (s:dein_directory)
   " ********************************
   call dein#add ('nvim-treesitter/nvim-treesitter', {'hook_add': 'lua require "init/nvim-treesitter"'})
 
-  " treesitter playground
-  " call dein#add ('nvim-treesitter/playground', {'depends': ['nvim-treesitter']})
+  " TSCaptureUnderCursorのため→ いらなくなった！
+  " call dein#add ('nvim-treesitter/playground')
 
   " textobject
   call dein#add ('nvim-treesitter/nvim-treesitter-textobjects')

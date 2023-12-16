@@ -14,7 +14,7 @@ endif
 " note: colorscheme defaultはbackgroundを書き換えるのでdefaultがいい場合は何も読み込まないことを推奨
 " 読み込み失敗してもエラーを吐かないように例外処理
 try
-  colorscheme blue-theme
+  colorscheme my-theme
 catch /:E185:/
 endtry
 

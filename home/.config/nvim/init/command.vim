@@ -76,7 +76,9 @@ command! -nargs=* -complete=shellcmd Tterminal tabnew | terminal <args>
 command! -bar ToggleTerminal call s:toggle_terminal ()
 
 " カーソル位置のsyntax hightlight group
-command! -bar CurrentSyntax echo synIDattr(synID(line('.'), col('.'), 1), 'name')
+"command! -bar CurrentSyntax echo synIDattr(synID(line('.'), col('.'), 1), 'name')
+" NOTE: Use ":Inspect" command instead.
+command! -bar CurrentSyntax Inspect
 
 " session
 command! -bar -nargs=1 SaveSession call mkdir ($XDG_DATA_HOME . '/nvim/sessions', 'p') | mksession! $XDG_DATA_HOME/nvim/sessions/<args>.vim

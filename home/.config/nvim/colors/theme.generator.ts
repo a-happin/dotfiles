@@ -22,47 +22,50 @@ type HighlightArgument = {
   guisp?: Color
 }
 
-const none = {cui: 'none', gui: 'none'}
+const none = {cui: 'none', gui: 'none'} as const
 
-const black = {cui: 'black', gui: '#000000'}
-const darkred = {cui: 'darkred', gui: '#a54242'}
-const green = {cui: 'green', gui: '#b9ca4a'}
-const orange = {cui: 'darkyellow', gui: '#e78c45'}
-// const blue = {cui: 'blue', gui: '#7aa6da'}
-const purple = {cui: 'magenta', gui: '#c397d8'}
-const darkgray = {cui: 'darkgray', gui: '#767676'}
+const black = {cui: 'black', gui: '#000000'} as const
+const darkred = {cui: 'darkred', gui: '#a54242'} as const
+const green = {cui: 'green', gui: '#b9ca4a'} as const
+const orange = {cui: 'darkyellow', gui: '#e78c45'} as const
+// const blue = {cui: 'blue', gui: '#7aa6da'} as const
+const purple = {cui: 'magenta', gui: '#c397d8'} as const
+const darkgray = {cui: 'darkgray', gui: '#767676'} as const
 
-const gray    = {cui: 'gray', gui: '#969896'}
-const red     = {cui: 'red', gui: '#d54e53'}
-const lime    = {cui: 'green', gui: '#b9ca4a'}
-const yellow  = {cui: 'yellow', gui: '#e7c547'}
-const blue    = {cui: 'blue', gui: '#7aa6da'}
-const magenta = {cui: 'magenta', gui: '#c397d8'}
-const cyan    = {cui: 'cyan', gui: '#70c0b1'}
-const white   = {cui: 'white', gui: '#eaeaea'}
+const gray    = {cui: 'gray', gui: '#969896'} as const
+const red     = {cui: 'red', gui: '#d54e53'} as const
+const lime    = {cui: 'green', gui: '#b9ca4a'} as const
+const yellow  = {cui: 'yellow', gui: '#e7c547'} as const
+const blue    = {cui: 'blue', gui: '#7aa6da'} as const
+const magenta = {cui: 'magenta', gui: '#c397d8'} as const
+const cyan    = {cui: 'cyan', gui: '#70c0b1'} as const
+const white   = {cui: 'white', gui: '#eaeaea'} as const
 
-const pink = {cui: 225, gui: '#ffd7ff'}
+const pink = {cui: 225, gui: '#ffd7ff'} as const
 
-const lightcyan = {cui: 'lightcyan', gui: 'lightcyan'}
-const lightyellow = {cui: 'lightyellow', gui: 'lightyellow'}
-const lightgreen = {cui: 'lightgreen', gui: 'lightgreen'}
-const lightmagenta = {cui: 'lightmagenta', gui: 'lightmagenta'}
-const wombat_blue = {cui: 'blue', gui: '#8ac6f2'}
+const lightcyan = {cui: 'lightcyan', gui: 'lightcyan'} as const
+const lightyellow = {cui: 'lightyellow', gui: 'lightyellow'} as const
+const lightgreen = {cui: 'lightgreen', gui: 'lightgreen'} as const
+const lightmagenta = {cui: 'lightmagenta', gui: 'lightmagenta'} as const
+const wombat_blue = {cui: 'blue', gui: '#8ac6f2'} as const
 
 const accent_color = wombat_blue
 const accent_bg = black
 const sub_color = white
 const normal = white
 const normal_bg = none
-const cursorline_color = {cui: 'black', gui: '#2a2a2a'}
+const cursorline_color = {cui: 'black', gui: '#2a2a2a'} as const
 // const selection_color = {cui: }
 const directory_color = blue
-const comment_color = {cui: 243, gui: '#767676'}
-const constant_color = red
-const identifier_color = blue
+const comment_color = {cui: 243, gui: '#767676'} as const
+const constant_color = orange
+const string_color = lime
+const identifier_color = normal
+const function_color = blue
 const statement_color = magenta
+const operator_color = gray
 const type_color = blue
-const special_color = lightmagenta
+const special_color = cyan
 /* const sub = magenta */
 /* const sub2 = {cui: 117, gui: '#87d7ff'} // skyblue */
 /* const orange2 = {cui: 208, gui: '#ff8700'} */
@@ -174,7 +177,7 @@ console.log (`if &background ==# 'dark'`)
 
 
   // よくわかんないけどvimの関数名が該当していた
-  highlight ('Title', {fg: lightmagenta, attrs: ['bold']})
+  highlight ('Title', {fg: function_color, attrs: ['bold']})
   // 選択中
   highlight ('Visual', {fg: accent_bg, bg: accent_color})
 
@@ -188,13 +191,13 @@ console.log (`if &background ==# 'dark'`)
   highlight ('Constant', {fg: constant_color})
 
   // 文字列
-  highlight ('String', {fg: constant_color})
+  highlight ('String', {fg: string_color})
 
   // 変数名
   highlight ('Identifier', {fg: identifier_color, attrs: ['NONE']})
 
   // 関数 クラスメソッドも含む
-  highlight ('Function', {fg: identifier_color})
+  highlight ('Function', {fg: function_color})
 
   // 文(ifなど)
   highlight ('Statement', {fg: statement_color, attrs: ['bold']})
@@ -203,7 +206,7 @@ console.log (`if &background ==# 'dark'`)
   highlight ('Label', {fg: statement_color})
 
   // 演算子
-  highlight ('Operator', {fg: statement_color, attrs: ['bold']})
+  highlight ('Operator', {fg: operator_color, attrs: ['bold']})
 
   // プリプロセッサ
   highlight ('PreProc', {fg: statement_color})
@@ -213,8 +216,12 @@ console.log (`if &background ==# 'dark'`)
 
   // 特殊記号? vimの<CR>や行継続\が対応していた
   highlight ('Special', {fg: special_color, attrs: ['bold']})
+  // \nなどのエスケープシークエンス
+  highlight ('SpecialChar', {fg: constant_color, attrs: ['bold']})
+  // 括弧、コンマなど
+  highlight ('Delimiter', {fg: gray, attrs: ['bold']})
 
-  // エラー　確認できず
+  // エラー 確認できず
   highlight ('Error', {fg: black, bg: error_red, attrs: ['bold']})
 
   // TODO:
@@ -257,12 +264,12 @@ console.log (`if &background ==# 'dark'`)
   highlight ('MatchParen', {fg: lightcyan, bg: none, attrs: ['bold']})
 
   // 折りたたみ表示
-  highlight ('Folded', {fg: accent_color, bg: none})
+  highlight ('Folded', {fg: gray, bg: none})
   // 折りたたみ表示カラム(set foldcolumn=1以上)
-  highlight ('FoldColumn', {fg: accent_color, bg: none})
+  highlight ('FoldColumn', {fg: gray, bg: none})
 
   // 印用カラム? cocがエラー位置表示用に使ってるっぽい
-  highlight ('SignColumn', {fg: accent_color, bg: normal_bg})
+  highlight ('SignColumn', {fg: normal, bg: normal_bg})
 
   // スペル間違い
   highlight ('SpellBad', {fg: black, bg: red})
@@ -329,6 +336,7 @@ hi! link vimHiGroup Statement
 hi! link vimHiTerm Identifier
 hi! link vimMapModKey Special
 hi! link vimOption Identifier
+hi! link vimUserFunc Function
 hi! link vimVar Normal
 hi! link xmlAttrib Constant
 hi! link xmlAttribPunct Statement
