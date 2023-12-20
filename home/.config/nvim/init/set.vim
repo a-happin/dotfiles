@@ -142,6 +142,10 @@ set mouse=ar
 " 有効にしたいけど壊れてる
 " set mousefocus
 
+" set mousemodel=popup_setpos
+" mousemodel=popup_setposにしつつ、popup menuを無効にすることでsetposだけにする
+aunmenu PopUp
+
 " ホイールのスクロール量
 " default=ver:3,hor:6
 set mousescroll=ver:5,hor:6

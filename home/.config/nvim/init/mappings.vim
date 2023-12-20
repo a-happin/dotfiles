@@ -67,6 +67,9 @@ nnoremap <C-Del> <Nop>
 nnoremap <F1> <Nop>
 inoremap <F1> <Nop>
 
+" TODO: 後で変える
+nnoremap <F5> <Cmd>Vterminal cargo test<CR>
+
 " --------------------------------
 "  不完全コマンド系
 " --------------------------------
