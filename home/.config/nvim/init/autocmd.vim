@@ -41,7 +41,7 @@ endfunction
 
 augroup auto_save
  autocmd!
- autocmd FileType rust silent call s:enable_auto_save()
+ " autocmd FileType rust silent call s:enable_auto_save()
  " autocmd TextChanged,InsertLeave *.rs silent call auto_save#save ()
 augroup END
 
