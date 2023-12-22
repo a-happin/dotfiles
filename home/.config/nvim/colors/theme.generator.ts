@@ -305,6 +305,11 @@ console.log (`if &background ==# 'dark'`)
   // coc
   highlight ('CocWarningSign', {fg: warning_yellow, bg: none})
 
+  // lsp
+  highlight ('LspReferenceText', {attrs: ['underline']})
+  highlight ('LspReferenceRead', {attrs: ['underline']})
+  highlight ('LspReferenceWrite', {attrs: ['underline']})
+
 console.log (`endif`)
 console.log (
 `hi! link EndOfBuffer Ignore

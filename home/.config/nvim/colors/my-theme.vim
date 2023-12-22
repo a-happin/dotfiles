@@ -75,6 +75,9 @@ if &background ==# 'dark'
   hi diffAdded ctermbg=none ctermfg=green guibg=none guifg=#b9ca4a
   hi diffRemoved ctermbg=none ctermfg=red guibg=none guifg=#d54e53
   hi CocWarningSign ctermbg=none ctermfg=yellow guibg=none guifg=#e7c547
+  hi LspReferenceText cterm=underline gui=underline
+  hi LspReferenceRead cterm=underline gui=underline
+  hi LspReferenceWrite cterm=underline gui=underline
 endif
 hi! link EndOfBuffer Ignore
 hi! link TermCursor Cursor
