@@ -128,11 +128,15 @@ augroup END
 
 " lualineが描画されるとintroが消えるバグがあるのでlualineの描画を遅らせる
 " https://github.com/nvim-lualine/lualine.nvim/issues/773
-augroup lazy-intro
-  autocmd!
-  if argc () ==# 0
-    autocmd InsertEnter,BufReadPost * ++once lua require 'init/lualine'
-  else
-    autocmd VimEnter * ++once lua require 'init/lualine'
-  endif
-augroup END
+if has ('vim_starting')
+  augroup lazy-intro
+    autocmd!
+    if argc () ==# 0
+      autocmd InsertEnter,BufReadPost * ++once autocmd! lazy-intro | lua require 'init/lualine'
+    else
+      autocmd VimEnter * ++once lua require 'init/lualine'
+    endif
+  augroup END
+else
+  lua require 'init/lualine'
+endif
