@@ -89,7 +89,7 @@ command! -bar DiffOrig aboveleft vert new | setlocal buftype=nofile bufhidden=de
 
 " 最後のコミットからのdiff
 command! -bar GitDiff belowright vert new | setlocal buftype=nofile bufhidden=delete noswapfile | setfiletype gitcommit | execute 'read ++edit !git diff #' | normal! gg
-command! -bar GitDiff2 aboveleft vert new | setlocal buftype=nofile bufhidden=delete noswapfile | execute '%!git show HEAD:./' . shellescape (expand ('#')) | diffthis | wincmd p | diffthis
+command! -bar GitDiff2 aboveleft vert new | setlocal buftype=nofile bufhidden=delete noswapfile | execute '%!git show :./' . shellescape (expand ('#')) | diffthis | wincmd p | diffthis
 
 " 拡張子からテンプレートファイルを判別し読み込む
 command! -bar LoadTemplate call s:load_template ()
