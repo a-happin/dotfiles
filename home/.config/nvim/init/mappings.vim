@@ -623,7 +623,8 @@ nnoremap <expr> ds <SID>dsurround ()
 " NOTICE: cnoremapでは<silent>をつけると描画が反映されなくて困るのでつけないように。
 
 " 補完メニューが表示されているときの挙動修正
-cnoremap <expr> <CR> wildmenumode () ? '<End>' : (getcmdtype () ==# ':' && getcmdline () ==# '') ? '<BS>' : '<CR>'
+" <C-]>はabbrevの展開 :help c_CTRL-]
+cnoremap <expr> <CR> wildmenumode () ? '<End>' : (getcmdtype () ==# ':' && getcmdline () ==# '') ? '<BS>' : '<C-]><CR>'
 cnoremap <expr> <Left> wildmenumode () ? '<End>' : '<Left>'
 cnoremap <expr> <Right> wildmenumode () ? '<End>' : '<Right>'
 

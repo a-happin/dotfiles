@@ -124,3 +124,6 @@ call s:cnoreabbrev ('w!!', 'w !sudo tee > /dev/null %')
 
 " そのバッファのpwdをファイルのあるディレクトリに変更する
 call s:cnoreabbrev ('lcdh', 'lcd %:h')
+
+" ヘルプを縦に分割して開く
+call s:cnoreabbrev ('help', 'vertical help')
