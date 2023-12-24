@@ -120,7 +120,8 @@ set keymodel=startsel
 
 " show status line
 " if 2, always
-set laststatus=2
+" if 3, global status line
+set laststatus=3
 
 " 空白文字の可視化
 " visualize space character
@@ -238,7 +239,88 @@ set spelllang=en,cjk
 set splitright
 
 " format of status line
-set statusline=%F\ %m%r%h%w%=[FORMAT=%{&ff}]\ %y\ (%3v,%3l)\ [%2p%%]
+let s:mode_color = {
+  \ 'n': 'guifg=#242b38 guibg=#59c2ff',
+  \ '': '',
+\}
+let s:mode_str = {
+  \ 'n'      : 'NORMAL',
+  \ 'no'     : 'O-PENDING',
+  \ 'nov'    : 'O-PENDING',
+  \ 'noV'    : 'O-PENDING',
+  \ 'no\22'  : 'O-PENDING',
+  \ 'niI'    : 'NORMAL',
+  \ 'niR'    : 'NORMAL',
+  \ 'niV'    : 'NORMAL',
+  \ 'nt'     : 'NORMAL',
+  \ 'ntT'    : 'NORMAL',
+  \ 'v'      : 'VISUAL',
+  \ 'vs'     : 'VISUAL',
+  \ 'V'      : 'V-LINE',
+  \ 'Vs'     : 'V-LINE',
+  \ '\22'    : 'V-BLOCK',
+  \ '\22s'   : 'V-BLOCK',
+  \ 's'      : 'SELECT',
+  \ 'S'      : 'S-LINE',
+  \ '\19'    : 'S-BLOCK',
+  \ 'i'      : 'INSERT',
+  \ 'ic'     : 'INSERT',
+  \ 'ix'     : 'INSERT',
+  \ 'R'      : 'REPLACE',
+  \ 'Rc'     : 'REPLACE',
+  \ 'Rx'     : 'REPLACE',
+  \ 'Rv'     : 'V-REPLACE',
+  \ 'Rvc'    : 'V-REPLACE',
+  \ 'Rvx'    : 'V-REPLACE',
+  \ 'c'      : 'COMMAND',
+  \ 'cv'     : 'EX',
+  \ 'ce'     : 'EX',
+  \ 'r'      : 'REPLACE',
+  \ 'rm'     : 'MORE',
+  \ 'r?'     : 'CONFIRM',
+  \ '!'      : 'SHELL',
+  \ 't'      : 'TERMINAL',
+\}
+let s:mode_color_map = {
+  \ 'VISUAL' : '_visual',
+  \ 'V-BLOCK' : '_visual',
+  \ 'V-LINE' : '_visual',
+  \ 'SELECT' : '_visual',
+  \ 'S-LINE' : '_visual',
+  \ 'S-BLOCK' : '_visual',
+  \ 'REPLACE' : '_replace',
+  \ 'V-REPLACE' : '_replace',
+  \ 'INSERT' : '_insert',
+  \ 'COMMAND' : '_command',
+  \ 'EX' : '_command',
+  \ 'MORE' : '_command',
+  \ 'CONFIRM' : '_command',
+  \ 'TERMINAL' : '_terminal',
+\}
+let s:mode_color_map2 = {
+  \ '_visual': { 'ctermfg': '234', 'guifg':'#242b38', 'ctermbg':'12', 'guibg':'#d4bfff' },
+  \ '_replace': { 'ctermfg': '234', 'guifg':'#242b38', 'ctermbg':'12', 'guibg':'#f07178' },
+  \ '_normal': { 'ctermfg': '234', 'guifg':'#242b38', 'ctermbg':'12', 'guibg':'#59c2ff' },
+  \ '_command': { 'ctermfg': '234', 'guifg':'#242b38', 'ctermbg':'12', 'guibg':'#59c2ff' },
+  \ '_insert': { 'ctermfg': '234', 'guifg':'#242b38', 'ctermbg':'12', 'guibg':'#bbe67e' },
+  \ '_terminal': { 'ctermfg': '234', 'guifg':'#242b38', 'ctermbg':'12', 'guibg':'#bbe67e' },
+\}
+let s:fileformat_map = {
+  \ 'unix': 'LF',
+  \ 'dos' : 'CRLF',
+  \ 'mac' : 'CR',
+\}
+function! StatusLine() abort
+  let m = mode ()
+  let mode_str = get (s:mode_str, m, m)
+  let color = get(s:mode_color_map2, get(s:mode_color_map, mode_str, '_normal'), '')
+  execute 'highlight StatusLineA cterm=bold gui=bold ctermfg=' . color['ctermfg'] 'ctermbg=' . color['ctermbg'] 'guifg=' . color['guifg'] 'guibg=' . color['guibg']
+  " highlight StatusLine cterm=none ctermfg=254 ctermbg=234 gui=none guifg=#d9d7ce guibg=#272d38
+  execute 'highlight StatusLineSep ctermbg=234 guibg=#272d38' 'ctermfg=' . color['ctermbg'] 'guifg=' . color['guibg']
+  return '%#StatusLineA# ' . mode_str . ' %#StatusLineSep#%#StatusLine# %f %m%r%h%w%=' . '%{&filetype} %#StatusLineSep#%#StatusLineA# ' . get(s:fileformat_map, &fileformat, '?') . '  %{&fileencoding}%{&binary ? "binary" : ""}  %3l,%-2v '
+endfunction
+" set statusline=%F\ %m%r%h%w%=[FORMAT=%{&ff}]\ %y\ (%3l,%-2v)\ [%2p%%]
+set statusline=%!StatusLine()
 
 " do not create swap file
 set noswapfile

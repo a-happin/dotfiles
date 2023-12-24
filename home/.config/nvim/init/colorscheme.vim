@@ -21,4 +21,4 @@ endtry
 " highlight Normal ctermbg=none
 " highlight CursorLineNr ctermfg=15
 highlight PmenuSel blend=0
-
+highlight StatusLine cterm=none ctermfg=254 ctermbg=234 gui=none guifg=#d9d7ce guibg=#272d38

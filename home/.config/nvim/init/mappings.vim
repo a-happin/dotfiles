@@ -479,7 +479,7 @@ nnoremap <Space>n<Tab> <Cmd>tabnew<CR>
 nnoremap <Space>, <Cmd>tabnew $MYVIMRC \| lcd %:h<CR>
 
 " source this
-nnoremap <Space>. <Cmd>if expand ('%:e') ==# 'vim'<bar>source %<bar>echo 'sourced this file'<bar>endif<CR>
+nnoremap <Space>. <Cmd>if expand ('%:e') ==# 'vim' <bar><bar> expand('%:e') ==# 'lua'<bar>source %<bar>echo 'sourced this file'<bar>endif<CR>
 
 " ripgrep
 nnoremap <Space>/ <Cmd>Rg<CR>
