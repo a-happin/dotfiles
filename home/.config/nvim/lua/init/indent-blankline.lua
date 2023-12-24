@@ -23,7 +23,15 @@ hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
 end)
 
 -- vim.g.rainbow_delimiters = { highlight = highlight }
-ibl.setup { indent = { highlight = highlight }, scope = { highlight = highlight } }
+
+-- 現在のスコープもカラフルに表示する
+-- ibl.setup { indent = { highlight = highlight }, scope = { highlight = highlight } }
+-- カラフルかつアンダーラインを無効化する
+ibl.setup { indent = { highlight = highlight }, scope = { enabled = false } }
+-- 現在のスコープの色はデフォルト(灰色？)で表示する
+-- ibl.setup { indent = { highlight = highlight } }
+-- 現在のスコープの色はデフォルト(灰色？)で表示かつアンダーラインを無効化する
+-- ibl.setup { indent = { highlight = highlight }, scope = { show_start = false, show_end = false } }
 
 -- hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 
