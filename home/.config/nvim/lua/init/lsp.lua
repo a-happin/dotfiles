@@ -3,10 +3,20 @@ local mason = require 'mason'
 local mason_lspconfig = require 'mason-lspconfig'
 
 -- not to move cursor into floating window
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with (vim.lsp.handlers.hover, { focusable = false })
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with (vim.lsp.handlers.signature_help, { focusable = false })
+-- focus=falseだけならマウスでスクロールできる、focusable=falseはできない
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with (vim.lsp.handlers.hover, { focus = false, border = 'rounded' })
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with (vim.lsp.handlers.signature_help, { focusable = false, border = 'rounded' })
+vim.diagnostic.config {
+  float = {
+    border = 'rounded'
+  }
+}
 
-local on_attach = function (_, bufnr)
+vim.cmd [[
+  autocmd! ColorScheme * highlight FloatBorder ctermfg=224 ctermbg=0 guifg=#f6adc6 guibg=#000000
+]]
+
+local on_attach = function (client, bufnr)
   local function buf_set_keymap (...) vim.api.nvim_buf_set_keymap (bufnr, ...) end
   local function buf_set_option (...) vim.api.nvim_buf_set_option (bufnr, ...) end
 
@@ -29,14 +39,15 @@ local on_attach = function (_, bufnr)
   -- vim.keymap.set ('n', 'qf', vim.lsp.buf.code_action, opts)
   vim.keymap.set ('n', '<Space>c', vim.lsp.buf.code_action, opts)
 
-  -- TODO: 動いてないので要調査
-  vim.cmd [[
-    augroup init-lspconfig
-      autocmd! * <buffer>
-      autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight ()
-      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references ()
-    augroup END
-  ]]
+  if client.server_capabilities.documentHighlightProvider then
+    vim.cmd [[
+      augroup init-lspconfig
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight ()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references ()
+      augroup END
+    ]]
+  end
 end
 
 -- local node_root_dir = lspconfig.util.root_pattern ('package.json', 'node_modules')
@@ -68,6 +79,10 @@ for _, server in ipairs(mason_lspconfig.get_installed_servers ()) do
         diagnostics = {
           enable = true,
           globals = {'vim'},
+        },
+        workspace = {
+          library = { vim.env.VIMRUNTIME }
+          -- library = vim.api.nvim_list_runtime_paths ()
         },
       },
     }
