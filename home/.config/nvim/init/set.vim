@@ -163,7 +163,7 @@ set preserveindent
 
 " 補完メニューの高さを制限する
 " if 0, スペースいっぱい使う
-set pumheight=100
+" set pumheight=25
 
 " Enables pseudo-transparency for the |popup-menu|. Valid values are in
 " the range of 0 for fully opaque popupmenu (disabled) to 100 for fully
@@ -174,8 +174,9 @@ set pumblend=0
 " 相対行番号
 "set relativenumber
 
-" show position of cursor
-set ruler
+" don't show position of cursor
+" statuslineに表示してるからいらないかなって
+set noruler
 
 " old: inclusiveかつ改行を選択しない
 set selection=old

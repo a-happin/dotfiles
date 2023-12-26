@@ -69,9 +69,6 @@ nnoremap <C-Del> <Nop>
 nnoremap <F1> <Nop>
 inoremap <F1> <Nop>
 
-" TODO: 後で変える
-nnoremap <F5> <Cmd>Vterminal cargo test<CR>
-
 " --------------------------------
 "  不完全コマンド系
 " --------------------------------
@@ -114,8 +111,8 @@ nnoremap Y y$
 " <Tab>でtab切り替え
 nnoremap <Tab> gt
 nnoremap <S-Tab> gT
-nnoremap <C-w><Tab> gt
-nnoremap <C-w><S-Tab> gT
+" nnoremap <C-w><Tab> gt
+" nnoremap <C-w><S-Tab> gT
 
 " nnoremap f<CR> $
 
@@ -123,6 +120,23 @@ nnoremap <C-w><S-Tab> gT
 
 " nnoremap <BS> <C-o>
 
+" Ctrl-qでnvimを終了する
+" もとの動作はVisual Block Modeに入る Ctrl-vでいいよね
+nnoremap <C-q> <Cmd>confirm qall<CR>
+
+" Ctrl-wで閉じる
+" もとの動作はウインドウ操作系
+" <C-w>をすべて<M-?>に退避させたしいいでしょ！
+nnoremap <C-w> <Cmd>confirm q<CR>
+
+" Ctrl-tで新しいタブを開く
+" もとの動作はJump to [count] older entry in the tag stack
+" 代替動作はCtrl-RightButton, g RightButton
+nnoremap <C-t> <Cmd>tabnew<CR>
+
+
+" TODO: 後で変える
+nnoremap <F5> <Cmd>Vterminal cargo test<CR>
 
 " --------------------------------
 "  コマンド/オペレータ系[Visual]
@@ -290,41 +304,85 @@ onoremap i<Space> iW
 "  Alt key mappings
 " --------------------------------
 
-" 全部閉じて終了
-"call s:anoremap ('<M-Q>', '<Cmd>confirm qall<CR>')
-call s:anoremap ('<M-q>', '<Cmd>confirm qall<CR>')
-"call s:anoremap ('<M-q>', '<Cmd>confirm q<CR>')
+function! s:alt_wincmd () abort
+  for i in split('qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890`~!@#$%^&*()-=_+[]{}\;:''",.<>/?', '.\zs')
+    call s:anoremap ('<M-' . i . '>', '<Cmd>wincmd ' . i . '<CR>')
+  endfor
+  call s:anoremap ('<M-bar>', '<Cmd>wincmd <bar><CR>')
+endfunction
+call s:alt_wincmd ()
 
-nmap <M-w> <C-w>
+
+"" 全部閉じて終了
+""call s:anoremap ('<M-Q>', '<Cmd>confirm qall<CR>')
+"" call s:anoremap ('<M-q>', '<Cmd>confirm qall<CR>')
+""call s:anoremap ('<M-q>', '<Cmd>confirm q<CR>')
+call s:anoremap ('<M-q>', '<Cmd>normal! <C-c><CR>')
+
+"" nmap <M-w> <C-w>
 
 " Open File Explorer
 " nnoremap <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
 call s:anoremap ('<M-e>', '<Cmd>Fern . -reveal=% -drawer -toggle<CR>')
 
-" Reload init.vim
-nnoremap <M-r> <Cmd>source $MYVIMRC<CR>
+call s:anoremap ('<M-g>', '<C-\><C-n><C-w>g')
 
 " Toggle Terminal
-nnoremap <M-t> <Cmd>Hterminal<CR>
 call s:anoremap ('<M-CR>', '<Cmd>ToggleTerminal<CR>')
+
+call s:anoremap ('<M-?>', '<Cmd>vertical help CTRL-w<CR>')
 
 " LoadSession if current buffer is empty and it's the only buffer
 " SaveSession if others
-call s:anoremap ('<M-s>', '<Cmd>if bufnr ("$") ==# 1 && &modified ==# 0 && empty (&buftype)<bar>LoadSession default<bar>else<bar>SaveSession default<bar>endif<CR>')
+"" call s:anoremap ('<M-s>', '<Cmd>if bufnr ("$") ==# 1 && &modified ==# 0 && empty (&buftype)<bar>LoadSession default<bar>else<bar>SaveSession default<bar>endif<CR>')
 
-call s:anoremap ('<M-h>', '<Cmd>wincmd h<CR>')
-call s:anoremap ('<M-j>', '<Cmd>wincmd j<CR>')
-call s:anoremap ('<M-k>', '<Cmd>wincmd k<CR>')
-call s:anoremap ('<M-l>', '<Cmd>wincmd l<CR>')
-call s:anoremap ('<M-H>', '<Cmd>wincmd H<CR>')
-call s:anoremap ('<M-J>', '<Cmd>wincmd J<CR>')
-call s:anoremap ('<M-K>', '<Cmd>wincmd K<CR>')
-call s:anoremap ('<M-L>', '<Cmd>wincmd L<CR>')
-call s:anoremap ('<M-T>', '<Cmd>wincmd T<CR>')
-call s:anoremap ('<M-->', '<Cmd>resize -1<CR>')
-call s:anoremap ('<M-=>', '<Cmd>resize +1<CR>')
-call s:anoremap ('<M-<>', '<Cmd>vertical resize -1<CR>')
-call s:anoremap ('<M->>', '<Cmd>vertical resize +1<CR>')
+"" focus ← ↓ ↑ →  window
+"call s:anoremap ('<M-h>', '<Cmd>wincmd h<CR>')
+"call s:anoremap ('<M-j>', '<Cmd>wincmd j<CR>')
+"call s:anoremap ('<M-k>', '<Cmd>wincmd k<CR>')
+"call s:anoremap ('<M-l>', '<Cmd>wincmd l<CR>')
+"" focus below/right window
+"call s:anoremap ('<M-w>', '<Cmd>wincmd w<CR>')
+"" focus above/left window
+"call s:anoremap ('<M-W>', '<Cmd>wincmd W<CR>')
+"" focus most below/right window
+"call s:anoremap ('<M-b>', '<Cmd>wincmd b<CR>')
+"" focus most above/left window
+"call s:anoremap ('<M-t>', '<Cmd>wincmd t<CR>')
+"" focus previous window
+"call s:anoremap ('<M-p>', '<Cmd>wincmd p<CR>')
+
+"" move window ← ↓ ↑ →
+"call s:anoremap ('<M-H>', '<Cmd>wincmd H<CR>')
+"call s:anoremap ('<M-J>', '<Cmd>wincmd J<CR>')
+"call s:anoremap ('<M-K>', '<Cmd>wincmd K<CR>')
+"call s:anoremap ('<M-L>', '<Cmd>wincmd L<CR>')
+"" move window to new tab
+"call s:anoremap ('<M-T>', '<Cmd>wincmd T<CR>')
+
+"" split window
+"call s:anoremap ('<M-s>', '<Cmd>split<CR>')
+"call s:anoremap ('<M-v>', '<Cmd>vsplit<CR>')
+"call s:anoremap ('<M-n>', '<Cmd>new<CR>')
+
+"" rotate window (shift: reverse)
+"call s:anoremap ('<M-r>', '<Cmd>wincmd r<CR>')
+"call s:anoremap ('<M-R>', '<Cmd>wincmd R<CR>')
+"" swap current window with next/previous one
+"call s:anoremap ('<M-x>', '<Cmd>wincmd x<CR>')
+
+"" hide other window
+"call s:anoremap ('<M-o>', '<Cmd>only<CR>')
+
+"" close window
+"call s:anoremap ('<M-c>', '<Cmd>confirm close<CR>')
+
+"" resize window
+"call s:anoremap ('<M-->', '<Cmd>resize -1<CR>')
+"call s:anoremap ('<M-+>', '<Cmd>resize +1<CR>')
+"call s:anoremap ('<M-=>', '<Cmd>wincmd =<CR>')
+"call s:anoremap ('<M-<>', '<Cmd>vertical resize -1<CR>')
+"call s:anoremap ('<M->>', '<Cmd>vertical resize +1<CR>')
 
 " switch tab
 call s:anoremap ('<M-1>', '<Cmd>1tabnext<CR>')
@@ -337,8 +395,10 @@ call s:anoremap ('<M-7>', '<Cmd>7tabnext<CR>')
 call s:anoremap ('<M-8>', '<Cmd>8tabnext<CR>')
 call s:anoremap ('<M-9>', '<Cmd>9tabnext<CR>')
 call s:anoremap ('<M-0>', '<Cmd>$tabnext<CR>')
+
 " 下が動かないならこっちも
-" noremap <M-Tab> <Cmd>tabnext<CR>
+" って思ったけど一応有効にしておくか…
+call s:anoremap ('<M-Tab>', '<Cmd>tabnext<CR>')
 " doesn't work
 "noremap <M-S-Tab> <Cmd>tabprev<CR>
 
@@ -354,6 +414,7 @@ nnoremap <expr> <M-Down> '<Cmd>move .+' . (v:count > 0 ? v:count : 1) . '<CR>'
 " 範囲選択での入れ替え
 vnoremap <M-Up> :move '<-2<CR>gv
 vnoremap <M-Down> :move '>+1<CR>gv
+
 
 " --------------------------------
 "  <Space>
@@ -633,13 +694,21 @@ cnoremap <expr> <Right> wildmenumode () ? '<End>' : '<Right>'
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 
-" <Up><Up>でHistory:を起動(fzf)
-" cnoremap <expr> <Up> wildmenumode () ? '<C-p>' : (getcmdtype () ==# ':' && getcmdline () !=# '') ? '<C-u><Esc><Cmd>History:<CR>' : (getcmdtype () ==# '/' && getcmdline () !=# '') ? '<C-u><Esc><Cmd>History/<CR>' : '<C-p>'
+" ちゃんとしたDel
+cnoremap <expr> <Del> strpart (getcmdline (), getcmdpos () - 1) ==# '' ? '' : '<Del>'
+function! s:cmdline_ctrl_delete () abort
+  let pos = getcmdpos ()
+  return "\<C-Right>\<Cmd>call setcmdline (strpart (getcmdline (), 0, " . (pos - 1) . ") . strpart (getcmdline (), getcmdpos () - 1), " . pos . ")\<CR>"
+endfunction
+cnoremap <expr> <C-Del> <SID>cmdline_ctrl_delete ()
+
 " cnoremap <Up> <C-p>
 " cnoremap <Down> <C-n>
 
 " 変わったかどうかが分かりづらいので無効にしておく
 cnoremap <Insert> <Nop>
+
+cnoremap <C-f> <Nop>
 
 " 未入力+<Tab>でHistory:を起動(fzf)
 cnoremap <expr> <Tab> wildmenumode () ? '<Tab>' : (getcmdtype () ==# ':' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>History:<CR>' : (getcmdtype () ==# '/' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>History/<CR>' : '<Tab>'

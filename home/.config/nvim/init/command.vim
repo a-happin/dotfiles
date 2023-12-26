@@ -2,7 +2,7 @@
 " **  function(script local)
 " *******************************
 function! s:cnoreabbrev (word, str) abort
-  execute 'cnoreabbrev <expr>' a:word '(getcmdtype () ==# ":" && getcmdline () ==# "' . a:word . '") ? "' . a:str . '" : "' . a:word . '"'
+  execute 'cnoreabbrev <expr>' a:word '(getcmdtype () ==# ":" && strpart (getcmdline (), 0, getcmdpos () - 1) ==# "' . a:word . '") ? "' . a:str . '" : "' . a:word . '"'
 endfunction
 
 " 現在のバッファがターミナル: hide
