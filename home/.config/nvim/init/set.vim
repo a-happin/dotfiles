@@ -163,7 +163,7 @@ set preserveindent
 
 " 補完メニューの高さを制限する
 " if 0, スペースいっぱい使う
-set pumheight=25
+set pumheight=100
 
 " Enables pseudo-transparency for the |popup-menu|. Valid values are in
 " the range of 0 for fully opaque popupmenu (disabled) to 100 for fully
@@ -177,11 +177,12 @@ set pumblend=0
 " show position of cursor
 set ruler
 
-" set selection=exclusive
+" old: inclusiveかつ改行を選択しない
+set selection=old
 
 " visual modeに移行したときに自動的にselect modeに移行する
 " mouse: マウスを使ったとき
-" key: Special Keysを押したとき -- Special keys: 矢印, <Home>, <End>, <Pageup>, <PageDown>
+" key: Special Keysを押したとき -- Special keys: 矢印, <Home>, <End>, <PageUp>, <PageDown>
 " cmd: v, V or <C-v>を押したとき
 " set selectmode=
 
@@ -378,6 +379,8 @@ set wildmenu
 " 最初のTabでwildmenuを出す
 " 次のTabからmatchを補完する
 set wildmode=longest:full,full
+
+set wildoptions=fuzzy,pum,tagfile
 
 " wrap
 set wrap

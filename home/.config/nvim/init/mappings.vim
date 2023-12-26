@@ -25,9 +25,11 @@ function! s:nxnoremap (lhs, rhs) "noabort
   execute 'xnoremap' a:lhs a:rhs
 endfunction
 
+" insertモードで使えない文字の移動コマンド用
 function! s:noxnoremap (lhs, rhs) "noabort
-  execute 'noremap' a:lhs a:rhs
-  execute 'sunmap' a:lhs
+  execute 'nnoremap' a:lhs a:rhs
+  execute 'onoremap' a:lhs a:rhs
+  execute 'xnoremap' a:lhs a:rhs
 endfunction
 
 " 全モードで定義
@@ -85,14 +87,14 @@ nnoremap <F5> <Cmd>Vterminal cargo test<CR>
 call s:nxnoremap ('<CR>', ':')
 
 " digraphs
-call s:nxnoremap ('fj', 'f<C-k>j')
-call s:nxnoremap ('fz', 'f<C-k>z')
-call s:nxnoremap ('Fj', 'F<C-k>j')
-call s:nxnoremap ('Fz', 'F<C-k>z')
-call s:nxnoremap ('tj', 't<C-k>j')
-call s:nxnoremap ('tz', 't<C-k>z')
-call s:nxnoremap ('Tj', 'T<C-k>j')
-call s:nxnoremap ('Tz', 'T<C-k>z')
+call s:noxnoremap ('fj', 'f<C-k>j')
+call s:noxnoremap ('fz', 'f<C-k>z')
+call s:noxnoremap ('Fj', 'F<C-k>j')
+call s:noxnoremap ('Fz', 'F<C-k>z')
+call s:noxnoremap ('tj', 't<C-k>j')
+call s:noxnoremap ('tz', 't<C-k>z')
+call s:noxnoremap ('Tj', 'T<C-k>j')
+call s:noxnoremap ('Tz', 'T<C-k>z')
 
 
 " --------------------------------
@@ -167,17 +169,16 @@ noremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\v
 inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^")
 
 " exclusive <End>
-noremap <expr> <End> &selection ==# 'inclusive' ? '<End><Left>' : '<End>'
-nunmap <End>
-noremap <expr> <S-End> &selection ==# 'inclusive' ? '<S-End><Left>' : '<S-End>'
-
-" <C-End>でinclusiveな<End>ができるようにする
-noremap <C-End> <End>
-noremap <C-S-End> <S-End>
+" set selection=old したのでコメントアウト中
+" noremap <expr> <End> &selection ==# 'inclusive' ? '<End><Left>' : '<End>'
+" nunmap <End>
+" noremap <expr> <S-End> &selection ==# 'inclusive' ? '<S-End><Left>' : '<S-End>'
 
 " うわ急に飛ぶな
 noremap <C-Home> <Home>
 noremap <C-S-Home> <S-Home>
+noremap <C-End> <End>
+noremap <C-S-End> <S-End>
 noremap <PageUp> <C-y>
 noremap <S-PageUp> <C-y>
 noremap <PageDown> <C-e>
@@ -446,8 +447,8 @@ nnoremap <Space>f <Cmd>Files<CR>
 nnoremap <Space>g <Cmd>GFiles<CR>
 
 " wrap考慮の行頭、行末移動
-call s:nxnoremap ('<Space>h', 'g^')
-call s:nxnoremap ('<Space>l', 'g$')
+call s:noxnoremap ('<Space>h', 'g^')
+call s:noxnoremap ('<Space>l', 'g$')
 " 戻る、進む
 " nnoremap <Space>h <C-o>
 " nnoremap <Space>l <C-i>
