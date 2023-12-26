@@ -132,7 +132,7 @@ if has ('vim_starting')
   augroup lazy-intro
     autocmd!
     if argc () ==# 0
-      autocmd InsertEnter,BufReadPost * ++once autocmd! lazy-intro | lua require 'init/lualine'
+      autocmd InsertEnter,BufReadPost,CmdlineLeave * ++once autocmd! lazy-intro | lua require 'init/lualine'
     else
       autocmd VimEnter * ++once lua require 'init/lualine'
     endif
