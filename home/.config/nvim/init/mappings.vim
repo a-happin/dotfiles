@@ -122,7 +122,8 @@ nnoremap <S-Tab> gT
 
 " Ctrl-qでnvimを終了する
 " もとの動作はVisual Block Modeに入る Ctrl-vでいいよね
-nnoremap <C-q> <Cmd>confirm qall<CR>
+" nnoremap <C-q> <Cmd>confirm qall<CR>
+nnoremap <C-q> <C-c>
 
 " Ctrl-wで閉じる
 " もとの動作はウインドウ操作系
@@ -197,6 +198,11 @@ noremap <PageUp> <C-y>
 noremap <S-PageUp> <C-y>
 noremap <PageDown> <C-e>
 noremap <S-PageDown> <C-e>
+
+" Ctrl-Page*はタブ切り替えだったからいいとして、
+" Ctrl+Shift+Page*をブラウザに合わせる
+call s:anoremap ('<C-S-PageUp>', '<Cmd>-tabmove<CR>')
+call s:anoremap ('<C-S-PageDown>', '<Cmd>+tabmove<CR>')
 
 " (前|次)のquickfix
 nnoremap [q <Cmd>cprev<CR>

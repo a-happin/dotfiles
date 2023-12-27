@@ -241,10 +241,6 @@ set spelllang=en,cjk
 set splitright
 
 " format of status line
-let s:mode_color = {
-  \ 'n': 'guifg=#242b38 guibg=#59c2ff',
-  \ '': '',
-\}
 let s:mode_str = {
   \ 'n'      : 'NORMAL',
   \ 'no'     : 'O-PENDING',

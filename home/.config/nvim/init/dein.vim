@@ -44,14 +44,14 @@ if dein#load_state (s:dein_directory)
   " ** improve default behavior
   " ********************************
   " fern
-  call dein#add ('lambdalisue/fern.vim', {'hook_add': 'let g:fern#default_hidden = 1'})
+  call dein#add ('lambdalisue/fern.vim', #{hook_add: 'let g:fern#default_hidden = 1'})
 
   " netrw hijack (requires fern.vim)
   call dein#add ('lambdalisue/fern-hijack.vim')
 
   " toggle comment
   " autocmdをつかってくれ
-  call dein#add ('tpope/vim-commentary', {'on_event': 'VimEnter', 'hook_add': 'call plugin#commentary#init ()'})
+  call dein#add ('tpope/vim-commentary', #{on_event: 'VimEnter', hook_post_source: 'call plugin#commentary#init ()'})
 
   " ********************************
   " ** plugins
@@ -60,11 +60,11 @@ if dein#load_state (s:dein_directory)
   " call dein#add ('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release', 'on_event': 'VimEnter', 'hook_source': 'call plugin#coc#init ()'})
   call dein#add ('neovim/nvim-lspconfig')
   call dein#add ('williamboman/mason.nvim')
-  call dein#add ('williamboman/mason-lspconfig.nvim', {'hook_add': 'lua require "init/lsp"'})
+  call dein#add ('williamboman/mason-lspconfig.nvim', #{hook_post_source: 'lua require "init/lsp"'})
 
   " show git diff at SignColumn
   " call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter', 'hook_add': 'let g:gitgutter_map_keys = 0'})
-  call dein#add ('lewis6991/gitsigns.nvim', {'hook_add': 'lua require "gitsigns".setup { signs = { add = { text = "+" }, change = { text = "~" } }, attach_to_untracked = false }'})
+  call dein#add ('lewis6991/gitsigns.nvim', #{hook_post_source: 'lua require "gitsigns".setup { signs = { add = { text = "+" }, change = { text = "~" } }, attach_to_untracked = false }'})
 
   " customize statusline
   " call dein#add ('itchyny/lightline.vim', {'hook_add': 'call plugin#lightline#init ()'})
@@ -75,7 +75,7 @@ if dein#load_state (s:dein_directory)
   " call dein#add ('josa42/vim-lightline-coc')
 
   " fzf
-  call dein#add ('junegunn/fzf.vim', {'on_event': 'VimEnter', 'hook_source': 'call plugin#fzf#init ()', 'hook_add': 'if filereadable (expand ("~/.fzf/plugin/fzf.vim")) | set rtp+=~/.fzf/ | endif'})
+  call dein#add ('junegunn/fzf.vim', #{on_event: 'VimEnter', hook_post_source: 'call plugin#fzf#init ()', hook_add: 'if filereadable (expand ("~/.fzf/plugin/fzf.vim")) | set rtp+=~/.fzf/ | endif'})
 
   " ********************************
   " ** denops plugins
@@ -87,7 +87,7 @@ if dein#load_state (s:dein_directory)
   call dein#add ('gamoutatsumi/dps-ghosttext.vim')
 
   " Preview markdown on your browser
-  call dein#add ('kat0h/bufpreview.vim')
+  call dein#add ('kat0h/bufpreview.vim', #{build: 'deno task prepare'})
 
   " ********************************
   " ** ddc plugins
@@ -96,7 +96,7 @@ if dein#load_state (s:dein_directory)
   call dein#add ('Shougo/pum.vim')
 
   " completion framework
-  call dein#add ('Shougo/ddc.vim', {'on_event': 'InsertEnter', 'hook_source': 'call plugin#ddc#init ()'})
+  call dein#add ('Shougo/ddc.vim', #{on_event: 'InsertEnter', hook_source: 'call plugin#ddc#init ()'})
 
   " UI
   call dein#add ('Shougo/ddc-ui-native')
@@ -107,7 +107,7 @@ if dein#load_state (s:dein_directory)
   " around cursor
   call dein#add ('Shougo/ddc-around')
   " skkeleton
-  call dein#add ('vim-skk/skkeleton', {'hook_add': 'call plugin#skkeleton#init ()'})
+  call dein#add ('vim-skk/skkeleton', #{hook_post_source: 'call plugin#skkeleton#init ()'})
 
   " matcher
   call dein#add ('tani/ddc-fuzzy')
@@ -120,13 +120,17 @@ if dein#load_state (s:dein_directory)
   " ** lua plugins
   " ********************************
   " virtual text を利用したindent guide. No conceal らしいので採用
-  call dein#add ('lukas-reineke/indent-blankline.nvim', {'hook_add': 'lua require "init/indent-blankline"'})
+  call dein#add ('lukas-reineke/indent-blankline.nvim', #{hook_post_source: 'lua require "init/indent-blankline"'})
+
+  " 通知をいい感じにする
+  call dein#add ("rcarriga/nvim-notify", #{hook_add: 'lua require "init/nvim-notify"'})
 
 
   " ********************************
   " ** treesitter
   " ********************************
-  call dein#add ('nvim-treesitter/nvim-treesitter', {'hook_add': 'lua require "init/nvim-treesitter"'})
+  " buildしたものが入るためmergeできない
+  call dein#add ('nvim-treesitter/nvim-treesitter', #{merged: v:false, hook_post_source: 'lua require "init/nvim-treesitter"'})
 
   " TSCaptureUnderCursorのため→ いらなくなった！
   " call dein#add ('nvim-treesitter/playground')
@@ -145,7 +149,7 @@ if dein#load_state (s:dein_directory)
   " colorize color code
   " なんか動いてなさそう？
   " call dein#add ('gorodinskiy/vim-coloresque')
-  call dein#add ('norcalli/nvim-colorizer.lua', {'hook_add': 'lua require "colorizer".setup ()'})
+  call dein#add ('norcalli/nvim-colorizer.lua', #{hook_post_source: 'lua require "colorizer".setup ()'})
 
   " C++
   "call dein#add ('octol/vim-cpp-enhanced-highlight')
@@ -181,6 +185,11 @@ endif
 
 function! s:onVimEnter () "noabort
   " call lightline#update ()
+
+  " NOTE: In Vim initializing, you must call the
+  " hook_post_source" hooks manually in |VimEnter| if needed.
+  call dein#call_hook ('post_source')
+
   if dein#check_install ()
     call dein#install ()
   endif

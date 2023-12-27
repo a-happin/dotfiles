@@ -14,6 +14,7 @@ vim.diagnostic.config {
 
 vim.cmd [[
   autocmd! ColorScheme * highlight FloatBorder ctermfg=224 ctermbg=0 guifg=#f6adc6 guibg=#000000
+  highlight FloatBorder ctermfg=224 ctermbg=0 guifg=#f6adc6 guibg=#000000
 ]]
 
 local on_attach = function (client, bufnr)
