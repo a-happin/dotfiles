@@ -231,6 +231,23 @@ color-palette ()
 
 
 #------------------------------
+# nvim-remote
+#------------------------------
+# nvim in nvimにならないようにする
+# $EDITORを変えるとコミットメッセージの編集時とかにも親のnvimを使ってしまう(それは違う)ので、$EDITORを変えずにnvimを変える
+nvim-remote ()
+{
+  if [[ -z $* ]]
+  then
+    nvim --server $NVIM --remote-send "<Cmd>hide<CR>"
+  else
+    nvim --server $NVIM --remote "$@"
+  fi
+}
+[[ -n $NVIM ]] && alias nvim=nvim-remote
+
+
+#------------------------------
 # fzf
 #------------------------------
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --no-ignore --exclude .git'
