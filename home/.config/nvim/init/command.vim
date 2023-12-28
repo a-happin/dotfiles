@@ -67,7 +67,8 @@ command! -bar PackUpdate call pack#init () | call minpac#update ()
 command! -bar PackClean call pack#init () | call minpac#clean ()
 
 command! -bar Reload source ${MYVIMRC}
-command! -bar Note edit ~/Dropbox/note/note.md | lcd %:h
+command! -bar Note tabnew ~/Dropbox/note/note.md | lcd %:h
+command! -bar Nvimrc tabnew $MYVIMRC | lcd %:h
 
 " terminal
 command! -nargs=* -complete=shellcmd Hterminal botright 20new | terminal <args>
@@ -114,16 +115,19 @@ call s:cnoreabbrev ('rg', 'Rg')
 " typo対策
 call s:cnoreabbrev ('W', 'w')
 call s:cnoreabbrev ('newtab', 'tabnew')
+call s:cnoreabbrev ('qc', 'cq')
 
 " abbreviation
 call s:cnoreabbrev ('note', 'Note')
 
 " root権限に昇格して書き込み
-" neovimでは機能しない https://github.com/neovim/neovim/issues/8217 ←won't fix……
-call s:cnoreabbrev ('w!!', 'w !sudo tee > /dev/null %')
+" neovimでは機能しない https://github.com/neovim/neovim/issues/1716 ←won't fix……?
+" call s:cnoreabbrev ('w!!', 'w !sudo tee > /dev/null %')
+call s:cnoreabbrev ('w!!', 'SudaWrite')
 
 " そのバッファのpwdをファイルのあるディレクトリに変更する
 call s:cnoreabbrev ('lcdh', 'lcd %:h')
 
 " ヘルプを縦に分割して開く
+call s:cnoreabbrev ('h', 'vertical help')
 call s:cnoreabbrev ('help', 'vertical help')

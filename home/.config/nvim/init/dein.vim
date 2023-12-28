@@ -60,7 +60,7 @@ if dein#load_state (s:dein_directory)
   " call dein#add ('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release', 'on_event': 'VimEnter', 'hook_source': 'call plugin#coc#init ()'})
   call dein#add ('neovim/nvim-lspconfig')
   call dein#add ('williamboman/mason.nvim')
-  call dein#add ('williamboman/mason-lspconfig.nvim', #{hook_post_source: 'lua require "init/lsp"'})
+  call dein#add ('williamboman/mason-lspconfig.nvim', #{hook_add: 'lua require "init/lsp"'})
 
   " show git diff at SignColumn
   " call dein#add ('airblade/vim-gitgutter', {'on_event': 'VimEnter', 'hook_add': 'let g:gitgutter_map_keys = 0'})
