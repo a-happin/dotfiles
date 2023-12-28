@@ -296,6 +296,7 @@ zshaddhistory ()
     pwd) return 1 ;;
     history) return 1 ;;
     type) return 1 ;;
+    echo) return 1 ;;
     *) ;;
   esac
 
