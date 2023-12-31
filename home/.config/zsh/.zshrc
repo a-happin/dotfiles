@@ -272,10 +272,12 @@ preexec ()
 zshaddhistory ()
 {
   # 複数コマンドはヒストリに追加する
+  # 単純すぎるコマンドはヒストリに追加しない
   local line="${1%$'\n'}"
   case "$line" in
     '') return 1 ;;
     \ *) return 1 ;;
+    nvim) return 1 ;;
     *\;*) return 0 ;;
     *\&*) return 0 ;;
     *\|*) return 0 ;;
@@ -297,6 +299,11 @@ zshaddhistory ()
     history) return 1 ;;
     type) return 1 ;;
     echo) return 1 ;;
+    man) return 1 ;;
+    cat) return 1 ;;
+    bat) return 1 ;;
+    cal) return 1 ;;
+    date) return 1 ;;
     *) ;;
   esac
 
