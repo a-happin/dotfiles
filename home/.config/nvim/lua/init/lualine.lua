@@ -34,8 +34,8 @@ require 'lualine'.setup {
   sections = {
     lualine_a = { 'mode', skkstatus },
     lualine_b = {{ 'filename', file_status = true, path = 1, icon_enabled = false }},
-    lualine_c = {},
-    lualine_x = {{ 'diagnostics', sources = {'nvim_diagnostic'}, colored = true, symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' } }},
+    lualine_c = { '%{"hash = "}%{get (b:, "my_hash", "")}' },
+    lualine_x = {{ 'diagnostics', sources = {'nvim_diagnostic'}, colored = true, symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' } }, '%{string (get (b:, "my_pairs_completion_stack", ""))}', '%{string (get (b:, "completion2", ""))}'},
     lualine_y = { 'filetype' },
     lualine_z = { { 'fileformat', symbols = { unix = 'LF', dos = 'CRLF', mac = 'CR' } }, 'encoding', binary, location () },
   },

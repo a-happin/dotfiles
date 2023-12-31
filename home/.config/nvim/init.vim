@@ -23,13 +23,13 @@ function! s:source (file) abort
   execute 'source' $XDG_CONFIG_HOME . '/nvim/' . a:file
 endfunction
 
-lua vim.loader.enable ()
+" lua vim.loader.enable ()
 
 call s:source ('init/set.vim')
-call s:source ('init/command.vim')
 call s:source ('init/plugin.vim')
 call s:source ('init/dein.vim')
 call s:source ('init/autocmd.vim')
+call s:source ('init/command.vim')
 " if system ('uname -r') =~? 'microsoft'
 if has ("wsl")
   call s:source ('init/wsl.vim')

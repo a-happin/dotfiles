@@ -18,3 +18,22 @@ endfunction
 function! open#google (arg) abort
   return open#open ('https://www.google.com/search?q=' . s:encodeURIComponent (a:arg))
 endfunction
+
+function! open#gf () abort
+  let url = expand ('<cfile>')
+  if url =~# '\v^https?://'
+    call open#open (url)
+  else
+    normal! gF
+  endif
+endfunction
+
+" buffer#last_selected_textがバグってて正しい範囲を取得できない
+function! open#gf_v () abort
+  let url = buffer#last_selected_text ()
+  if url =~# '\v^https?://'
+    call open#open(url)
+  else
+    normal! gvgF
+  endif
+endfunction

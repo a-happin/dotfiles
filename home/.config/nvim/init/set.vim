@@ -128,10 +128,10 @@ set laststatus=3
 set list
 
 " set listで表示する文字
-set listchars=tab:»\ ,trail:_,nbsp:%
+set listchars=tab:»\ ,trail:_,extends:…,precedes:…,nbsp:%
 
 " 括弧の対応
-set matchpairs=(:),{:},[:],<:>,「:」,『:』,（:）,【:】,《:》,〈:〉,［:］,‘:’,“:”
+set matchpairs=(:),{:},[:],<:>,「:」,『:』,【:】,〈:〉,《:》,（:）,［:］,‘:’,“:”
 
 " showmatchのジャンプ時間(1 = 0.1sec)
 "set matchtime=2
@@ -179,7 +179,8 @@ set pumblend=0
 set noruler
 
 " old: inclusiveかつ改行を選択しない
-set selection=old
+" set selection=old
+set selection=exclusive
 
 " visual modeに移行したときに自動的にselect modeに移行する
 " mouse: マウスを使ったとき
@@ -202,6 +203,9 @@ set shiftwidth=2
 
 " c: don't give |ins-completion-menu| messages.
 set shortmess& shortmess+=c
+
+" wrapで折り返したときの表示
+set showbreak=↳\ 
 
 " display inputting command on lower right
 set showcmd
@@ -375,7 +379,8 @@ set wildmenu
 
 " 最初のTabでwildmenuを出す
 " 次のTabからmatchを補完する
-set wildmode=longest:full,full
+" デフォルトのfullでよくない？
+" set wildmode=longest:full,full
 
 set wildoptions=fuzzy,pum,tagfile
 

@@ -3,5 +3,5 @@
 
 augroup set-force
   autocmd!
-  autocmd Filetype * setlocal formatoptions& formatoptions-=t formatoptions-=c formatoptions-=r formatoptions-=o formatoptions+=M iskeyword-=# iskeyword-=/
+  autocmd Filetype * setlocal formatoptions& formatoptions-=t formatoptions-=c formatoptions-=r formatoptions-=o formatoptions+=M iskeyword-=/
 augroup END

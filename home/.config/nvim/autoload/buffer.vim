@@ -5,6 +5,8 @@
 " 参考:
 "   - https://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript (マルチバイト文字非対応)
 "   - https://github.com/vim-jp/vital.vim/blob/master/autoload/vital/__vital__/Vim/Buffer.vim (selectionオプション非対応)
+
+" なんかバグってる…(getposで正しい位置を取得できない)
 function! buffer#last_selected_text () abort
   if visualmode () ==# "\<C-v>"
     let save = getreg ('"', 1)

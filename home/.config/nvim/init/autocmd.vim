@@ -13,8 +13,7 @@ endif
 " auto reload vimrc
 augroup auto-reload-vimrc
   autocmd!
-  " autocmd BufWritePost init.vim ++nested source ${MYVIMRC}
-  autocmd BufWritePost */.config/nvim/*.vim ++nested source $MYVIMRC | redraw | echomsg '*** Reloaded' $MYVIMRC '***'
+  autocmd BufWritePost */.config/nvim/*.vim ++nested source $MYVIMRC | redraw | lua vim.notify (string.format ('*** Auto Reload ***\n%s', vim.env.MYVIMRC), nil, {title = 'Auto Reload init.vim'})
 augroup END
 
 " ファイル保存時のハッシュ値と同じだったらmodifiedフラグをresetする

@@ -105,6 +105,9 @@ nnoremap Y y$
 " ファイルチェックして再描画！
 " nnoremap <C-l> <Cmd>checktime<CR><C-l>
 
+nnoremap gf <Cmd>call open#gf ()<CR>
+" xnoremap gfもしたいけどなんかうまくいかない(open#gf_vがバグってる)
+
 " Shift-Tabでインデントを1つ減らす
 "nnoremap <S-Tab> <<
 
@@ -181,7 +184,7 @@ call s:noxnoremap ('G', 'Gzz')
 
 " インデントを考慮した<Home>
 noremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^"
-inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? "0" : "^")
+inoremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? '<Home>' : '<C-o>^'
 
 " exclusive <End>
 " set selection=old したのでコメントアウト中
@@ -190,10 +193,10 @@ inoremap <silent> <expr> <Home> '<C-o>' . (strpart (getline ('.'), 0, col ('.') 
 " noremap <expr> <S-End> &selection ==# 'inclusive' ? '<S-End><Left>' : '<S-End>'
 
 " うわ急に飛ぶな
-noremap <C-Home> <Home>
-noremap <C-S-Home> <S-Home>
-noremap <C-End> <End>
-noremap <C-S-End> <S-End>
+nmap <C-Home> <Home>
+nmap <C-S-Home> <S-Home>
+nmap <C-End> <End>
+nmap <C-S-End> <S-End>
 noremap <PageUp> <C-y>
 noremap <S-PageUp> <C-y>
 noremap <PageDown> <C-e>
@@ -495,8 +498,12 @@ nnoremap <Space>t <C-w>T
 " call s:nxnoremap ('<Space>y', '"wy')
 
 " 改行挿入
+" append関数で追加するとドットリピートできない(なんで？)
 nnoremap <Space>o o<Space><C-u><Esc>
 nnoremap <Space>O O<Space><C-u><Esc>
+
+
+
 
 " Paste from clipboard
 " call s:nxnoremap ('<Space>p', '<Cmd>GetWindowsClipboard<CR>p')
@@ -547,13 +554,13 @@ nnoremap <Space>n<Tab> <Cmd>tabnew<CR>
 nnoremap <Space>, <Cmd>tabnew $MYVIMRC \| lcd %:h<CR>
 
 " source this
-nnoremap <Space>. <Cmd>if expand ('%:e') ==# 'vim' <bar><bar> expand('%:e') ==# 'lua'<bar>source %<bar>echo 'sourced this file'<bar>endif<CR>
+nnoremap <Space>. <Cmd>if expand ('%:e') ==# 'vim' <bar><bar> expand('%:e') ==# 'lua'<bar>source %<bar>call call (luaeval ('vim.notify'), [':source ' . expand ('%')])<bar>endif<CR>
 
 " ripgrep
 nnoremap <Space>/ <Cmd>Rg<CR>
 
 " 選択中の文字列で検索をかける
-xnoremap <Space>/ "sy/\V<C-r>=escape(@s, '\/')<CR><CR><Cmd>call <SID>flash_hlsearch()<CR>
+xnoremap <Space>/ "zy/\V<C-r>=escape(@z, '\/')<CR><CR><Cmd>call <SID>flash_hlsearch()<CR>
 
 
 " --------------------------------
@@ -585,6 +592,7 @@ let s:pairs = {
   \ '<': ['<', '>'],
   \ '>': ['<', '>'],
   \}
+"👨‍🏻‍🦱
 
 function! s:surround () abort
   let c = getcharstr ()
@@ -697,8 +705,11 @@ cnoremap <expr> <Left> wildmenumode () ? '<End>' : '<Left>'
 cnoremap <expr> <Right> wildmenumode () ? '<End>' : '<Right>'
 
 " Better <C-n>/<C-p> in Command
-cnoremap <C-p> <Up>
-cnoremap <C-n> <Down>
+cnoremap <expr> <C-p> wildmenumode () ? '<C-p>' : '<Up>'
+cnoremap <expr> <C-n> wildmenumode () ? '<C-n>' : '<Down>'
+
+cnoremap <expr> <Up> wildmenumode () ? '<C-p>' : '<Up>'
+cnoremap <expr> <Down> wildmenumode () ? '<C-n>' : '<Down>'
 
 " ちゃんとしたDel
 cnoremap <expr> <Del> strpart (getcmdline (), getcmdpos () - 1) ==# '' ? '' : '<Del>'
@@ -707,9 +718,6 @@ function! s:cmdline_ctrl_delete () abort
   return "\<C-Right>\<Cmd>call setcmdline (strpart (getcmdline (), 0, " . (pos - 1) . ") . strpart (getcmdline (), getcmdpos () - 1), " . pos . ")\<CR>"
 endfunction
 cnoremap <expr> <C-Del> <SID>cmdline_ctrl_delete ()
-
-" cnoremap <Up> <C-p>
-" cnoremap <Down> <C-n>
 
 " 変わったかどうかが分かりづらいので無効にしておく
 cnoremap <Insert> <Nop>
@@ -724,6 +732,58 @@ cnoremap <expr> <Tab> wildmenumode () ? '<Tab>' : (getcmdtype () ==# ':' && getc
 cnoremap <expr> / getcmdtype () ==# '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype () ==# '?' ? '\?' : '?'
 
+" my_pairs
+cnoremap <expr> ( <SID>keymapping_pair ('(', ')')
+cnoremap <expr> ) <SID>keymapping_pair (')', '')
+cnoremap <expr> { <SID>keymapping_pair ('{', '}')
+cnoremap <expr> } <SID>keymapping_pair ('}', '')
+cnoremap <expr> [ <SID>keymapping_pair ('[', ']')
+cnoremap <expr> ] <SID>keymapping_pair (']', '')
+
+" クォーテーションの自動補完
+cnoremap <expr> " <SID>keymapping_pair ('"', '"')
+cnoremap <expr> ' <SID>keymapping_pair ('''', '''')
+cnoremap <expr> ` <SID>keymapping_pair ('`', '`')
+
+" Space
+" Spaceにマッピングを設定するとcabbrevが発動しない…
+" cnoremap <expr> <Space> <SID>keymapping_open_only ('<Space>', '<Space>')
+
+" arrow
+cnoremap <Left> <Cmd>call my_pairs#clear_stack ()<CR><Left>
+cnoremap <expr> <Right> <SID>keymapping_right_or_delete ('<Right>', '<Right>')
+
+" Backspace
+cnoremap <expr> <BS> <SID>keymapping_backspace ('<BS>')
+" Delete
+cnoremap <expr> <Del> <SID>keymapping_right_or_delete ('<Del>', '<Del>')
+
+function! s:getcmdline () abort
+  let str = getcmdline ()
+  let pos = getcmdpos () - 1
+  let prev = strpart (str, 0, pos)
+  let post = strpart (str, pos)
+  return [prev, post]
+endfunction
+
+function! s:keymapping_pair (key, end) abort
+  let [prev, post] = s:getcmdline ()
+  return my_pairs#keymapping_pair (prev, post, a:key, a:end)
+endfunction
+
+function! s:keymapping_open_only (key, end) abort
+  let [prev, post] = s:getcmdline ()
+  return my_pairs#keymapping_open_only (prev, post, a:key, a:end)
+endfunction
+
+function! s:keymapping_backspace (key) abort
+  let [prev, post] = s:getcmdline ()
+  return my_pairs#keymapping_backspace (prev, post, a:key)
+endfunction
+
+function! s:keymapping_right_or_delete (actual_key, key_1step) abort
+  return my_pairs#keymapping_right_or_delete ({-> strpart (getcmdline (), getcmdpos () - 1)}, a:actual_key, a:key_1step)
+endfunction
 
 " --------------------------------
 "  Terminal

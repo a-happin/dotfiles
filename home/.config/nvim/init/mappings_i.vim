@@ -1,12 +1,6 @@
 " --------------------------------
 "  initialize
 " --------------------------------
-let b:parentheses_completion_stack = 0
-
-augroup reset-parentheses-completion-stack
-  autocmd!
-  autocmd InsertEnter * let b:parentheses_completion_stack = 0
-augroup END
 
 
 " --------------------------------
@@ -23,34 +17,54 @@ inoremap <C-S-Insert> <Nop>
 " --------------------------------
 "  動作系
 " --------------------------------
-inoremap <S-Del> <C-o>de
-inoremap <C-Del> <C-o>dE
-inoremap <C-S-Del> <C-o>dE
+inoremap <C-o> <C-\><C-o>
+
+inoremap <S-Del> <C-\><C-o>dw
+inoremap <C-Del> <C-\><C-o>dw
+inoremap <C-S-Del> <C-\><C-o>dW
 
 inoremap <C-h> <C-w>
+
+
+" Debug
+inoremap <F7> <Cmd>lua vim.notify(vim.inspect (vim.v.completed_item))<CR>
+
 
 " --------------------------------
 "  移動系
 " --------------------------------
 
-inoremap <Down> <C-o>gj
-inoremap <Up> <C-o>gk
+inoremap <expr> <Down> pumvisible () ? '<C-n>' : '<Cmd>normal! gj<CR>'
+inoremap <expr> <Up> pumvisible () && v:completed_item != {} ? '<C-p>' : '<Cmd>normal! gk<CR>'
 
 " カーソルが急に飛ぶとつらいので修正
 " どうせならselect modeになってほしい
-" &keymodel contains 'startsel' && &selection ==# 'inclusive' のときの挙動がおかしいので修正
-inoremap <silent> <expr> <S-Left>   &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Left>oho<C-g>'     : '<S-Left><C-g>'  : '<Left>'
-inoremap <silent> <expr> <S-Right>  &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Right><Left><C-g>' : '<S-Right><C-g>' : '<Right>'
-inoremap <silent> <expr> <S-Up>     &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Up>oho<C-g>'       : '<S-Up><C-g>'    : '<Up>'
-inoremap <silent> <expr> <S-Down>   &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Down><Left><C-g>'  : '<S-Down><C-g>'  : '<Down>'
-inoremap <silent> <expr> <S-Home>   &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Home>oho<C-g>'     : '<S-Home><C-g>'  : '<Home>'
-inoremap <silent> <expr> <S-End>    &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-End><Left><C-g>'   : '<S-End><C-g>'   : '<End>'
-inoremap <silent> <expr> <C-S-Home> &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-Home>oho<C-g>'     : '<S-Home><C-g>'  : '<Home>'
-inoremap <silent> <expr> <C-S-End>  &keymodel =~# 'startsel' ? &selection ==# 'inclusive' ? '<S-End><Left><C-g>'   : '<S-End><C-g>'   : '<End>'
+" &keymodel contains 'startsel' && &selection !=# 'exclusive' のときの挙動がおかしいので修正
+" inoremap <silent> <expr> <S-Left>   &keymodel =~# 'startsel' ? &selection !=# 'exclusive' ? '<S-Left>oho<C-g>'     : '<S-Left><C-g>'  : '<Left>'
+" inoremap <silent> <expr> <S-Right>  &keymodel =~# 'startsel' ? &selection !=# 'exclusive' ? '<S-Right><Left><C-g>' : '<S-Right><C-g>' : '<Right>'
+" inoremap <silent> <expr> <S-Up>     &keymodel =~# 'startsel' ? &selection !=# 'exclusive' ? '<S-Up>oho<C-g>'       : '<S-Up><C-g>'    : '<Up>'
+" inoremap <silent> <expr> <S-Down>   &keymodel =~# 'startsel' ? &selection !=# 'exclusive' ? '<S-Down><Left><C-g>'  : '<S-Down><C-g>'  : '<Down>'
+" inoremap <silent> <expr> <S-Home>   &keymodel =~# 'startsel' ? &selection !=# 'exclusive' ? '<S-Home>oho<C-g>'     : '<S-Home><C-g>'  : '<Home>'
+" inoremap <silent> <expr> <S-End>    &keymodel =~# 'startsel' ? &selection !=# 'exclusive' ? '<S-End><Left><C-g>'   : '<S-End><C-g>'   : '<End>'
+" inoremap <silent> <expr> <C-S-Home> &keymodel =~# 'startsel' ? &selection !=# 'exclusive' ? '<S-Home>oho<C-g>'     : '<S-Home><C-g>'  : '<Home>'
+" inoremap <silent> <expr> <C-S-End>  &keymodel =~# 'startsel' ? &selection !=# 'exclusive' ? '<S-End><Left><C-g>'   : '<S-End><C-g>'   : '<End>'
+
+" keymodel contains 'startsel' 専用
+" select mode にする
+if &keymodel =~# 'startsel'
+  inoremap <S-Left>  <S-Left><C-g>
+  inoremap <S-Right> <S-Right><C-g>
+  inoremap <S-Up> <S-Up><C-g>
+  inoremap <S-Down> <S-Down><C-g>
+  inoremap <S-Home> <S-Home><C-g>
+  inoremap <S-End> <S-End><C-g>
+endif
 
 " 急に飛ばないで
-inoremap <C-Home> <Home>
-inoremap <C-End> <End>
+imap <C-Home> <Home>
+imap <C-S-Home> <S-Home>
+imap <C-End> <End>
+imap <C-S-End> <S-End>
 inoremap <PageUp> <C-x><C-y>
 inoremap <S-PageUp> <C-x><C-y>
 inoremap <PageDown> <C-x><C-e>
@@ -62,40 +76,135 @@ inoremap <S-PageDown> <C-x><C-e>
 " --------------------------------
 
 " ポップアップ補完メニューが表示されているときは次の候補を選択
-inoremap <expr> <Tab> <SID>tab_key ()
+inoremap <expr> <Tab> <SID>keymapping_tab ()
 
 " ポップアップ補完メニューが表示されているときは前の候補を選択
 " それ以外はインデントを1つ下げる
 inoremap <expr> <S-Tab> pumvisible () ? '<C-p>' : pum#visible() ? '<Cmd>call pum#map#select_relative (-1)<CR>' : '<C-d>'
 
+
 " ポップアップ補完メニューが表示されているときは確定
-inoremap <expr> <CR> <SID>cr_key ()
-
-" 括弧の対応の補完
-inoremap <expr> ( <SID>begin_parenthesis ('(',')')
-inoremap <expr> ) <SID>end_parenthesis   ('(',')')
-inoremap <expr> { <SID>begin_parenthesis ('{','}')
-inoremap <expr> } <SID>end_parenthesis   ('{','}')
-inoremap <expr> [ <SID>begin_parenthesis ('[',']')
-inoremap <expr> ] <SID>end_parenthesis   ('[',']')
-
-" クォーテーションの自動補完
-inoremap <expr> " <SID>quotation_key ('"')
-inoremap <expr> ' <SID>quotation_key ('''')
-inoremap <expr> ` <SID>quotation_key ('`')
-
-" Backspace
-inoremap <expr> <BS> <SID>backspace_key ()
-"inoremap <expr><Del> delete_key ()
+inoremap <expr> <CR> <SID>keymapping_cr ()
 
 " いいかんじの'/'
-inoremap <expr> / <SID>slash_key ()
+inoremap <expr> / <SID>keymapping_slash ()
 
-" スペースキー
-inoremap <expr> <Space> <SID>space_key ()
+" 括弧の対応の補完
+inoremap <expr> ( <SID>keymapping_pair ('(', ')')
+inoremap <expr> ) <SID>keymapping_pair (')', '')
+inoremap <expr> { <SID>keymapping_pair ('{', '}')
+inoremap <expr> } <SID>keymapping_pair ('}', '')
+inoremap <expr> [ <SID>keymapping_pair ('[', ']')
+inoremap <expr> ] <SID>keymapping_pair (']', '')
+inoremap <expr> 「 <SID>keymapping_pair ('「', '」')
+inoremap <expr> 」 <SID>keymapping_pair ('」', '')
+inoremap <expr> 『 <SID>keymapping_pair ('『', '』')
+inoremap <expr> 』 <SID>keymapping_pair ('』', '')
+inoremap <expr> 【 <SID>keymapping_pair ('【', '】')
+inoremap <expr> 】 <SID>keymapping_pair ('】', '')
+inoremap <expr> 〈 <SID>keymapping_pair ('〈', '〉')
+inoremap <expr> 〉 <SID>keymapping_pair ('〉', '')
+inoremap <expr> 《 <SID>keymapping_pair ('《', '》')
+inoremap <expr> 》 <SID>keymapping_pair ('》', '')
+inoremap <expr> （ <SID>keymapping_pair ('（', '）')
+inoremap <expr> ） <SID>keymapping_pair ('）', '')
+inoremap <expr> ［ <SID>keymapping_pair ('［', '］')
+inoremap <expr> ］ <SID>keymapping_pair ('］', '')
+
+" クォーテーションの自動補完
+inoremap <expr> " <SID>keymapping_pair ('"', '"')
+inoremap <expr> ' <SID>keymapping_pair ('''', '''')
+inoremap <expr> ` <SID>keymapping_pair ('`', '`')
+
+" Space
+inoremap <expr> <Space> <SID>keymapping_open_only ('<Space>', '<Space>')
+
+" arrow
+inoremap <Left> <Cmd>call my_pairs#clear_stack ()<CR><Left>
+inoremap <expr> <Right> <SID>keymapping_right_or_delete ('<Right>', '<Right>')
+
+" Backspace
+inoremap <expr> <BS> <SID>keymapping_backspace ('<BS>')
+" Delete
+inoremap <expr> <Del> <SID>keymapping_right_or_delete ('<Del>', '<Del>')
+
 
 " *******************************
-" **  function!
+" **  function
+" *******************************
+
+" Tab
+" キーワードなら補完開始
+" スラッシュならファイル名補完開始
+" 空行ならインデント調整
+" それ以外はTab
+function! s:keymapping_tab () abort
+  if pumvisible ()
+    return "\<C-n>"
+  elseif pum#visible ()
+    return "\<Cmd>call pum#map#select_relative (+1)\<CR>"
+  else
+    let [prev, post] = s:getline ()
+    if prev =~# '\v\k$|:$|->$|\.$'
+      if luaeval ('vim.lsp.buf.server_ready ()')
+        return "\<Cmd>call ddc#map#manual_complete ()\<CR>"
+      else
+        return "\<C-n>"
+      endif
+    elseif prev =~# '\v/$'
+      return "\<C-x>\<C-f>"
+    elseif prev ==# '' && post ==# ''
+      return "\<C-o>cc\<C-d>\<C-t>"
+    else
+      return "\<Tab>"
+    endif
+  endif
+endfunction
+
+" CR
+" カーソルが{}の間ならいい感じに改行
+" それ以外は改行
+function! s:keymapping_cr () abort
+  if pumvisible ()
+    if v:completed_item == {}
+      return "\<C-y>\<CR>"
+    else
+      return "\<C-y>"
+    endif
+  elseif pum#visible ()
+    " if v:completed_item == {}
+      " return "\<Cmd>call pum#map#confirm()\<CR>\<CR>"
+    " else
+      return "\<Cmd>call pum#map#confirm()\<CR>"
+    " endif
+  else
+    let [prev, post] = s:getline ()
+    return my_pairs#keymapping_cr (prev, post)
+  endif
+endfunction
+
+" Slash Key
+" 直前が*または\だった場合、そのまま/
+" < だった場合、/を入力した後オムニ補完開始
+" それ以外: /を入力した後ファイル名補完開始
+function! s:keymapping_slash () abort
+  let [prev, post] = s:getline ()
+  if prev =~# '\v[/*\\]$'
+    return "/"
+  elseif s:ends_with (prev, '<')
+    if &omnifunc ==# 'htmlcomplete#CompleteTags'
+      return "/\<C-x>\<C-o>\<C-n>\<C-y>\<C-o>=="
+    else
+      return "/"
+    endif
+  else
+    return "/\<C-x>\<C-f>"
+  endif
+endfunction
+
+
+" *******************************
+" **  my_pairs
 " *******************************
 
 " カーソル位置の文字
@@ -114,109 +223,31 @@ function! s:getline () abort
   return [prev, post]
 endfunction
 
-function! s:starts_with (str, x) abort
-  return a:str =~# '\v^\V' . a:x
-endfunction
-
-function! s:ends_with (str, x) abort
-  return a:str =~# '\V' . a:x . '\v$'
-endfunction
-
-let s:parens = [
-  \   ['(', ')'],
-  \   ['{', '}'],
-  \   ['[', ']'],
-  \   ['<', '>'],
-  \ ]
-
-let s:quotations = [
-  \   '''',
-  \   '"',
-  \   '`',
-  \ ]
-
-" 空の括弧の中にいるかどうか
-" (|)
-function! s:is_in_empty_parentheses (prev, post) abort
-  for [begin, end] in s:parens
-    if s:ends_with (a:prev, begin) && s:starts_with (a:post, end)
-      return 1
-    endif
-  endfor
-
-  return 0
-endfunction
-
-" '|'
-function! s:is_in_empty_quotation (prev, post) abort
-  for quot in s:quotations
-    if s:ends_with (a:prev, quot) && s:starts_with (a:post, quot)
-      return 1
-    endif
-  endfor
-
-  return 0
-endfunction
-
-" ( | )
-function! s:is_in_empty_parenthes_with_space (prev, post) abort
-  for [begin, end] in s:parens
-    if s:ends_with (a:prev, begin . ' ') && s:starts_with (a:post, ' ' . end)
-      return 1
-    endif
-  endfor
-
-  return 0
-endfunction
-
-
-""""""""""""""""""""""""""""""""
-" Key
-""""""""""""""""""""""""""""""""
-
-" 括弧開始
-" カーソル直下が空白or括弧閉じの場合、閉じ括弧を補完
-function! s:begin_parenthesis (begin, end) abort
+function! s:keymapping_pair (key, end) abort
   let [prev, post] = s:getline ()
-
-  let should_complete = 0
-  " カーソル直下が空文字, 空白, ',' or ';'
-  if post =~# '\v^$|^\s|^[,;]'
-    let should_complete = 1
-  else
-    " カーソル直下が括弧閉じ
-    " |)
-    for [begin, end] in s:parens
-      if s:starts_with (post, end)
-        let should_complete = 1
-      endif
-    endfor
-  endif
-
-  if should_complete == 1
-    let b:parentheses_completion_stack += 1
-    return a:begin . a:end . "\<Left>"
-  else
-    return a:begin
-  endif
+  return my_pairs#keymapping_pair (prev, post, a:key, a:end)
 endfunction
 
-
-" 括弧閉じ
-" 補完スタックがある時、単に右に移動
-" それ以外は括弧閉じる
-function! s:end_parenthesis (begin, end) abort
+function! s:keymapping_open_only (key, end) abort
   let [prev, post] = s:getline ()
-  if b:parentheses_completion_stack > 0 && s:starts_with (post, a:end)
-    let b:parentheses_completion_stack -= 1
-    return "\<Right>"
-  else
-    return a:end
-  endif
+  return my_pairs#keymapping_open_only (prev, post, a:key, a:end)
+endfunction
+
+function! s:keymapping_backspace (key) abort
+  let [prev, post] = s:getline ()
+  return my_pairs#keymapping_backspace (prev, post, a:key)
+endfunction
+
+function! s:keymapping_right_or_delete (actual_key, key_1step) abort
+  return my_pairs#keymapping_right_or_delete ({-> strpart (getline ('.'), col ('.') - 1)}, a:actual_key, a:key_1step)
 endfunction
 
 
-" quotation
+finish
+" *******************************
+" **  unused
+" *******************************
+
 " vimscriptかつ行頭の場合はコメントなので補完しない
 " rustかつprevに'<'が含まれている場合はlifetimeの可能性が高いため補完しない
 " カーソル位置に同じ文字がある場合は<Right>
@@ -224,13 +255,22 @@ endfunction
 " それ以外は補完しない
 function! s:quotation_key (key) abort
   let [prev, post] = s:getline ()
-  if &filetype ==# 'vim' && prev =~# '\v^\s*$' && a:key ==# '"'
-    return a:key
-  elseif &filetype ==# 'rust' && prev =~# '<' && a:key ==# ''''
-    return a:key
-  elseif s:starts_with (post, a:key)
-    return "\<Right>"
+
+  let res = s:closing_pair (prev, post, a:key)
+
+  if &filetype ==# 'vim' && a:key ==# '"' && prev =~# '\v^\s*$'
+    return res
+  elseif &filetype ==# 'rust' && a:key ==# '''' && prev =~# '<'
+    return res
+  elseif a:key ==# '''' && prev =~# '\v\k$'
+    return res
   else
+    return res . s:opened_pair (prev . a:key, post, res ==# "\<Right>")
+    let longest_end = s:find_matched_end (prev . a:key)
+
+    if longest_end !=# '' && s:should_auto_complete (post)
+    endif
+
     " カーソル直前が空文字 or 空白
     let left_flag = prev =~# '\v^$|\s$'
     " カーソル直下が空文字 or 空白
@@ -258,116 +298,3 @@ function! s:quotation_key (key) abort
   endif
 endfunction
 
-
-" Tab
-" キーワードなら補完開始
-" スラッシュならファイル名補完開始
-" 空行ならインデント調整
-" それ以外はTab
-function! s:tab_key () abort
-  if pumvisible ()
-    return "\<C-n>"
-  elseif pum#visible ()
-    return "\<Cmd>call pum#map#select_relative (+1)\<CR>"
-  else
-    let [prev, post] = s:getline ()
-    if prev =~# '\v\k$|:$|->$|\.$'
-      if luaeval ('vim.lsp.buf.server_ready ()')
-        return "\<Cmd>call ddc#map#manual_complete ()\<CR>"
-      else
-        return "\<C-n>"
-      endif
-    elseif prev =~# '\v/$'
-      return "\<C-x>\<C-f>"
-    elseif prev ==# '' && post ==# ''
-      return "\<C-o>cc\<C-d>\<C-t>"
-    else
-      return "\<Tab>"
-    endif
-  endif
-endfunction
-
-
-" CR
-" カーソルが{}の間ならいい感じに改行
-" カーソル直前が3つの連続したquotなら6つにして真ん中で改行 (終了にも反応してうざいので保留)
-" それ以外は改行
-function! s:cr_key () abort
-  if pumvisible ()
-    if v:completed_item == {}
-      return "\<C-y>\<CR>"
-    else
-      return "\<C-y>"
-    endif
-  elseif pum#visible ()
-    " if v:completed_item == {}
-      " return "\<Cmd>call pum#map#confirm()\<CR>\<CR>"
-    " else
-      return "\<Cmd>call pum#map#confirm()\<CR>"
-    " endif
-  else
-    let [prev, post] = s:getline ()
-    if s:is_in_empty_parentheses (prev, post)
-      return "\<CR>\<Up>\<End>\<CR>"
-    " elseif post ==# '' && getline (line ('.') + 1) ==# ''
-    "   for quot in s:quotations
-    "     if prev =~# '\v' . quot . '@<!' . quot . '{3}$'
-    "       return "\<CR>" . quot . quot . quot . "\<Up>\<End>\<CR>"
-    "     endif
-    "   endfor
-    endif
-    return "\<CR>"
-  endif
-endfunction
-
-
-" Backspace Key
-function! s:backspace_key () abort
-  let [prev, post] = s:getline ()
-  if s:is_in_empty_parentheses (prev, post) || s:is_in_empty_quotation (prev, post) || s:is_in_empty_parenthes_with_space (prev, post)
-    return "\<BS>\<Del>"
-  else
-    return "\<BS>"
-  endif
-endfunction
-
-" Delete Key
-function! s:delete_key () abort
-  let [prev, post] = s:getline ()
-  if s:is_in_empty_parentheses (prev, post) || s:is_in_empty_quotation (prev, post) || s:is_in_empty_parenthes_with_space (prev, post)
-    return "\<BS>\<Del>"
-  else
-    return "\<Del>"
-  endif
-endfunction
-
-
-" Slash Key
-" 直前が*または\だった場合、そのまま/
-" < だった場合、/を入力した後オムニ補完開始
-" それ以外: /を入力した後ファイル名補完開始
-function! s:slash_key () abort
-  let [prev, post] = s:getline ()
-  if prev =~# '\v[/*\\]$'
-    return "/"
-  elseif s:ends_with (prev, '<')
-    if &omnifunc ==# 'htmlcomplete#CompleteTags'
-      return "/\<C-x>\<C-o>\<C-n>\<C-y>\<C-o>=="
-    else
-      return "/"
-    endif
-  else
-    return "/\<C-x>\<C-f>"
-  endif
-endfunction
-
-" Space Key
-" カーソルが空括弧の間にあった場合に2個挿入
-function! s:space_key () abort
-  let [prev, post] = s:getline ()
-  if s:is_in_empty_parentheses (prev, post)
-    return "\<Space>\<Space>\<Left>"
-  else
-    return "\<Space>"
-  endif
-endfunction
