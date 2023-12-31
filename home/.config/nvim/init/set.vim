@@ -112,7 +112,8 @@ set incsearch
 " @はアルファベットを表す
 " ハイフン(-)もキーワードとみなす
 " @自体を追加したい場合は@-@とする(範囲指定)
-set iskeyword& iskeyword+=-
+" ローカルな設定なのでここで設定しちゃだめ？
+" set iskeyword& iskeyword+=-
 
 " Special keysを押したときにvisual modeに移行する
 " Special keys: 矢印, <Home>, <End>, <Pageup>, <PageDown>

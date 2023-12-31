@@ -20,8 +20,8 @@ augroup END
 " 衝突した場合？知らん
 augroup check_hash
   autocmd!
-  autocmd BufReadPost,BufModifiedSet * if &modifiable && !&modified | let b:my_hash = sha256 (join (getline (1, '$'), '\n')) | endif
-  autocmd TextChanged,InsertLeave * if &modifiable && &modified && sha256 (join (getline (1, '$'), '\n')) ==# get (b:, 'my_hash', '') | setlocal nomodified | endif
+  autocmd BufReadPost,BufModifiedSet ?* if &modifiable && !&readonly && !&modified | let b:my_hash = sha256 (join (getline (1, '$'), '\n')) | endif
+  autocmd TextChanged,InsertLeave ?* if &modifiable && !&readonly && &modified && sha256 (join (getline (1, '$'), '\n')) ==# get (b:, 'my_hash', '') | setlocal nomodified | endif
 augroup END
 
 function! s:auto_save () abort

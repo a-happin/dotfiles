@@ -248,8 +248,10 @@ function! s:push_stack (end) abort
 endfunction
 
 function! my_pairs#clear_stack () abort
-  unlet! b:my_pairs_completion_stack
-  autocmd! my_pairs_completion_stack-reset * <buffer>
+  if exists ('b:my_pairs_completion_stack')
+    unlet b:my_pairs_completion_stack
+    autocmd! my_pairs_completion_stack-reset * <buffer>
+  endif
 endfunction
 
 " 位置も保存しないと正確じゃないから微妙
