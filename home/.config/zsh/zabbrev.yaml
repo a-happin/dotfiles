@@ -204,7 +204,8 @@ abbrevs:
 
   - context: 'git'
     abbr: 's'
-    snippet: 'stash list && git status'
+    snippet: ' git stash list && git status'
+    operation: 'replace-all'
 
   - context: 'git'
     abbr: 'd'
@@ -278,7 +279,8 @@ abbrevs:
   - context: 'git'
     abbr: 'af'
     # snippet: add --intent-to-add $(local selected=$({ git diff --name-only --relative; git untracked } | fzf --multi --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}'); printf '%s; git add --patch %s' "$selected" "$selected")
-    snippet: add $({ git diff --name-only --relative; git untracked } | fzf --multi --reverse --height 60% --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}')
+    snippet: " git add $({ git diff --name-only --relative; git untracked } | fzf --multi --reverse --height 60% --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}')"
+    operation: 'replace-all'
     evaluate: true
     redraw: true
 
