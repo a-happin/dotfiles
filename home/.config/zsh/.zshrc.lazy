@@ -235,17 +235,17 @@ color-palette ()
 #------------------------------
 # nvim in nvim terminalにならないようにする
 # $EDITORを変えるとコミットメッセージの編集時とかにも親のnvimを使ってしまう(それは違う)ので、$EDITORを変えずにnvimを変える
-nvim-remote ()
+[[ -n $NVIM ]] && nvim ()
 {
   if [[ -z $* ]]
   then
-    nvim --server $NVIM --remote-send "<Cmd>hide<CR>"
+    command nvim --server $NVIM --remote-send "<Cmd>hide<CR>"
   else
-    # nvim --server $NVIM --remote "$@"
-    nvim --server $NVIM --remote-tab "$@"
+    # command nvim --server $NVIM --remote "$@"
+    command nvim --server $NVIM --remote-tab "$@"
   fi
 }
-[[ -n $NVIM ]] && alias nvim=nvim-remote
+# [[ -n $NVIM ]] && alias nvim=__nvim-remote
 
 
 #------------------------------
