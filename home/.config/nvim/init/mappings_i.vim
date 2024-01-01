@@ -34,8 +34,9 @@ inoremap <F7> <Cmd>lua vim.notify(vim.inspect (vim.v.completed_item))<CR>
 "  移動系
 " --------------------------------
 
-inoremap <expr> <Down> pumvisible () ? '<C-n>' : '<Cmd>normal! gj<CR>'
-inoremap <expr> <Up> pumvisible () && v:completed_item != {} ? '<C-p>' : '<Cmd>normal! gk<CR>'
+" <Cmd>normal! gj<CR>だと少ない行に行って帰ってきたときに戻ってこなくてなんかだめ……
+inoremap <expr> <Down> pumvisible () ? '<C-n>' : '<C-\><C-o>gj'
+inoremap <expr> <Up> pumvisible () && v:completed_item != {} ? '<C-p>' : '<C-\><C-o>gk'
 
 " カーソルが急に飛ぶとつらいので修正
 " どうせならselect modeになってほしい
