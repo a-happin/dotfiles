@@ -121,12 +121,12 @@ inoremap <expr> <Space> <SID>keymapping_open_only ('<Space>', '<Space>')
 
 " arrow
 inoremap <Left> <Cmd>call my_pairs#clear_stack ()<CR><Left>
-inoremap <expr> <Right> <SID>keymapping_right_or_delete ('<Right>', '<Right>')
+inoremap <expr> <Right> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 1)) ? repeat ('<Right>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Right>'
 
 " Backspace
 inoremap <expr> <BS> <SID>keymapping_backspace ('<BS>')
 " Delete
-inoremap <expr> <Del> <SID>keymapping_right_or_delete ('<Del>', '<Del>')
+inoremap <expr> <Del> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 1)) ? repeat ('<Del>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Del>'
 
 
 " *******************************
@@ -191,7 +191,7 @@ function! s:keymapping_slash () abort
   let [prev, post] = s:getline ()
   if prev =~# '\v[/*\\]$'
     return "/"
-  elseif s:ends_with (prev, '<')
+  elseif prev =~# '\V<\v$'
     if &omnifunc ==# 'htmlcomplete#CompleteTags'
       return "/\<C-x>\<C-o>\<C-n>\<C-y>\<C-o>=="
     else
@@ -236,10 +236,6 @@ endfunction
 function! s:keymapping_backspace (key) abort
   let [prev, post] = s:getline ()
   return my_pairs#keymapping_backspace (prev, post, a:key)
-endfunction
-
-function! s:keymapping_right_or_delete (actual_key, key_1step) abort
-  return my_pairs#keymapping_right_or_delete ({-> strpart (getline ('.'), col ('.') - 1)}, a:actual_key, a:key_1step)
 endfunction
 
 

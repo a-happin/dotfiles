@@ -51,13 +51,51 @@ let s:quotations = [
 
 
 " ********************************
+" ** stack
+" ********************************
+function! s:push_stack (end) abort
+  if !exists ('b:my_pairs_stack')
+    let b:my_pairs_stack = []
+    augroup my_pairs_stack_reset
+      autocmd! * <buffer>
+      autocmd InsertLeave,CmdLineLeave <buffer> ++once call my_pairs#clear_stack ()
+      " autocmd CursorMovedI <buffer> call s:check_stack ()
+    augroup END
+  endif
+
+  call add (b:my_pairs_stack, a:end)
+endfunction
+
+" WARNING: do not call if stack is empty
+function! my_pairs#pop_stack () abort
+  return remove (b:my_pairs_stack, -1)
+endfunction
+
+" スタックが空ではない && postの開始文字列がスタックのtopと一致している
+function! my_pairs#match_stack (post) abort
+  return exists ('b:my_pairs_stack[-1]') && s:starts_with (a:post, b:my_pairs_stack[-1])
+endfunction
+
+function! s:unsafe_clear_stack () abort
+  unlet b:my_pairs_stack
+  autocmd! my_pairs_stack_reset * <buffer>
+endfunction
+
+function! my_pairs#clear_stack () abort
+  if exists ('b:my_pairs_stack')
+    call s:unsafe_clear_stack ()
+  endif
+endfunction
+
+
+" ********************************
 " ** ?
 " ********************************
 
 " カーソル直下が空文字, 空白, ',', ';' or 括弧閉じ
 " |)
 function! s:should_auto_complete (post)
-  return a:post ==# '' || exists ('b:my_pairs_completion_stack[-1]') || a:post =~# '\v^\s|^[,;)}\]>」』）】》〉］]'
+  return a:post ==# '' || my_pairs#match_stack (a:post) || a:post =~# '\v^\s|^[,;)}\]>」』）】》〉］]'
 endfunction
 
 " 括弧閉じるの補完関数
@@ -108,11 +146,11 @@ endfunction
 " key:    string   入力したキー
 " return: string[] 入力するべきキーのリスト。長さが1以上であり、先頭要素はa:keyと同じか空文字列である(空文字列になっている場合は入力がキャンセルされた)
 function! s:closing_pair (post, key) abort
-  if exists ('b:my_pairs_completion_stack[-1]')
-    if s:starts_with (a:post, b:my_pairs_completion_stack[-1])
-      if a:key ==# b:my_pairs_completion_stack[-1]
+  if exists ('b:my_pairs_stack[-1]')
+    if s:starts_with (a:post, b:my_pairs_stack[-1])
+      if a:key ==# b:my_pairs_stack[-1]
         " pop
-        call remove (b:my_pairs_completion_stack, -1)
+        call remove (b:my_pairs_stack, -1)
         return ['', repeat ("\<Right>", strchars (a:key))]
       endif
     else
@@ -172,10 +210,10 @@ function! my_pairs#keymapping_cr (prev, post) abort
 endfunction
 
 function! s:delete_pairs (start, end) abort
-  if exists ('b:my_pairs_completion_stack[-1]')
-    if b:my_pairs_completion_stack[-1] ==# a:end
+  if exists ('b:my_pairs_stack[-1]')
+    if b:my_pairs_stack[-1] ==# a:end
       " pop
-      call remove(b:my_pairs_completion_stack, -1)
+      call remove(b:my_pairs_stack, -1)
     else
       call my_pairs#clear_stack ()
     endif
@@ -214,51 +252,21 @@ function! my_pairs#keymapping_backspace (prev, post, key) abort
   return a:key
 endfunction
 
-" カーソルの右に対して作用するなにか
-" <Right> <Delete> <C-Delete>
-function! my_pairs#keymapping_right_or_delete (get_post, actual_key, key_1step) abort
-  if exists ('b:my_pairs_completion_stack[-1]')
-    " if s:starts_with (call (a:get_post, []), b:my_pairs_completion_stack[-1])
-    if s:starts_with (a:get_post (), b:my_pairs_completion_stack[-1])
-      " pop
-      let end = remove (b:my_pairs_completion_stack, -1)
-      return repeat (a:key_1step, strchars (end))
-    endif
+finish
 
-  endif
-
-  return a:actual_key
-endfunction
-
-
-" ********************************
-" ** stack
-" ********************************
-function! s:push_stack (end) abort
-  if !exists ('b:my_pairs_completion_stack')
-    let b:my_pairs_completion_stack = []
-    augroup my_pairs_completion_stack-reset
-      autocmd! * <buffer>
-      autocmd InsertLeave,CmdLineLeave <buffer> ++once call my_pairs#clear_stack ()
-      " autocmd CursorMovedI <buffer> call s:check_stack ()
-    augroup END
-  endif
-
-  call add (b:my_pairs_completion_stack, a:end)
-endfunction
-
-function! my_pairs#clear_stack () abort
-  if exists ('b:my_pairs_completion_stack')
-    unlet b:my_pairs_completion_stack
-    autocmd! my_pairs_completion_stack-reset * <buffer>
-  endif
-endfunction
 
 " 位置も保存しないと正確じゃないから微妙
 " function! s:check_stack () abort
-"   if exists ('b:my_pairs_completion_stack[-1]') && !s:starts_with (strpart (getline ('.'), col ('.') - 1), b:pair_completion_stack[-1])
-"     unlet b:my_pairs_completion_stack
-"     autocmd! my_pairs_completion_stack-reset * <buffer>
+"   if exists ('b:my_pairs_stack[-1]') && !s:starts_with (strpart (getline ('.'), col ('.') - 1), b:pair_completion_stack[-1])
+"     unlet b:my_pairs_stack
+"     autocmd! my_pairs_stack_reset * <buffer>
 "   endif
 " endfunction
+
+
+" ********************************
+" ** example
+" ********************************
+inoremap <expr> <Right> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 1)) ? repeat ('<Right>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Right>'
+inoremap <expr> <Del> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 1)) ? repeat ('<Del>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Del>'
 

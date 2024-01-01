@@ -752,11 +752,12 @@ cnoremap <expr> ` <SID>keymapping_pair ('`', '`')
 " arrow
 cnoremap <Left> <Cmd>call my_pairs#clear_stack ()<CR><Left>
 cnoremap <expr> <Right> <SID>keymapping_right_or_delete ('<Right>', '<Right>')
+cnoremap <expr> <Right> my_pairs#match_stack (strpart (getcmdline (), getcmdpos () - 1)) ? repeat ('<Right>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Right>'
 
+" Delete
+cnoremap <expr> <Del> my_pairs#match_stack (strpart (getcmdline (), getcmdpos () - 1)) ? repeat ('<Del>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Del>'
 " Backspace
 cnoremap <expr> <BS> <SID>keymapping_backspace ('<BS>')
-" Delete
-cnoremap <expr> <Del> <SID>keymapping_right_or_delete ('<Del>', '<Del>')
 
 function! s:getcmdline () abort
   let str = getcmdline ()
@@ -781,9 +782,6 @@ function! s:keymapping_backspace (key) abort
   return my_pairs#keymapping_backspace (prev, post, a:key)
 endfunction
 
-function! s:keymapping_right_or_delete (actual_key, key_1step) abort
-  return my_pairs#keymapping_right_or_delete ({-> strpart (getcmdline (), getcmdpos () - 1)}, a:actual_key, a:key_1step)
-endfunction
 
 " --------------------------------
 "  Terminal

@@ -229,9 +229,17 @@ console.log (`if &background ==# 'dark'`)
 
   // エラー 確認できず
   highlight ('Error', {fg: black, bg: error_red, attrs: ['bold']})
+  // ERROR: FIXME: BUG:
+  highlight ('@text.danger', {fg: black, bg: error_red, attrs: ['bold']})
 
-  // TODO:
+  // TODO: WIP:
   highlight ('Todo', {fg: black, bg: warning_yellow, attrs: ['bold']})
+  // WARNING: HACK: WARN: FIX:
+  highlight ('@text.warning', {fg: black, bg: warning_yellow, attrs: ['bold']})
+  // NOTE: XXX: INFO: DOCS: PERF: TEST:
+  highlight ('@text.note', {fg: black, bg: orange, attrs: ['bold']})
+  // #1: issue number
+  // highlight ('@number.comment', {fg: black, bg: orange, attrs: ['bold']})
 
   // Conceal
   highlight ('Conceal', {fg: accent_color})

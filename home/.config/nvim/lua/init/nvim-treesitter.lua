@@ -31,7 +31,7 @@ require 'nvim-treesitter.configs'.setup {
     max_file_lines = 1000,
   },
 
-  -- comment is for the highlight of TODO
+  -- NOTE: comment is for the highlight of TODO
   ensure_installed = {'bash', 'c', 'cpp', 'css', 'fish', 'haskell', 'html', 'java', 'javascript', 'json', 'lua', 'make', 'markdown', 'rust', 'typescript', 'vim', 'yaml', 'comment'},
 
 }

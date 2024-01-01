@@ -34,6 +34,16 @@ local function hash ()
   end
 end
 
+local function my_pairs ()
+  -- return '%{string (get (b:, "my_pairs", ""))}'
+  if vim.b.my_pairs_stack == nil
+  then
+    return ''
+  else
+    return vim.inspect (vim.b.my_pairs_stack)
+  end
+end
+
 require 'lualine'.setup {
   options = {
     theme = 'ayu_mirage',
@@ -44,7 +54,7 @@ require 'lualine'.setup {
     lualine_a = { 'mode', skkstatus },
     lualine_b = {{ 'filename', file_status = true, path = 1, icon_enabled = false }},
     lualine_c = { hash },
-    lualine_x = {{ 'diagnostics', sources = {'nvim_diagnostic'}, colored = true, symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' } }, '%{string (get (b:, "my_pairs_completion_stack", ""))}', '%{string (get (b:, "completion2", ""))}'},
+    lualine_x = {{ 'diagnostics', sources = {'nvim_diagnostic'}, colored = true, symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' } }, my_pairs},
     lualine_y = { 'filetype' },
     lualine_z = { { 'fileformat', symbols = { unix = 'LF', dos = 'CRLF', mac = 'CR' } }, 'encoding', binary, location () },
   },
