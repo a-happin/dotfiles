@@ -171,7 +171,7 @@ function! my_pairs#keymapping_pair (prev, post, key, end) abort
   let res = s:closing_pair (a:post, a:key)
 
   if a:end !=# ''
-    let end = s:opening_pair (a:prev . a:key, a:post, res[0] ==# '', a:key, a:end)
+    let end = s:opening_pair (a:prev . a:key, res[0] ==# '' ? strpart (a:post, strlen (a:key)) : a:post, res[0] ==# '', a:key, a:end)
     if end !=# ''
       call s:push_stack (end)
       call add (res, end)
@@ -187,7 +187,7 @@ function! my_pairs#keymapping_open_only (prev, post, key, end) abort
   let res = [a:key]
 
   if a:end !=# ''
-    let end = s:opening_pair (a:prev . a:key, a:post, res[0] ==# '', a:key, a:end)
+    let end = s:opening_pair (a:prev . a:key, res[0] ==# '' ? strpart (a:post, strlen (a:key)) : a:post, res[0] ==# '', a:key, a:end)
     if end !=# ''
       call s:push_stack (end)
       call add (res, end)

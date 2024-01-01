@@ -17,13 +17,19 @@ endif
 
 
 " *******************************
+" ** speeding
+" *******************************
+" 遅くなるんだが
+" lua vim.loader.enable ()
+
+
+" *******************************
 " **  source
 " *******************************
 function! s:source (file) abort
   execute 'source' $XDG_CONFIG_HOME . '/nvim/' . a:file
 endfunction
 
-" lua vim.loader.enable ()
 
 call s:source ('init/set.vim')
 call s:source ('init/plugin.vim')
@@ -34,6 +40,7 @@ call s:source ('init/command.vim')
 if has ("wsl")
   call s:source ('init/wsl.vim')
 endif
+
 
 " *******************************
 " **  last on startup
