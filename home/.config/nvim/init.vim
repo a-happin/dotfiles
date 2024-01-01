@@ -17,7 +17,7 @@ endif
 
 
 " *******************************
-" ** speeding
+" ** speeding up
 " *******************************
 " 遅くなるんだが
 " lua vim.loader.enable ()
@@ -27,7 +27,7 @@ endif
 " **  source
 " *******************************
 function! s:source (file) abort
-  execute 'source' $XDG_CONFIG_HOME . '/nvim/' . a:file
+  execute join (['source ', $XDG_CONFIG_HOME, '/nvim/', a:file], '')
 endfunction
 
 
