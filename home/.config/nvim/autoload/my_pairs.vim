@@ -121,9 +121,9 @@ function! s:opening_pair (prev, post, is_moved, start, end) abort
   " quot
   elseif !a:is_moved
     " ': 直前がキーワードの場合補完しない
-    " ': rustかつprevに'<'が含まれている場合はlifetimeの可能性が高いため補完しない
+    " ': rustかつprevが'&'で終わっている or '<'が含まれている場合はlifetimeの可能性が高いため補完しない
     if a:start ==# ''''
-      return (a:prev !~# '\v\k''$') && (&filetype !=# 'rust' || a:prev !~# '<') && s:should_auto_complete (a:post) ? '''' : ''
+      return (a:prev !~# '\v\k''$') && (&filetype !=# 'rust' || a:prev !~# '\v\&''$|\<') && s:should_auto_complete (a:post) ? '''' : ''
 
     " ": vimscriptかつ行頭の場合はコメントなので補完しない
     elseif a:start ==# '"'

@@ -145,10 +145,14 @@ nnoremap <F5> <Cmd>Vterminal cargo test<CR>
 " --------------------------------
 "  コマンド/オペレータ系[Visual]
 " --------------------------------
+
+" ヤンクでカーソル移動をしないようにする
+xnoremap <expr> y join (['mz"', v:register, 'y`z<Cmd>delmarks z<CR>'], '')
+
 " 選択範囲をヤンクした文字列で上書き時にレジスタを汚さない
 " xnoremap p pgvy
 " xnoremap p "_xP
-xnoremap <expr> p 'pgv"' . v:register . 'y`>'
+xnoremap <expr> p join (['pgv"', v:register, 'y`>'], '')
 
 " 選択中にCtrl-Cでクリップボードにコピー
 vnoremap <C-c> "+y
@@ -655,17 +659,17 @@ xnoremap <expr> s <SID>surround ()
 
 " 囲んでいる括弧を削除する
 function! s:dsurround () abort
-    let c = getcharstr ()
-    " 制御文字(0x80で始まる)と<Esc>はなにもしない
-    if c[0] ==# "\x80" || c ==# "\<Esc>"
-      return ""
-    endif
+  let c = getcharstr ()
+  " 制御文字(0x80で始まる)と<Esc>はなにもしない
+  if c[0] ==# "\x80" || c ==# "\<Esc>"
+    return ""
+  endif
 
-    if c =~# '\v[bB(){}[\]<>"''`/]'
-      return "\"zca" . c . "\<C-r>=trim (substitute (@z, '\\v^.|.$', '', 'g'))\<CR>\<Esc>"
-    else
-      return ""
-    endif
+  if c =~# '\v[bB(){}[\]<>"''`/]'
+    return "\"zca" . c . "\<C-r>=trim (substitute (@z, '\\v^.|.$', '', 'g'))\<CR>\<Esc>"
+  else
+    return ""
+  endif
 endfunction
 
 " nmap ds <Plug>(dsurround)
