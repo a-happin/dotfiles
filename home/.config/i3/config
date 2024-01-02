@@ -174,7 +174,7 @@ bindsym $mod+n scratchpad show
 bindsym $mod+Shift+n move scratchpad
 
 # lock?
-bindsym $mod+semicolon exec --no-startup-id scrot - | ffmpeg -loglevel quiet -y -i - -vf "gblur=sigma=8" -frames:v 1 /tmp/screen.png && i3lock -i /tmp/screen.png && rm -f /tmp/screen.png
+bindsym $mod+semicolon exec --no-startup-id scrot - | ffmpeg -loglevel quiet -y -i - -vf "gblur=sigma=8" -frames:v 1 /tmp/screen.png && i3lock -i /tmp/screen.png -e && rm -f /tmp/screen.png
 
 # switch to workspace
 bindsym $mod+1 workspace 1
@@ -239,7 +239,7 @@ bindsym --release Shift+Print exec --no-startup-id scrot --silent --select --fre
 # exit i3 (logs you out of your X session)
 set $exit_mode "exit [;: lock], [l: logout], [r: reboot], [s: shutdown]"
 mode $exit_mode {
-  bindsym --release semicolon mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id scrot - | ffmpeg -loglevel quiet -y -i - -vf "gblur=sigma=8" -frames:v 1 /tmp/screen.png && i3lock -i /tmp/screen.png && rm -f /tmp/screen.png
+  bindsym --release semicolon mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id scrot - | ffmpeg -loglevel quiet -y -i - -vf "gblur=sigma=8" -frames:v 1 /tmp/screen.png && i3lock -i /tmp/screen.png -e && rm -f /tmp/screen.png
   bindsym --release l mode "default"; exec --no-startup-id killall i3-nagbar; exit
   bindsym --release r mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id systemctl reboot
   bindsym --release s mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id systemctl poweroff
