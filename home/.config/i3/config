@@ -174,7 +174,8 @@ bindsym $mod+n scratchpad show
 bindsym $mod+Shift+n move scratchpad
 
 # lock?
-bindsym $mod+semicolon exec --no-startup-id scrot - | ffmpeg -loglevel quiet -y -i - -vf "gblur=sigma=8" -frames:v 1 /tmp/screen.png && i3lock -n -i /tmp/screen.png -e && rm -f /tmp/screen.png
+bindsym $mod+semicolon exec --no-startup-id "scrot - | ffmpeg -loglevel quiet -y -i - -vf 'gblur=sigma=16' -frames:v 1 /tmp/screen.png; { i3lock -i /tmp/screen.png -e; rm -f /tmp/screen.png; }"
+bindsym $mod+Shift+semicolon exec --no-startup-id "scrot - | ffmpeg -loglevel quiet -y -i - -vf 'gblur=sigma=50' -frames:v 1 /tmp/screen.png; { i3lock -i /tmp/screen.png -e; rm -f /tmp/screen.png; }"
 
 # switch to workspace
 bindsym $mod+1 workspace 1
@@ -228,18 +229,21 @@ bindsym $mod+Print exec --no-startup-id scrot --silent --focused --exec 'mkdir -
 bindsym Mod1+Sys_Req exec --no-startup-id scrot --silent --focused --exec 'mkdir -p ~/screenshot && mv $f ~/screenshot && notify-send "screenshot(focused)" $f'
 # 範囲選択
 bindsym --release Shift+Print exec --no-startup-id scrot --silent --select --freeze --exec 'mkdir -p ~/screenshot && mv $f ~/screenshot && notify-send "screenshot(range)" $f'
+bindsym $mod+Shift+s exec --no-startup-id "notify-send i3 'If you want to take a screenshot,\nPress PrintScreen,\n  Super+PrintScreen,\n  or Shift+PrintScreen.'"
 
 
 # reload the configuration file
 # bindsym $mod+Shift+c reload
+bindsym $mod+Shift+c exec --no-startup-id "notify-send i3 'If you want to reload i3config,\nPress mod+i → r'"
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 # bindsym $mod+Shift+r restart
+bindsym $mod+Shift+r exec --no-startup-id "notify-send i3 'If you want to restart i3,\nPress mod+i → r → r'"
 
 
 # exit i3 (logs you out of your X session)
 set $exit_mode "exit [;: lock], [l: logout], [r: reboot], [s: shutdown]"
 mode $exit_mode {
-  bindsym --release semicolon mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id scrot - | ffmpeg -loglevel quiet -y -i - -vf "gblur=sigma=8" -frames:v 1 /tmp/screen.png && i3lock -n -i /tmp/screen.png -e && rm -f /tmp/screen.png
+  bindsym --release semicolon mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id  "scrot - | ffmpeg -loglevel quiet -y -i - -vf 'gblur=sigma=16' -frames:v 1 /tmp/screen.png; { i3lock -i /tmp/screen.png -e; rm -f /tmp/screen.png; }"
   bindsym --release l mode "default"; exec --no-startup-id killall i3-nagbar; exit
   bindsym --release r mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id systemctl reboot
   bindsym --release s mode "default"; exec --no-startup-id killall i3-nagbar; exec --no-startup-id systemctl poweroff
