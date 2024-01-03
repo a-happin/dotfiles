@@ -304,6 +304,7 @@ zshaddhistory ()
     bat) return 1 ;;
     cal) return 1 ;;
     date) return 1 ;;
+    notify-send) return 1 ;;
     *) ;;
   esac
 
