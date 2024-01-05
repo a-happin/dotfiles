@@ -53,7 +53,7 @@ augroup END
 " set autoread だけじゃだめなのか…
 augroup reload-file
   autocmd!
-  autocmd InsertEnter,WinEnter,FocusGained * checktime
+  autocmd InsertEnter,WinEnter,FocusGained * checktime %
 augroup END
 
 " *******************************
