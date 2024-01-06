@@ -69,6 +69,7 @@ command! -bar PackClean call pack#init () | call minpac#clean ()
 command! -bar Reload source ${MYVIMRC}
 command! -bar Note tabnew ~/Dropbox/note/note.md | lcd %:h
 command! -bar Nvimrc tabnew $MYVIMRC | lcd %:h
+command! -bar SourceThis if expand ('%:e') =~# '\v^vim$|^lua$' | source % | call call (luaeval ('vim.notify'), [':source ' . expand ('%')]) | endif
 
 " terminal
 command! -nargs=* -complete=shellcmd Hterminal botright 20new | terminal <args>

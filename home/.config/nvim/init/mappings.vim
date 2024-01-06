@@ -558,7 +558,7 @@ nnoremap <Space>n<Tab> <Cmd>tabnew<CR>
 nnoremap <Space>, <Cmd>tabnew $MYVIMRC \| lcd %:h<CR>
 
 " source this
-nnoremap <Space>. <Cmd>if expand ('%:e') ==# 'vim' <bar><bar> expand('%:e') ==# 'lua'<bar>source %<bar>call call (luaeval ('vim.notify'), [':source ' . expand ('%')])<bar>endif<CR>
+nnoremap <Space>. <Cmd>SourceThis<CR>
 
 " ripgrep
 nnoremap <Space>/ <Cmd>Rg<CR>
