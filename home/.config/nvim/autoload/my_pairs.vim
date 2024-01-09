@@ -120,6 +120,10 @@ function! s:opening_pair (prev, post, is_moved, start, end) abort
 
   " quot
   elseif !a:is_moved
+    " 直前が\の場合補完しない
+    if s:ends_with (a:prev, '\' . a:start)
+      return ''
+    endif
     " ': 直前がキーワードの場合補完しない
     " ': rustかつprevが'&'で終わっている or '<'が含まれている場合はlifetimeの可能性が高いため補完しない
     if a:start ==# ''''
@@ -154,7 +158,7 @@ function! s:closing_pair (post, key) abort
         return ['', repeat ("\<Right>", strchars (a:key))]
       endif
     else
-      call my_pairs#clear_stack ()
+      call my_pairs#unsafe_clear_stack ()
     endif
   endif
 
@@ -215,7 +219,7 @@ function! s:delete_pairs (start, end) abort
       " pop
       call remove(b:my_pairs_stack, -1)
     else
-      call my_pairs#clear_stack ()
+      call my_pairs#unsafe_clear_stack ()
     endif
   endif
   return join ([repeat ("\<BS>", strchars (a:start)), repeat ("\<Del>", strchars (a:end))], '')
