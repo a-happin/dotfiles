@@ -158,7 +158,7 @@ function! s:closing_pair (post, key) abort
         return ['', repeat ("\<Right>", strchars (a:key))]
       endif
     else
-      call my_pairs#unsafe_clear_stack ()
+      call s:unsafe_clear_stack ()
     endif
   endif
 
@@ -219,7 +219,7 @@ function! s:delete_pairs (start, end) abort
       " pop
       call remove(b:my_pairs_stack, -1)
     else
-      call my_pairs#unsafe_clear_stack ()
+      call s:unsafe_clear_stack ()
     endif
   endif
   return join ([repeat ("\<BS>", strchars (a:start)), repeat ("\<Del>", strchars (a:end))], '')
