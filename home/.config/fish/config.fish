@@ -33,6 +33,12 @@ if status is-login
 
   # WSL1
   if uname -r | string match -q -- '**Microsoft'
+
+    # silence background job
+    begin
+      wsl.exe --user root --exec /etc/wslstart.sh &
+    end
+
     set -gx DISPLAY 'localhost:0'
     alias open='powershell.exe start'
 
