@@ -276,6 +276,7 @@ zshaddhistory ()
   local line="${1%$'\n'}"
   case "$line" in
     '') return 1 ;;
+    :) return 1 ;;
     \ *) return 1 ;;
     nvim) return 1 ;;
     *\;*) return 0 ;;
@@ -293,7 +294,6 @@ zshaddhistory ()
   local cmd="${line%% *}"
   case "$cmd" in
     '') return 1 ;;
-    :) return 1 ;;
     ls) return 1 ;;
     pwd) return 1 ;;
     history) return 1 ;;
