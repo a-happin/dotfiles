@@ -284,7 +284,7 @@ abbrevs:
   - context: 'git'
     abbr: 'af'
     # snippet: add --intent-to-add $(local selected=$({ git diff --name-only --relative; git untracked } | fzf --multi --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}'); printf '%s; git add --patch %s' "$selected" "$selected")
-    snippet: " git add $(git ls-files --modified --others --exclude--standard | fzf --multi --reverse --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}')"
+    snippet: " git add $(git ls-files --modified --others --exclude-standard | fzf --multi --reverse --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}')"
     operation: 'replace-all'
     evaluate: true
     redraw: true
