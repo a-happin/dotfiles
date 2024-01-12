@@ -322,10 +322,20 @@ type zinit > /dev/null 2>&1 && {
   # zinitはプラグインの中の補完用のファイルを自動で探索し、シンボリックリンクを使ってfpathに追加する特殊な機能があります。
   # なので、プラグインの中のfpath追加を使わずにzinitに面倒を見させるのほうが高速となります。
   zinit wait lucid light-mode for \
-    @zdharma-continuum/fast-syntax-highlighting \
-    @zsh-users/zsh-autosuggestions
+    @zdharma-continuum/fast-syntax-highlighting
   zinit wait lucid blockf light-mode for @zsh-users/zsh-completions
   zinit wait lucid null for atinit'source "$ZDOTDIR/.zshrc.lazy"' @zdharma-continuum/null
+}
+
+type git > /dev/null 2>&1 && {
+
+  my_install_plugin ()
+  {
+    [[ -d "${XDG_CACHE_HOME}/zsh/plugins/${1}" ]] || git clone --depth 1 --recurse-submodules --shallow-submodule "${2}" "${XDG_CACHE_HOME}/zsh/plugins/${1}"
+  }
+
+  my_install_plugin "zsh-users/zsh-autosuggestions" "https://github.com/zsh-users/zsh-autosuggestions" && \
+    source "${XDG_CACHE_HOME}/zsh/plugins/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh"
 }
 
 
