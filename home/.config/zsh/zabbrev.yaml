@@ -103,6 +103,11 @@ abbrevs:
   - abbr: 'curl'
     snippet: 'curl -fsSL'
 
+  # minecraft gameoutput
+  - context: ''
+    abbr: 'gameoutput'
+    snippet: 'less +F ../../../logs/latest.log'
+
   # zsh
   - abbr: 'type'
     snippet: 'type -as'
@@ -279,15 +284,10 @@ abbrevs:
   - context: 'git'
     abbr: 'af'
     # snippet: add --intent-to-add $(local selected=$({ git diff --name-only --relative; git untracked } | fzf --multi --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}'); printf '%s; git add --patch %s' "$selected" "$selected")
-    snippet: " git add $({ git diff --name-only --relative; git untracked } | fzf --multi --reverse --height 60% --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}')"
+    snippet: " git add $(git ls-files --modified --others --exclude--standard | fzf --multi --reverse --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}')"
     operation: 'replace-all'
     evaluate: true
     redraw: true
-
-  - context: 'git push'
-    abbr: '-f'
-    snippet: --force-with-lease
-    global: true
 
   - context: 'git tag -a'
     abbr-prefix: 'v'
@@ -322,6 +322,11 @@ abbrevs:
     operation: replace-all
 
   # global abbreviation
+  - context: 'git push'
+    abbr: '-f'
+    snippet: --force-with-lease
+    global: true
+
   - context: 'git'
     abbr: 'B'
     global: true
@@ -337,10 +342,6 @@ abbrevs:
     redraw: true
 
   # associated command(behaves like a suffix alias)
-  - abbr-suffix: '.jar'
-    snippet: 'java -jar'
-    operation: prepend
-
   - abbr-suffix: '.cpp'
     snippet: 'chino -o /tmp/a.out $1 && /tmp/a.out'
     operation: replace-all
@@ -348,6 +349,10 @@ abbrevs:
 
   - abbr-suffix: '.ts'
     snippet: 'deno run --allow-all --unstable'
+    operation: prepend
+
+  - abbr-suffix: '.jar'
+    snippet: 'java -jar'
     operation: prepend
 
   - abbr-suffix: '.bat'
@@ -460,11 +465,6 @@ abbrevs:
     abbr-suffix: '.rar'
     snippet: 'rar a'
     operation: replace-context
-
-  # minecraft gameoutput
-  - context: ''
-    abbr: 'gameoutput'
-    snippet: 'less +F ../../../logs/latest.log'
 
   # like a function
   - context: 'my-ssh-keygen'

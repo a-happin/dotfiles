@@ -114,10 +114,12 @@ if status is-interactive
   abbr --add -g g 'git'
   abbr --add -g push 'git push'
   abbr --add -g pushu 'git push -u origin HEAD'
+  abbr --add -g pull 'git pull'
   abbr --add -g clone 'git clone --depth 1 --recurse-submodules --shallow-submodules'
   abbr --add -g commit 'git commit -v'
   abbr --add -g reload 'exec fish'
   abbr --add -g relogin 'exec fish -l'
+  abbr --add -g ls 'ls -lah'
   abbr --add -g la 'ls -lah'
   abbr --add -g ll 'ls -lah'
 
@@ -141,6 +143,9 @@ if status is-interactive
   abbr --add -g clang++ 'clang++ -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
   abbr --add -g curl 'curl -fsSL'
 
+  # minecraft gameoutput
+  abbr --add -g gameoutput 'less +F ../../../logs/latest.log'
+
   # fish
   abbr --add -g funced 'funced --save'
   abbr --add -g history-delete ' history delete --case-sensitive --exact (history | fzf --multi || printf :)'
@@ -160,6 +165,7 @@ if status is-interactive
   if test $USER != 'root'
     abbr --add -g pacman 'sudo pacman'
     abbr --add -g apt 'sudo apt'
+    abbr --add -g docker 'sudo docker'
   end
 
   # prepend cd
@@ -189,18 +195,21 @@ if status is-interactive
   context-abbr 'git' 'amend' 'commit --amend'
   context-abbr 'git' 'touch' 'commit --amend --date=now --no-edit'
   context-abbr 'git' 'new' 'switch -c'
+  context-abbr 'git' 'newtag' 'tag -a'
   context-abbr 'git' 'hash' 'rev-parse HEAD'
   context-abbr 'git' 'discard' 'reset --hard HEAD'
   context-abbr 'git' 'clean' 'clean -df'
-  context-abbr 'git' 'init' 'init && git commit --allow-empty -m "Initial commit."'
+  context-abbr 'git' 'initc' 'init && git commit --allow-empty -m "Initial commit."'
   context-abbr --eval 'git' 'sw' 'echo switch (fzf-git-branch)'
   context-abbr --eval 'git' 'fixup' 'echo commit --fixup (fzf-git-commit)'
-  context-abbr --eval 'git' 'fomm' 'echo fetch origin (set -l b (fzf-git-branch); echo $b:$b) \# refresh local branch without checkout'
+  context-abbr --eval 'git' 'fomm' 'echo fetch origin (set -l b (fzf-git-branch); printf "%s" "$b:$b") \# refresh local branch without checkout'
   context-abbr --eval 'git' '*pick' 'echo cherry-pick (fzf-git-commit)'
   context-abbr --eval 'git rebase' '-i' 'echo -- -i (fzf-git-commit)'
-  context-abbr --global 'git push' '-f' '--force-with-lease'
+  context-abbr --replace-all --eval 'git' 'af' 'echo -- git add (git ls-files --modified --others --exclude-standard | fzf --multi --reverse --preview=\'git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}\')'
+  context-abbr --eval 'git tag -a' 'v*' 'printf "%s" "$argv[1] -m \'version $(string sub --start 2 $argv[1])\'"'
   context-abbr --replace-all 'git' 'destroy' 'rm -rf .git'
   context-abbr --replace-all 'git' 'rg' 'rg --hidden --glob \'!.git\''
+  context-abbr --global 'git push' '-f' '--force-with-lease'
   context-abbr --global --eval 'git' 'B' 'fzf-git-branch'
   context-abbr --global --eval 'git' 'C' 'fzf-git-commit'
 
@@ -211,15 +220,16 @@ if status is-interactive
 
   # associated command
   context-abbr --replace-all --eval '' '**.cpp' 'printf \'%s\' "chino -o /tmp/a.out $argv[1] && /tmp/a.out"'
-  context-abbr --prepend --eval '' '**.ts' 'printf \'%s\' "deno run $(test -e import_map.json && printf \'%s\' \'--import-map=import_map.json \')--allow-all --unstable"'
+  context-abbr --prepend '' '**.ts' 'deno run --allow-all --unstable'
   context-abbr --prepend '' '**.jar' 'java -jar'
   context-abbr --prepend '' '**.bat' 'cmd.exe /c'
   context-abbr --prepend '' '**.ps1' 'powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File'
+
   # fake command
   context-abbr --replace-context 'compile' '**.cpp' "chino"
 
   context-abbr --replace-all --eval 'run' '**.cpp' 'printf \'%s\' "chino -o /tmp/a.out $argv[1] && /tmp/a.out"'
-  context-abbr --replace-context --eval 'run' '**.ts' 'printf \'%s\' "deno run $(test -e import_map.json && printf \'%s\' \'--import-map=import_map.json \')--allow-all --unstable"'
+  context-abbr --replace-context 'run' '**.ts' 'deno run --allow-all --unstable'
   context-abbr --replace-context 'run' '**.jar' 'java -jar'
 
   context-abbr --replace-context 'extract' '**.tar.bz2' 'tar -jxvf'
@@ -243,6 +253,7 @@ if status is-interactive
   context-abbr --replace-context 'compress' '**.zip' 'zip -r'
   context-abbr --replace-context 'compress' '**.rar' 'rar a'
 
+  # like a function
   context-abbr --replace-all --eval 'my-ssh-keygen' '**' 'printf "%s" "mkdir -p ~/.ssh/$argv[1] && chmod 700 ~/.ssh/$argv[1] && ssh-keygen -t ed25519 -f ~/.ssh/$argv[1]/id_ed25519 -N \'\'"'
   context-abbr --replace-all --eval 'mkdircd' '**' 'printf "%s" "mkdir -p $argv[1] && cd $argv[1]"'
   context-abbr --replace-all --eval 'trash' '**' 'printf "%s" "mkdir -p /tmp/trash && mv -fv $argv[1] /tmp/trash"'

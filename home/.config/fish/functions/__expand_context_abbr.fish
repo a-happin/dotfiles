@@ -56,7 +56,7 @@ function __expand_context_abbr
       return 0
 
     # global && contextが前方一致
-    else if test $global_flag = 1 && string match -q -- (string trim -l -- "$context ")'**' "$commandline" && string match -q -- "$word" (commandline -t)
+    else if test $global_flag = 1 && string match -q -- "$context"' **' "$commandline" && string match -q -- "$word" (commandline -t)
 
       # eval
       if test $eval_flag = 1
