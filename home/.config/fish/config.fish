@@ -110,6 +110,17 @@ if status is-interactive
     alias ls='exa'
   end
 
+  # nvim-remote
+  if test -n "$NVIM"
+    function nvim
+      if test (count $argv) -eq 0
+        command nvim --server $NVIM --remote-send "<Cmd>hide<CR>"
+      else
+        command nvim --server $NVIM --remote-tab $argv
+      end
+    end
+  end
+
 
   ################################
   # abbreviation
