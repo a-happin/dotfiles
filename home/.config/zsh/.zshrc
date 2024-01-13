@@ -1,13 +1,15 @@
+# zmodload zsh/zprof
+
 #------------------------------
 # zinit
 #------------------------------
 
-typeset -gAH ZINIT
-ZINIT[HOME_DIR]=${XDG_CACHE_HOME}/zsh/.zinit
-[[ -d ${ZINIT[HOME_DIR]} ]] || {
-  mkdir -p ${ZINIT[HOME_DIR]} && git clone --depth 1 https://github.com/zdharma-continuum/zinit.git ${ZINIT[HOME_DIR]}/bin
-}
-source ${ZINIT[HOME_DIR]}/bin/zinit.zsh
+# typeset -gAH ZINIT
+# ZINIT[HOME_DIR]=${XDG_CACHE_HOME}/zsh/.zinit
+# [[ -d ${ZINIT[HOME_DIR]} ]] || {
+#   mkdir -p ${ZINIT[HOME_DIR]} && git clone --depth 1 https://github.com/zdharma-continuum/zinit.git ${ZINIT[HOME_DIR]}/bin
+# }
+# source ${ZINIT[HOME_DIR]}/bin/zinit.zsh
 
 #------------------------------
 # settings
@@ -315,29 +317,74 @@ zshaddhistory ()
 
 
 #------------------------------
+# lazy
+#------------------------------
+# https://github.com/romkatv/zsh-defer の簡易版
+typeset -ga __lazy_tasks
+function __lazy_resume ()
+{
+  # stop subscribing file descripter
+  zle -F $1
+  # close file descripter
+  exec {1}>&-
+
+  while (( $#__lazy_tasks ))
+  do
+    __lazy_apply ${__lazy_tasks[1]}
+    shift __lazy_tasks
+  done
+  return 0
+}
+zle -N __lazy_resume
+function __lazy_schedule ()
+{
+  local fd
+
+  # create a new file descripter
+  exec {fd}</dev/null
+
+  # subscribe file descripter
+  zle -F $fd __lazy_resume
+}
+function __lazy_apply ()
+{
+  # echo eval ${(@Q)${(z)1}}
+  eval "${(@Q)${(z)1}}"
+}
+function lazy ()
+{
+  (( $#__lazy_tasks )) || __lazy_schedule
+  __lazy_tasks+="${(@q)@}"
+}
+
+
+#------------------------------
 # plugin
 #------------------------------
-type zinit > /dev/null 2>&1 && {
+# type zinit > /dev/null 2>&1 && {
+  # zinit wait lucid light-mode for \
+    # @zdharma-continuum/fast-syntax-highlighting
   # iceにblockfを追記すると、プラグインの中で$fpathに書き込むのを禁止（無効化）します。 これはzinitを使うときに有用です。
   # zinitはプラグインの中の補完用のファイルを自動で探索し、シンボリックリンクを使ってfpathに追加する特殊な機能があります。
   # なので、プラグインの中のfpath追加を使わずにzinitに面倒を見させるのほうが高速となります。
-  zinit wait lucid light-mode for \
-    @zdharma-continuum/fast-syntax-highlighting
-  zinit wait lucid blockf light-mode for @zsh-users/zsh-completions
-  zinit wait lucid null for atinit'source "$ZDOTDIR/.zshrc.lazy"' @zdharma-continuum/null
-}
+  # zinit wait lucid blockf light-mode for @zsh-users/zsh-completions
+  # zinit wait lucid null for atinit'source "$ZDOTDIR/.zshrc.lazy"' @zdharma-continuum/null
+# }
 
 type git > /dev/null 2>&1 && {
 
   my_install_plugin ()
   {
-    [[ -d "${XDG_CACHE_HOME}/zsh/plugins/${1}" ]] || git clone --depth 1 --recurse-submodules --shallow-submodule "${2}" "${XDG_CACHE_HOME}/zsh/plugins/${1}"
+    [[ -d "${XDG_CACHE_HOME}/zsh/plugins/${1}" ]] || git clone --depth 1 --recurse-submodules --shallow-submodule "https://github.com/${1}" "${XDG_CACHE_HOME}/zsh/plugins/${1}"
   }
 
-  my_install_plugin "zsh-users/zsh-autosuggestions" "https://github.com/zsh-users/zsh-autosuggestions" && \
-    source "${XDG_CACHE_HOME}/zsh/plugins/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  my_install_plugin "zsh-users/zsh-autosuggestions" && \
+    lazy source "${XDG_CACHE_HOME}/zsh/plugins/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  my_install_plugin "zdharma-continuum/fast-syntax-highlighting" && \
+    lazy source "${XDG_CACHE_HOME}/zsh/plugins/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 }
 
+lazy source "$ZDOTDIR/.zshrc.lazy"
 
 #------------------------------
 # startuptime

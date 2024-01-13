@@ -32,7 +32,7 @@ zstyle ':completion:*' completer _expand _oldlist _complete _match _approximate 
 
 # 補完キャッシュを使う
 zstyle ':completion:*' use-cache true
-zstyle ':completion:*' cache-path '${XDG_CACHE_HOME}/zsh/.zcompcache'
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/.zcompcache"
 
 # おせっかいな補完候補を表示する
 zstyle ':completion:*' verbose yes
@@ -416,7 +416,7 @@ alias run-help > /dev/null 2>&1 && unalias run-help
 autoload -Uz run-help run-help-git run-help-openssl run-help-sudo
 
 # 補完を有効にする
-# autoload -Uz compinit && compinit
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-zpcompinit
+autoload -Uz compinit && compinit
+# autoload -Uz _zinit
+# (( ${+_comps} )) && _comps[zinit]=_zinit
+# zpcompinit
