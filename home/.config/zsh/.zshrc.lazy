@@ -310,6 +310,19 @@ subsh ()
 # Emacs風キーバインド
 bindkey -e
 
+# Up, Down
+# いい感じの履歴補完
+autoload -Uz history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+  ## Arch Linux
+  bindkey "^[[A" history-beginning-search-backward-end
+  bindkey "^[[B" history-beginning-search-forward-end
+
+  ## Ubuntu
+  bindkey "^[OA" history-beginning-search-backward-end
+  bindkey "^[OB" history-beginning-search-forward-end
+
 # Ctrl+arrow key
   ## Ubuntu
   bindkey "^[[1;5C" forward-word
