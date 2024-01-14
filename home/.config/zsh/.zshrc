@@ -135,8 +135,18 @@ HISTSIZE=1000
 # ファイルに保持するhistory
 SAVEHIST=100000
 
+# ヒストリに追加したくないもの
+# HISTORY_IGNORE='(cd|pwd|ls)'
+
+
+# NOTE: inc_append_history, inc_append_history_time, share_historyはどれか1つだけ有効にすること
+
 # 即座に履歴ファイルにコマンドを書き込む(zshを複数開いている場合などに有効)
-setopt inc_append_history
+# setopt inc_append_history
+
+# 即座(?)に履歴ファイルにコマンドを書き込む(zshを複数開いている場合などに有効) +経過時間も正しく書き込む
+# inc_append_historyやshare_historyとは一緒にできない
+setopt inc_append_history_time
 
 # ヒストリーファイルを共有する
 # inc_append_historyと一緒にするとよくない(？)
@@ -155,8 +165,11 @@ setopt hist_ignore_all_dups
 # 履歴がいっぱいになると重複から優先的に削除
 setopt hist_expire_dups_first
 
-# 多分だけどヒストリIO時にロックする？(パフォーマンスが向上するらしい)
+# ヒストリIO時にロックする？(パフォーマンスが向上するらしい)
 setopt hist_fcntl_lock
+
+# ラインエディタでヒストリ検索するときに、一度見つかったものは後続で表示しない
+setopt hist_find_no_dups
 
 # 戦闘がスペースで始まる場合は追加しない
 setopt hist_ignore_space
@@ -271,6 +284,9 @@ preexec ()
 #------------------------------
 # ヒストリ追加直前(コマンド実行前)に呼ばれる
 # この関数が失敗(0以外)を返すとヒストリに追加されない
+# 0: 追加される
+# 1: ヒストリにもメモリにも追加されない
+# 2: メモリには追加される(fc -lで確認できる)が、ヒストリには追加されない
 zshaddhistory ()
 {
   # 複数コマンドはヒストリに追加する
@@ -278,9 +294,7 @@ zshaddhistory ()
   local line="${1%$'\n'}"
   case "$line" in
     '') return 1 ;;
-    :) return 1 ;;
     \ *) return 1 ;;
-    nvim) return 1 ;;
     *\;*) return 0 ;;
     *\&*) return 0 ;;
     *\|*) return 0 ;;
@@ -289,25 +303,31 @@ zshaddhistory ()
     *$'\n'*) return 0 ;;
     *\<*) return 0 ;;
     *\>*) return 0 ;;
-    *) ;;
+  esac
+
+  case "$line" in
+    :) return 1 ;;
+    cd) return 2 ;;
+    cd\ -) return 2 ;;
+    nvim) return 2 ;;
+    git\ add\ *) return 2 ;;
   esac
 
   # 単純かつ副作用のないコマンドは追加しない
   local cmd="${line%% *}"
   case "$cmd" in
     '') return 1 ;;
-    ls) return 1 ;;
+    ls) return 2 ;;
     pwd) return 1 ;;
-    history) return 1 ;;
-    type) return 1 ;;
-    echo) return 1 ;;
-    man) return 1 ;;
-    cat) return 1 ;;
-    bat) return 1 ;;
-    cal) return 1 ;;
-    date) return 1 ;;
-    notify-send) return 1 ;;
-    *) ;;
+    history) return 2 ;;
+    type) return 2 ;;
+    echo) return 2 ;;
+    man) return 2 ;;
+    cat) return 2 ;;
+    bat) return 2 ;;
+    cal) return 2 ;;
+    date) return 2 ;;
+    notify-send) return 2 ;;
   esac
 
   # typeの結果をそのまま返す

@@ -124,6 +124,9 @@ abbrevs:
   - abbr: 'curl'
     snippet: 'curl -fsSL'
 
+  - abbr: 'date'
+    snippet: date +'%Y-%m-%d(%a) %H:%M:%S %Z(%:z)'
+
   # minecraft gameoutput
   - context: ''
     abbr: 'gameoutput'
@@ -137,6 +140,10 @@ abbrevs:
     snippet: ' history 0 | grep'
 
   - abbr: 'historyedit'
+    snippet: ' ${EDITOR} ${HISTFILE}'
+    evaluate: true
+
+  - abbr: 'h'
     snippet: ' ${EDITOR} ${HISTFILE}'
     evaluate: true
 
@@ -197,8 +204,7 @@ abbrevs:
 
   - context: 'git'
     abbr: 'af'
-    snippet: " git add $(git ls-files --modified --others --exclude-standard | fzf --multi --reverse --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}')"
-    operation: replace-all
+    snippet: "add $(git ls-files --modified --others --exclude-standard | fzf --multi --reverse --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}')"
     evaluate: true
     redraw: true
 
