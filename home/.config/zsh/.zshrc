@@ -323,6 +323,7 @@ zshaddhistory ()
     type) return 2 ;;
     echo) return 2 ;;
     man) return 2 ;;
+    run-help) return 2 ;;
     cat) return 2 ;;
     bat) return 2 ;;
     cal) return 2 ;;
