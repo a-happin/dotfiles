@@ -196,6 +196,13 @@ abbrevs:
     snippet: 'add -v --all'
 
   - context: 'git'
+    abbr: 'af'
+    snippet: " git add $(git ls-files --modified --others --exclude-standard | fzf --multi --reverse --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}')"
+    operation: replace-all
+    evaluate: true
+    redraw: true
+
+  - context: 'git'
     abbr: 'b'
     snippet: 'branch'
 
@@ -204,42 +211,12 @@ abbrevs:
     snippet: 'commit'
 
   - context: 'git'
-    abbr: 't'
-    snippet: 'tree -10'
-
-  - context: 'git'
-    abbr: 'cv'
-    snippet: 'commit -v'
-
-  - context: 'git'
     abbr: 'cm'
     snippet: 'commit -m'
 
   - context: 'git'
-    abbr: 'co'
-    snippet: 'checkout'
-
-  - context: 'git'
-    abbr: 'pu'
-    snippet: 'push -u origin HEAD'
-
-  - context: 'git'
-    abbr: 'pr'
-    snippet: 'pull --rebase origin $(git symbolic-ref --short HEAD)'
-    evaluate: true
-
-  - context: 'git'
-    abbr: 's'
-    snippet: ' git stash list && git status'
-    operation: 'replace-all'
-
-  - context: 'git'
-    abbr: 'd'
-    snippet: 'diff'
-
-  - context: 'git'
-    abbr: 'f'
-    snippet: 'fetch --prune'
+    abbr: 'cv'
+    snippet: 'commit -v'
 
   - context: 'git'
     abbr: 'amend'
@@ -250,33 +227,50 @@ abbrevs:
     snippet: 'commit --amend --date=now --no-edit'
 
   - context: 'git'
-    abbr: 'new'
-    snippet: 'switch -c'
+    abbr: 'cd'
+    snippet: 'cd $(git root)'
+    operation: replace-all
+    evaluate: true
 
   - context: 'git'
-    abbr: 'newtag'
-    snippet: 'tag -a'
-
-  - context: 'git'
-    abbr: 'hash'
-    snippet: 'rev-parse HEAD'
-
-  - context: 'git'
-    abbr: 'discard'
-    snippet: 'reset --hard HEAD'
+    abbr: 'co'
+    snippet: 'checkout'
 
   - context: 'git'
     abbr: 'clean'
     snippet: 'clean -df'
 
   - context: 'git'
-    abbr: 'initc'
-    snippet: 'init && git commit --allow-empty -m "Initial commit."'
+    abbr: 'd'
+    snippet: 'diff'
 
   - context: 'git'
-    abbr: 'sw'
-    snippet: 'switch $(fzf-git-branch)'
-    evaluate: true
+    abbr: 'dw'
+    snippet: diff --color-words='\w+|[^[:space:]]'
+
+  - context: 'git'
+    abbr: 'df'
+    snippet: 'diff --name-only --relative'
+
+  - context: 'git'
+    abbr: 'detach'
+    snippet: 'checkout --detach'
+
+  - context: 'git'
+    abbr: 'discard'
+    snippet: 'reset --hard HEAD'
+
+  - context: 'git'
+    abbr: 'discard-local'
+    snippet: 'reset --hard @{u}'
+
+  - context: 'git'
+    abbr: 'f'
+    snippet: 'fetch'
+
+  - context: 'git'
+    abbr: 'fp'
+    snippet: 'fetch --prune'
 
   - context: 'git'
     abbr: 'fomm'
@@ -291,22 +285,110 @@ abbrevs:
     redraw: true
 
   - context: 'git'
-    abbr: 'pick'
+    abbr: 'hash'
+    snippet: 'rev-parse HEAD'
+
+  - context: 'git'
+    abbr: 'initc'
+    snippet: 'init && git commit --allow-empty -m "Initial commit."'
+
+  - context: 'git'
+    abbr: 'new'
+    snippet: 'switch -c'
+
+  - context: 'git'
+    abbr: 'newtag'
+    snippet: 'tag -a'
+
+  - context: 'git'
+    abbr-suffix: 'pick'
     snippet: cherry-pick $(fzf-git-commit)
     evaluate: true
     redraw: true
 
+  - context: 'git'
+    abbr: 'pu'
+    snippet: 'push -u origin HEAD'
+
+  - context: 'git'
+    abbr: 'pr'
+    snippet: 'pull --rebase origin $(git symbolic-ref --short HEAD)'
+    evaluate: true
+
+  - context: 'git'
+    abbr: 'root'
+    snippet: 'rev-parse --show-toplevel'
+
+  - context: 'git'
+    abbr: 's'
+    snippet: ' git stash list && git status'
+    operation: replace-all
+
+  - context: 'git'
+    abbr: 'skip'
+    snippet: 'update-index --skip-worktree'
+
+  - context: 'git'
+    abbr: 'staged'
+    snippet: 'diff --cached'
+
+  - context: 'git'
+    abbr: 'stashes'
+    snippet: 'stash list'
+
+  - context: 'git'
+    abbr: 'sw'
+    snippet: 'switch $(fzf-git-branch)'
+    evaluate: true
+
+  - context: 'git'
+    abbr: 't'
+    snippet: 'tree -10'
+
+  - context: 'git'
+    abbr: 'tags'
+    snippet: 'tag'
+
+  - context: 'git'
+    abbr: 'uncommit'
+    snippet: 'reset --soft HEAD~'
+
+  - context: 'git'
+    abbr: 'unshallow'
+    snippet: 'fetch --unshallow'
+
+  - context: 'git'
+    abbr: 'unskip'
+    snippet: 'update-index --no-skip-worktree'
+
+  - context: 'git'
+    abbr: 'unstage'
+    snippet: 'reset HEAD --'
+
+  - context: 'git'
+    abbr: 'untrack'
+    snippet: 'rm --cache --'
+
+  - context: 'git'
+    abbr: 'untracked'
+    snippet: 'ls-files --others --exclude-standard'
+
+  - context: 'git'
+    abbr: 'url'
+    snippet: 'config --get remote.origin.url'
+
+  - context: 'git'
+    abbr: 'wip'
+    snippet: 'commit -m WIP'
+
+  - context: 'git'
+    abbr: 'zip'
+    snippet: 'archive --worktree-attributes --format=zip HEAD -o "$(basename $(pwd)).zip"'
+    evaluate: true
+
   - context: 'git rebase'
     abbr: '-i'
     snippet: -i $(fzf-git-commit)
-    evaluate: true
-    redraw: true
-
-  - context: 'git'
-    abbr: 'af'
-    # snippet: add --intent-to-add $(local selected=$({ git diff --name-only --relative; git untracked } | fzf --multi --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}'); printf '%s; git add --patch %s' "$selected" "$selected")
-    snippet: " git add $(git ls-files --modified --others --exclude-standard | fzf --multi --reverse --preview='git diff --color=always --exit-code -- {} && bat --color=always --style=numbers {}')"
-    operation: 'replace-all'
     evaluate: true
     redraw: true
 

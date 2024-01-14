@@ -30,6 +30,7 @@
 	branch-mv = branch -m
 	branch-name = symbolic-ref --short HEAD
 	branches = !git branch -a | cut -c 3-
+	configedit = config --global -e
 	conflicts = diff --check
 	conflict-files = diff --name-only --diff-filter=U
 	d = diff
@@ -39,8 +40,7 @@
 	diff-filename = diff --name-only
 	diff-words = diff --color-words='\\w+|[^[:space:]]'
 	discard = reset --hard HEAD
-	discard-local-changes = reset --hard @{u}
-	e = config --global -e
+	discard-local = reset --hard @{u}
 	feature = "!_() { [[ -n $1 ]] && git switch -c \"feature/$1\"; }; _"
 	fixup = commit --fixup
 	fomm = "!_() { set -- \"$@\" $(git master) ; set -x; git fetch origin \"$1:$1\"; }; _"
@@ -48,11 +48,11 @@
 	git = !git
 	hash = rev-parse HEAD
 	ignore = "!_() { for i in \"$@\"; do printf '%s\n' \"/${GIT_PREFIX}$i\" >> .gitignore; done; }; _"
-	initial-commit = commit --allow-empty -m \"Initial commit.\"
+	initc = commit --allow-empty -m \"Initial commit.\"
 	keep-ours = "!_() { for i in \"$@\"; do printf '%s\n' \"/${GIT_PREFIX}$i merge=ours\" >> .gitattributes; done; }; _"
 	latest-tag = describe --tags --abbrev=0 --always
-	log-today = !git log --branches --since=midnight --date=iso --author=\"$(git config user.name)\"
-	log-today-oneline = progress --pretty=format:%s
+	; log-today = !git log --branches --since=midnight --date=iso --author=\"$(git config user.name)\"
+	log-today = !git log --branches --since=midnight --date=format:'%H:%M:%S' --author=\"$(git config user.name)\" --pretty=format:'%C(7)* %C(auto)%h%d%C(reset)%C(cyan)%C(reset) %s %C(blue)by %an%C(8),%C(reset) %C(green)%ad%C(reset)'
 	master = !git config init.defaultBranch || printf 'master'
 	merged = !git branch --merged | grep -Ev '\\*|master|develop|release|gh-pages' | tr -d '^ '
 	new = switch -c
@@ -67,9 +67,9 @@
 	remote-convert-to-ssh-url = !git remote set-url origin $(git remote get-url origin | sed 's%^https://github.com/%git@github.com:%')
 	rg = !rg --hidden --glob '!.git'
 	root = rev-parse --show-toplevel
+	s = !git stash list && git status
 	shallow-clone = clone --depth 1
 	shallow-clone-recursive = clone --depth 1 --recurse-submodules --shallow-submodules
-	st = !git stash list && git status
 	skip = update-index --skip-worktree
 	staged = diff --cached
 	stashes = stash list
@@ -123,7 +123,7 @@
 	t = tree -10
 	tags = tag
 	touch = commit --amend --date=now --no-edit
-	tree = log --graph --all --pretty=format:'%x09%C(auto)%h%d%C(reset) %C(cyan)-%C(reset) %s %C(blue)by %an%C(reset), %C(green)%ar%C(reset)'
+	tree = log --graph --all --pretty=format:'%x09%C(auto)%h%d%C(reset)%C(cyan)%C(reset) %s %C(blue)by %an%C(8),%C(reset) %C(green)%ar%C(reset)'
 	uncommit = reset --soft HEAD~
 	unshallow = fetch --unshallow
 	unskip = update-index --no-skip-worktree
@@ -132,5 +132,5 @@
 	untracked = ls-files --others --exclude-standard
 	url = config --get remote.origin.url
 	wip = commit -m WIP
-	zip = !git archive --worktree-attributes --format=zip HEAD -o $(basename `pwd`).zip
+	zip = !git archive --worktree-attributes --format=zip HEAD -o $(basename $(pwd)).zip
 
