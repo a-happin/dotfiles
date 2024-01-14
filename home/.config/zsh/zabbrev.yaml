@@ -40,6 +40,27 @@ abbrevs:
   - abbr: 'll'
     snippet: 'ls -lah'
 
+  - abbr: 'note'
+    snippet: 'nvim ~/Dropbox/note/note.md -c "cd %:h"'
+
+  - abbr: 'nvimrc'
+    snippet: 'nvim "${XDG_CONFIG_HOME}/nvim/init.vim" -c "cd %:h"'
+
+  - abbr: 'zshrc'
+    snippet: 'nvim "${XDG_CONFIG_HOME}/zsh/.zshrc"'
+
+  - abbr: 'bashrc'
+    snippet: 'nvim ~/.bashrc'
+
+  - abbr: 'fishconfig'
+    snippet: 'nvim "${XDG_CONFIG_HOME}/fish/config.fish" -c "cd %:h"'
+
+  - abbr: 'i3config'
+    snippet: 'nvim "${XDG_CONFIG_HOME}/i3/config" -c "cd %:h"'
+
+  - abbr: 'gitconfig'
+    snippet: 'git config --global -e'
+
   - abbr: '['
     snippet: '[[ 🐣 ]]'
     cursor: '🐣'
