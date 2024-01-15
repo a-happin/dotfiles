@@ -234,7 +234,7 @@ decorate-branch ()
       [[ ${staged} -ne 0 ]] && printf '%%{\e[01;32m%%} %d staged' "${staged}"
       [[ ${modified} -ne 0 ]] && printf '%%{\e[01;33m%%} %d modified' "${modified}"
       [[ ${untracked} -ne 0 ]] && printf '%%{\e[01;31m%%} %d untracked' "${untracked}"
-      [[ ${conflicted} -ne 0 ]] && printf '%%{\e[01;31m%%} %d conflicted' "${conflicted}"
+      [[ ${conflicted} -ne 0 ]] && printf '%%{\e[01;35m%%} %d conflicted' "${conflicted}"
     fi
   }
 }
