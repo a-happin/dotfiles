@@ -356,6 +356,7 @@ abbrevs:
     abbr: 'sw'
     snippet: 'switch $(fzf-git-branch)'
     evaluate: true
+    redraw: true
 
   - context: 'git'
     abbr: 't'
