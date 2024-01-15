@@ -279,6 +279,12 @@ preexec ()
 #   la
 # }
 
+# zsh in nvimのとき、cdしたらlcdもする
+[[ -n $NVIM ]] && chpwd ()
+{
+  command nvim --server $NVIM --remote-send "<Cmd>lcd ${PWD}<CR>"
+}
+
 #------------------------------
 # zshaddhistory
 #------------------------------
@@ -317,13 +323,14 @@ zshaddhistory ()
   local cmd="${line%% *}"
   case "$cmd" in
     '') return 1 ;;
+    *=*) return 0 ;; # 変数定義かも
     ls) return 2 ;;
     pwd) return 1 ;;
     history) return 2 ;;
     type) return 2 ;;
     echo) return 2 ;;
     man) return 2 ;;
-    run-help) return 2 ;;
+    run-help) return 1 ;;
     cat) return 2 ;;
     bat) return 2 ;;
     cal) return 2 ;;
@@ -399,8 +406,10 @@ type git > /dev/null 2>&1 && {
     [[ -d "${XDG_CACHE_HOME}/zsh/plugins/${1}" ]] || git clone --depth 1 --recurse-submodules --shallow-submodule "https://github.com/${1}" "${XDG_CACHE_HOME}/zsh/plugins/${1}"
   }
 
-  my_install_plugin "zsh-users/zsh-autosuggestions" && \
+  my_install_plugin "zsh-users/zsh-autosuggestions" && {
     lazy source "${XDG_CACHE_HOME}/zsh/plugins/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    lazy 'ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-beginning-search-forward-end history-beginning-search-backward-end __zabbrev::expand-and-insert-self)'
+  }
   my_install_plugin "zdharma-continuum/fast-syntax-highlighting" && \
     lazy source "${XDG_CACHE_HOME}/zsh/plugins/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 }

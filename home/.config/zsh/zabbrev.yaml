@@ -147,6 +147,10 @@ abbrevs:
     snippet: ' ${EDITOR} ${HISTFILE}'
     evaluate: true
 
+  - abbr: '!!'
+    snippet: '$(fc -l -n -1)'
+    evaluate: true
+
   - context: 'zabbrev'
     abbr: 'update'
     snippet: 'cargo uninstall zabbrev; cargo install --path ~/work/zabbrev'
@@ -189,7 +193,13 @@ abbrevs:
   # fix options
   - context: 'rm -iv'
     abbr-suffix: ''
-    snippet: rm $([[ -d $1 ]] && printf '%s' '-riv' || printf '%s' '-iv')
+    snippet: rm $([[ -d "$1" ]] && printf '%s' '-riv' || printf '%s' '-iv')
+    operation: replace-context
+    evaluate: true
+
+  - context: 'cp -iv'
+    abbr-suffix: ''
+    snippet: cp $([[ -d "$1" ]] && printf '%s' '-riv' || printf '%s' '-iv')
     operation: replace-context
     evaluate: true
 

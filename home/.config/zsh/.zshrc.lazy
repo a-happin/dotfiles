@@ -97,6 +97,7 @@ alias gitconfig=' git config --global -e'
 # alias decrypt='openssl aes-256-cbc -d -iter 100'
 
 alias history-edit=' ${EDITOR} "${HISTFILE}"'
+alias history-sort='fc -l -n 0 | sort'
 
 # typo
 #alias exho=echo
