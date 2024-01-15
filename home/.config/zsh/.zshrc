@@ -204,6 +204,7 @@ decorate-branch ()
     local untracked=0
     local staged=0
     local modified=0
+    local conflicted=0
 
     if read line
     then
@@ -211,16 +212,17 @@ decorate-branch ()
       while IFS= read line
       do
         case "${line[1,2]}" in
-          \?\?) ((++untracked)) ;;
-          ?\ ) ((++staged)) ;;
-          \ ?) ((++modified)) ;;
+          \?\?) untracked=$((untracked + 1)) ;;
+          ?U) conflicted=$((conflicted + 1)) ;;
+          ?\ ) staged=$((staged + 1)) ;;
+          \ ?) modified=$((modified + 1)) ;;
           *)
-            ((++staged))
-            ((++modified))
+            staged=$((staged + 1))
+            modified=$((modified + 1))
             ;;
         esac
       done
-      if [[ ${untracked} -ne 0 ]]
+      if [[ ${untracked} -ne 0 || ${conflicted} -ne 0 ]]
       then
         printf '%%{\e[01;31m%%} (%s)' "${branch_name}"
       elif [[ ${staged} -ne 0 || ${modified} -ne 0 ]]
@@ -232,6 +234,7 @@ decorate-branch ()
       [[ ${staged} -ne 0 ]] && printf '%%{\e[01;32m%%} %d staged' "${staged}"
       [[ ${modified} -ne 0 ]] && printf '%%{\e[01;33m%%} %d modified' "${modified}"
       [[ ${untracked} -ne 0 ]] && printf '%%{\e[01;31m%%} %d untracked' "${untracked}"
+      [[ ${conflicted} -ne 0 ]] && printf '%%{\e[01;31m%%} %d conflicted' "${conflicted}"
     fi
   }
 }
