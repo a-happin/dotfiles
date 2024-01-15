@@ -144,6 +144,10 @@ abbrevs:
     evaluate: true
 
   - abbr: 'h'
+    snippet: '$(fc -l -n -r 0 | fzf)'
+    evaluate: true
+
+  - abbr: 'he'
     snippet: ' ${EDITOR} ${HISTFILE}'
     evaluate: true
 
