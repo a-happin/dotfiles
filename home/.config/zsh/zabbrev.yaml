@@ -155,6 +155,11 @@ abbrevs:
     snippet: '$(fc -l -n -1)'
     evaluate: true
 
+  - context: 'sudo'
+    abbr: '!!'
+    snippet: '$(fc -l -n -1)'
+    evaluate: true
+
   - context: 'zabbrev'
     abbr: 'update'
     snippet: 'cargo uninstall zabbrev; cargo install --path ~/work/zabbrev'
@@ -462,6 +467,13 @@ abbrevs:
     abbr: 'C'
     global: true
     snippet: $(fzf-git-commit)
+    evaluate: true
+    redraw: true
+
+  # kill
+  - context: 'kill'
+    abbr: '-KILL'
+    snippet: '-KILL $(fzf-process)'
     evaluate: true
     redraw: true
 
