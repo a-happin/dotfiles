@@ -253,7 +253,7 @@ abbrevs:
 
   - context: 'git'
     abbr: 'cd'
-    snippet: 'cd $(git root)'
+    snippet: 'cd $(git root 2> /dev/null)'
     operation: replace-all
     evaluate: true
 
