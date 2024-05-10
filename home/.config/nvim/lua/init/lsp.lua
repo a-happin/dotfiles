@@ -18,7 +18,8 @@ vim.diagnostic.config {
         return string.format ('%s (%s)', diagnostic.message, diagnostic.source)
       end
     end
-  }
+  },
+  severity_sort = true
 }
 
 vim.cmd [[
