@@ -416,9 +416,9 @@ case $(uname -r) in
     ;;
 esac
 
-[[ -d /usr/share/fzf ]] && {
-  source /usr/share/fzf/completion.zsh
-}
+# [[ -d /usr/share/fzf ]] && {
+#   source /usr/share/fzf/completion.zsh
+# }
 
 
 #------------------------------
