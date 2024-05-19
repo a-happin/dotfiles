@@ -50,10 +50,10 @@ if &background ==# 'dark'
   hi SpecialComment cterm=bold ctermfg=cyan gui=bold guifg=#70c0b1
   hi Debug cterm=bold ctermfg=cyan gui=bold guifg=#70c0b1
   hi Error cterm=bold ctermbg=red ctermfg=black gui=bold guibg=#d54e53 guifg=#000000
-  hi @text.danger cterm=bold ctermbg=red ctermfg=black gui=bold guibg=#d54e53 guifg=#000000
+  hi @comment.error cterm=bold ctermbg=red ctermfg=black gui=bold guibg=#d54e53 guifg=#000000
   hi Todo cterm=bold ctermbg=yellow ctermfg=black gui=bold guibg=#e7c547 guifg=#000000
-  hi @text.warning cterm=bold ctermbg=yellow ctermfg=black gui=bold guibg=#e7c547 guifg=#000000
-  hi @text.note cterm=bold ctermbg=darkyellow ctermfg=black gui=bold guibg=#e78c45 guifg=#000000
+  hi @comment.warning cterm=bold ctermbg=yellow ctermfg=black gui=bold guibg=#e7c547 guifg=#000000
+  hi @comment.note cterm=bold ctermbg=darkyellow ctermfg=black gui=bold guibg=#e78c45 guifg=#000000
   hi Conceal ctermfg=blue guifg=#8ac6f2
   hi TabLine cterm=NONE ctermbg=black ctermfg=white gui=NONE guibg=#000000 guifg=#eaeaea
   hi TabLineSel cterm=NONE ctermbg=blue ctermfg=black gui=NONE guibg=#8ac6f2 guifg=#000000
@@ -208,5 +208,6 @@ hi! link @namespace.vim Function
 hi! link @variable.vim Function
 hi! link @variable.builtin.vim Function
 hi! link @property.vim Function
-hi! link @string.special.url.comment URL
+hi! link @comment.todo TODO
+hi! link @string.special.url URL
 

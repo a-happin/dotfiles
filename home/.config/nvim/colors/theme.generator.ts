@@ -231,14 +231,14 @@ console.log (`if &background ==# 'dark'`)
   // エラー 確認できず
   highlight ('Error', {fg: black, bg: error_red, attrs: ['bold']})
   // ERROR: FIXME: BUG:
-  highlight ('@text.danger', {fg: black, bg: error_red, attrs: ['bold']})
+  highlight ('@comment.error', {fg: black, bg: error_red, attrs: ['bold']})
 
   // TODO: WIP:
   highlight ('Todo', {fg: black, bg: warning_yellow, attrs: ['bold']})
   // WARNING: HACK: WARN: FIX:
-  highlight ('@text.warning', {fg: black, bg: warning_yellow, attrs: ['bold']})
+  highlight ('@comment.warning', {fg: black, bg: warning_yellow, attrs: ['bold']})
   // NOTE: XXX: INFO: DOCS: PERF: TEST:
-  highlight ('@text.note', {fg: black, bg: orange, attrs: ['bold']})
+  highlight ('@comment.note', {fg: black, bg: orange, attrs: ['bold']})
   // #1: issue number
   // highlight ('@number.comment', {fg: black, bg: orange, attrs: ['bold']})
 
@@ -449,5 +449,6 @@ hi! link @namespace.vim Function
 hi! link @variable.vim Function
 hi! link @variable.builtin.vim Function
 hi! link @property.vim Function
-hi! link @string.special.url.comment URL
+hi! link @comment.todo TODO
+hi! link @string.special.url URL
 `)
