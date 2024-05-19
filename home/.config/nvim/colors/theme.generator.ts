@@ -48,6 +48,7 @@ const lightyellow = {cui: 'lightyellow', gui: 'lightyellow'} as const
 const lightgreen = {cui: 'lightgreen', gui: 'lightgreen'} as const
 const lightmagenta = {cui: 'lightmagenta', gui: 'lightmagenta'} as const
 const wombat_blue = {cui: 'blue', gui: '#8ac6f2'} as const
+const url_blue = {cui: 'blue', gui: '#7a7ada'} as const
 
 const accent_color = wombat_blue
 const accent_bg = black
@@ -318,6 +319,9 @@ console.log (`if &background ==# 'dark'`)
   highlight ('LspReferenceRead', {attrs: ['underline']})
   highlight ('LspReferenceWrite', {attrs: ['underline']})
 
+  // URL
+  highlight ('URL', {fg: url_blue, attrs: ['underline']})
+
 console.log (`endif`)
 console.log (
 `hi! link EndOfBuffer Ignore
@@ -445,4 +449,5 @@ hi! link @namespace.vim Function
 hi! link @variable.vim Function
 hi! link @variable.builtin.vim Function
 hi! link @property.vim Function
+hi! link @string.special.url.comment URL
 `)

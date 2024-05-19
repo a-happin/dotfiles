@@ -81,6 +81,7 @@ if &background ==# 'dark'
   hi LspReferenceText cterm=underline gui=underline
   hi LspReferenceRead cterm=underline gui=underline
   hi LspReferenceWrite cterm=underline gui=underline
+  hi URL cterm=underline ctermfg=blue gui=underline guifg=#7a7ada
 endif
 hi! link EndOfBuffer Ignore
 hi! link TermCursor Cursor
@@ -207,4 +208,5 @@ hi! link @namespace.vim Function
 hi! link @variable.vim Function
 hi! link @variable.builtin.vim Function
 hi! link @property.vim Function
+hi! link @string.special.url.comment URL
 
