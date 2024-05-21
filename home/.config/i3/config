@@ -428,12 +428,12 @@ mode $move_mode {
 bindsym $mod+m mode $move_mode
 
 # wallpaper manager
-set $wallpaper_mode "Wallpaper [r: random], [b: ./fehbg], [l: latest], [f: fzf], [p: toggle picom]"
+set $wallpaper_mode "Wallpaper [r: random], [b: ~/.fehbg], [l: latest], [f: fzf], [p: toggle picom]"
 mode $wallpaper_mode {
   # random
   bindsym r exec --no-startup-id feh --no-fehbg --randomize --bg-max --recursive ~/Dropbox/image/illust
 
-  # ./fehbg
+  # ~/.fehbg
   bindsym b mode "default"; exec --no-startup-id ~/.fehbg
 
   # latest
