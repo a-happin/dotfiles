@@ -171,10 +171,16 @@ vnoremap <S-Tab> <gv
 
 " 見た目上での縦移動(wrapしてできた行を複数行とみなす？)
 " カウントを指定した場合は正しく移動
-call s:noxnoremap ('<expr> j', 'v:count > 0 ? "j" : "gj"')
-call s:noxnoremap ('<expr> k', 'v:count > 0 ? "k" : "gk"')
-noremap <expr> <Down> v:count > 0 ? 'j' : 'gj'
-noremap <expr> <Up>   v:count > 0 ? 'k' : 'gk'
+call s:noxnoremap ('<expr> j', 'v:count > 0 ? "j" : luaeval ("require \"suppress_key_repeating\".suppress_key_repeating (\"gj\")")')
+call s:noxnoremap ('<expr> k', 'v:count > 0 ? "k" : luaeval ("require \"suppress_key_repeating\".suppress_key_repeating (\"gk\")")')
+noremap <expr> <Down> v:count > 0 ? 'j' : luaeval ('require "suppress_key_repeating".suppress_key_repeating ("gj")')
+noremap <expr> <Up>   v:count > 0 ? 'k' : luaeval ('require "suppress_key_repeating".suppress_key_repeating ("gk")')
+
+" キーリピート抑制
+call s:noxnoremap ('<expr> h', 'luaeval ("require \"suppress_key_repeating\".suppress_key_repeating (\"h\")")')
+call s:noxnoremap ('<expr> l', 'luaeval ("require \"suppress_key_repeating\".suppress_key_repeating (\"l\")")')
+call s:noxnoremap ('<expr> <Left>', 'luaeval ("require \"suppress_key_repeating\".suppress_key_repeating (\"<Left>\")")')
+call s:noxnoremap ('<expr> <Right>', 'luaeval ("require \"suppress_key_repeating\".suppress_key_repeating (\"<Right>\")")')
 
 " 末尾に移動した後スクロール位置を調整する
 call s:noxnoremap ('G', 'Gzz')
