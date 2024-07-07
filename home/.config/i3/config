@@ -437,7 +437,7 @@ mode $wallpaper_mode {
   bindsym b mode "default"; exec --no-startup-id ~/.fehbg
 
   # latest
-  bindsym l mode "default"; exec --no-startup-id feh --no-fehbg --bg-max $(fd --hidden --no-ignore --exclude .git --type file . ~/Dropbox/image/illust --exec-batch ls -t1 | head -1)
+  bindsym l mode "default"; exec --no-startup-id feh --no-fehbg --bg-max "$(fd --hidden --no-ignore --exclude .git --type file . ~/Dropbox/image/illust --exec-batch ls -t1 | head -1)"
 
   # fzf
   # i3-sensible-terminal -e sh -c とその後の""も必須…ないとすぐプロセスが死ぬ(原因不明)
