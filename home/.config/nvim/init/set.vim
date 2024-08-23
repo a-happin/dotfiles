@@ -181,7 +181,7 @@ set noruler
 
 " old: inclusiveかつ改行を選択しない
 " set selection=old
-set selection=exclusive
+" set selection=inclusive
 
 " visual modeに移行したときに自動的にselect modeに移行する
 " mouse: マウスを使ったとき
