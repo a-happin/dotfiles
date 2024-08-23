@@ -141,6 +141,9 @@ if dein#load_state (s:dein_directory)
   " colorize parens
   " call dein#add ('p00f/nvim-ts-rainbow', {'depends': ['nvim-treesitter']})
 
+  " colorize parens
+  call dein#add ('HiPhish/rainbow-delimiters.nvim', #{hook_add: 'lua require "init/rainbow-delimiters"'})
+
 
   " ********************************
   " ** ftplugin

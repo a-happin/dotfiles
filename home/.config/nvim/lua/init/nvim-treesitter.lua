@@ -7,7 +7,7 @@ require 'nvim-treesitter.configs'.setup {
   },
 
   indent = {
-    enable = true,
+    enable = false,
     disable = {'cpp'},
   },
 
@@ -25,11 +25,11 @@ require 'nvim-treesitter.configs'.setup {
     },
   },
 
-  rainbow = {
-    enable = true,
-    extended_mode = true,
-    max_file_lines = 1000,
-  },
+  -- rainbow = {
+  --   enable = true,
+  --   extended_mode = true,
+  --   max_file_lines = 1000,
+  -- },
 
   -- NOTE: comment is for the highlight of TODO
   ensure_installed = {'bash', 'c', 'cpp', 'css', 'fish', 'haskell', 'html', 'java', 'javascript', 'json', 'lua', 'make', 'markdown', 'rust', 'typescript', 'vim', 'yaml', 'comment'},
