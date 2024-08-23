@@ -92,7 +92,7 @@ abbrevs:
     snippet: 'ln -snfv FILE LINK'
 
   - abbr: 'rmlink'
-    snippet: 'unlink'
+    snippet: 'rm -iv'
 
   - abbr: 'mkdir'
     snippet: 'mkdir -p'
