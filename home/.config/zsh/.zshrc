@@ -409,12 +409,13 @@ type git > /dev/null 2>&1 && {
     [[ -d "${XDG_CACHE_HOME}/zsh/plugins/${1}" ]] || git clone --depth 1 --recurse-submodules --shallow-submodule "https://github.com/${1}" "${XDG_CACHE_HOME}/zsh/plugins/${1}"
   }
 
-  my_install_plugin "zsh-users/zsh-autosuggestions" && {
-    lazy source "${XDG_CACHE_HOME}/zsh/plugins/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh"
-    lazy 'ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-beginning-search-forward-end history-beginning-search-backward-end __zabbrev::expand-and-insert-self)'
-  }
   my_install_plugin "zdharma-continuum/fast-syntax-highlighting" && \
     lazy source "${XDG_CACHE_HOME}/zsh/plugins/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+
+  my_install_plugin "zsh-users/zsh-autosuggestions" && {
+    lazy source "${XDG_CACHE_HOME}/zsh/plugins/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    lazy 'ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-beginning-search-forward-end history-beginning-search-backward-end); ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(__lazy_resume)'
+  }
 }
 
 lazy source "$ZDOTDIR/.zshrc.lazy"

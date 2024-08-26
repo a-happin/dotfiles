@@ -338,6 +338,12 @@ zle -N history-beginning-search-forward-end history-search-end
   bindkey "^[[1;2C" forward-word
   bindkey "^[[1;2D" backward-word
 
+# Alt+arrow key
+  bindkey -s "^[[1;3A" ""
+  bindkey -s "^[[1;3B" ""
+  bindkey "^[[1;3C" forward-char
+  bindkey "^[[1;3D" backward-char
+
 # HOME,ENDで移動する
   ## Arch Linux
   bindkey "^[[H" beginning-of-line
@@ -366,9 +372,18 @@ bindkey "^[[Z" reverse-menu-complete
 bindkey "^P" history-beginning-search-backward
 bindkey "^N" history-beginning-search-forward
 
+# 勝手にquotで囲むな
+bindkey -r "^['"
+bindkey -r "^[\""
 
 # abbreviation
 type zabbrev >/dev/null 2>&1 && eval "$(zabbrev init --bind-keys)"
+
+# fix autosuggestion
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+# _zsh_autosuggest_start
+_zsh_autosuggest_bind_widgets
+_zsh_autosuggest_bind_widget __zabbrev::expand-and-insert-self modify
 
 
 #------------------------------
