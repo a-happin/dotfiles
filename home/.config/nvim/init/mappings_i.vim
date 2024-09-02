@@ -147,7 +147,7 @@ function! s:keymapping_tab () abort
   else
     let [prev, post] = s:getline ()
     if prev =~# '\v\k$|:$|->$|\.$'
-      if luaeval ('vim.lsp.buf.server_ready ()')
+      if luaeval ('vim.lsp.buf_is_attached (0)')
         return "\<Cmd>call ddc#map#manual_complete ()\<CR>"
       else
         return "\<C-n>"

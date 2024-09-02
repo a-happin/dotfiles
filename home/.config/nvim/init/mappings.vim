@@ -131,7 +131,8 @@ nnoremap <C-q> <C-c>
 " Ctrl-wで閉じる
 " もとの動作はウインドウ操作系
 " <C-w>をすべて<M-?>に退避させたしいいでしょ！
-nnoremap <C-w> <Cmd>confirm q<CR>
+" ↑ やりすぎ
+" nnoremap <C-w> <Cmd>confirm q<CR>
 
 " Ctrl-tで新しいタブを開く
 " もとの動作はJump to [count] older entry in the tag stack
@@ -197,10 +198,9 @@ noremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\v
 inoremap <silent> <expr> <Home> strpart (getline ('.'), 0, col ('.') - 1) =~# '\v^\s+$' ? '<Home>' : '<C-o>^'
 
 " exclusive <End>
-" set selection=old したのでコメントアウト中
-" noremap <expr> <End> &selection ==# 'inclusive' ? '<End><Left>' : '<End>'
-" nunmap <End>
-" noremap <expr> <S-End> &selection ==# 'inclusive' ? '<S-End><Left>' : '<S-End>'
+vnoremap <expr> <End> &selection ==# 'inclusive' ? '<End><Left>' : '<End>'
+onoremap <expr> <End> &selection ==# 'inclusive' ? '<End><Left>' : '<End>'
+noremap <expr> <S-End> &selection ==# 'inclusive' ? '<S-End><Left>' : '<S-End>'
 
 " うわ急に飛ぶな
 nmap <C-Home> <Home>
