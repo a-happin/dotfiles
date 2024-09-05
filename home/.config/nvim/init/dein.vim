@@ -107,7 +107,7 @@ if dein#load_state (s:dein_directory)
   " around cursor
   call dein#add ('Shougo/ddc-around')
   " skkeleton
-  call dein#add ('vim-skk/skkeleton', #{hook_post_source: 'call plugin#skkeleton#init ()'})
+  " call dein#add ('vim-skk/skkeleton', #{hook_post_source: 'call plugin#skkeleton#init ()'})
 
   " matcher
   call dein#add ('tani/ddc-fuzzy')
