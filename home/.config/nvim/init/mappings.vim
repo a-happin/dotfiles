@@ -531,8 +531,8 @@ nnoremap <Space>f <Cmd>Files<CR>
 nnoremap <Space>g <Cmd>GFiles<CR>
 
 " wrap考慮の行頭、行末移動
-call s:noxnoremap ('<Space>h', 'g^')
-call s:noxnoremap ('<Space>l', 'g$')
+" call s:noxnoremap ('<Space>h', 'g^')
+" call s:noxnoremap ('<Space>l', 'g$')
 " 戻る、進む
 " nnoremap <Space>h <C-o>
 " nnoremap <Space>l <C-i>
@@ -571,6 +571,69 @@ nnoremap <Space>/ <Cmd>Rg<CR>
 
 " 選択中の文字列で検索をかける
 xnoremap <Space>/ "zy/\V<C-r>=escape(@z, '\/')<CR><CR><Cmd>call <SID>flash_hlsearch()<CR>
+
+
+
+" --------------------------------
+" 2分探索移動
+" --------------------------------
+function! s:binary_move (dir) abort
+  if !exists('s:binary_move_ctx')
+    let s:binary_move_ctx = #{top: line('w0') - 1, bottom: line('w$') + 1, left: 0, right: charcol('$') + 1, cursorline: &cursorline, cursorcolumn: &cursorcolumn}
+    set cursorline cursorcolumn
+  endif
+  if a:dir ==# 'k' || a:dir ==# 'j'
+    if a:dir ==# 'k'
+      let s:binary_move_ctx.bottom = line('.')
+    else
+      let s:binary_move_ctx.top = line('.')
+    endif
+    if s:binary_move_ctx.bottom - s:binary_move_ctx.top < 2
+      return
+    endif
+    let mid = s:binary_move_ctx.top + (s:binary_move_ctx.bottom - s:binary_move_ctx.top) / 2
+    call cursor(mid, 0)
+  elseif a:dir ==# 'h' || a:dir ==# 'l'
+    if a:dir ==# 'h'
+      let s:binary_move_ctx.right = charcol('.')
+    else
+      let s:binary_move_ctx.left = charcol('.')
+    endif
+    if s:binary_move_ctx.right - s:binary_move_ctx.left < 2
+      return
+    endif
+    let mid = s:binary_move_ctx.left + (s:binary_move_ctx.right - s:binary_move_ctx.left) / 2
+    call setcursorcharpos(0, mid)
+  endif
+endfunction
+
+function! s:binary_move_clear() "noabort
+  let &cursorline = s:binary_move_ctx.cursorline
+  let &cursorcolumn = s:binary_move_ctx.cursorcolumn
+  unlet s:binary_move_ctx
+endfunction
+
+nnoremap <Plug>(binary_move) <Cmd>call <SID>binary_move_clear()<CR>
+nnoremap <Plug>(binary_move)h <Cmd>call <SID>binary_move('h')<CR><Plug>(binary_move)
+nnoremap <Plug>(binary_move)j <Cmd>call <SID>binary_move('j')<CR><Plug>(binary_move)
+nnoremap <Plug>(binary_move)k <Cmd>call <SID>binary_move('k')<CR><Plug>(binary_move)
+nnoremap <Plug>(binary_move)l <Cmd>call <SID>binary_move('l')<CR><Plug>(binary_move)
+
+xnoremap <Plug>(binary_move) <Cmd>call <SID>binary_move_clear()<CR>
+xnoremap <Plug>(binary_move)h <Cmd>call <SID>binary_move('h')<CR><Plug>(binary_move)
+xnoremap <Plug>(binary_move)j <Cmd>call <SID>binary_move('j')<CR><Plug>(binary_move)
+xnoremap <Plug>(binary_move)k <Cmd>call <SID>binary_move('k')<CR><Plug>(binary_move)
+xnoremap <Plug>(binary_move)l <Cmd>call <SID>binary_move('l')<CR><Plug>(binary_move)
+
+nmap <Space>h <Plug>(binary_move)h
+nmap <Space>j <Plug>(binary_move)j
+nmap <Space>k <Plug>(binary_move)k
+nmap <Space>l <Plug>(binary_move)l
+
+xmap <Space>h <Plug>(binary_move)h
+xmap <Space>j <Plug>(binary_move)j
+xmap <Space>k <Plug>(binary_move)k
+xmap <Space>l <Plug>(binary_move)l
 
 
 " --------------------------------
