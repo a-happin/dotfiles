@@ -577,16 +577,26 @@ xnoremap <Space>/ "zy/\V<C-r>=escape(@z, '\/')<CR><CR><Cmd>call <SID>flash_hlsea
 " --------------------------------
 " 2分探索移動
 " --------------------------------
+" 参考:
+" - https://gist.github.com/tana/9131084 - Vimで二分探索っぽくカーソルを移動する
+" - https://zenn.dev/mattn/articles/83c2d4c7645faa - Vim で折り返し行を簡単に移動できるサブモード・テクニック
+
 function! s:binary_move (dir) abort
   if !exists('s:binary_move_ctx')
-    let s:binary_move_ctx = #{top: line('w0') - 1, bottom: line('w$') + 1, left: 0, right: charcol('$') + 1, cursorline: &cursorline, cursorcolumn: &cursorcolumn}
+    let s:binary_move_ctx = #{cursorline: &cursorline, cursorcolumn: &cursorcolumn}
     set cursorline cursorcolumn
   endif
   if a:dir ==# 'k' || a:dir ==# 'j'
     if a:dir ==# 'k'
       let s:binary_move_ctx.bottom = line('.')
+      if !exists('s:binary_move_ctx.top')
+        let s:binary_move_ctx.top = line('w0') - 1
+      endif
     else
       let s:binary_move_ctx.top = line('.')
+      if !exists('s:binary_move_ctx.bottom')
+        let s:binary_move_ctx.bottom = line('w$') + 1
+      endif
     endif
     if s:binary_move_ctx.bottom - s:binary_move_ctx.top < 2
       return
@@ -596,8 +606,14 @@ function! s:binary_move (dir) abort
   elseif a:dir ==# 'h' || a:dir ==# 'l'
     if a:dir ==# 'h'
       let s:binary_move_ctx.right = charcol('.')
+      if !exists('s:binary_move_ctx.left')
+        let s:binary_move_ctx.left = 0
+      endif
     else
       let s:binary_move_ctx.left = charcol('.')
+      if !exists('s:binary_move_ctx.right')
+        let s:binary_move_ctx.right = charcol('$') + 1
+      endif
     endif
     if s:binary_move_ctx.right - s:binary_move_ctx.left < 2
       return
