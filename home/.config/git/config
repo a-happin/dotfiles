@@ -2,6 +2,7 @@
 [user]
 	email = 10003601+a@users.noreply.github.com
 	name = a_happin
+	signingkey = ~/.ssh/git-signing/id_ed25519.pub
 [color]
 	ui = auto
 [core]
@@ -17,6 +18,12 @@
 	default = upstream
 [rebase]
 	autosquash = true
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[gpg]
+	format = ssh
 [alias]
 	a = add --patch
 	aa = add -v --all
@@ -132,4 +139,3 @@
 	url = config --get remote.origin.url
 	wip = commit -m WIP
 	zip = !git archive --worktree-attributes --format=zip HEAD -o $(basename $(pwd)).zip
-
