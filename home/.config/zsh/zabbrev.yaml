@@ -484,7 +484,7 @@ abbrevs:
     evaluate: true
 
   - abbr-suffix: '.ts'
-    snippet: 'deno run --allow-all --unstable'
+    snippet: 'deno run --allow-all'
     operation: prepend
 
   - abbr-suffix: '.jar'
