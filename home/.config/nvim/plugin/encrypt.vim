@@ -18,7 +18,7 @@ function! s:decrypt_read () abort
       redraw
     endtry
     " エラーになった場合はバッファの内容がエラーメッセージになるのでsilentしてよし！
-    silent execute '%!openssl aes-256-cbc -d -iter 100 -k' password '-in' shellescape (bufname ())
+    silent execute '%!openssl aes-256-cbc -d -iter 101011 -k' password '-in' shellescape (bufname ())
     setlocal nomodified
     doautocmd <nomodeline> BufReadPost
   endif
@@ -38,7 +38,7 @@ function! s:encrypt_write () abort
     redraw
   endtry
   if password ==# password2
-    let res = execute (printf ('write !openssl aes-256-cbc -e -iter 100 -k %s -out %s', password, shellescape (bufname ())))
+    let res = execute (printf ('write !openssl aes-256-cbc -e -iter 101011 -k %s -out %s', password, shellescape (bufname ())))
     if v:shell_error
       call s:echo_err (res)
     else
