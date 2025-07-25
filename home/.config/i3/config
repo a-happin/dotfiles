@@ -81,8 +81,8 @@ bar {
 # exec
 # - exec: exec once
 # - exec_always: exec when restart i3
-# キーリピート開始まで200[ms]、キーリピート間隔1/60[sec]
-exec_always --no-startup-id xset r rate 200 60
+# キーリピート開始まで200[ms]、キーリピート間隔1/30[sec]
+exec_always --no-startup-id xset r rate 200 30
 exec --no-startup-id fcitx5 -d
 exec --no-startup-id dropbox
 exec --no-startup-id feh --no-fehbg --randomize --bg-max --recursive ~/Dropbox/image/illust/
