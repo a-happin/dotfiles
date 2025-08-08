@@ -209,12 +209,23 @@ music-play ()
   mplayer "$@" || echoerr Error: cannot play.
 }
 
+git-repositories ()
+{
+  if type fd > /dev/null 2>&1
+  then
+    fd --hidden --no-ignore --type d --glob .git . --format {//}
+  else
+    find . -type d -name .git -exec dirname {} \;
+  fi
+}
+
 # ~以下のすべてのリポジトリに対してgit statusを実行
 # .cacheは除外
 git-status-all ()
 {
   local i
-  find ~ -name .cache -prune -o -name .git -type d -exec dirname {} \; | while read i
+  # find . -name .cache -prune -o -name .git -type d -exec dirname {} \; | while read i
+  git-repositories | while read i
   do
     printf "%s\n" "$i"
     \git -C "$i" status -s
@@ -282,7 +293,7 @@ fzf-git-changed ()
 }
 fzf-git-repository ()
 {
-  fd --type d --hidden '^.git$' ~ -x dirname | fzf --multi --preview 'git -c color.status=always -C {} status'
+  git-repositories | fzf --multi --preview 'git -c color.status=always -C {} status'
 }
 
 
