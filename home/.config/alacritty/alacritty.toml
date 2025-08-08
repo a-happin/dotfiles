@@ -33,7 +33,7 @@ cyan    = '#54ced6'
 white   = '#eaeaea'
 
 [font]
-size = 10
+size = 12
 
 [font.bold]
 family = "alacritty-monospace"
