@@ -17,6 +17,9 @@ Xft.rgba: rgb
 ! 高dpi環境(4Kとか)用なのかな？
 ! Xft.dpi: 109
 
+! マウスカーソルの大きさを変更する
+! 情報がなさすぎてわからん！
+Xcursor.size: 12
 
 
 ! *から始まるのははXTermとURxvtで共通の設定項目
