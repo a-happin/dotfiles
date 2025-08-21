@@ -21,12 +21,15 @@ set backspace=indent,eol,start
 " don't create backup file
 set nobackup
 
+" 0{ 行頭の{で自動インデントしない
 " :  :で自動インデントしない
 " 0# 行頭の#で自動インデントしない
 " e  elseで自動インデントしない
 set cinkeys& cinkeys-=: cinkeys-=0# cinkeys-=e
 
 " Cのインデントオプション
+" >0 if かつ 行末が中括弧開始ではない のインデントを深くしない
+" {-s 中括弧開始でインデントする
 " :0 Labelのインデントを深くしない
 " g0 アクセス修飾子のインデントを深くしない
 " t0 templateのインデントを深くしない
@@ -218,10 +221,10 @@ set showmode
 set noshowmatch
 
 " 大文字で検索した時は大文字と小文字を区別する
-set smartcase
+" set smartcase
 
 " 行頭のTabはshiftwidthに、それ以外はtabstopまたはsofttabstopに従う
-set smartindent
+" set smartindent
 
 " かしこい
 set smarttab

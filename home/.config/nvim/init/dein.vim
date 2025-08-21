@@ -84,7 +84,7 @@ if dein#load_state (s:dein_directory)
   call dein#add ('vim-denops/denops.vim')
 
   " GhostText
-  call dein#add ('gamoutatsumi/dps-ghosttext.vim')
+  " call dein#add ('gamoutatsumi/dps-ghosttext.vim')
 
   " Preview markdown on your browser
   call dein#add ('kat0h/bufpreview.vim', #{build: 'deno task prepare'})
@@ -121,6 +121,7 @@ if dein#load_state (s:dein_directory)
   " ********************************
   " virtual text を利用したindent guide. No conceal らしいので採用
   call dein#add ('lukas-reineke/indent-blankline.nvim', #{hook_post_source: 'lua require "init/indent-blankline"'})
+  call dein#add ('shellRaining/hlchunk.nvim', #{hook_post_source: 'lua require "init/hlchunk"'})
 
   " 通知をいい感じにする
   call dein#add ("rcarriga/nvim-notify", #{hook_add: 'lua require "init/nvim-notify"'})
