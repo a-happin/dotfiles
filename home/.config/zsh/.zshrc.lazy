@@ -213,7 +213,7 @@ git-repositories ()
 {
   if type fd > /dev/null 2>&1
   then
-    fd --hidden --no-ignore --type d --glob .git . --format {//}
+    fd --hidden --no-ignore --type d --exclude .cache --glob .git --format {//}
   else
     find . -type d -name .git -exec dirname {} \;
   fi

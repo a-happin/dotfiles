@@ -477,6 +477,11 @@ abbrevs:
     evaluate: true
     redraw: true
 
+  # podman
+  - context: 'podman'
+    abbr: 'run'
+    snippet: run --rm -it --userns=keep-id -v container-home:/home/${USER} --passwd-entry='$USERNAME:*:$UID:$GID::/home/$USERNAME:/bin/bash'
+
   # associated command(behaves like a suffix alias)
   - abbr-suffix: '.cpp'
     snippet: 'chino -o /tmp/a.out $1 && /tmp/a.out'
