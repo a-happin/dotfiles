@@ -7,6 +7,9 @@ abbrevs:
     snippet: '${EDITOR}'
     evaluate: true
 
+  - abbr: 'd'
+    snippet: 'podman'
+
   - abbr: 'g'
     snippet: 'git'
 
@@ -104,7 +107,7 @@ abbrevs:
     snippet: 'du -h --max-depth 1'
 
   - abbr: 'fd'
-    snippet: 'fd --hidden --no-ignore --exclude .git'
+    snippet: 'fd --hidden --no-ignore'
 
   - abbr: 'rg'
     snippet: "rg --hidden --no-ignore --glob '!.git'"
@@ -172,7 +175,8 @@ abbrevs:
     evaluate: true
 
   # prepend sudo
-  - abbr: 'pacman'
+  - context: 'pacman'
+    abbr-regex: '^-[SRUD]'
     snippet: 'sudo'
     operation: prepend
 
