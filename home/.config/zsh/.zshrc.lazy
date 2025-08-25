@@ -62,6 +62,8 @@ zstyle ':zle:*' word-style unspecified
 ## スラッシュを除く
 WORDCHARS=${WORDCHARS//[\/]}
 
+# [&|]を入力時に、補完によって挿入されたスペースを消さない
+ZLE_SPACE_SUFFIX_CHARS=$'&|'
 
 #------------------------------
 # alias
