@@ -324,6 +324,14 @@ subsh ()
 # Emacs風キーバインド
 bindkey -e
 
+function __expand-or-complete-prefix-trim-end()
+{
+  zle expand-or-complete-prefix
+  LBUFFER="${LBUFFER% }"
+}
+zle -N __expand-or-complete-prefix-trim-end
+bindkey "^I" __expand-or-complete-prefix-trim-end
+
 # Up, Down
 # いい感じの履歴補完
 autoload -Uz history-search-end
@@ -395,6 +403,7 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 # _zsh_autosuggest_start
 _zsh_autosuggest_bind_widgets
 _zsh_autosuggest_bind_widget __zabbrev::expand-and-insert-self modify
+_zsh_autosuggest_bind_widget __expand-or-complete-prefix-trim-end modify
 
 
 #------------------------------

@@ -316,8 +316,6 @@ zshaddhistory ()
 
   case "$line" in
     :) return 1 ;;
-    cd) return 2 ;;
-    cd\ -) return 2 ;;
     nvim) return 2 ;;
     git\ add\ *) return 2 ;;
   esac
