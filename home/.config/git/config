@@ -1,8 +1,6 @@
 # vim: set noexpandtab sw=0 :
 [user]
-	email = 10003601+a@users.noreply.github.com
-	name = a_happin
-	signingkey = ~/.ssh/git-signing/id_ed25519.pub
+	useConfigOnly = true
 [color]
 	ui = auto
 [core]
@@ -18,12 +16,8 @@
 	default = upstream
 [rebase]
 	autosquash = true
-[commit]
-	gpgsign = true
-[tag]
-	gpgSign = true
-[gpg]
-	format = ssh
+[init]
+	defaultBranch = master
 [alias]
 	a = add --patch
 	aa = add -v --all
