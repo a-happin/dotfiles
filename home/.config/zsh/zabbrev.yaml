@@ -319,7 +319,7 @@ abbrevs:
 
   - context: 'git'
     abbr: 'initc'
-    snippet: 'init && git commit --allow-empty -m "Initial commit."'
+    snippet: 'commit --allow-empty -m "Initial commit."'
 
   - context: 'git'
     abbr: 'new'
