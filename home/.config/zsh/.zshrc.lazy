@@ -416,7 +416,12 @@ case $(uname -r) in
     # WSL1
     export DISPLAY=localhost:0
 
-    (wsl.exe --user root --exec /etc/wslstart.sh &)
+    if [[ -e /etc/wslstart.sh ]]
+    then
+      (wsl.exe --user root --exec /etc/wslstart.sh &)
+    else
+      printf "Error in %s: \"%s\": no such file or directory\n" "$0" "/etc/wslstart.sh" >&2
+    fi
 
     alias pbcopy=clip.exe
     alias pbpaste='powershell.exe get-clipboard | iconv -f cp932 | sed -z '\''s/\r\n/\n/g'\'
