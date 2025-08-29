@@ -328,8 +328,16 @@ bindkey -e
 
 function __expand-or-complete-prefix-trim-end()
 {
+  local last_cursor=$#LBUFFER
   zle expand-or-complete-prefix
-  LBUFFER="${LBUFFER% }"
+  ## 文字が追加された場合のみ
+  if [[ $last_cursor -lt $#LBUFFER ]]
+  then
+    ## 末尾がスペースじゃないときは、代入自体を避けないとスラッシュの自動補完の情報が消えてしまう
+    case "${LBUFFER}" in
+      *\ ) LBUFFER="${LBUFFER% }" ;;
+    esac
+  fi
 }
 zle -N __expand-or-complete-prefix-trim-end
 bindkey "^I" __expand-or-complete-prefix-trim-end
