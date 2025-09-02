@@ -5,6 +5,7 @@
 	ui = auto
 [core]
 	editor = nvim
+	quotepath = false
 [log]
 	decorate = short
 [merge "ours"]
