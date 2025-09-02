@@ -245,6 +245,34 @@ color-palette ()
   echo
 }
 
+ripgrep-replace ()
+{
+  if [[ $# -lt 2 ]]
+  then
+    cat << EOS
+Usage: ripgrep-replace [rg options...] <old> <new>
+EOS
+    return 1
+  fi
+
+  local new="${@[-1]}"
+  local old="${@[-2]}"
+  local rg_opts=("${@:1:-2}")
+  # printf "Debug: new=%s\n" "$new"
+  # printf "Debug: old=%s\n" "$old"
+  # printf "Debug: args=%s\n" "$@"
+  # printf "Debug: \$#=%s\n" "$#"
+  # printf "Debug: \$#-1=%s\n" "$(($#-1))"
+  # printf "Debug: ???=%s\n" "${@:1:1}"
+  # printf "Debug: rg_opts=%s\n" "${rg_opts[@]}"
+  # return 0
+
+  # おそらく安全な区切り文字
+  local sep=$'\x1f'
+
+  # printf "debug: %s\n" "s${sep}${old}${sep}${new}${sep}g"
+  rg --hidden --no-ignore --glob '!.git' "${rg_opts[@]}" -l -0 "$old" | xargs -0 sed -i "s${sep}${old}${sep}${new}${sep}g"
+}
 
 #------------------------------
 # nvim-remote
