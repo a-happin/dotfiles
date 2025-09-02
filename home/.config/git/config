@@ -4,7 +4,9 @@
 [color]
 	ui = auto
 [core]
+	autocrlf = false
 	editor = nvim
+	ignorecase = false
 	quotepath = false
 [log]
 	decorate = short
