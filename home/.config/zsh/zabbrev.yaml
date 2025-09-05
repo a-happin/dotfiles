@@ -340,6 +340,10 @@ abbrevs:
     snippet: 'push -u origin HEAD'
 
   - context: 'git'
+    abbr: 'pl'
+    snippet: 'pull'
+
+  - context: 'git'
     abbr: 'pr'
     snippet: 'pull --rebase origin $(git symbolic-ref --short HEAD)'
     evaluate: true
