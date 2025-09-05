@@ -245,6 +245,16 @@ color-palette ()
   echo
 }
 
+powerlinefont-test ()
+{
+  local c
+  for c in {$((0xe0a0))..$((0xe0bf))}
+  do
+    # printf "%s\n" $c
+    printf "U+%04X %s\n" "$c" $(eval "printf \\\\u$(printf "%04x" "$c")")
+  done
+}
+
 ripgrep-replace ()
 {
   if [[ $# -lt 2 ]]
