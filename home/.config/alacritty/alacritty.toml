@@ -60,3 +60,6 @@ mods = "Control"
 chars = "\u001F"
 key = "Slash"
 mods = "Control"
+
+# [window]
+# opacity = 0.8

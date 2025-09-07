@@ -87,7 +87,7 @@ exec --no-startup-id fcitx5 -d
 exec --no-startup-id dropbox
 exec --no-startup-id feh --no-fehbg --randomize --bg-max --recursive ~/Dropbox/image/illust/
 # https://askubuntu.com/questions/421645/imwheel-destroys-back-forth-navigation-buttons-from-my-mouse
-exec_always --no-startup-id imwheel -k -b 45
+# exec_always --no-startup-id imwheel -k -b 45
 exec --no-startup-id picom -b
 
 
