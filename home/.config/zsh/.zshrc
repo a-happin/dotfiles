@@ -258,10 +258,23 @@ decorate-prompt ()
   printf '%%{\e[00m%%}'
 }
 
+decorate-prompt2::begin ()
+{
+  # printf "%%{\e[0;1;3%sm%%}\ue0b6%%{\e[38;5;16;10%sm%%}" "${1}" "${1}"
+  printf "%%{\e[0;1;3%sm%%}\ue0b6%%{\e[7m%%}" "${1}"
+  __decorate_prompt2_current="$1"
+}
 decorate-prompt2::sep ()
 {
-  printf ' %%{\e[0;1;3%s;10%sm%%}\ue0b0%%{\e[0;1;7;3%sm%%} ' "${__decorate_prompt2_current}" "${1}" "${1}"
-  __decorate_prompt2_current=$1
+  # printf " %%{\e[3%s;10%sm%%}\ue0b0%%{\e[38;5;16m%%} " "${__decorate_prompt2_current}" "${1}"
+  printf " %%{\e[10%s;3%sm%%}\ue0b0%%{\e[49m%%} " "${__decorate_prompt2_current}" "${1}"
+  __decorate_prompt2_current="$1"
+}
+decorate-prompt2::end ()
+{
+  # printf "%%{\e[0;1;3%sm%%}\ue0b4\n" "${__decorate_prompt2_current}"
+  printf "%%{\e[27m%%}\ue0b4\n"
+  unset __decorate_prompt2_current
 }
 
 
@@ -307,14 +320,10 @@ decorate-prompt2::git ()
 decorate-prompt2 ()
 {
   readonly local exit_code=$?
+
   # begin of line
-  printf "%%{\e[0;1;32m%%}\ue0b6%%{\e[7m%%}"
-  __decorate_prompt2_current=2
-  # printf '%%{\e[0;7m%%}'
-  # case "${USER}" in
-  #   root) printf '%%{\e[01;31m%%}%s' "${USER}" ;;
-  #   *) printf '%%{\e[01;32m%%}%s' "${USER}" ;;
-  # esac
+  decorate-prompt2::begin 2
+
   # segment: user@host
   printf "%s@%s" "${USER}" "${HOST}"
 
@@ -328,8 +337,7 @@ decorate-prompt2 ()
   decorate-prompt2::git
 
   # end of line
-  # printf "%%{\e[0;1;3%sm%%}\ue0b4\n" "${__decorate_prompt2_current}"
-  printf "%%{\e[27m%%}\ue0b4\n"
+  decorate-prompt2::end
 
   if [[ ${exit_code} -eq 0 ]]
   then
@@ -344,7 +352,12 @@ decorate-prompt2 ()
 # プロンプト表示前に実行される
 precmd ()
 {
-  PROMPT="$(decorate-prompt2)"
+  if [[ "${DISABLE_POWERLINE}" = "1" ]]
+  then
+    PROMPT="$(decorate-prompt)"
+  else
+    PROMPT="$(decorate-prompt2)"
+  fi
   # RPROMPT='[zsh]'
 }
 
