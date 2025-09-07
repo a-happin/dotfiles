@@ -258,10 +258,93 @@ decorate-prompt ()
   printf '%%{\e[00m%%}'
 }
 
+decorate-prompt2::sep ()
+{
+  printf ' %%{\e[0;1;3%s;10%sm%%}\ue0b0%%{\e[0;1;7;3%sm%%} ' "${__decorate_prompt2_current}" "${1}" "${1}"
+  __decorate_prompt2_current=$1
+}
+
+
+decorate-prompt2::git ()
+{
+  \git status --porcelain --branch 2> /dev/null | {
+    local line
+    local branch_name
+    local untracked=0
+    local staged=0
+    local modified=0
+    local conflicted=0
+
+    if read line
+    then
+      branch_name="${${line}#* }"
+      while IFS= read line
+      do
+        case "${line[1,2]}" in
+          \?\?) untracked=$((untracked + 1)) ;;
+          ?U) conflicted=$((conflicted + 1)) ;;
+          ?\ ) staged=$((staged + 1)) ;;
+          \ ?) modified=$((modified + 1)) ;;
+          *)
+            staged=$((staged + 1))
+            modified=$((modified + 1))
+            ;;
+        esac
+      done
+
+      # segment: branch
+      decorate-prompt2::sep 6
+      printf "%s" "${branch_name}"
+
+      [[ ${staged} -ne 0 ]] && decorate-prompt2::sep 2 && printf '%d staged' "${staged}"
+      [[ ${modified} -ne 0 ]] && decorate-prompt2::sep 3 && printf '%d modified' "${modified}"
+      [[ ${untracked} -ne 0 ]] && decorate-prompt2::sep 1 && printf '%d untracked' "${untracked}"
+      [[ ${conflicted} -ne 0 ]] && decorate-prompt2::sep 5 && printf '%d conflicted' "${conflicted}"
+    fi
+  }
+}
+
+decorate-prompt2 ()
+{
+  readonly local exit_code=$?
+  # begin of line
+  printf "%%{\e[0;1;32m%%}\ue0b6%%{\e[7m%%}"
+  __decorate_prompt2_current=2
+  # printf '%%{\e[0;7m%%}'
+  # case "${USER}" in
+  #   root) printf '%%{\e[01;31m%%}%s' "${USER}" ;;
+  #   *) printf '%%{\e[01;32m%%}%s' "${USER}" ;;
+  # esac
+  # segment: user@host
+  printf "%s@%s" "${USER}" "${HOST}"
+
+  decorate-prompt2::sep 4
+
+  # segnemt: pwd
+  printf "%s" "%~"
+  # printf '%%{\e[01;32m%%}%s%%{\e[01;34m%%} %s%s\ue0b5\n' "@${HOST}" '%~' "$(decorate-branch)"
+
+  #segment: git
+  decorate-prompt2::git
+
+  # end of line
+  # printf "%%{\e[0;1;3%sm%%}\ue0b4\n" "${__decorate_prompt2_current}"
+  printf "%%{\e[27m%%}\ue0b4\n"
+
+  if [[ ${exit_code} -eq 0 ]]
+  then
+    printf '%%{\e[0;1;32m%%}'
+  else
+    printf '%%{\e[0;1;31m%%}%s ' "${exit_code}"
+  fi
+  printf "%s" "%(!.#.>) "
+  printf '%%{\e[00m%%}'
+}
+
 # プロンプト表示前に実行される
 precmd ()
 {
-  PROMPT="$(decorate-prompt)"
+  PROMPT="$(decorate-prompt2)"
   # RPROMPT='[zsh]'
 }
 

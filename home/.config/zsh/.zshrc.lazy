@@ -83,7 +83,7 @@ alias wallpaper='feh --no-fehbg --randomize --bg-max --recursive'
 alias x-reset-mode='xrandr --output $(xrandr | grep '\''connected primary'\'' | awk '\''{print $1}'\'') --mode $(xrandr | grep '\'' +'\'' | head -1 | awk '\''{print $1}'\'')'
 
 alias chino='clang++ -std=c++2b -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -pedantic-errors -I./include -O2 -pipe'
-alias atcoder-cc='clang++ -std=c++14 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -Wno-unused-const-variable -pedantic-errors -g -O0 -pipe -DLOCAL -DDEBUG'
+alias atcoder-cc='clang++ -std=c++20 -Weverything -Wno-c++98-compat-pedantic -Wno-c11-extensions -Wno-unused-macros -Wno-unused-const-variable -pedantic-errors -g -O0 -pipe -DLOCAL -DDEBUG'
 
 # alias fcrontab='fcrontab -i'
 
@@ -155,7 +155,9 @@ runchino ()
 
 atcoder-run ()
 {
-  atcoder-cc -o ./a.out "$1" && shift && ./a.out "$@"
+  [[ "$1" -nt "./a.out" ]] && atcoder-cc -o ./a.out "$1"
+  shift
+  ./a.out "$@"
 }
 
 # sandbox用(?)
