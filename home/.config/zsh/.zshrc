@@ -193,6 +193,8 @@ setopt hist_expand
 setopt no_hist_beep
 
 
+autoload -Uz add-zsh-hook
+
 #------------------------------
 # prompt
 #------------------------------
@@ -260,20 +262,20 @@ decorate-prompt ()
 
 decorate-prompt2::begin ()
 {
-  # printf "%%{\e[0;1;3%sm%%}\ue0b6%%{\e[38;5;16;10%sm%%}" "${1}" "${1}"
-  printf "%%{\e[0;1;3%sm%%}\ue0b6%%{\e[7m%%}" "${1}"
+  printf "%%{\e[0;3%sm%%}\ue0b6%%{\e[1;38;5;16;4%sm%%}" "${1}" "${1}"
+  # printf "%%{\e[0;1;9%sm%%}\ue0b6%%{\e[7m%%}" "${1}"
   __decorate_prompt2_current="$1"
 }
 decorate-prompt2::sep ()
 {
-  # printf " %%{\e[3%s;10%sm%%}\ue0b0%%{\e[38;5;16m%%} " "${__decorate_prompt2_current}" "${1}"
-  printf " %%{\e[10%s;3%sm%%}\ue0b0%%{\e[49m%%} " "${__decorate_prompt2_current}" "${1}"
+  printf " %%{\e[0;3%s;4%sm%%}\ue0b0%%{\e[1;38;5;16m%%} " "${__decorate_prompt2_current}" "${1}"
+  # printf " %%{\e[10%s;9%sm%%}\ue0b0%%{\e[49m%%} " "${__decorate_prompt2_current}" "${1}"
   __decorate_prompt2_current="$1"
 }
 decorate-prompt2::end ()
 {
-  # printf "%%{\e[0;1;3%sm%%}\ue0b4\n" "${__decorate_prompt2_current}"
-  printf "%%{\e[27m%%}\ue0b4\n"
+  printf "%%{\e[0;3%sm%%}\ue0b4\n" "${__decorate_prompt2_current}"
+  # printf "%%{\e[27m%%}\ue0b4\n"
   unset __decorate_prompt2_current
 }
 
@@ -307,7 +309,7 @@ decorate-prompt2::git ()
 
       # segment: branch
       decorate-prompt2::sep 6
-      printf "%s" "${branch_name}"
+      printf "\ue0a0%s" "${branch_name}"
 
       [[ ${staged} -ne 0 ]] && decorate-prompt2::sep 2 && printf '%d staged' "${staged}"
       [[ ${modified} -ne 0 ]] && decorate-prompt2::sep 3 && printf '%d modified' "${modified}"
@@ -352,12 +354,12 @@ decorate-prompt2 ()
 # プロンプト表示前に実行される
 precmd ()
 {
-  if [[ "${DISABLE_POWERLINE}" = "1" ]]
-  then
-    PROMPT="$(decorate-prompt)"
-  else
-    PROMPT="$(decorate-prompt2)"
-  fi
+  # if [[ "${DISABLE_POWERLINE}" = "1" ]]
+  # then
+  #   PROMPT="$(decorate-prompt)"
+  # else
+  # fi
+  PROMPT="$(decorate-prompt2)"
   # RPROMPT='[zsh]'
 }
 
@@ -378,10 +380,14 @@ preexec ()
 #   la
 # }
 
-# zsh in nvimのとき、cdしたらlcdもする
-[[ -n $NVIM ]] && chpwd ()
-{
-  command nvim --server $NVIM --remote-send "<Cmd>lcd ${PWD}<CR>"
+# sync cwd
+# terminal in nvimでcdしたらlcdもする
+[[ -n $NVIM ]] && {
+  __nvim_sync_cwd ()
+  {
+    command nvim --headless --server $NVIM --remote-send "<Cmd>lcd ${PWD}<CR>"
+  }
+  add-zsh-hook chpwd __nvim_sync_cwd
 }
 
 #------------------------------
