@@ -487,8 +487,21 @@ abbrevs:
 
   # podman
   - context: 'podman'
+    abbr: 'build'
+    snippet: build --build-arg DOCKER_UID=\${UID} --build-arg DOCKER_GID=\${GID} -t $(basename $(pwd)) .
+    evaluate: true
+
+  - context: 'podman'
+    abbr: 'images'
+    snippet: images -a
+
+  - context: 'podman'
     abbr: 'run'
     snippet: run --rm -it --userns=keep-id -v container-home:/home/${USER} --passwd-entry='$USERNAME:*:$UID:$GID::/home/$USERNAME:/bin/bash'
+
+  - context: 'podman'
+    abbr: 'ps'
+    snippet: ps -a
 
   # associated command(behaves like a suffix alias)
   - abbr-suffix: '.cpp'
