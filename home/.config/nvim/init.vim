@@ -37,9 +37,9 @@ call s:source ('init/dein.vim')
 call s:source ('init/autocmd.vim')
 call s:source ('init/command.vim')
 " if system ('uname -r') =~? 'microsoft'
-if has ("wsl")
-  call s:source ('init/wsl.vim')
-endif
+" if has ("wsl")
+"   call s:source ('init/wsl.lua')
+" endif
 
 
 " *******************************
@@ -50,6 +50,14 @@ syntax enable
 
 call s:source ('init/colorscheme.vim')
 
+function! s:defer_setup() abort
+  call s:source ('init/mappings.vim')
+  call s:source ('init/digraph.vim')
+  if has ("wsl")
+    call s:source ('init/wsl.lua')
+  endif
+endfunction
+
 
 " *******************************
 " **  lazy
@@ -57,11 +65,10 @@ call s:source ('init/colorscheme.vim')
 if has ('vim_starting')
   augroup init-lazy-source
     autocmd!
-    autocmd VimEnter * ++once call s:source ('init/mappings.vim') | call s:source ('init/digraph.vim')
+    autocmd VimEnter * ++once call s:defer_setup()
     autocmd InsertEnter * ++once call s:source ('init/mappings_i.vim')
   augroup END
 else
-  call s:source ('init/mappings.vim')
+  call s:defer_setup ()
   call s:source ('init/mappings_i.vim')
-  call s:source ('init/digraph.vim')
 endif

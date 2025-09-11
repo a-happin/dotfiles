@@ -13,7 +13,7 @@ endif
 " auto reload vimrc
 augroup auto-reload-vimrc
   autocmd!
-  autocmd BufWritePost */.config/nvim/*.vim ++nested source $MYVIMRC | redraw | lua vim.notify (string.format ('*** Auto Reload ***\n%s', vim.env.MYVIMRC), nil, {title = 'Auto Reload init.vim'})
+  autocmd BufWritePost {*/.config/nvim/*.vim,*/.config/nvim/init/*.lua} ++nested source $MYVIMRC | redraw | lua vim.notify (string.format ('*** Auto Reload ***\n%s', vim.env.MYVIMRC), nil, {title = 'Auto Reload init.vim'})
 augroup END
 
 augroup auto_lcd
