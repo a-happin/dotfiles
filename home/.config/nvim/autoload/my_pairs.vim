@@ -24,6 +24,26 @@ function! s:ends_with (str, x) abort
   return strpart (a:str, strlen (a:str) - strlen (a:x)) ==# a:x
 endfunction
 
+function! s:is_command_mode () abort
+  return mode() ==# 'c'
+endfunction
+
+" 現在の行にある文字列をカーソル位置の前と後に分割して返す
+" 前はカーソル直下の文字を含まない
+" 後はカーソル直下の文字を含む
+function! s:getline () abort
+  if s:is_command_mode()
+    let str = getcmdline ()
+    let pos = getcmdpos () - 1
+  else
+    let str = getline ('.')
+    let pos = col ('.') - 1
+  endif
+
+  let prev = strpart (str, 0, pos)
+  let post = strpart (str, pos)
+  return [prev, post]
+endfunction
 
 " ********************************
 " ** data
@@ -155,7 +175,7 @@ function! s:closing_pair (post, key) abort
       if a:key ==# b:my_pairs_stack[-1]
         " pop
         call remove (b:my_pairs_stack, -1)
-        return ['', repeat ("\<Right>", strchars (a:key))]
+        return ['', repeat (s:is_command_mode() ? "\<Right>" : "\<C-g>U\<Right>", strchars (a:key))]
       endif
     else
       call s:unsafe_clear_stack ()
@@ -171,15 +191,16 @@ endfunction
 " ********************************
 
 " 括弧とか
-function! my_pairs#keymapping_pair (prev, post, key, end) abort
-  let res = s:closing_pair (a:post, a:key)
+function! my_pairs#keymapping_pair (key, end) abort
+  let [prev, post] = s:getline ()
+  let res = s:closing_pair (post, a:key)
 
   if a:end !=# ''
-    let end = s:opening_pair (a:prev . a:key, res[0] ==# '' ? strpart (a:post, strlen (a:key)) : a:post, res[0] ==# '', a:key, a:end)
+    let end = s:opening_pair (prev . a:key, res[0] ==# '' ? strpart (post, strlen (a:key)) : post, res[0] ==# '', a:key, a:end)
     if end !=# ''
       call s:push_stack (end)
       call add (res, end)
-      call add (res, repeat ("\<Left>", strchars (end)))
+      call add (res, repeat (s:is_command_mode() ? "\<Left>" : "\<C-g>U\<Left>", strchars (end)))
     endif
   endif
 
@@ -187,15 +208,16 @@ function! my_pairs#keymapping_pair (prev, post, key, end) abort
 endfunction
 
 " <Space>を想定
-function! my_pairs#keymapping_open_only (prev, post, key, end) abort
+function! my_pairs#keymapping_open_only (key, end) abort
+  let [prev, post] = s:getline ()
   let res = [a:key]
 
   if a:end !=# ''
-    let end = s:opening_pair (a:prev . a:key, res[0] ==# '' ? strpart (a:post, strlen (a:key)) : a:post, res[0] ==# '', a:key, a:end)
+    let end = s:opening_pair (prev . a:key, res[0] ==# '' ? strpart (post, strlen (a:key)) : post, res[0] ==# '', a:key, a:end)
     if end !=# ''
       call s:push_stack (end)
       call add (res, end)
-      call add (res, repeat ("\<Left>", strchars (end)))
+      call add (res, repeat (s:is_command_mode() ? "\<Left>" : "\<C-g>U\<Left>", strchars (end)))
     endif
   endif
 
@@ -203,9 +225,10 @@ function! my_pairs#keymapping_open_only (prev, post, key, end) abort
 endfunction
 
 " <CR>
-function! my_pairs#keymapping_cr (prev, post) abort
+function! my_pairs#keymapping_cr () abort
+  let [prev, post] = s:getline ()
   for [start, end] in s:parens
-    if s:starts_with (a:post, end) && s:ends_with (a:prev, start)
+    if s:starts_with (post, end) && s:ends_with (prev, start)
       return "\<CR>\<Up>\<End>\<CR>"
     endif
   endfor
@@ -226,26 +249,27 @@ function! s:delete_pairs (start, end) abort
 endfunction
 
 " <BS>
-function! my_pairs#keymapping_backspace (prev, post, key) abort
+function! my_pairs#keymapping_backspace (key) abort
+  let [prev, post] = s:getline ()
   " 括弧を探す
   for [start, end] in s:parens
-    if s:starts_with (a:post, end) && s:ends_with (a:prev, start)
+    if s:starts_with (post, end) && s:ends_with (prev, start)
       return s:delete_pairs (start, end)
     endif
   endfor
 
   " quotを探す
   for quot in s:quotations
-    if s:starts_with (a:post, quot) && s:ends_with (a:prev, quot)
+    if s:starts_with (post, quot) && s:ends_with (prev, quot)
       return s:delete_pairs (quot, quot)
     endif
   endfor
 
   " 括弧に囲まれた空白
-  if s:starts_with (a:post, ' ')
-    if s:ends_with (a:prev, ' ')
+  if s:starts_with (post, ' ')
+    if s:ends_with (prev, ' ')
       for [start, end] in s:parens
-        if s:starts_with (a:post, ' ' . end) && s:ends_with (a:prev, start . ' ')
+        if s:starts_with (post, ' ' . end) && s:ends_with (prev, start . ' ')
           return s:delete_pairs (' ', ' ')
         endif
       endfor
@@ -254,6 +278,19 @@ function! my_pairs#keymapping_backspace (prev, post, key) abort
   endif
 
   return a:key
+endfunction
+
+" <Right> or <Del>
+function! my_pairs#keymapping_right_or_delete (key) abort
+  let [prev, post] = s:getline ()
+  if my_pairs#match_stack(post)
+    return repeat (s:is_command_mode() || a:key !=# "\<Right>" ? a:key : "\<C-g>U\<Right>", strchars (my_pairs#pop_stack ()))
+  else
+    call my_pairs#clear_stack ()
+    return a:key
+  endif
+" cnoremap <expr> <Right> my_pairs#match_stack (strpart (getcmdline (), getcmdpos () - 1)) ? repeat ('<Right>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Right>'
+" inoremap <expr> <Right> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 1)) ? repeat ('<C-g>U<Right>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Right>'
 endfunction
 
 finish
@@ -271,6 +308,6 @@ finish
 " ********************************
 " ** example
 " ********************************
-inoremap <expr> <Right> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 1)) ? repeat ('<Right>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Right>'
+inoremap <expr> <Right> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 1)) ? repeat ('<C-g>U<Right>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Right>'
 inoremap <expr> <Del> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 1)) ? repeat ('<Del>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Del>'
 

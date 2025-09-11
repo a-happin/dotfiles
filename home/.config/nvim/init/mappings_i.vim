@@ -19,15 +19,34 @@ inoremap <C-S-Insert> <Nop>
 " --------------------------------
 inoremap <C-o> <C-\><C-o>
 
-inoremap <S-Del> <C-\><C-o>dw
-inoremap <C-Del> <C-\><C-o>dw
-inoremap <C-S-Del> <C-\><C-o>dW
+function! s:ctrl_del() abort
+  let post = strpart(getline('.'), col('.') - 1)
+  if post =~# '\v^\s'
+    return "\<C-\>\<C-o>dw"
+  elseif post =~# '\v^\k'
+    return "\<C-\>\<C-o>de"
+  else
+    return "\<Del>"
+  endif
+endfunction
+inoremap <expr> <S-Del> <SID>ctrl_del()
+inoremap <expr> <C-Del> <SID>ctrl_del()
+inoremap <C-S-Del> <C-\><C-o>dE
 
-inoremap <C-h> <C-w>
+inoremap <C-BS> <C-w>
 
 
 " Debug
-inoremap <F7> <Cmd>lua vim.notify(vim.inspect (vim.v.completed_item))<CR>
+" use complete_info() instead
+" inoremap <F7> <Cmd>lua vim.notify(vim.inspect (vim.v.completed_item))<CR>
+
+" 直前にタイプした単語を大文字にする
+function! s:toupper_prev_word() abort
+  let [prev, post] = s:getline ()
+  let word = matchstr (prev, '\v\k*$')
+  return repeat ("\<BS>", strchars (word)) .. toupper (word)
+endfunction
+inoremap <expr> <C-l> <SID>toupper_prev_word()
 
 
 " --------------------------------
@@ -59,6 +78,9 @@ if &keymodel =~# 'startsel'
   inoremap <S-Down> <S-Down><C-g>
   inoremap <S-Home> <S-Home><C-g>
   inoremap <S-End> <S-End><C-g>
+
+  " inoremap <S-Left> <Left><C-o>gh
+  " inoremap <S-Right> <C-\><C-o>gh
 endif
 
 " 急に飛ばないで
@@ -81,7 +103,7 @@ inoremap <expr> <Tab> <SID>keymapping_tab ()
 
 " ポップアップ補完メニューが表示されているときは前の候補を選択
 " それ以外はインデントを1つ下げる
-inoremap <expr> <S-Tab> pumvisible () ? '<C-p>' : pum#visible() ? '<Cmd>call pum#map#select_relative (-1)<CR>' : '<C-d>'
+inoremap <expr> <S-Tab> pumvisible () ? '<C-p>' : '<C-d>'
 
 
 " ポップアップ補完メニューが表示されているときは確定
@@ -91,43 +113,43 @@ inoremap <expr> <CR> <SID>keymapping_cr ()
 inoremap <expr> / <SID>keymapping_slash ()
 
 " 括弧の対応の補完
-inoremap <expr> ( <SID>keymapping_pair ('(', ')')
-inoremap <expr> ) <SID>keymapping_pair (')', '')
-inoremap <expr> { <SID>keymapping_pair ('{', '}')
-inoremap <expr> } <SID>keymapping_pair ('}', '')
-inoremap <expr> [ <SID>keymapping_pair ('[', ']')
-inoremap <expr> ] <SID>keymapping_pair (']', '')
-inoremap <expr> 「 <SID>keymapping_pair ('「', '」')
-inoremap <expr> 」 <SID>keymapping_pair ('」', '')
-inoremap <expr> 『 <SID>keymapping_pair ('『', '』')
-inoremap <expr> 』 <SID>keymapping_pair ('』', '')
-inoremap <expr> 【 <SID>keymapping_pair ('【', '】')
-inoremap <expr> 】 <SID>keymapping_pair ('】', '')
-inoremap <expr> 〈 <SID>keymapping_pair ('〈', '〉')
-inoremap <expr> 〉 <SID>keymapping_pair ('〉', '')
-inoremap <expr> 《 <SID>keymapping_pair ('《', '》')
-inoremap <expr> 》 <SID>keymapping_pair ('》', '')
-inoremap <expr> （ <SID>keymapping_pair ('（', '）')
-inoremap <expr> ） <SID>keymapping_pair ('）', '')
-inoremap <expr> ［ <SID>keymapping_pair ('［', '］')
-inoremap <expr> ］ <SID>keymapping_pair ('］', '')
+inoremap <expr> ( my_pairs#keymapping_pair ('(', ')')
+inoremap <expr> ) my_pairs#keymapping_pair (')', '')
+inoremap <expr> { my_pairs#keymapping_pair ('{', '}')
+inoremap <expr> } my_pairs#keymapping_pair ('}', '')
+inoremap <expr> [ my_pairs#keymapping_pair ('[', ']')
+inoremap <expr> ] my_pairs#keymapping_pair (']', '')
+inoremap <expr> 「 my_pairs#keymapping_pair ('「', '」')
+inoremap <expr> 」 my_pairs#keymapping_pair ('」', '')
+inoremap <expr> 『 my_pairs#keymapping_pair ('『', '』')
+inoremap <expr> 』 my_pairs#keymapping_pair ('』', '')
+inoremap <expr> 【 my_pairs#keymapping_pair ('【', '】')
+inoremap <expr> 】 my_pairs#keymapping_pair ('】', '')
+inoremap <expr> 〈 my_pairs#keymapping_pair ('〈', '〉')
+inoremap <expr> 〉 my_pairs#keymapping_pair ('〉', '')
+inoremap <expr> 《 my_pairs#keymapping_pair ('《', '》')
+inoremap <expr> 》 my_pairs#keymapping_pair ('》', '')
+inoremap <expr> （ my_pairs#keymapping_pair ('（', '）')
+inoremap <expr> ） my_pairs#keymapping_pair ('）', '')
+inoremap <expr> ［ my_pairs#keymapping_pair ('［', '］')
+inoremap <expr> ］ my_pairs#keymapping_pair ('］', '')
 
 " クォーテーションの自動補完
-inoremap <expr> " <SID>keymapping_pair ('"', '"')
-inoremap <expr> ' <SID>keymapping_pair ('''', '''')
-inoremap <expr> ` <SID>keymapping_pair ('`', '`')
+inoremap <expr> " my_pairs#keymapping_pair ('"', '"')
+inoremap <expr> ' my_pairs#keymapping_pair ('''', '''')
+inoremap <expr> ` my_pairs#keymapping_pair ('`', '`')
 
 " Space
-inoremap <expr> <Space> <SID>keymapping_open_only ('<Space>', '<Space>')
+" inoremap <expr> <Space> my_pairs#keymapping_open_only ('<Space>', '<Space>')
 
 " arrow
 inoremap <Left> <Cmd>call my_pairs#clear_stack ()<CR><Left>
-inoremap <expr> <Right> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 1)) ? repeat ('<Right>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Right>'
+inoremap <expr> <Right> my_pairs#keymapping_right_or_delete ('<Right>')
 
 " Backspace
-inoremap <expr> <BS> <SID>keymapping_backspace ('<BS>')
+inoremap <expr> <BS> my_pairs#keymapping_backspace ('<BS>')
 " Delete
-inoremap <expr> <Del> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 1)) ? repeat ('<Del>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Del>'
+inoremap <expr> <Del> my_pairs#keymapping_right_or_delete ('<Del>')
 
 
 " *******************************
@@ -142,13 +164,11 @@ inoremap <expr> <Del> my_pairs#match_stack (strpart (getline ('.'), col ('.') - 
 function! s:keymapping_tab () abort
   if pumvisible ()
     return "\<C-n>"
-  elseif pum#visible ()
-    return "\<Cmd>call pum#map#select_relative (+1)\<CR>"
   else
     let [prev, post] = s:getline ()
     if prev =~# '\v\k$|:$|->$|\.$'
       if luaeval ('vim.lsp.buf_is_attached (0)')
-        return "\<Cmd>call ddc#map#manual_complete ()\<CR>"
+        return "\<Cmd>lua vim.lsp.completion.get()\<CR>"
       else
         return "\<C-n>"
       endif
@@ -165,22 +185,19 @@ endfunction
 " CR
 " カーソルが{}の間ならいい感じに改行
 " それ以外は改行
-function! s:keymapping_cr () abort
-  if pumvisible ()
-    if v:completed_item == {}
+function! s:keymapping_cr() abort
+  let ci = complete_info()
+  if ci.pum_visible
+    " if v:completed_item == {}
+    if ci.selected == -1
       return "\<C-y>\<CR>"
     else
       return "\<C-y>"
     endif
-  elseif pum#visible ()
-    " if v:completed_item == {}
-      " return "\<Cmd>call pum#map#confirm()\<CR>\<CR>"
-    " else
-      return "\<Cmd>call pum#map#confirm()\<CR>"
-    " endif
+  elseif luaeval ('vim.snippet.active ({direction = 1})')
+    return "\<Cmd>lua vim.snippet.jump(1)\<CR>"
   else
-    let [prev, post] = s:getline ()
-    return my_pairs#keymapping_cr (prev, post)
+    return my_pairs#keymapping_cr ()
   endif
 endfunction
 
@@ -224,20 +241,20 @@ function! s:getline () abort
   return [prev, post]
 endfunction
 
-function! s:keymapping_pair (key, end) abort
-  let [prev, post] = s:getline ()
-  return my_pairs#keymapping_pair (prev, post, a:key, a:end)
-endfunction
+" function! s:keymapping_pair (key, end) abort
+"   let [prev, post] = s:getline ()
+"   return my_pairs#keymapping_pair (prev, post, a:key, a:end)
+" endfunction
 
-function! s:keymapping_open_only (key, end) abort
-  let [prev, post] = s:getline ()
-  return my_pairs#keymapping_open_only (prev, post, a:key, a:end)
-endfunction
+" function! s:keymapping_open_only (key, end) abort
+"   let [prev, post] = s:getline ()
+"   return my_pairs#keymapping_open_only (prev, post, a:key, a:end)
+" endfunction
 
-function! s:keymapping_backspace (key) abort
-  let [prev, post] = s:getline ()
-  return my_pairs#keymapping_backspace (prev, post, a:key)
-endfunction
+" function! s:keymapping_backspace (key) abort
+"   let [prev, post] = s:getline ()
+"   return my_pairs#keymapping_backspace (prev, post, a:key)
+" endfunction
 
 
 finish

@@ -16,13 +16,27 @@ augroup auto-reload-vimrc
   autocmd BufWritePost */.config/nvim/*.vim ++nested source $MYVIMRC | redraw | lua vim.notify (string.format ('*** Auto Reload ***\n%s', vim.env.MYVIMRC), nil, {title = 'Auto Reload init.vim'})
 augroup END
 
+augroup auto_lcd
+  autocmd!
+  autocmd BufReadPost */.config/nvim/* lcd ~/.config/nvim
+  autocmd BufReadPost */.config/zsh/* lcd ~/.config/zsh
+  autocmd BufReadPost */.config/fish/* lcd ~/.config/fish
+  autocmd BufReadPost */.config/i3/* lcd ~/.config/i3
+augroup END
+
 " ファイル保存時のハッシュ値と同じだったらmodifiedフラグをresetする
 " 衝突した場合？知らん
-augroup check_hash
-  autocmd!
-  autocmd BufReadPost,BufModifiedSet ?* if &modifiable && !&readonly && !&modified | let b:my_hash = sha256 (join (getline (1, '$'), '\n')) | endif
-  autocmd TextChanged,InsertLeave ?* if &modifiable && !&readonly && &modified && sha256 (join (getline (1, '$'), '\n')) ==# get (b:, 'my_hash', '') | setlocal nomodified | endif
-augroup END
+" BufReadPost: ファイルを読み込んだあと
+" BufModifiedSet: ファイルを書き込んだあと(更新)
+" BufNewFile: 存在しないファイルを開いた(新規ファイル) ただしファイル名が空のときは呼ばれない
+" BufAdd {}: 新規ファイル ファイル名が空 ただし VimEnter前は呼ばれない
+" lua table.concat (vim.api.nvim_buf_get_lines(bufnr, 0, -1, false), "\n") -- bufnrは0でいい
+" augroup check_hash
+"   autocmd!
+"   autocmd BufReadPost,BufModifiedSet ?* if &modifiable && !&readonly && !&modified | let b:my_hash = sha256 (join (getline (1, '$'), '\n')) | endif
+"   autocmd TextChanged,InsertLeave * if &modifiable && !&readonly && &modified && sha256 (join (getline (1, '$'), '\n')) ==# get (b:, 'my_hash', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855') | setlocal nomodified | endif
+" augroup END
+lua require'my_lib/auto_unset_modified'
 
 function! s:auto_save () abort
   if &modified && !&readonly && &buftype ==# '' && filewritable (expand ('%'))
@@ -85,9 +99,12 @@ augroup fix-terminal
   autocmd!
   autocmd TermOpen term://* call s:init_terminal ()
   " 名前の変更, 変更前のバッファを吹き飛ばす
-  autocmd TermOpen term://*/{bash,fish,zsh,sh} file %/[terminal] | bwipeout! #
-  autocmd TermClose term://* setlocal bufhidden=wipe
-  autocmd TermClose term://*/\[terminal\] bwipeout!
+  " autocmd TermOpen term://*/{bash,fish,zsh,sh} file %/[terminal] | bwipeout! #
+
+  " 両方コメントアウトしてもwipeoutされてそー
+  " autocmd TermClose term://* setlocal bufhidden=wipe
+  " 上の定義と2重に実行されてバッファが2つ消えるため、片方をコメントアウトして様子見
+  " autocmd TermClose term://*/\[terminal\] bwipeout!
 augroup END
 
 " ftdetect/xxx.vimのほうがいいかも
@@ -105,6 +122,7 @@ augroup END
 augroup special-mapping
   autocmd!
   autocmd FileType qf nnoremap <buffer> <CR> <CR>
+  autocmd FileType help nnoremap <buffer> <C-CR> <C-]> | nnoremap <buffer> <Space><CR> <C-]>
 augroup END
 
 augroup dictionary

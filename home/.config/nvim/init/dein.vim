@@ -35,7 +35,7 @@ if dein#load_state (s:dein_directory)
   " ** workaround for bug
   " ********************************
   " fix https://github.com/neovim/neovim/issues/12587
-  call dein#add ('antoinemadec/FixCursorHold.nvim')
+  " call dein#add ('antoinemadec/FixCursorHold.nvim')
 
   " fix https://github.com/neovim/neovim/issues/1716
   call dein#add ('lambdalisue/suda.vim')
@@ -76,41 +76,45 @@ if dein#load_state (s:dein_directory)
 
   " fzf
   call dein#add ('junegunn/fzf.vim', #{on_event: 'VimEnter', hook_post_source: 'call plugin#fzf#init ()', hook_add: 'if filereadable (expand ("~/.fzf/plugin/fzf.vim")) | set rtp+=~/.fzf/ | endif'})
+  " call dein#add ('junegunn/fzf.vim', #{hook_post_source: 'call plugin#fzf#init ()', hook_add: 'if filereadable (expand ("~/.fzf/plugin/fzf.vim")) | set rtp+=~/.fzf/ | endif'})
+
+  " 部分的に編集
+  call dein#add ('thinca/vim-partedit')
 
   " ********************************
   " ** denops plugins
   " ********************************
   " ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno
-  call dein#add ('vim-denops/denops.vim')
+  " call dein#add ('vim-denops/denops.vim')
 
   " GhostText
   " call dein#add ('gamoutatsumi/dps-ghosttext.vim')
 
   " Preview markdown on your browser
-  call dein#add ('kat0h/bufpreview.vim', #{build: 'deno task prepare'})
+  " call dein#add ('kat0h/bufpreview.vim', #{build: 'deno task prepare'})
 
   " ********************************
   " ** ddc plugins
   " ********************************
   " original popup menu completion
-  call dein#add ('Shougo/pum.vim')
+  " call dein#add ('Shougo/pum.vim')
 
   " completion framework
-  call dein#add ('Shougo/ddc.vim', #{on_event: 'InsertEnter', hook_source: 'call plugin#ddc#init ()'})
+  " call dein#add ('Shougo/ddc.vim', #{on_event: 'InsertEnter', hook_source: 'call plugin#ddc#init ()'})
 
   " UI
-  call dein#add ('Shougo/ddc-ui-native')
+  " call dein#add ('Shougo/ddc-ui-native')
 
   " ddc source
   " nvim-lsp
-  call dein#add ('Shougo/ddc-nvim-lsp')
+  " call dein#add ('Shougo/ddc-nvim-lsp')
   " around cursor
-  call dein#add ('Shougo/ddc-around')
+  " call dein#add ('Shougo/ddc-around')
   " skkeleton
   " call dein#add ('vim-skk/skkeleton', #{hook_post_source: 'call plugin#skkeleton#init ()'})
 
   " matcher
-  call dein#add ('tani/ddc-fuzzy')
+  " call dein#add ('tani/ddc-fuzzy')
   " call dein#add ('Shougo/ddc-matcher_head')
 
   " sorter

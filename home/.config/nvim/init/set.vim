@@ -58,7 +58,7 @@ set complete=.,w,b,u,k,s,i,d,t
 " noinsert: do not insert until select
 " noselect: do not select
 "set completeopt=menuone,preview,noinsert
-set completeopt=menuone,preview,noselect
+set completeopt=fuzzy,menuone,noselect,popup
 
 " concealを有効にするモード
 " n: normal
@@ -317,7 +317,7 @@ let s:fileformat_map = {
   \ 'mac' : 'CR',
 \}
 function! StatusLine() abort
-  let m = mode ()
+  let m = mode (1)
   let mode_str = get (s:mode_str, m, m)
   let color = get(s:mode_color_map2, get(s:mode_color_map, mode_str, '_normal'), '')
   execute 'highlight StatusLineA cterm=bold gui=bold ctermfg=' . color['ctermfg'] 'ctermbg=' . color['ctermbg'] 'guifg=' . color['guifg'] 'guibg=' . color['guibg']
@@ -346,6 +346,7 @@ if $TERM !=# 'rxvt-unicode-256color'
 endif
 
 " Time in milliseconds to wait for a mapped sequence to complete.
+" set notimeout
 set timeoutlen=2000
 
 if has('persistent_undo') && &undodir !=# ''
@@ -384,7 +385,7 @@ set wildmenu
 " 最初のTabでwildmenuを出す
 " 次のTabからmatchを補完する
 " デフォルトのfullでよくない？
-" set wildmode=longest:full,full
+set wildmode=noselect:full
 
 set wildoptions=fuzzy,pum,tagfile
 

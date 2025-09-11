@@ -84,14 +84,14 @@ inoremap <F1> <Nop>
 call s:nxnoremap ('<CR>', ':')
 
 " digraphs
-call s:noxnoremap ('fj', 'f<C-k>j')
-call s:noxnoremap ('fz', 'f<C-k>z')
-call s:noxnoremap ('Fj', 'F<C-k>j')
-call s:noxnoremap ('Fz', 'F<C-k>z')
-call s:noxnoremap ('tj', 't<C-k>j')
-call s:noxnoremap ('tz', 't<C-k>z')
-call s:noxnoremap ('Tj', 'T<C-k>j')
-call s:noxnoremap ('Tz', 'T<C-k>z')
+" call s:noxnoremap ('fj', 'f<C-k>j')
+" call s:noxnoremap ('fz', 'f<C-k>z')
+" call s:noxnoremap ('Fj', 'F<C-k>j')
+" call s:noxnoremap ('Fz', 'F<C-k>z')
+" call s:noxnoremap ('tj', 't<C-k>j')
+" call s:noxnoremap ('tz', 't<C-k>z')
+" call s:noxnoremap ('Tj', 'T<C-k>j')
+" call s:noxnoremap ('Tz', 'T<C-k>z')
 
 
 " --------------------------------
@@ -137,10 +137,11 @@ nnoremap <C-q> <C-c>
 " Ctrl-tで新しいタブを開く
 " もとの動作はJump to [count] older entry in the tag stack
 " 代替動作はCtrl-RightButton, g RightButton
-nnoremap <C-t> <Cmd>tabnew<CR>
+nnoremap <C-t> <Cmd>tab split<CR>
 
 
 " TODO: 後で変える
+nnoremap <F3> <Cmd>call my_notify#inspect(#{col: col('.'), line: line('.'), bufwinnr: bufwinnr(bufnr()), screencol: screencol(), screenrow: screenrow(), screenpos: screenpos(bufwinnr(bufnr()),line('.'),col('.')),virtcol: virtcol(".", 1), wincol: wincol(), winline: winline()})<CR>
 nnoremap <F5> <Cmd>Vterminal cargo test<CR>
 
 " --------------------------------
@@ -153,7 +154,8 @@ xnoremap <expr> y join (['mz"', v:register, 'y`z<Cmd>delmarks z<CR>'], '')
 " 選択範囲をヤンクした文字列で上書き時にレジスタを汚さない
 " xnoremap p pgvy
 " xnoremap p "_xP
-xnoremap <expr> p join (['pgv"', v:register, 'y`>'], '')
+" xnoremap <expr> p join (['pgv"', v:register, 'y`>'], '')
+xnoremap p P
 
 " 選択中にCtrl-Cでクリップボードにコピー
 vnoremap <C-c> "+y
@@ -172,10 +174,16 @@ vnoremap <S-Tab> <gv
 
 " 見た目上での縦移動(wrapしてできた行を複数行とみなす？)
 " カウントを指定した場合は正しく移動
+
 call s:noxnoremap ('<expr> j', 'v:count > 0 ? "j" : luaeval ("require \"suppress_key_repeating\".suppress_key_repeating (\"gj\")")')
 call s:noxnoremap ('<expr> k', 'v:count > 0 ? "k" : luaeval ("require \"suppress_key_repeating\".suppress_key_repeating (\"gk\")")')
 noremap <expr> <Down> v:count > 0 ? 'j' : luaeval ('require "suppress_key_repeating".suppress_key_repeating ("gj")')
 noremap <expr> <Up>   v:count > 0 ? 'k' : luaeval ('require "suppress_key_repeating".suppress_key_repeating ("gk")')
+
+" call s:noxnoremap ('<expr> j', 'v:count > 0 ? "j" : "gj"')
+" call s:noxnoremap ('<expr> k', 'v:count > 0 ? "k" : "gk"')
+" noremap <expr> <Down> v:count > 0 ? 'j' : 'gj'
+" noremap <expr> <Up>   v:count > 0 ? 'k' : 'gk'
 
 " キーリピート抑制
 call s:noxnoremap ('<expr> h', 'luaeval ("require \"suppress_key_repeating\".suppress_key_repeating (\"h\")")')
@@ -246,6 +254,20 @@ call s:noxnoremap ('<expr> *', '<SID>asterisk() . "<Cmd>call <SID>flash_hlsearch
 call s:noxnoremap ('<expr> #', '<SID>asterisk() . "<Cmd>call <SID>flash_hlsearch()<CR>"')
 call s:noxnoremap ('n', 'n<Cmd>call <SID>flash_hlsearch()<CR>')
 call s:noxnoremap ('N', 'N<Cmd>call <SID>flash_hlsearch()<CR>')
+
+" nnoremap w <Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)w gk<Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)a <Cmd>normal! h<CR><Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)s gj<Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)d <Cmd>normal! l<CR><Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)<S-w> 3gk<Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)<S-a> b<Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)<S-s> 3gj<Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)<S-d> e<Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)<C-w> 3gk<Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)<C-a> b<Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)<C-s> 3gj<Plug>(wasd_move)
+" nnoremap <Plug>(wasd_move)<C-d> e<Plug>(wasd_move)
 
 
 " --------------------------------
@@ -318,25 +340,34 @@ onoremap a<Space> aW
 xnoremap i<Space> iW
 onoremap i<Space> iW
 
+" 空白を含まないようにする
+" 参考: help i"
+xnoremap a" 2i"
+onoremap a" 2i"
+xnoremap a' 2i'
+onoremap a' 2i'
+xnoremap a` 2i`
+onoremap a` 2i`
+
 
 " --------------------------------
 "  Alt key mappings
 " --------------------------------
 
-function! s:alt_wincmd () abort
-  for i in split('qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890`~!@#$%^&*()-=_+[]{}\;:''",.<>/?', '.\zs')
-    call s:anoremap ('<M-' . i . '>', '<Cmd>wincmd ' . i . '<CR>')
-  endfor
-  call s:anoremap ('<M-bar>', '<Cmd>wincmd <bar><CR>')
-endfunction
-call s:alt_wincmd ()
+" function! s:alt_wincmd () abort
+"   for i in split('qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890`~!@#$%^&*()-=_+[]{}\;:''",.<>/?', '.\zs')
+"     call s:anoremap ('<M-' . i . '>', '<Cmd>wincmd ' . i . '<CR>')
+"   endfor
+"   call s:anoremap ('<M-bar>', '<Cmd>wincmd <bar><CR>')
+" endfunction
+" call s:alt_wincmd ()
 
 
 "" 全部閉じて終了
 ""call s:anoremap ('<M-Q>', '<Cmd>confirm qall<CR>')
 "" call s:anoremap ('<M-q>', '<Cmd>confirm qall<CR>')
 ""call s:anoremap ('<M-q>', '<Cmd>confirm q<CR>')
-call s:anoremap ('<M-q>', '<Cmd>normal! <C-c><CR>')
+" call s:anoremap ('<M-q>', '<Cmd>normal! <C-c><CR>')
 
 "" nmap <M-w> <C-w>
 
@@ -344,12 +375,21 @@ call s:anoremap ('<M-q>', '<Cmd>normal! <C-c><CR>')
 " nnoremap <C-e> <Cmd>call <SID>toggle_netrw ()<CR>
 call s:anoremap ('<M-e>', '<Cmd>Fern . -reveal=% -drawer -toggle<CR>')
 
-call s:anoremap ('<M-g>', '<C-\><C-n><C-w>g')
+" call s:anoremap ('<M-g>', '<C-\><C-n><C-w>g')
 
 " Toggle Terminal
 call s:anoremap ('<M-CR>', '<Cmd>ToggleTerminal<CR>')
 
-call s:anoremap ('<M-?>', '<Cmd>vertical help CTRL-w<CR>')
+" call s:anoremap ('<M-?>', '<Cmd>vertical help CTRL-w<CR>')
+
+call s:anoremap ('<M-w>', '<Cmd>normal! gk<CR>')
+call s:anoremap ('<M-a>', '<Cmd>normal! h<CR>')
+call s:anoremap ('<M-s>', '<Cmd>normal! gj<CR>')
+call s:anoremap ('<M-d>', '<Cmd>normal! l<CR>')
+tnoremap <M-w> <Up>
+tnoremap <M-a> <Left>
+tnoremap <M-s> <Down>
+tnoremap <M-d> <Right>
 
 " LoadSession if current buffer is empty and it's the only buffer
 " SaveSession if others
@@ -428,8 +468,8 @@ nnoremap <M-Left> <C-o>
 nnoremap <M-Right> <C-i>
 
 " 入れ替え
-nnoremap <expr> <M-Up> '<Cmd>move .-' . (v:count > 0 ? v:count + 1 : 2) . '<CR>'
-nnoremap <expr> <M-Down> '<Cmd>move .+' . (v:count > 0 ? v:count : 1) . '<CR>'
+nnoremap <expr> <M-Up> '<Cmd>move .-' . (v:count1 + 1) . '<CR>'
+nnoremap <expr> <M-Down> '<Cmd>move .+' . (v:count1) . '<CR>'
 " 範囲選択での入れ替え
 vnoremap <M-Up> :move '<-2<CR>gv
 vnoremap <M-Down> :move '>+1<CR>gv
@@ -502,15 +542,17 @@ nnoremap <Space>e :<C-u>e <C-r>=expand('%')<CR>
 " nnoremap <Space>t <Cmd>terminal<CR>
 " Move to new tab
 " nnoremap <Space>t <Cmd>wincmd T<CR>
-nnoremap <Space>t <C-w>T
+" nnoremap <Space>t <C-w>T
+" Open the current buffer in a new tab without closing the previous window.
+nnoremap <Space>t <Cmd>tab split<CR>
 
 " Copy to clipboard
 " call s:nxnoremap ('<Space>y', '"wy')
 
 " 改行挿入
 " append関数で追加するとドットリピートできない(なんで？)
-nnoremap <Space>o o<Space><C-u><Esc>
-nnoremap <Space>O O<Space><C-u><Esc>
+nnoremap <Space>o o0<C-d><Esc>
+nnoremap <Space>O O0<C-d><Esc>
 
 
 
@@ -520,7 +562,10 @@ nnoremap <Space>O O<Space><C-u><Esc>
 " call s:nxnoremap ('<Space>P', '<Cmd>GetWindowsClipboard<CR>P')
 
 " Split Horizontally
-nnoremap <Space>s <C-w>s
+" nnoremap <Space>s <C-w>s
+" 簡易置き換え
+" xnoremap <Space>s "zy:%s/\V<C-r>=escape(@z, '\/')<CR>//g<Left><Left><C-r>=escape(@z, '\/')<CR>
+xnoremap <Space>s "zy:%s/\V<C-r>=escape(@z, '\/')<CR>/<C-r>=escape(@z, '\/')<CR>/g
 
 " nnoremap <Space>d lD
 
@@ -529,6 +574,9 @@ nnoremap <Space>f <Cmd>Files<CR>
 
 " git ls-files | fzf
 nnoremap <Space>g <Cmd>GFiles<CR>
+
+" 最近開いたファイル
+nnoremap <Space>h <Cmd>History<CR>
 
 " wrap考慮の行頭、行末移動
 " call s:noxnoremap ('<Space>h', 'g^')
@@ -581,44 +629,69 @@ xnoremap <Space>/ "zy/\V<C-r>=escape(@z, '\/')<CR><CR><Cmd>call <SID>flash_hlsea
 " - https://gist.github.com/tana/9131084 - Vimで二分探索っぽくカーソルを移動する
 " - https://zenn.dev/mattn/articles/83c2d4c7645faa - Vim で折り返し行を簡単に移動できるサブモード・テクニック
 
-function! s:binary_move (dir) abort
+function! s:binary_move (dir = "") abort
   if !exists('s:binary_move_ctx')
     let s:binary_move_ctx = #{cursorline: &cursorline, cursorcolumn: &cursorcolumn}
     set cursorline cursorcolumn
   endif
-  if a:dir ==# 'k' || a:dir ==# 'j'
-    if a:dir ==# 'k'
+
+  if a:dir ==# 'K' || a:dir ==# 'J'
+    if a:dir ==# 'K'
       let s:binary_move_ctx.bottom = line('.')
-      if !exists('s:binary_move_ctx.top')
-        let s:binary_move_ctx.top = line('w0') - 1
-      endif
     else
       let s:binary_move_ctx.top = line('.')
-      if !exists('s:binary_move_ctx.bottom')
-        let s:binary_move_ctx.bottom = line('w$') + 1
-      endif
     endif
-    if s:binary_move_ctx.bottom - s:binary_move_ctx.top < 2
+
+    let top = exists('s:binary_move_ctx.top') ? s:binary_move_ctx.top : 0
+    let bottom = exists('s:binary_move_ctx.bottom') ? s:binary_move_ctx.bottom : line('$') + 1
+    if bottom - top < 2
       return
     endif
-    let mid = s:binary_move_ctx.top + (s:binary_move_ctx.bottom - s:binary_move_ctx.top) / 2
+    let mid = top + (bottom - top) / 2
     call cursor(mid, 0)
+
+  elseif a:dir ==# 'k' || a:dir ==# 'j'
+    if a:dir ==# 'k'
+      let s:binary_move_ctx.bottom = line('.')
+      " if !exists('s:binary_move_ctx.top')
+      "   let s:binary_move_ctx.top = line('w0') - 1
+      " endif
+    else
+      let s:binary_move_ctx.top = line('.')
+      " if !exists('s:binary_move_ctx.bottom')
+      "   let s:binary_move_ctx.bottom = line('w$') + 1
+      " endif
+    endif
+
+    " let top = exists('s:binary_move_ctx.top') ? s:binary_move_ctx.top : line('w0') - 1
+    " let bottom = exists('s:binary_move_ctx.bottom') ? s:binary_move_ctx.bottom : line('w$') + 1
+    let top    = line('w0') - 1 | if exists('s:binary_move_ctx.top') && s:binary_move_ctx.top > top | let top = s:binary_move_ctx.top | endif
+    let bottom = line('w$') + 1 | if exists('s:binary_move_ctx.bottom') && s:binary_move_ctx.bottom < bottom | let bottom = s:binary_move_ctx.bottom | endif
+    if bottom - top < 2
+      return
+    endif
+    let mid = top + (bottom - top) / 2
+    call cursor(mid, 0)
+
   elseif a:dir ==# 'h' || a:dir ==# 'l'
     if a:dir ==# 'h'
       let s:binary_move_ctx.right = charcol('.')
-      if !exists('s:binary_move_ctx.left')
-        let s:binary_move_ctx.left = 0
-      endif
+      " if !exists('s:binary_move_ctx.left')
+      "   let s:binary_move_ctx.left = 0
+      " endif
     else
       let s:binary_move_ctx.left = charcol('.')
-      if !exists('s:binary_move_ctx.right')
-        let s:binary_move_ctx.right = charcol('$') + 1
-      endif
+      " if !exists('s:binary_move_ctx.right')
+      "   let s:binary_move_ctx.right = charcol('$') + 1
+      " endif
     endif
-    if s:binary_move_ctx.right - s:binary_move_ctx.left < 2
+
+    let left = exists('s:binary_move_ctx.left') ? s:binary_move_ctx.left : 0
+    let right = exists('s:binary_move_ctx.right') ? s:binary_move_ctx.right : charcol('$') + 1
+    if right - left < 2
       return
     endif
-    let mid = s:binary_move_ctx.left + (s:binary_move_ctx.right - s:binary_move_ctx.left) / 2
+    let mid = left + (right - left) / 2
     call setcursorcharpos(0, mid)
   endif
 endfunction
@@ -629,27 +702,176 @@ function! s:binary_move_clear() "noabort
   unlet s:binary_move_ctx
 endfunction
 
-nnoremap <Plug>(binary_move) <Cmd>call <SID>binary_move_clear()<CR>
-nnoremap <Plug>(binary_move)h <Cmd>call <SID>binary_move('h')<CR><Plug>(binary_move)
-nnoremap <Plug>(binary_move)j <Cmd>call <SID>binary_move('j')<CR><Plug>(binary_move)
-nnoremap <Plug>(binary_move)k <Cmd>call <SID>binary_move('k')<CR><Plug>(binary_move)
-nnoremap <Plug>(binary_move)l <Cmd>call <SID>binary_move('l')<CR><Plug>(binary_move)
+" WIP: does not work
+let s:binary_move_start_res = "\<Cmd>call \<SID>binary_move()\<CR>\<Plug>(binary_move)"
+function! s:binary_move_start() abort
+  " call s:binary_move()
+  " return "<Plug>(binary_move)"
+  return s:binary_move_start_res
+  " return "\<Cmd>call \<SID>binary_move()\<CR>"
+  return ""
+endfunction
 
-xnoremap <Plug>(binary_move) <Cmd>call <SID>binary_move_clear()<CR>
-xnoremap <Plug>(binary_move)h <Cmd>call <SID>binary_move('h')<CR><Plug>(binary_move)
-xnoremap <Plug>(binary_move)j <Cmd>call <SID>binary_move('j')<CR><Plug>(binary_move)
-xnoremap <Plug>(binary_move)k <Cmd>call <SID>binary_move('k')<CR><Plug>(binary_move)
-xnoremap <Plug>(binary_move)l <Cmd>call <SID>binary_move('l')<CR><Plug>(binary_move)
+" call s:nxnoremap('<Plug>(binary_move)', "<Cmd>call <SID>binary_move_clear()<CR>")
+" nnoremap <Plug>(binary_move) <Cmd>call <SID>binary_move_clear()<CR>
+" xnoremap <Plug>(binary_move) <Cmd>call <SID>binary_move_clear()<CR>
+" nnoremap <Plug>(binary_move)q <Cmd>call <SID>binary_move_clear()<CR>
+" xnoremap <Plug>(binary_move)q <Cmd>call <SID>binary_move_clear()<CR>
+" nnoremap <Plug>(binary_move)z zz<Plug>(binary_move)
+" xnoremap <Plug>(binary_move)z zz<Plug>(binary_move)
+" nnoremap <Plug>(binary_move)m zz<Plug>(binary_move)
+" xnoremap <Plug>(binary_move)m zz<Plug>(binary_move)
 
-nmap <Space>h <Plug>(binary_move)h
-nmap <Space>j <Plug>(binary_move)j
-nmap <Space>k <Plug>(binary_move)k
-nmap <Space>l <Plug>(binary_move)l
+" function! s:binary_move_register_map(dict, to_zz) abort
+"   call s:nxnoremap('<Plug>(binary_move)', "<Cmd>call <SID>binary_move_clear()<CR>")
 
-xmap <Space>h <Plug>(binary_move)h
-xmap <Space>j <Plug>(binary_move)j
-xmap <Space>k <Plug>(binary_move)k
-xmap <Space>l <Plug>(binary_move)l
+"   for [d, v] in items(a:dict)
+"     for k in v
+"       call s:nxnoremap('<Plug>(binary_move)' .. k, "<Cmd>call <SID>binary_move('" .. d[0] .. "')<CR>" .. d[1:] .. "<Plug>(binary_move)")
+"       for tzz in a:to_zz
+"         call s:nxnoremap('<Plug>(binary_move)' .. tzz .. k, "<Cmd>call <SID>binary_move('" .. d[0] .. "')<CR>zz<Plug>(binary_move)" .. tzz)
+"       endfor
+"     endfor
+"   endfor
+" endfunction
+
+function! s:foreach (item_or_items, f) abort
+  if type(a:item_or_items) == type([])
+    for item in a:item_or_items
+      call a:f(item)
+    endfor
+  else
+    call a:f(a:item_or_items)
+  endif
+endfunction
+
+function! s:binary_move_register_map_v2(dict) abort
+  call s:nxnoremap(a:dict.plug, "<Cmd>call <SID>binary_move_clear()<CR>")
+  if exists('a:dict.activate')
+    call s:foreach(a:dict.activate, {key -> s:nxnoremap(key, "<Cmd>call <SID>binary_move()<CR>" .. a:dict.plug)})
+  endif
+  " gmはwarpがoffのとき、よくなさそう
+  if exists('a:dict.activate_center')
+    call s:foreach(a:dict.activate_center, {key -> s:nxnoremap(key, "Mgm<Cmd>call <SID>binary_move()<CR>" .. a:dict.plug)})
+  endif
+  for dir in "hjkl"
+    if exists('a:dict[dir]')
+      call s:foreach(a:dict[dir], {key -> s:nxnoremap(a:dict.plug .. key, "<Cmd>call <SID>binary_move('" .. dir .. "')<CR>" .. a:dict.plug)})
+    endif
+  endfor
+  for dir in "jk"
+    let x = dir .. 'zz'
+    if exists('a:dict[x]')
+      call s:foreach(a:dict[x], {key -> s:nxnoremap(a:dict.plug .. key, "<Cmd>call <SID>binary_move('" .. dir .. "')<CR>zz" .. a:dict.plug)})
+    endif
+    let x = dir .. 'zz_fast'
+    if exists('a:dict[x]')
+      call s:foreach(a:dict[x], {key -> s:nxnoremap(a:dict.plug .. key, (dir ==# 'k' ? 'zb' : 'zt') .. "<Cmd>call <SID>binary_move('" .. dir .. "')<CR>" .. a:dict.plug)})
+    endif
+    let x = 'whole_' .. dir
+    if exists('a:dict[x]')
+      call s:foreach(a:dict[x], {key -> s:nxnoremap(a:dict.plug .. key, "<Cmd>call <SID>binary_move('whole_" .. dir .. "')<CR>zz" .. a:dict.plug)})
+    endif
+  endfor
+  if exists('a:dict.zz')
+    call s:foreach(a:dict.zz, {key -> s:nxnoremap(a:dict.plug .. key, "zz" .. a:dict.plug)})
+  endif
+  if exists('a:dict.q')
+    call s:foreach(a:dict.q, {key -> s:nxnoremap(a:dict.plug .. key, "<Cmd>call <SID>binary_move_clear()<CR>")})
+  endif
+  if exists('a:dict.restart')
+    call s:foreach(a:dict.restart, {key -> s:nxnoremap(a:dict.plug .. key, "<Cmd>call <SID>binary_move_clear()<CR><Cmd>call <SID>binary_move()<CR>" .. a:dict.plug)})
+  endif
+endfunction
+
+" nnoremap <Plug>(binary_move)h <Cmd>call <SID>binary_move('h')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)j <Cmd>call <SID>binary_move('j')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)k <Cmd>call <SID>binary_move('k')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)l <Cmd>call <SID>binary_move('l')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)a <Cmd>call <SID>binary_move('h')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)s <Cmd>call <SID>binary_move('j')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)w <Cmd>call <SID>binary_move('k')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)d <Cmd>call <SID>binary_move('l')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)<Left> <Cmd>call <SID>binary_move('h')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)<Down> <Cmd>call <SID>binary_move('j')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)<Up> <Cmd>call <SID>binary_move('k')<CR><Plug>(binary_move)
+" nnoremap <Plug>(binary_move)<Right> <Cmd>call <SID>binary_move('l')<CR><Plug>(binary_move)
+
+
+" nnoremap <Plug>(binary_move)H <Cmd>call <SID>binary_move('h')<CR>zz<Plug>(binary_move)
+" nnoremap <Plug>(binary_move)J <Cmd>call <SID>binary_move('j')<CR>zz<Plug>(binary_move)
+" nnoremap <Plug>(binary_move)K <Cmd>call <SID>binary_move('k')<CR>zz<Plug>(binary_move)
+" nnoremap <Plug>(binary_move)L <Cmd>call <SID>binary_move('l')<CR>zz<Plug>(binary_move)
+
+" xnoremap <Plug>(binary_move)h <Cmd>call <SID>binary_move('h')<CR><Plug>(binary_move)
+" xnoremap <Plug>(binary_move)j <Cmd>call <SID>binary_move('j')<CR><Plug>(binary_move)
+" xnoremap <Plug>(binary_move)k <Cmd>call <SID>binary_move('k')<CR><Plug>(binary_move)
+" xnoremap <Plug>(binary_move)l <Cmd>call <SID>binary_move('l')<CR><Plug>(binary_move)
+" xnoremap <Plug>(binary_move)<Left> <Cmd>call <SID>binary_move('h')<CR><Plug>(binary_move)
+" xnoremap <Plug>(binary_move)<Down> <Cmd>call <SID>binary_move('j')<CR><Plug>(binary_move)
+" xnoremap <Plug>(binary_move)<Up> <Cmd>call <SID>binary_move('k')<CR><Plug>(binary_move)
+" xnoremap <Plug>(binary_move)<Right> <Cmd>call <SID>binary_move('l')<CR><Plug>(binary_move)
+
+" nmap <Space>h <Plug>(binary_move)h
+" nmap <Space>j <Plug>(binary_move)j
+" nmap <Space>k <Plug>(binary_move)k
+" nmap <Space>l <Plug>(binary_move)l
+
+" xmap <Space>h <Plug>(binary_move)h
+" xmap <Space>j <Plug>(binary_move)j
+" xmap <Space>k <Plug>(binary_move)k
+" xmap <Space>l <Plug>(binary_move)l
+
+" ダメ
+" nmap <expr> mb <SID>binary_move_start()
+" xmap <expr> mb <SID>binary_move_start()
+
+" nmap b <Cmd>call <SID>binary_move()<CR><Plug>(binary_move)
+" xmap b <Cmd>call <SID>binary_move()<CR><Plug>(binary_move)
+" nmap B <Cmd>call <SID>binary_move()<CR><Plug>(binary_move)
+" xmap B <Cmd>call <SID>binary_move()<CR><Plug>(binary_move)
+" nmap , <Cmd>call <SID>binary_move()<CR><Plug>(binary_move)
+" xmap , <Cmd>call <SID>binary_move()<CR><Plug>(binary_move)
+" nmap <C-f> <Cmd>call <SID>binary_move()<CR><Plug>(binary_move)f
+" xmap <C-f> <Cmd>call <SID>binary_move()<CR><Plug>(binary_move)f
+
+" nnoremap <Plug>(binary_move)b <Cmd>call <SID>binary_move_clear()<CR>b
+" xnoremap <Plug>(binary_move)b <Cmd>call <SID>binary_move_clear()<CR>b
+
+" call s:binary_move_register_map_v2(#{
+"       \ plug: '<Plug>(binary_move_wasd)',
+"       \ activate: 'e',
+"       \ activate_center: 'E',
+"       \ h: ['a', '<M-a>'],
+"       \ j: ['s', '<M-s>'],
+"       \ k: ['w', '<M-w>'],
+"       \ l: 'd',
+"       \ q: 'q',
+"       \ zz: 'f',
+"       \})
+
+call s:binary_move_register_map_v2(#{
+      \ plug: '<Plug>(binary_move)',
+      \ activate: 'b',
+      \ activate_center: 'M',
+      \ h: ['h', '<M-a>'],
+      \ j: ['j', '<M-s>'],
+      \ k: ['k', '<M-w>'],
+      \ l: ['l', '<M-d>'],
+      \ zz: ['z', '<M-z>'],
+      \})
+" 中央から開始すると移動量の予測がしやすい
+" call s:nxnoremap ('M', "Mgm<Cmd>call <SID>binary_move()<CR><Plug>(binary_move)")
+
+" call s:nxnoremap ('<PageUp>', "<Cmd>call <SID>binary_move('K')<CR>zz<Plug>(binary_move)")
+" call s:nxnoremap ('<PageDown>', "<Cmd>call <SID>binary_move('J')<CR>zz<Plug>(binary_move)")
+" call s:nxnoremap ('<Plug>(binary_move)<PageUp>', "<Cmd>call <SID>binary_move('K')<CR>zz<Plug>(binary_move)")
+" call s:nxnoremap ('<Plug>(binary_move)<PageDown>', "<Cmd>call <SID>binary_move('J')<CR>zz<Plug>(binary_move)")
+
+" Tips
+" 上に半分移動したい場合はzbでずらしてから移動
+" 下に半分移動したい場合はztでずらしてから移動
+" すると高速移動できるが、それをやる意味があるかどうかは謎
 
 
 " --------------------------------
@@ -750,8 +972,12 @@ function! s:dsurround () abort
     return ""
   endif
 
+  " クォートはaではなく2iで囲む
+  " 参考: help i"
+  let tos = c =~# '\v["''`]' ? "2i" : "a"
+
   if c =~# '\v[bB(){}[\]<>"''`/]'
-    return "\"zca" . c . "\<C-r>=trim (substitute (@z, '\\v^.|.$', '', 'g'))\<CR>\<Esc>"
+    return "\"zc" . tos . c . "\<C-r>=substitute (@z, '\\v^.|.$', '', 'g')\<CR>\<Esc>"
   else
     return ""
   endif
@@ -800,8 +1026,8 @@ cnoremap <expr> <C-n> wildmenumode () ? '<C-n>' : '<Down>'
 cnoremap <expr> <Up> wildmenumode () ? '<C-p>' : '<Up>'
 cnoremap <expr> <Down> wildmenumode () ? '<C-n>' : '<Down>'
 
-" ちゃんとしたDel
-cnoremap <expr> <Del> strpart (getcmdline (), getcmdpos () - 1) ==# '' ? '' : '<Del>'
+" <Del>でコマンドラインモードを終了しない
+cnoremap <expr> <Del> strpart (getcmdline (), getcmdpos () - 1) ==# '' ? '' : my_pairs#keymapping_right_or_delete ('<Del>')
 function! s:cmdline_ctrl_delete () abort
   let pos = getcmdpos ()
   return "\<C-Right>\<Cmd>call setcmdline (strpart (getcmdline (), 0, " . (pos - 1) . ") . strpart (getcmdline (), getcmdpos () - 1), " . pos . ")\<CR>"
@@ -822,54 +1048,53 @@ cnoremap <expr> / getcmdtype () ==# '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype () ==# '?' ? '\?' : '?'
 
 " my_pairs
-cnoremap <expr> ( <SID>keymapping_pair ('(', ')')
-cnoremap <expr> ) <SID>keymapping_pair (')', '')
-cnoremap <expr> { <SID>keymapping_pair ('{', '}')
-cnoremap <expr> } <SID>keymapping_pair ('}', '')
-cnoremap <expr> [ <SID>keymapping_pair ('[', ']')
-cnoremap <expr> ] <SID>keymapping_pair (']', '')
+cnoremap <expr> ( my_pairs#keymapping_pair ('(', ')')
+cnoremap <expr> ) my_pairs#keymapping_pair (')', '')
+cnoremap <expr> { my_pairs#keymapping_pair ('{', '}')
+cnoremap <expr> } my_pairs#keymapping_pair ('}', '')
+cnoremap <expr> [ my_pairs#keymapping_pair ('[', ']')
+cnoremap <expr> ] my_pairs#keymapping_pair (']', '')
 
 " クォーテーションの自動補完
-cnoremap <expr> " <SID>keymapping_pair ('"', '"')
-cnoremap <expr> ' <SID>keymapping_pair ('''', '''')
-cnoremap <expr> ` <SID>keymapping_pair ('`', '`')
+cnoremap <expr> " my_pairs#keymapping_pair ('"', '"')
+cnoremap <expr> ' my_pairs#keymapping_pair ('''', '''')
+cnoremap <expr> ` my_pairs#keymapping_pair ('`', '`')
 
 " Space
 " Spaceにマッピングを設定するとcabbrevが発動しない…
-" cnoremap <expr> <Space> <SID>keymapping_open_only ('<Space>', '<Space>')
+" cnoremap <expr> <Space> my_pairs#keymapping_open_only ('<Space>', '<Space>')
 
 " arrow
 cnoremap <Left> <Cmd>call my_pairs#clear_stack ()<CR><Left>
-cnoremap <expr> <Right> <SID>keymapping_right_or_delete ('<Right>', '<Right>')
-cnoremap <expr> <Right> my_pairs#match_stack (strpart (getcmdline (), getcmdpos () - 1)) ? repeat ('<Right>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Right>'
+" cnoremap <expr> <Right> <SID>keymapping_right_or_delete ('<Right>', '<Right>')
+" cnoremap <expr> <Right> my_pairs#match_stack (strpart (getcmdline (), getcmdpos () - 1)) ? repeat ('<Right>', strchars (my_pairs#pop_stack
+cnoremap <expr> <Right> my_pairs#keymapping_right_or_delete ('<Right>')
 
-" Delete
-cnoremap <expr> <Del> my_pairs#match_stack (strpart (getcmdline (), getcmdpos () - 1)) ? repeat ('<Del>', strchars (my_pairs#pop_stack ())) : '<Cmd>call my_pairs#clear_stack ()<CR><Del>'
 " Backspace
-cnoremap <expr> <BS> <SID>keymapping_backspace ('<BS>')
+cnoremap <expr> <BS> my_pairs#keymapping_backspace ('<BS>')
 
-function! s:getcmdline () abort
-  let str = getcmdline ()
-  let pos = getcmdpos () - 1
-  let prev = strpart (str, 0, pos)
-  let post = strpart (str, pos)
-  return [prev, post]
-endfunction
+" function! s:getcmdline () abort
+"   let str = getcmdline ()
+"   let pos = getcmdpos () - 1
+"   let prev = strpart (str, 0, pos)
+"   let post = strpart (str, pos)
+"   return [prev, post]
+" endfunction
 
-function! s:keymapping_pair (key, end) abort
-  let [prev, post] = s:getcmdline ()
-  return my_pairs#keymapping_pair (prev, post, a:key, a:end)
-endfunction
+" function! s:keymapping_pair (key, end) abort
+"   let [prev, post] = s:getcmdline ()
+"   return my_pairs#keymapping_pair (prev, post, a:key, a:end)
+" endfunction
 
-function! s:keymapping_open_only (key, end) abort
-  let [prev, post] = s:getcmdline ()
-  return my_pairs#keymapping_open_only (prev, post, a:key, a:end)
-endfunction
+" function! s:keymapping_open_only (key, end) abort
+"   let [prev, post] = s:getcmdline ()
+"   return my_pairs#keymapping_open_only (prev, post, a:key, a:end)
+" endfunction
 
-function! s:keymapping_backspace (key) abort
-  let [prev, post] = s:getcmdline ()
-  return my_pairs#keymapping_backspace (prev, post, a:key)
-endfunction
+" function! s:keymapping_backspace (key) abort
+"   let [prev, post] = s:getcmdline ()
+"   return my_pairs#keymapping_backspace (prev, post, a:key)
+" endfunction
 
 
 " --------------------------------
