@@ -309,7 +309,7 @@ decorate-prompt2::git ()
 
       # segment: branch
       decorate-prompt2::sep 6
-      printf "\ue0a0%s" "${branch_name}"
+      printf "\ue0a0 %s" "${branch_name}"
 
       [[ ${staged} -ne 0 ]] && decorate-prompt2::sep 2 && printf '%d staged' "${staged}"
       [[ ${modified} -ne 0 ]] && decorate-prompt2::sep 3 && printf '%d modified' "${modified}"
