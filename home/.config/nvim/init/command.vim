@@ -158,3 +158,6 @@ call s:cnoreabbrev ('help', 'vertical help')
 
 " create new tab
 call s:cnoreabbrev ('newtab', 'tab split')
+
+" view man
+call s:cnoreabbrev ('man', 'tab Man')
