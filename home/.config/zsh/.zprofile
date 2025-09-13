@@ -1,7 +1,7 @@
 #------------------------------
 # PATH
 #------------------------------
-typeset -U path
+typeset -U PATH path
 path=(
   "${HOME}/bin"(N-/)
   "${HOME}/.cargo/bin"(N-/)
