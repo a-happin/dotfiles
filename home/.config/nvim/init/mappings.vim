@@ -635,8 +635,8 @@ function! s:binary_move (dir = "") abort
     set cursorline cursorcolumn
   endif
 
-  if a:dir ==# 'K' || a:dir ==# 'J'
-    if a:dir ==# 'K'
+  if a:dir ==# 'whole_k' || a:dir ==# 'whole_j'
+    if a:dir ==# 'whole_k'
       let s:binary_move_ctx.bottom = line('.')
     else
       let s:binary_move_ctx.top = line('.')
@@ -776,6 +776,9 @@ function! s:binary_move_register_map_v2(dict) abort
   if exists('a:dict.zz')
     call s:foreach(a:dict.zz, {key -> s:nxnoremap(a:dict.plug .. key, "zz" .. a:dict.plug)})
   endif
+  if exists('a:dict.M')
+    call s:foreach(a:dict.M, {key -> s:nxnoremap(a:dict.plug .. key, "M" .. a:dict.plug)})
+  endif
   if exists('a:dict.q')
     call s:foreach(a:dict.q, {key -> s:nxnoremap(a:dict.plug .. key, "<Cmd>call <SID>binary_move_clear()<CR>")})
   endif
@@ -852,13 +855,13 @@ endfunction
 
 call s:binary_move_register_map_v2(#{
       \ plug: '<Plug>(binary_move)',
-      \ activate: 'b',
-      \ activate_center: 'M',
+      \ activate: ['b', '<M-b>'],
       \ h: ['h', '<M-a>'],
       \ j: ['j', '<M-s>'],
       \ k: ['k', '<M-w>'],
       \ l: ['l', '<M-d>'],
       \ zz: ['z', '<M-z>'],
+      \ M: 'm',
       \})
 " 中央から開始すると移動量の予測がしやすい
 " call s:nxnoremap ('M', "Mgm<Cmd>call <SID>binary_move()<CR><Plug>(binary_move)")

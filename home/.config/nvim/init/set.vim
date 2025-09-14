@@ -331,6 +331,8 @@ set statusline=%!StatusLine()
 " do not create swap file
 set noswapfile
 
+set tabclose=left
+
 set tabline=%!tabline#make()
 
 " 同時に開けるタブ数(未調査)
