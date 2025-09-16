@@ -882,15 +882,19 @@ call s:binary_move_register_map_v2(#{
 " --------------------------------
 
 " プラグインがないとき用の設定
-try
-  silent nnoremap <unique> <C-_> I//<Space><Esc>
-  silent vnoremap <unique> <C-_> I//<Space><Esc>
-  silent inoremap <unique> <C-_> <C-g>u<C-o>^//<Space>
-catch /:E227:/
-endtry
+"try
+"  silent nnoremap <unique> <C-_> I//<Space><Esc>
+"  silent vnoremap <unique> <C-_> I//<Space><Esc>
+"  silent inoremap <unique> <C-_> <C-g>u<C-o>^//<Space>
+"catch /:E227:/
+"endtry
 
 nmap <C-/> gcc
 vmap <C-/> gc
+
+" 一部環境(windows alacritty)で<C-/>が入力できない(?)ため、<C-_>を変わりに使う
+nmap <C-_> gcc
+vmap <C-_> gc
 
 " --------------------------------
 "  surround
