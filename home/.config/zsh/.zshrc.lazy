@@ -460,6 +460,10 @@ bindkey "^N" history-beginning-search-forward
 bindkey -r "^['"
 bindkey -r "^[\""
 
+# Esc+keyを無効化する(experimental)
+bindkey -s "^[" ""
+KEYTIMEOUT=1
+
 # abbreviation
 type zabbrev >/dev/null 2>&1 && eval "$(zabbrev init --bind-keys)"
 
