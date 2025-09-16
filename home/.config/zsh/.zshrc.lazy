@@ -384,6 +384,7 @@ bindkey -e
 function __expand-or-complete-prefix-trim-end()
 {
   local last_cursor=$#LBUFFER
+  [[ $last_cursor -eq 0 ]] && return 0
   zle expand-or-complete-prefix
   ## 文字が追加された場合のみ
   if [[ $last_cursor -lt $#LBUFFER ]]
