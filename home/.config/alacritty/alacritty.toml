@@ -51,15 +51,27 @@ style = "Medium"
 family = "alacritty-monospace"
 style = "Medium"
 
+# Ctrl+Backspace to Ctrl+h
 [[keyboard.bindings]]
 chars = "\u0017"
 key = "Back"
 mods = "Control"
 
+# probably unnecessary keybind
 # [[keyboard.bindings]]
 # chars = "\u001F"
 # key = "Slash"
 # mods = "Control"
+
+# disable change font size
+[[keyboard.bindings]]
+action = "None"
+key = "Minus"
+mods = "Control"
+[[keyboard.bindings]]
+action = "None"
+key = "Equals"
+mods = "Control"
 
 # [window]
 # opacity = 0.8
