@@ -881,7 +881,6 @@ call s:binary_move_register_map_v2(#{
 "  commentout
 " --------------------------------
 
-" Linuxでは<C-/>は<C-_>で設定しないといけないらしい
 " プラグインがないとき用の設定
 try
   silent nnoremap <unique> <C-_> I//<Space><Esc>
@@ -889,6 +888,9 @@ try
   silent inoremap <unique> <C-_> <C-g>u<C-o>^//<Space>
 catch /:E227:/
 endtry
+
+nmap <C-/> gcc
+vmap <C-/> gc
 
 " --------------------------------
 "  surround
