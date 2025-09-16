@@ -514,7 +514,7 @@ type git > /dev/null 2>&1 && {
 
   my_install_plugin "zsh-users/zsh-autosuggestions" && {
     lazy source "${XDG_CACHE_HOME}/zsh/plugins/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh"
-    lazy 'ZSH_AUTOSUGGEST_MANUAL_REBIND=1; ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-beginning-search-forward-end history-beginning-search-backward-end); ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(__lazy_resume); _zsh_autosuggest_start'
+    lazy 'ZSH_AUTOSUGGEST_MANUAL_REBIND=1; ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-beginning-search-forward-end history-beginning-search-backward-end); ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(__lazy_resume); lazy _zsh_autosuggest_start'
   }
 }
 
