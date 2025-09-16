@@ -482,13 +482,6 @@ KEYTIMEOUT=1
 # abbreviation
 type zabbrev >/dev/null 2>&1 && eval "$(zabbrev init --bind-keys)"
 
-# fix autosuggestion
-ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-# _zsh_autosuggest_start
-_zsh_autosuggest_bind_widgets
-_zsh_autosuggest_bind_widget __zabbrev::expand-and-insert-self modify
-_zsh_autosuggest_bind_widget __expand-or-complete-prefix-trim-end modify
-
 
 #------------------------------
 # 環境依存
