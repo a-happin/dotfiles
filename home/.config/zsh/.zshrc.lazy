@@ -462,6 +462,19 @@ bindkey "^N" history-beginning-search-forward
 bindkey -r "^['"
 bindkey -r "^[\""
 
+__fzf_history()
+{
+  local res
+  res=$(fc -l -n -r 0 | fzf --query "$LBUFFER") || {
+    zle reset-prompt
+    return 1
+  }
+  LBUFFER="$res"
+  zle reset-prompt
+}
+zle -N __fzf_history
+bindkey "^R" __fzf_history
+
 # Esc+keyを無効化する(experimental)
 bindkey -s "^[" ""
 KEYTIMEOUT=1
