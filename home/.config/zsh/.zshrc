@@ -520,6 +520,9 @@ type git > /dev/null 2>&1 && {
 
 lazy source "$ZDOTDIR/.zshrc.lazy"
 
+# wtf trick: これがないと最初の1キー目だけbindkeyが効かない
+bindkey -e
+
 #------------------------------
 # startuptime
 #------------------------------
