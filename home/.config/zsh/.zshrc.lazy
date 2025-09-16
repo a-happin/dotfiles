@@ -3,7 +3,8 @@
 #------------------------------
 
 # 補完で小文字を大文字にマッチさせる
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-z}{A-Z}={A-Za-z}'
+# zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-z}{A-Z}={A-Za-z}'
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}'
 
 # 補完メニューを選択できるようにする
 zstyle ':completion:*:default' menu select=2
@@ -54,7 +55,7 @@ zstyle ':completion:*:*:nvim:*:*files' ignored-patterns '*?.out' '*?.o' '*?.hi' 
 zstyle ':completion:*' list-separator '-->'
 
 # 何も入力されていないときのTabでTabが挿入されるのを抑制
-zstyle ':completion:*' insert-tab false
+# zstyle ':completion:*' insert-tab false
 
 # 単語区切り文字
 zstyle ':zle:*' word-chars ' /@#$%^&*-+=;:{}[]()<>,.|\\'
