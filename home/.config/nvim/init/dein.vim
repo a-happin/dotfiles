@@ -51,7 +51,7 @@ if dein#load_state (s:dein_directory)
 
   " toggle comment
   " autocmdをつかってくれ
-  call dein#add ('tpope/vim-commentary', #{on_event: 'VimEnter', hook_post_source: 'call plugin#commentary#init ()'})
+  " call dein#add ('tpope/vim-commentary', #{on_event: 'VimEnter', hook_post_source: 'call plugin#commentary#init ()'})
 
   " ********************************
   " ** plugins
