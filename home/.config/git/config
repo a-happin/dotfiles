@@ -47,7 +47,7 @@
 	discard-local = reset --hard @{u}
 	feature = "!_() { [[ -n $1 ]] && git switch -c \"feature/$1\"; }; _"
 	fixup = commit --fixup
-	fomm = "!_() { set -- \"$@\" $(git master) ; set -x; git fetch origin \"$1:$1\"; }; _"
+	fomm = "!_() { set -- \"$@\" master ; set -x; git fetch origin \"$1:$1\"; }; _"
 	fetch-prune = fetch --prune
 	git = !git
 	hash = rev-parse HEAD
@@ -55,7 +55,6 @@
 	initc = commit --allow-empty -m \"Initial commit.\"
 	keep-ours = "!_() { for i in \"$@\"; do printf '%s\n' \"/${GIT_PREFIX}$i merge=ours\" >> .gitattributes; done; }; _"
 	latest-tag = describe --tags --abbrev=0 --always
-	master = !git config init.defaultBranch || printf 'master'
 	merged = !git branch --merged | grep -Ev '\\*|master|develop|release|gh-pages' | tr -d '^ '
 	new = switch -c
 	newtag = tag -a
