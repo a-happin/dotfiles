@@ -162,6 +162,10 @@ if dein#load_state (s:dein_directory)
   " C++
   "call dein#add ('octol/vim-cpp-enhanced-highlight')
 
+  " markdown
+  " うーん……conceal……
+  "call dein#add ('MeanderingProgrammer/render-markdown.nvim', #{on_ft: 'markdown'})
+
   " fish shell script
   "call dein#add ('dag/vim-fish')
 
