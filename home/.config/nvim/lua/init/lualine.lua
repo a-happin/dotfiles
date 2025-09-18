@@ -12,8 +12,9 @@ local function skkstatus ()
 end
 
 local function binary ()
-  local bufnr = vim.api.nvim_get_current_buf ()
-  if vim.bo[bufnr].binary
+  -- local bufnr = vim.api.nvim_get_current_buf ()
+  -- if vim.bo[bufnr].binary
+  if vim.bo.binary
   then
     return 'binary'
   else
@@ -23,6 +24,32 @@ end
 
 local function location ()
   return '%3l,%-2v'
+end
+
+-- \x16 == <C-v>
+local sectioncounttable = {v = true, V = true, ['\x16'] = true}
+local function selectioncount()
+  ---@type string
+  local mode = vim.fn.mode()
+  if not sectioncounttable[mode]
+  then
+    return ''
+  end
+
+  local region = vim.fn.getregion(vim.fn.getpos('v'), vim.fn.getpos('.'), {type = mode})
+  local chars = 0
+  for _, s in ipairs(region)
+  do
+    chars = vim.fn.strchars(s) + chars
+  end
+
+  -- add "\n" except <C-v>
+  if mode ~= '\x16'
+  then
+    chars = chars + #region - 1
+  end
+
+  return string.format('%d lines, %d characters', #region, chars)
 end
 
 local function hash ()
@@ -44,6 +71,16 @@ local function my_pairs ()
   end
 end
 
+local function lsp_clients ()
+  local buf_clients = vim.lsp.get_clients({bufnr = 0})
+  local res = {}
+  for i, client in ipairs(buf_clients)
+  do
+    res[i] = client.name
+  end
+  return table.concat (res, ", ")
+end
+
 require 'lualine'.setup {
   options = {
     theme = 'ayu_mirage',
@@ -54,7 +91,7 @@ require 'lualine'.setup {
     lualine_a = { 'mode', skkstatus },
     lualine_b = {{ 'filename', file_status = true, path = 1, icon_enabled = false }},
     lualine_c = { hash },
-    lualine_x = {{ 'diagnostics', sources = {'nvim_diagnostic'}, colored = true, symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' } }, my_pairs},
+    lualine_x = {selectioncount, { 'diagnostics', sources = {'nvim_diagnostic'}, colored = true, symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' } }, { 'lsp_status', icon = '' }, my_pairs},
     lualine_y = { 'filetype' },
     lualine_z = { { 'fileformat', symbols = { unix = 'LF', dos = 'CRLF', mac = 'CR' } }, 'encoding', binary, location () },
   },
