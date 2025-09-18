@@ -142,6 +142,7 @@ nnoremap <C-t> <Cmd>tab split<CR>
 
 " TODO: 後で変える
 nnoremap <F3> <Cmd>call my_notify#inspect(#{col: col('.'), line: line('.'), bufwinnr: bufwinnr(bufnr()), screencol: screencol(), screenrow: screenrow(), screenpos: screenpos(bufwinnr(bufnr()),line('.'),col('.')),virtcol: virtcol(".", 1), wincol: wincol(), winline: winline()})<CR>
+vnoremap <F3> <Cmd>call my_notify#inspect(#{col: col('.'), line: line('.'), col_v:col('v'), line_v:line('v'), region: getregion(getpos('v'), getpos('.'), #{type: mode()}), mode: mode()})<CR>
 nnoremap <F5> <Cmd>Vterminal cargo test<CR>
 
 " --------------------------------
