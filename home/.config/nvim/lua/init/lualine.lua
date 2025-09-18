@@ -27,17 +27,17 @@ local function location ()
 end
 
 -- \x16 == <C-v>
-local sectioncounttable = {v = true, V = true, ['\x16'] = true}
+local sectioncount_mode_map = {v = 'v', V = 'V', ['\x16'] = '\x16', s = 'v', S = 'V', ['\x13'] = '\x16'}
 local function selectioncount()
-  ---@type string
-  local mode = vim.fn.mode()
-  if not sectioncounttable[mode]
+  local mode = sectioncount_mode_map[vim.fn.mode()]
+  if not mode
   then
     return ''
   end
 
   local region = vim.fn.getregion(vim.fn.getpos('v'), vim.fn.getpos('.'), {type = mode})
   local chars = 0
+  local lines = #region
   for _, s in ipairs(region)
   do
     chars = vim.fn.strchars(s) + chars
@@ -46,10 +46,10 @@ local function selectioncount()
   -- add "\n" except <C-v>
   if mode ~= '\x16'
   then
-    chars = chars + #region - 1
+    chars = chars + lines - 1
   end
 
-  return string.format('%d lines, %d characters', #region, chars)
+  return string.format('%d lines, %d characters', lines, chars)
 end
 
 local function hash ()
