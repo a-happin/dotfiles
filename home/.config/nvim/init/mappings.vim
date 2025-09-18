@@ -871,6 +871,8 @@ call s:binary_move_register_map_v2(#{
 " call s:nxnoremap ('<PageDown>', "<Cmd>call <SID>binary_move('J')<CR>zz<Plug>(binary_move)")
 " call s:nxnoremap ('<Plug>(binary_move)<PageUp>', "<Cmd>call <SID>binary_move('K')<CR>zz<Plug>(binary_move)")
 " call s:nxnoremap ('<Plug>(binary_move)<PageDown>', "<Cmd>call <SID>binary_move('J')<CR>zz<Plug>(binary_move)")
+call s:nxnoremap ('<Space>k', "<Cmd>call <SID>binary_move('k')<CR>zz<Plug>(binary_move)")
+call s:nxnoremap ('<Space>j', "<Cmd>call <SID>binary_move('j')<CR>zz<Plug>(binary_move)")
 
 " Tips
 " 上に半分移動したい場合はzbでずらしてから移動
