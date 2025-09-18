@@ -91,7 +91,7 @@ require 'lualine'.setup {
     lualine_a = { 'mode', skkstatus },
     lualine_b = {{ 'filename', file_status = true, path = 1, icon_enabled = false }},
     lualine_c = { hash },
-    lualine_x = {selectioncount, { 'diagnostics', sources = {'nvim_diagnostic'}, colored = true, symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' } }, { 'lsp_status', icon = '' }, my_pairs},
+    lualine_x = {selectioncount, { 'diagnostics', sources = {'nvim_diagnostic'}, colored = true, symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' } }, lsp_clients, my_pairs},
     lualine_y = { 'filetype' },
     lualine_z = { { 'fileformat', symbols = { unix = 'LF', dos = 'CRLF', mac = 'CR' } }, 'encoding', binary, location () },
   },
