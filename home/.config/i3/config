@@ -428,11 +428,14 @@ mode $move_mode {
 bindsym $mod+m mode $move_mode
 
 # wallpaper manager
-set $wallpaper_mode "Wallpaper [r: random], [b: ~/.fehbg], [l: latest], [f: fzf], [p: toggle picom]"
+set $wallpaper_mode "Wallpaper [r: random], [R: random(shuf)], [b: ~/.fehbg], [l: latest], [f: fzf], [p: toggle picom]"
 mode $wallpaper_mode {
   # random
   bindsym r exec --no-startup-id feh --no-fehbg --randomize --bg-max --recursive ~/Dropbox/image/illust
   # bindsym r exec --no-startup-id feh --no-fehbg --bg-max "$(fd --hidden --no-ignore --exclude .git --exclude '*.mp4' --type file . ~/Dropbox/image/illust | shuf -n1)"
+
+  # random2
+  bindsym Shift+r exec --no-startup-id feh --no-fehbg --bg-max "$(fd --hidden --no-ignore --exclude .git --exclude '*.mp4' --type file . ~/Dropbox/image/illust | shuf -n1)"
 
   # ~/.fehbg
   bindsym b mode "default"; exec --no-startup-id ~/.fehbg
