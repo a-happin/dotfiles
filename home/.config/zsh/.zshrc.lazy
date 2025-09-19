@@ -130,8 +130,8 @@ alias -s zip='unzip'
 alias -s rar='unrar x'
 alias -s jar='java -jar'
 # alias -s encrypted='decrypt-edit'
-alias -s ts='deno run --allow-all --unstable'
-
+alias -s ts='deno run --allow-all'
+alias -s go='go run'
 
 #------------------------------
 # compile function

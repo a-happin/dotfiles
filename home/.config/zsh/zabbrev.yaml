@@ -203,6 +203,10 @@ abbrevs:
   - abbr: 'exho'
     snippet: 'echo'
 
+  - abbr: 'lld'
+    snippet: 'ldd _ # lld is probably a typo.'
+    cursor: _
+
   # fix options
   - context: 'rm -iv'
     abbr-suffix: ''
@@ -496,8 +500,12 @@ abbrevs:
     snippet: images -a
 
   - context: 'podman'
+    abbr: 'vol'
+    snippet: volume
+
+  - context: 'podman'
     abbr: 'run'
-    snippet: run --rm -it --userns=keep-id -v container-home:/home/${USER} --passwd-entry='$USERNAME:*:$UID:$GID::/home/$USERNAME:/bin/bash'
+    snippet: run --rm -it --userns=keep-id -v container-home:/home/${USER} --passwd-entry='$USERNAME:*:$UID:$GID::/home/$USERNAME:/bin/bash' -v .:/work -w /work
 
   - context: 'podman'
     abbr: 'ps'
@@ -511,6 +519,10 @@ abbrevs:
 
   - abbr-suffix: '.ts'
     snippet: 'deno run --allow-all'
+    operation: prepend
+
+  - abbr-suffix: '.go'
+    snippet: 'go run'
     operation: prepend
 
   - abbr-suffix: '.jar'
@@ -529,6 +541,11 @@ abbrevs:
   - context: 'compile'
     abbr-suffix: '.cpp'
     snippet: 'chino'
+    operation: replace-context
+
+  - context: 'compile'
+    abbr-suffix: '.go'
+    snippet: 'go build'
     operation: replace-context
 
   # extract
