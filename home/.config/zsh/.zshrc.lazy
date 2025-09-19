@@ -498,8 +498,8 @@ case $(uname -r) in
       printf "Error in %s: \"%s\": no such file or directory\n" "$0" "/etc/wslstart.sh" >&2
     fi
 
-    alias pbcopy=clip.exe
-    alias pbpaste='powershell.exe get-clipboard | iconv -f cp932 | sed -z '\''s/\r\n/\n/g'\'
+    alias pbcopy='powershell.exe -c '\''[Console]::InputEncoding = [System.Text.Encoding]::UTF8; $reader = [System.IO.StreamReader]::new([System.IO.Stream]::Synchronized([System.Console]::OpenStandardInput())); $reader.ReadToEnd() | Set-Clipboard'\'
+    alias pbpaste='powershell.exe -c '\''[Console]::OutputEncoding = [System.Text.Encoding]::UTF8;[Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))'\'
     alias open='powershell.exe start'
 
     alias explorer=explorer.exe
