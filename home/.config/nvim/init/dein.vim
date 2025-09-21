@@ -78,6 +78,21 @@ if dein#load_state (s:dein_directory)
   call dein#add ('junegunn/fzf.vim', #{on_event: 'VimEnter', hook_post_source: 'call plugin#fzf#init ()', hook_add: 'if filereadable (expand ("~/.fzf/plugin/fzf.vim")) | set rtp+=~/.fzf/ | endif'})
   " call dein#add ('junegunn/fzf.vim', #{hook_post_source: 'call plugin#fzf#init ()', hook_add: 'if filereadable (expand ("~/.fzf/plugin/fzf.vim")) | set rtp+=~/.fzf/ | endif'})
 
+  " required by telescope.nvim
+  call dein#add ('nvim-lua/plenary.nvim')
+  " fuzzy finder
+  call dein#add ('nvim-telescope/telescope.nvim', #{ rev: '0.18'})
+  " use telescope when vim.ui.select()
+  call dein#add ('nvim-telescope/telescope-ui-select.nvim', #{hook_post_source: 'lua require "init/telescope"'})
+
+
+  " virtual text を利用したindent guide. No conceal らしいので採用
+  call dein#add ('lukas-reineke/indent-blankline.nvim', #{hook_post_source: 'lua require "init/indent-blankline"'})
+  call dein#add ('shellRaining/hlchunk.nvim', #{hook_post_source: 'lua require "init/hlchunk"'})
+
+  " 通知をいい感じにする
+  call dein#add ("rcarriga/nvim-notify", #{hook_add: 'lua require "init/nvim-notify"'})
+
   " 部分的に編集
   call dein#add ('thinca/vim-partedit')
 
@@ -119,16 +134,6 @@ if dein#load_state (s:dein_directory)
 
   " sorter
   " call dein#add ('Shougo/ddc-sorter_rank')
-
-  " ********************************
-  " ** lua plugins
-  " ********************************
-  " virtual text を利用したindent guide. No conceal らしいので採用
-  call dein#add ('lukas-reineke/indent-blankline.nvim', #{hook_post_source: 'lua require "init/indent-blankline"'})
-  call dein#add ('shellRaining/hlchunk.nvim', #{hook_post_source: 'lua require "init/hlchunk"'})
-
-  " 通知をいい感じにする
-  call dein#add ("rcarriga/nvim-notify", #{hook_add: 'lua require "init/nvim-notify"'})
 
 
   " ********************************
