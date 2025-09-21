@@ -163,14 +163,45 @@ vim.lsp.config ('lua_ls', {
 --   end
 -- end
 
+local node_specific_files = { 'package-lock.json', 'yarn.lock', 'pnpm-lock.yaml', 'bun.lockb', 'bun.lock' }
+
+vim.lsp.config ('ts_ls', {
+  root_dir = function (bufnr, on_dir)
+    local project_root = vim.fs.root (bufnr, node_specific_files)
+    if project_root ~= nil
+    then
+      on_dir(project_root)
+    end
+  end
+})
+
 if (vim.fn.executable ('deno')) then
-  -- vim.lsp.config ('denols', {
+  vim.lsp.config ('denols', {
+    filetypes = {
+      'typescript',
+      'typescriptreact',
+      'typescript.tsx',
+    },
+    root_dir = function (bufnr, on_dir)
+      local project_root = vim.fs.root (bufnr, { 'deno.json', 'deno.jsonc' })
+      if project_root ~= nil
+      then
+        on_dir(project_root)
+      end
+      project_root = vim.fs.root (bufnr, node_specific_files)
+      if project_root ~= nil
+      then
+        return
+      end
+      project_root = vim.fs.root (bufnr, '.git')
+      on_dir(project_root or vim.fn.getcwd())
+    end
   --   on_attach = on_attach,
   --   init_options = {
   --     lint = false,
   --     unstable = false,
   --   },
-  -- })
+  })
   vim.lsp.enable ('denols')
   -- lspconfig.denols.setup {
   --   on_attach = on_attach,
