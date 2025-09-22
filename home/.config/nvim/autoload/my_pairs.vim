@@ -3,13 +3,6 @@ function! s:cursor_char () abort
   return matchstr (getline ('.') , '.' , col ('.') - 1)
 endfunction
 
-function! s:getline_c () abort
-  let str = getcmdline ()
-  let pos = getcmdpos () - 1
-  let prev = strpart (str, 0, pos)
-  let post = strpart (str, pos)
-endfunction
-
 
 " ********************************
 " ** 標準で用意しろ
@@ -147,7 +140,7 @@ function! s:opening_pair (prev, post, is_moved, start, end) abort
     " ': 直前がキーワードの場合補完しない
     " ': rustかつprevが'&'で終わっている or '<'が含まれている場合はlifetimeの可能性が高いため補完しない
     if a:start ==# ''''
-      return (a:prev !~# '\v\k''$') && (&filetype !=# 'rust' || a:prev !~# '\v\&''$|\<') && s:should_auto_complete (a:post) ? '''' : ''
+      return (a:prev !~# '\v\k''+$') && (&filetype !=# 'rust' || a:prev !~# '\v\&''$|\<') && s:should_auto_complete (a:post) ? '''' : ''
 
     " ": vimscriptかつ行頭の場合はコメントなので補完しない
     elseif a:start ==# '"'
@@ -253,14 +246,14 @@ function! my_pairs#keymapping_backspace (key) abort
   let [prev, post] = s:getline ()
   " 括弧を探す
   for [start, end] in s:parens
-    if s:starts_with (post, end) && s:ends_with (prev, start)
+    if s:starts_with (post, end) && s:ends_with (prev, start) && my_pairs#match_stack(post)
       return s:delete_pairs (start, end)
     endif
   endfor
 
   " quotを探す
   for quot in s:quotations
-    if s:starts_with (post, quot) && s:ends_with (prev, quot)
+    if s:starts_with (post, quot) && s:ends_with (prev, quot) && my_pairs#match_stack(post)
       return s:delete_pairs (quot, quot)
     endif
   endfor
@@ -269,7 +262,7 @@ function! my_pairs#keymapping_backspace (key) abort
   if s:starts_with (post, ' ')
     if s:ends_with (prev, ' ')
       for [start, end] in s:parens
-        if s:starts_with (post, ' ' . end) && s:ends_with (prev, start . ' ')
+        if s:starts_with (post, ' ' . end) && s:ends_with (prev, start . ' ') && my_pairs#match_stack(post)
           return s:delete_pairs (' ', ' ')
         endif
       endfor
