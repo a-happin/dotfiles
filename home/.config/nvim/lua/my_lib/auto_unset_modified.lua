@@ -12,15 +12,19 @@ local function calc_hash(buffer)
   return vim.fn.sha256(table.concat(vim.api.nvim_buf_get_lines(buffer or 0, 0, -1, false), "\n"))
 end
 
+local function is_available()
+  return vim.bo.modifiable and not vim.bo.readonly and (vim.bo.buftype == '' or vim.bo.buftype == 'acwrite')
+end
+
 local function save_hash()
-  if vim.bo.modifiable and not vim.bo.readonly and not vim.bo.modified then
+  if is_available() and not vim.bo.modified then
     vim.b.my_hash = calc_hash ()
   end
 end
 
 local function auto_unset_modified()
   -- vim.notify(string.format("modifiable: %s\nreadonly: %s\nmodified: %s\ncalc_hash: %s\nsaved_hash:%s", vim.bo.modifiable, vim.bo.readonly, vim.bo.modified, calc_hash(), vim.b.my_hash), nil, {title = "auto_unset_modified"})
-  if vim.bo.modifiable and not vim.bo.readonly and vim.bo.modified and calc_hash() == (vim.b.my_hash or EMPTY_HASH) then
+  if is_available() and vim.bo.modified and calc_hash() == (vim.b.my_hash or EMPTY_HASH) then
     vim.bo.modified = false
   end
 end
