@@ -13,6 +13,15 @@ require("telescope").setup {
       }
     },
   },
+  pickers = {
+    live_grep = {
+      additional_args = {'--hidden', '--no-ignore', '--glob', '!.git'}
+    },
+    find_files = {
+      hidden = true,
+      no_ignore = true,
+    },
+  },
   extensions = {
     ["ui-select"] = {
       require("telescope.themes").get_dropdown {
@@ -38,3 +47,4 @@ require("telescope").setup {
 -- To get ui-select loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 require("telescope").load_extension("ui-select")
+require("telescope").load_extension("recent_files")

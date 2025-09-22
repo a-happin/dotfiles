@@ -82,9 +82,10 @@ if dein#load_state (s:dein_directory)
   call dein#add ('nvim-lua/plenary.nvim')
   " fuzzy finder
   call dein#add ('nvim-telescope/telescope.nvim', #{ rev: '0.18'})
+  " better than oldfiles
+  call dein#add ('smartpde/telescope-recent-files')
   " use telescope when vim.ui.select()
   call dein#add ('nvim-telescope/telescope-ui-select.nvim', #{hook_post_source: 'lua require "init/telescope"'})
-
 
   " virtual text を利用したindent guide. No conceal らしいので採用
   call dein#add ('lukas-reineke/indent-blankline.nvim', #{hook_post_source: 'lua require "init/indent-blankline"'})

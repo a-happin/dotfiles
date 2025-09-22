@@ -571,13 +571,18 @@ xnoremap <Space>s "zy:%s/\V<C-r>=escape(@z, '\/')<CR>/<C-r>=escape(@z, '\/')<CR>
 " nnoremap <Space>d lD
 
 " Run FZF
-nnoremap <Space>f <Cmd>Files<CR>
+"nnoremap <Space>f <Cmd>Files<CR>
+nnoremap <Space>f <Cmd>Telescope find_files<CR>
+nnoremap <Space>F <Cmd>call fzf#vim#files("", fzf#vim#with_preview(#{options: ['--reverse']}))<CR>
 
 " git ls-files | fzf
-nnoremap <Space>g <Cmd>GFiles<CR>
+"nnoremap <Space>g <Cmd>GFiles<CR>
+nnoremap <Space>g <Cmd>Telescope git_files<CR>
+nnoremap <Space>G <Cmd>call fzf#vim#gitfiles("", fzf#vim#with_preview(#{options: ['--reverse']}))<CR>
 
 " 最近開いたファイル
-nnoremap <Space>h <Cmd>History<CR>
+nnoremap <Space>h <Cmd>Telescope recent_files<CR>
+nnoremap <Space>H <Cmd>call fzf#vim#history(fzf#vim#with_preview(#{options: ['--reverse']}))<CR>
 
 " wrap考慮の行頭、行末移動
 " call s:noxnoremap ('<Space>h', 'g^')
@@ -600,7 +605,11 @@ xnoremap <Space>; :
 nnoremap <Space>v gn
 
 " バッファ一覧
-nnoremap <Space>b <Cmd>Buffers<CR>
+"nnoremap <Space>b <Cmd>Buffers<CR>
+"nnoremap <Space>b <Cmd>Telescope buffers<CR>
+"nnoremap <Space>b <Cmd>lua require 'telescope.builtin'.buffers({entry_maker = require 'telescope.make_entry'.gen_from_buffer()})<CR>
+nnoremap <Space>b <Cmd>lua require 'telescope.builtin'.buffers({entry_maker = require 'my_lib/telescope'.gen_from_buffer()})<CR>
+nnoremap <Space>B <Cmd>call fzf#vim#buffers("", fzf#vim#with_preview(#{placeholder: "{1}", options: ['--reverse']}))<CR>
 
 " 新規
 nnoremap <Space>n <Nop>
@@ -616,7 +625,8 @@ nnoremap <Space>, <Cmd>tabnew $MYVIMRC \| lcd %:h<CR>
 nnoremap <Space>. <Cmd>SourceThis<CR>
 
 " ripgrep
-nnoremap <Space>/ <Cmd>Rg<CR>
+"nnoremap <Space>/ <Cmd>Rg<CR>
+nnoremap <Space>/ <Cmd>Telescope live_grep<CR>
 
 " 選択中の文字列で検索をかける
 xnoremap <Space>/ "zy/\V<C-r>=escape(@z, '\/')<CR><CR><Cmd>call <SID>flash_hlsearch()<CR>
@@ -1052,7 +1062,7 @@ cnoremap <Insert> <Nop>
 cnoremap <C-f> <Nop>
 
 " 未入力+<Tab>でHistory:を起動(fzf)
-cnoremap <expr> <Tab> wildmenumode () ? '<Tab>' : (getcmdtype () ==# ':' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>History:<CR>' : (getcmdtype () ==# '/' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>History/<CR>' : '<Tab>'
+cnoremap <expr> <Tab> wildmenumode () ? '<Tab>' : (getcmdtype () ==# ':' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>Telescope command_history<CR>' : (getcmdtype () ==# '/' && getcmdline () ==# '') ? '<C-u><Esc><Cmd>Telescope search_history<CR>' : '<Tab>'
 
 " 自動エスケープ
 " 参考 :help search-offset
