@@ -95,7 +95,7 @@ command! -bar GitDiff tabnew | setlocal buftype=nofile bufhidden=delete noswapfi
 command! -bar GitDiff2 tab split | aboveleft vert new | setlocal buftype=nofile bufhidden=delete noswapfile | execute '%!git show :./' . shellescape (expand ('#')) | diffthis | wincmd p | diffthis
 
 " 拡張子からテンプレートファイルを判別し読み込む
-command! -bar LoadTemplate call s:load_template ()
+"command! -bar LoadTemplate call s:load_template ()
 
 " clang-formatにかける
 command! -bar -range=% ClangFormat <line1>,<line2>!clang-format

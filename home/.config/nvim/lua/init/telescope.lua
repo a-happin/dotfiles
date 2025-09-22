@@ -48,3 +48,17 @@ require("telescope").setup {
 -- load_extension, somewhere after setup function:
 require("telescope").load_extension("ui-select")
 require("telescope").load_extension("recent_files")
+
+vim.api.nvim_create_user_command('InsertTemplate', function()
+  require'telescope.builtin'.find_files{
+    cwd = '~/.config/nvim/template',
+    attach_mappings = require'my_lib/telescope'.override_select_default(function(selection)
+      if selection == nil
+      then
+        return
+      end
+      local contents = table.concat(vim.fn.readfile(selection.cwd .. '/' .. selection[1]), '\n')
+      vim.api.nvim_paste(contents, false, -1)
+    end)
+  }
+end, {bar = true})

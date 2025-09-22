@@ -86,4 +86,23 @@ M.gen_from_buffer = function(opts)
   end
 end
 
+-- my action
+
+local actions = require 'telescope.actions'
+local action_state = require 'telescope.actions.state'
+
+--- override telescope action select_default
+---@param callback fun(selection: table | nil)
+---@return function attach_mappings
+M.override_select_default = function(callback)
+  return function(_)
+    actions.select_default:replace(function(prompt_bufnr)
+      local selection = action_state.get_selected_entry()
+      actions.close(prompt_bufnr)
+      callback(selection)
+    end)
+    return true
+  end
+end
+
 return M
