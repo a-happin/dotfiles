@@ -18,10 +18,10 @@ augroup END
 
 augroup auto_lcd
   autocmd!
-  autocmd BufReadPost */.config/nvim/* lcd ~/.config/nvim
-  autocmd BufReadPost */.config/zsh/* lcd ~/.config/zsh
-  autocmd BufReadPost */.config/fish/* lcd ~/.config/fish
-  autocmd BufReadPost */.config/i3/* lcd ~/.config/i3
+  autocmd BufReadPost */.config/nvim/* execute 'lcd' expand('<amatch>')->matchstr('\v^.*\V/.config/nvim/')
+  autocmd BufReadPost */.config/zsh/* execute 'lcd' expand('<amatch>')->matchstr('\v^.*\V/.config/zsh/')
+  autocmd BufReadPost */.config/fish/* execute 'lcd' expand('<amatch>')->matchstr('\v^.*\V/.config/fish/')
+  autocmd BufReadPost */.config/i3/* execute 'lcd' expand('<amatch>')->matchstr('\v^.*\V/.config/i3/')
 augroup END
 
 " ファイル保存時のハッシュ値と同じだったらmodifiedフラグをresetする
