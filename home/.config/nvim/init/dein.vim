@@ -81,7 +81,7 @@ if dein#load_state (s:dein_directory)
   " required by telescope.nvim
   call dein#add ('nvim-lua/plenary.nvim')
   " fuzzy finder
-  call dein#add ('nvim-telescope/telescope.nvim', #{ rev: '0.18'})
+  call dein#add ('nvim-telescope/telescope.nvim', #{ rev: '0.1.8' })
   " better than oldfiles
   call dein#add ('smartpde/telescope-recent-files')
   " use telescope when vim.ui.select()
