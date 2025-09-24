@@ -302,6 +302,21 @@ EOS
   rg --hidden --no-ignore --glob '!.git' "${rg_opts[@]}" -l -0 "$old" | xargs -0 sed -i "s${sep}${old}${sep}${new}${sep}g"
 }
 
+mojibake ()
+{
+  if [[ $# -eq 0 ]]
+  then
+    iconv -f cp932 -t utf-8//IGNORE
+  else
+    printf "%s\n" "$*" | iconv -f cp932 -t utf-8//IGNORE
+  fi
+}
+
+mojibake-resolve ()
+{
+  iconv -t cp932
+}
+
 #------------------------------
 # nvim-remote
 #------------------------------
