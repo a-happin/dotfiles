@@ -28,6 +28,9 @@ abbrevs:
   - abbr: 'commit'
     snippet: 'git commit -v'
 
+  - abbr: 'tauri'
+    snippet: 'npm run tauri'
+
   - abbr: 'reload'
     snippet: 'exec zsh'
 
@@ -63,14 +66,6 @@ abbrevs:
 
   - abbr: 'gitconfig'
     snippet: 'nvim ~/.config/git/config'
-
-  - abbr: '['
-    snippet: '[[ 🐣 ]]'
-    cursor: '🐣'
-
-  - abbr: '[['
-    snippet: '[[ 🐣 ]]'
-    cursor: '🐣'
 
   # add default options
   - abbr: 'exa'
@@ -163,6 +158,14 @@ abbrevs:
     snippet: '$(fc -l -n -1)'
     evaluate: true
 
+  - abbr: '['
+    snippet: '[[ 🐣 ]]'
+    cursor: '🐣'
+
+  - abbr: '[['
+    snippet: '[[ 🐣 ]]'
+    cursor: '🐣'
+
   - context: 'zabbrev'
     abbr: 'update'
     snippet: 'cargo uninstall zabbrev; cargo install --path ~/work/zabbrev'
@@ -176,7 +179,12 @@ abbrevs:
 
   # prepend sudo
   - context: 'pacman'
-    abbr-regex: '^-[SRUD]'
+    abbr: '-R'
+    snippet: 'sudo pacman -Rns'
+    operation: replace-all
+
+  - context: 'pacman'
+    abbr-regex: '^-[SRUD][^i]*$'
     snippet: 'sudo'
     operation: prepend
 
