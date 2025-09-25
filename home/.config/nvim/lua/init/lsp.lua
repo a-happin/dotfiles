@@ -155,6 +155,23 @@ vim.lsp.config ('lua_ls', {
   }
 })
 
+vim.lsp.config ('rust_analyzer', {
+  settings = {
+    ['rust-analyzer'] = {
+      cachePriming = {
+        enable = false
+      },
+      -- cargo = {
+      --   allTargets = false,
+      -- },
+      procMacro = {
+        enable = false,
+      },
+    }
+  }
+})
+vim.lsp.enable ('rust_analyzer', false)
+
 
 -- local function root_pattern_or_dirname(...)
 --   local patterns = { ... }
