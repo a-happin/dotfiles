@@ -189,7 +189,12 @@ vim.lsp.config ('ts_ls', {
     then
       on_dir(project_root)
     end
-  end
+  end,
+  settings = {
+    implicitProjectConfiguration = {
+      checkJs = true,
+    },
+  },
 })
 
 if (vim.fn.executable ('deno')) then
