@@ -161,12 +161,18 @@ vim.lsp.config ('rust_analyzer', {
       cachePriming = {
         enable = false
       },
-      -- cargo = {
-      --   allTargets = false,
-      -- },
+      cargo = {
+        allTargets = false,
+      },
       procMacro = {
         enable = false,
       },
+      diagnostics = {
+        disabled = {
+          'proc-macro-disabled',
+          'macro-error',
+        }
+      }
     }
   }
 })
