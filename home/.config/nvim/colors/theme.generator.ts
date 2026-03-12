@@ -2,18 +2,19 @@ type Color = {
   cui: number | string,
   gui: number | string
 }
-const HighlightAttribute = {
-  NONE: 'NONE',
-  bold: 'bold',
-  underline: 'underline',
-  undercurl: 'undercurl',
-  reverse: 'reverse',
-  inverse: 'inverse',
-  italic: 'italic',
-  standout: 'standout',
-  strikethough: 'strikethough'
-} as const
-type HighlightAttribute = typeof HighlightAttribute[keyof typeof HighlightAttribute]
+// const HighlightAttribute = {
+//   NONE: 'NONE',
+//   bold: 'bold',
+//   underline: 'underline',
+//   undercurl: 'undercurl',
+//   reverse: 'reverse',
+//   inverse: 'inverse',
+//   italic: 'italic',
+//   standout: 'standout',
+//   strikethough: 'strikethough'
+// } as const
+type HighlightAttribute = "NONE" | "bold" | "underline" | "undercurl" | "reverse" | "inverse" | "italic" | "standout" | "strikethough" | 'nocombine'
+// type HighlightAttribute = typeof HighlightAttribute[keyof typeof HighlightAttribute]
 
 type HighlightArgument = {
   fg?: Color,
@@ -256,7 +257,7 @@ console.log (`if &background ==# 'dark'`)
   highlight ('SpecialKey', {fg: accent_color, attrs: ['NONE']})
 
   // テキストではない? listchars(末尾空白やTab文字)が対応していた
-  highlight ('NonText', {fg: accent_color, attrs: ['NONE']})
+  highlight ('NonText', {fg: darkgray, attrs: ['NONE']})
 
   // EOF後の~
   /* highlight ('EndOfBuffer', {fg: none, bg: none, attrs: none}) */
@@ -321,6 +322,18 @@ console.log (`if &background ==# 'dark'`)
 
   // URL
   highlight ('URL', {fg: url_blue, attrs: ['underline']})
+
+  // markdown link label
+  highlight ('MarkdownLinkLabel', {fg: url_blue, attrs: ['nocombine', 'NONE']})
+  highlight ('MarkdownLinkURL', {fg: url_blue, attrs: ['nocombine', 'underline']})
+
+  // markdown colorful headings
+  highlight ('MarkdownH1', {fg: {cui: 'red', gui: '#bf616a'}, attrs: ['bold']})
+  highlight ('MarkdownH2', {fg: {cui: 'darkyellow', gui: '#d08770'}, attrs: ['bold']})
+  highlight ('MarkdownH3', {fg: {cui: 'yellow', gui: '#ebcb8b'}, attrs: ['bold']})
+  highlight ('MarkdownH4', {fg: {cui: 'green', gui: '#a3be8c'}, attrs: ['bold']})
+  highlight ('MarkdownH5', {fg: {cui: 'blue', gui: '#5e81ac'}, attrs: ['bold']})
+  highlight ('MarkdownH6', {fg: {cui: 'magenta', gui: '#b48ead'}, attrs: ['bold']})
 
 console.log (`endif`)
 console.log (
@@ -451,4 +464,20 @@ hi! link @variable.builtin.vim Function
 hi! link @property.vim Function
 hi! link @comment.todo TODO
 hi! link @string.special.url URL
+hi! link @markup.link.markdown_inline Operator
+hi! link @markup.link.label.markdown_inline MarkdownLinkLabel
+hi! link @markup.link.url.markdown_inline MarkdownLinkURL
+hi! link @markup.link.label.markdown MarkdownLinkLabel
+hi! link @markup.link.url.markdown URL
+hi! link @markup.list.markdown Operator
+hi! link @markup.list.checked.markdown Operator
+hi! link @markup.list.unchecked.markdown Operator
+hi! link @punctuation.special.markdown Operator
+hi! link @markup.heading.1.markdown MarkdownH1
+hi! link @markup.heading.2.markdown MarkdownH2
+hi! link @markup.heading.3.markdown MarkdownH3
+hi! link @markup.heading.4.markdown MarkdownH4
+hi! link @markup.heading.5.markdown MarkdownH5
+hi! link @markup.heading.6.markdown MarkdownH6
+hi! link @markup.quote.markdown Normal
 `)

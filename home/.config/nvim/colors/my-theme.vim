@@ -59,7 +59,7 @@ if &background ==# 'dark'
   hi TabLineSel cterm=NONE ctermbg=blue ctermfg=black gui=NONE guibg=#8ac6f2 guifg=#000000
   hi TabLineFill cterm=NONE ctermbg=none ctermfg=none gui=NONE guibg=none guifg=none
   hi SpecialKey cterm=NONE ctermfg=blue gui=NONE guifg=#8ac6f2
-  hi NonText cterm=NONE ctermfg=blue gui=NONE guifg=#8ac6f2
+  hi NonText cterm=NONE ctermfg=darkgray gui=NONE guifg=#767676
   hi VertSplit cterm=NONE ctermbg=none ctermfg=darkgray gui=NONE guibg=none guifg=#767676
   hi IncSearch cterm=bold,reverse ctermbg=none ctermfg=white gui=bold,reverse guibg=none guifg=#eaeaea
   hi Search cterm=bold,reverse ctermbg=none ctermfg=yellow gui=bold,reverse guibg=none guifg=#e7c547
@@ -82,6 +82,14 @@ if &background ==# 'dark'
   hi LspReferenceRead cterm=underline gui=underline
   hi LspReferenceWrite cterm=underline gui=underline
   hi URL cterm=underline ctermfg=blue gui=underline guifg=#7a7ada
+  hi MarkdownLinkLabel cterm=nocombine,NONE ctermfg=blue gui=nocombine,NONE guifg=#7a7ada
+  hi MarkdownLinkURL cterm=nocombine,underline ctermfg=blue gui=nocombine,underline guifg=#7a7ada
+  hi MarkdownH1 cterm=bold ctermfg=red gui=bold guifg=#bf616a
+  hi MarkdownH2 cterm=bold ctermfg=darkyellow gui=bold guifg=#d08770
+  hi MarkdownH3 cterm=bold ctermfg=yellow gui=bold guifg=#ebcb8b
+  hi MarkdownH4 cterm=bold ctermfg=green gui=bold guifg=#a3be8c
+  hi MarkdownH5 cterm=bold ctermfg=blue gui=bold guifg=#5e81ac
+  hi MarkdownH6 cterm=bold ctermfg=magenta gui=bold guifg=#b48ead
 endif
 hi! link EndOfBuffer Ignore
 hi! link TermCursor Cursor
@@ -210,4 +218,20 @@ hi! link @variable.builtin.vim Function
 hi! link @property.vim Function
 hi! link @comment.todo TODO
 hi! link @string.special.url URL
+hi! link @markup.link.markdown_inline Operator
+hi! link @markup.link.label.markdown_inline MarkdownLinkLabel
+hi! link @markup.link.url.markdown_inline MarkdownLinkURL
+hi! link @markup.link.label.markdown MarkdownLinkLabel
+hi! link @markup.link.url.markdown URL
+hi! link @markup.list.markdown Operator
+hi! link @markup.list.checked.markdown Operator
+hi! link @markup.list.unchecked.markdown Operator
+hi! link @punctuation.special.markdown Operator
+hi! link @markup.heading.1.markdown MarkdownH1
+hi! link @markup.heading.2.markdown MarkdownH2
+hi! link @markup.heading.3.markdown MarkdownH3
+hi! link @markup.heading.4.markdown MarkdownH4
+hi! link @markup.heading.5.markdown MarkdownH5
+hi! link @markup.heading.6.markdown MarkdownH6
+hi! link @markup.quote.markdown Normal
 
