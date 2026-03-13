@@ -484,6 +484,7 @@ nnoremap <Space><Esc> <Nop>
 
 " カーソル下のsyntax highlight表示
 nnoremap <Space><F1> <Cmd>Inspect<CR>
+nnoremap <Space><F2> <Cmd>echo synIDattr(synID(line("."), col("."), 1), "name")<CR>
 
 " 移動せずに大文字小文字変換
 nnoremap <Space>` g~l

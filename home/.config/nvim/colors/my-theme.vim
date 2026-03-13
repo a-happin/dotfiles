@@ -83,7 +83,7 @@ if &background ==# 'dark'
   hi LspReferenceWrite cterm=underline gui=underline
   hi URL cterm=underline ctermfg=blue gui=underline guifg=#7a7ada
   hi MarkdownLinkLabel cterm=nocombine,NONE ctermfg=blue gui=nocombine,NONE guifg=#7a7ada
-  hi MarkdownLinkURL cterm=nocombine,underline ctermfg=blue gui=nocombine,underline guifg=#7a7ada
+  hi MarkdownURL cterm=nocombine,underline ctermfg=blue gui=nocombine,underline guifg=#7a7ada
   hi MarkdownH1 cterm=bold ctermfg=red gui=bold guifg=#bf616a
   hi MarkdownH2 cterm=bold ctermfg=darkyellow gui=bold guifg=#d08770
   hi MarkdownH3 cterm=bold ctermfg=yellow gui=bold guifg=#ebcb8b
@@ -176,11 +176,13 @@ hi! link jsObjectKey Identifier
 hi! link jsSuper Statement
 hi! link jsTemplateBraces Special
 hi! link jsUndefined Constant
-hi! link markdownBold Special
 hi! link markdownCode String
 hi! link markdownCodeDelimiter String
 hi! link markdownHeadingDelimiter Comment
 hi! link markdownRule Comment
+hi! link markdownLinkText MarkdownLinkLabel
+hi! link markdownLinkDelimiter Delimiter
+hi! link markdownLinkTextDelimiter Delimiter
 hi! link ngxDirective Statement
 hi! link plug1 Normal
 hi! link plug2 Identifier
@@ -220,16 +222,16 @@ hi! link @comment.todo TODO
 hi! link @string.special.url URL
 hi! link @markup.link Operator
 hi! link @markup.link.label MarkdownLinkLabel
-hi! link @markup.link.url MarkdownLinkURL
+hi! link @markup.link.url MarkdownURL
 hi! link @markup.list Operator
 hi! link @markup.list.checked Operator
 hi! link @markup.list.unchecked Operator
 hi! link @punctuation.special Delimiter
-hi! link @markup.heading.1 MarkdownH1
-hi! link @markup.heading.2 MarkdownH2
-hi! link @markup.heading.3 MarkdownH3
-hi! link @markup.heading.4 MarkdownH4
-hi! link @markup.heading.5 MarkdownH5
-hi! link @markup.heading.6 MarkdownH6
+hi! link @markup.heading.1.markdown MarkdownH1
+hi! link @markup.heading.2.markdown MarkdownH2
+hi! link @markup.heading.3.markdown MarkdownH3
+hi! link @markup.heading.4.markdown MarkdownH4
+hi! link @markup.heading.5.markdown MarkdownH5
+hi! link @markup.heading.6.markdown MarkdownH6
 hi! link @markup.quote Normal
 
