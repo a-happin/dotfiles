@@ -97,6 +97,9 @@ if dein#load_state (s:dein_directory)
   " 部分的に編集
   call dein#add ('thinca/vim-partedit')
 
+  " quickfixを編集可能にする
+  call dein#add ('itchyny/vim-qfedit')
+
   " ********************************
   " ** denops plugins
   " ********************************
