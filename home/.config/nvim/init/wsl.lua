@@ -29,12 +29,16 @@ vim.g.clipboard = {
   cache_enabled = 1,
 }
 
+vim.cmd [[
+  set clipboard=unnamedplus,unnamed
+]]
+
 -- https://neovim.io/doc/user/faq.html#faq
-if vim.g.loaded_clipboard_provider
-then
-  vim.g.loaded_clipboard_provider = nil
-  vim.cmd [[
-    runtime autoload/provider/clipboard.vim
-  ]]
-    -- echomsg "clipboard reload"
-end
+-- if vim.g.loaded_clipboard_provider
+-- then
+--   vim.g.loaded_clipboard_provider = nil
+--   vim.cmd [[
+--     runtime autoload/provider/clipboard.vim
+--   ]]
+--     -- echomsg "clipboard reload"
+-- end

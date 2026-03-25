@@ -40,7 +40,9 @@ set cinkeys& cinkeys-=: cinkeys-=0# cinkeys-=e
 set cinoptions& cinoptions+=:0,g0,t0,+0,(0,Ws,m1
 
 " share clipboard
-if has ('unnamedplus')
+if has('wsl')
+  " 遅延設定を行うので何もしない
+elseif has ('unnamedplus')
   set clipboard=unnamedplus,unnamed
 else
   set clipboard=unnamed
