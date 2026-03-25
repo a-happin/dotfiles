@@ -121,6 +121,9 @@ function! s:clear_registers() abort
 endfunction
 command! -bar ClearRegisters call s:clear_registers()
 
+" RefreshQuickFix
+command! -bar RefreshQuickFix call setqflist(map(getqflist(), {_, v -> extend(v, #{text: get(getbufline(v.bufnr, v.lnum), 0)})}))
+
 " ripgrepによるファイル横断検索
 call s:cnoreabbrev ('rg', 'Rg')
 
