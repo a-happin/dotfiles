@@ -108,7 +108,7 @@ abbrevs:
     snippet: "rg --hidden --no-ignore --glob '!.git'"
 
   - abbr: 'rsync'
-    snippet: "rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR # Be careful with '/' at the end."
+    snippet: "rsync -avh --progress --delete --dry-run SRC_DIR/ DEST_DIR/ # Be careful with '/' at the end."
 
   - abbr: 'paccache'
     snippet: "paccache -r; paccache -ruk0; yay --aur -Sc"
@@ -124,6 +124,9 @@ abbrevs:
 
   - abbr: 'date'
     snippet: date +'%Y-%m-%d(%a) %H:%M:%S %Z(%:z)'
+
+  - abbr: 'vim-startuptime'
+    snippet: vim-startuptime -vimpath nvim
 
   # minecraft gameoutput
   - context: ''
