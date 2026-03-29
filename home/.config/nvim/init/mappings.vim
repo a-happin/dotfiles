@@ -169,6 +169,11 @@ vnoremap <S-Tab> <gv
 "xnoremap < <gv
 "xnoremap > >gv
 
+" zfをline-wise operatorにする。
+" 参考: [zfをline-wise化して直感的な挙動にするマッピング | Atusy's blog](https://blog.atusy.net/2024/09/06/linewise-zf/)
+nnoremap zf zfV
+vnoremap <expr> zf mode() ==# 'V' ? 'zf' : 'Vzf'
+
 " --------------------------------
 "  カーソル移動系
 " --------------------------------
