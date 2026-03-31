@@ -205,6 +205,7 @@ endfunction
 " 直前が*または\だった場合、そのまま/
 " < だった場合、/を入力した後オムニ補完開始
 " それ以外: /を入力した後ファイル名補完開始
+" 最近はファイル名補完がうざいと感じることが多いので一旦無効(2026-03-31)
 function! s:keymapping_slash () abort
   let [prev, post] = s:getline ()
   if prev =~# '\v[/*\\]$'
@@ -216,7 +217,8 @@ function! s:keymapping_slash () abort
       return "/"
     endif
   else
-    return "/\<C-x>\<C-f>"
+    "return "/\<C-x>\<C-f>"
+    return "/"
   endif
 endfunction
 
