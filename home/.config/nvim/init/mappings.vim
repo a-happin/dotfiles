@@ -579,16 +579,16 @@ xnoremap <Space>s "zy:%s/\V<C-r>=escape(@z, '\/')<CR>/<C-r>=escape(@z, '\/')<CR>
 " Run FZF
 "nnoremap <Space>f <Cmd>Files<CR>
 nnoremap <Space>f <Cmd>Telescope find_files<CR>
-nnoremap <Space>F <Cmd>call fzf#vim#files("", fzf#vim#with_preview(#{options: ['--reverse']}))<CR>
+nnoremap <Space>F <Cmd>call fzf#vim#files("", fzf#vim#with_preview(#{options: ['--reverse'], window: #{ width: 0.9, height: 0.8 }}))<CR>
 
 " git ls-files | fzf
 "nnoremap <Space>g <Cmd>GFiles<CR>
 nnoremap <Space>g <Cmd>Telescope git_files<CR>
-nnoremap <Space>G <Cmd>call fzf#vim#gitfiles("", fzf#vim#with_preview(#{options: ['--reverse']}))<CR>
+nnoremap <Space>G <Cmd>call fzf#vim#gitfiles("", fzf#vim#with_preview(#{options: ['--reverse'], window: #{ width: 0.9, height: 0.8 }}))<CR>
 
 " 最近開いたファイル
 nnoremap <Space>h <Cmd>Telescope recent_files<CR>
-nnoremap <Space>H <Cmd>call fzf#vim#history(fzf#vim#with_preview(#{options: ['--reverse']}))<CR>
+nnoremap <Space>H <Cmd>call fzf#vim#history(fzf#vim#with_preview(#{options: ['--reverse'], window: #{ width: 0.9, height: 0.8 }}))<CR>
 
 " wrap考慮の行頭、行末移動
 " call s:noxnoremap ('<Space>h', 'g^')
@@ -615,7 +615,7 @@ nnoremap <Space>v gn
 "nnoremap <Space>b <Cmd>Telescope buffers<CR>
 "nnoremap <Space>b <Cmd>lua require 'telescope.builtin'.buffers({entry_maker = require 'telescope.make_entry'.gen_from_buffer()})<CR>
 nnoremap <Space>b <Cmd>lua require 'telescope.builtin'.buffers({entry_maker = require 'my_lib/telescope'.gen_from_buffer()})<CR>
-nnoremap <Space>B <Cmd>call fzf#vim#buffers("", fzf#vim#with_preview(#{placeholder: "{1}", options: ['--reverse']}))<CR>
+nnoremap <Space>B <Cmd>call fzf#vim#buffers("", fzf#vim#with_preview(#{placeholder: "{1}", options: ['--reverse'], window: #{ width: 0.9, height: 0.8 }}))<CR>
 
 " 新規
 nnoremap <Space>n <Nop>
