@@ -18,7 +18,8 @@ zstyle ':completion:*:warnings' format '%F{11}%BNo matches for:%b %d%f'
 
 # 補完候補に色をつける
 # zstyle ':completion:*:default' list-colors ""
-zstyle ':completion:*' list-colors 'di=01;34' 'ln=01;36' 'so=01;35' 'ex=01;32' 'bd=40;33;01' 'cd=40;33;01'
+# ow: other writable(windowsのフォルダはwslから見ると他ユーザーの書き込み権限がついている)。これの色を直す
+zstyle ':completion:*' list-colors 'di=01;34' 'ln=01;36' 'so=01;35' 'ex=01;32' 'bd=40;33;01' 'cd=40;33;01' 'ow=42;30;01'
 
 # 補完候補の指定
 # _expand: グロブや変数の展開を行う。
