@@ -251,6 +251,10 @@ abbrevs:
     snippet: 'branch'
 
   - context: 'git'
+    abbr: 'branches'
+    snippet: 'branch -a'
+
+  - context: 'git'
     abbr: 'c'
     snippet: 'commit'
 
