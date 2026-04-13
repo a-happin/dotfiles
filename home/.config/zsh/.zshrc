@@ -97,7 +97,8 @@ setopt no_flow_control
 setopt nohup
 
 # 改行コードで終わらない出力もちゃんと出力する
-setopt no_promptcr
+# promptcrを有効にしたほうが期待通り。おそらく古い情報だったか
+# setopt no_promptcr
 
 # バックグラウンドジョブの状態変化を即時報告する
 setopt notify
