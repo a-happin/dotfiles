@@ -134,6 +134,8 @@ call s:cnoreabbrev ('rg', 'Rg')
 call s:cnoreabbrev ('W', 'w')
 " call s:cnoreabbrev ('newtab', 'tabnew')
 call s:cnoreabbrev ('qc', 'cq')
+" 誤爆防止
+call s:cnoreabbrev ('wa', 'lua vim.notify('':waは存在しますがおそらく意図しないコマンド入力です。\\n意図していた場合は:wallと入力してください'')')
 
 " abbreviation
 call s:cnoreabbrev ('note', 'Note')
