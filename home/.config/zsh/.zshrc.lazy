@@ -245,12 +245,66 @@ git-repositories ()
 git-status-all ()
 {
   local i
+  local line
+  local branch_name
+  local untracked
+  local staged
+  local modified
+  local conflicted
+
   # find . -name .cache -prune -o -name .git -type d -exec dirname {} \; | while read i
-  git-repositories | while read i
-  do
-    printf "%s\n" "$i"
-    \git -C "$i" status -s
-  done
+  git-repositories | {
+    while IFS= read -r i || [[ -n "${line}" ]]
+    do
+      \git -C "$i" status --porcelain --branch 2> /dev/null | {
+        untracked=0
+        staged=0
+        modified=0
+        conflicted=0
+
+        # ignore first column, branch_name = current_line[2..]
+        read -r line branch_name
+
+        while IFS= read -r line || [[ -n "${line}" ]]
+        do
+          case "${line[1,2]}" in
+            \?\?) untracked=$((untracked + 1)) ;;
+            ?U) conflicted=$((conflicted + 1)) ;;
+            ?\ ) staged=$((staged + 1)) ;;
+            \ ?) modified=$((modified + 1)) ;;
+            *)
+              staged=$((staged + 1))
+              modified=$((modified + 1))
+              ;;
+          esac
+        done
+
+        ## output
+        printf "\e[1;34m%s" "${i}"
+
+        if [[ ${untracked} -ne 0 || ${conflicted} -ne 0 ]]
+        then
+          printf "\e[31m"
+        elif [[ ${staged} -ne 0 || ${modified} -ne 0 ]]
+        then
+          printf "\e[33m"
+        else
+          printf "\e[36m"
+        fi
+        printf " (\ue0a0 %s)" "${branch_name}"
+
+        [[ ${staged} -ne 0 ]] && printf '\e[32m %d staged' "${staged}"
+        [[ ${modified} -ne 0 ]] && printf '\e[33m %d modified' "${modified}"
+        [[ ${untracked} -ne 0 ]] && printf '\e[31m %d untracked' "${untracked}"
+        [[ ${conflicted} -ne 0 ]] && printf '\e[35m %d conflicted' "${conflicted}"
+        printf "\e[0m\n"
+      }
+    done
+  }
+  # do
+  #   printf "%s\n" "$i"
+  #   \git -C "$i" status -s
+  # done
 }
 
 color-palette ()
