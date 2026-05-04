@@ -210,37 +210,37 @@ decorate-branch ()
     local conflicted=0
 
     # ignore first column, branch_name = current_line[2..]
-    read -r line branch_name
+    read -r line branch_name && {
+      # unnecessarry trim
+      # branch_name="${line#* }"
+      while IFS= read -r line || [[ -n "${line}" ]]
+      do
+        case "${line[1,2]}" in
+          \?\?) untracked=$((untracked + 1)) ;;
+          ?U) conflicted=$((conflicted + 1)) ;;
+          ?\ ) staged=$((staged + 1)) ;;
+          \ ?) modified=$((modified + 1)) ;;
+          *)
+            staged=$((staged + 1))
+            modified=$((modified + 1))
+            ;;
+        esac
+      done
 
-    # unnecessarry trim
-    # branch_name="${line#* }"
-    while IFS= read -r line || [[ -n "${line}" ]]
-    do
-      case "${line[1,2]}" in
-        \?\?) untracked=$((untracked + 1)) ;;
-        ?U) conflicted=$((conflicted + 1)) ;;
-        ?\ ) staged=$((staged + 1)) ;;
-        \ ?) modified=$((modified + 1)) ;;
-        *)
-          staged=$((staged + 1))
-          modified=$((modified + 1))
-          ;;
-      esac
-    done
-
-    if [[ ${untracked} -ne 0 || ${conflicted} -ne 0 ]]
-    then
-      printf '%%{\e[01;31m%%} (%s)' "${branch_name}"
-    elif [[ ${staged} -ne 0 || ${modified} -ne 0 ]]
-    then
-      printf '%%{\e[01;33m%%} (%s)' "${branch_name}"
-    else
-      printf '%%{\e[01;36m%%} (%s)' "${branch_name}"
-    fi
-    [[ ${staged} -ne 0 ]] && printf '%%{\e[01;32m%%} %d staged' "${staged}"
-    [[ ${modified} -ne 0 ]] && printf '%%{\e[01;33m%%} %d modified' "${modified}"
-    [[ ${untracked} -ne 0 ]] && printf '%%{\e[01;31m%%} %d untracked' "${untracked}"
-    [[ ${conflicted} -ne 0 ]] && printf '%%{\e[01;35m%%} %d conflicted' "${conflicted}"
+      if [[ ${untracked} -ne 0 || ${conflicted} -ne 0 ]]
+      then
+        printf '%%{\e[01;31m%%} (%s)' "${branch_name}"
+      elif [[ ${staged} -ne 0 || ${modified} -ne 0 ]]
+      then
+        printf '%%{\e[01;33m%%} (%s)' "${branch_name}"
+      else
+        printf '%%{\e[01;36m%%} (%s)' "${branch_name}"
+      fi
+      [[ ${staged} -ne 0 ]] && printf '%%{\e[01;32m%%} %d staged' "${staged}"
+      [[ ${modified} -ne 0 ]] && printf '%%{\e[01;33m%%} %d modified' "${modified}"
+      [[ ${untracked} -ne 0 ]] && printf '%%{\e[01;31m%%} %d untracked' "${untracked}"
+      [[ ${conflicted} -ne 0 ]] && printf '%%{\e[01;35m%%} %d conflicted' "${conflicted}"
+    }
   }
 }
 
@@ -294,32 +294,32 @@ decorate-prompt2::git ()
     local conflicted=0
 
     # ignore first column, branch_name = current_line[2..]
-    read -r line branch_name
+    read -r line branch_name && {
+      # unnecessarry trim
+      # branch_name="${line#* }"
+      while IFS= read -r line || [[ -n "${line}" ]]
+      do
+        case "${line[1,2]}" in
+          \?\?) untracked=$((untracked + 1)) ;;
+          ?U) conflicted=$((conflicted + 1)) ;;
+          ?\ ) staged=$((staged + 1)) ;;
+          \ ?) modified=$((modified + 1)) ;;
+          *)
+            staged=$((staged + 1))
+            modified=$((modified + 1))
+            ;;
+        esac
+      done
 
-    # unnecessarry trim
-    # branch_name="${line#* }"
-    while IFS= read -r line || [[ -n "${line}" ]]
-    do
-      case "${line[1,2]}" in
-        \?\?) untracked=$((untracked + 1)) ;;
-        ?U) conflicted=$((conflicted + 1)) ;;
-        ?\ ) staged=$((staged + 1)) ;;
-        \ ?) modified=$((modified + 1)) ;;
-        *)
-          staged=$((staged + 1))
-          modified=$((modified + 1))
-          ;;
-      esac
-    done
+      # segment: branch
+      decorate-prompt2::sep 6
+      printf "\ue0a0 %s" "${branch_name}"
 
-    # segment: branch
-    decorate-prompt2::sep 6
-    printf "\ue0a0 %s" "${branch_name}"
-
-    [[ ${staged} -ne 0 ]] && decorate-prompt2::sep 2 && printf '%d staged' "${staged}"
-    [[ ${modified} -ne 0 ]] && decorate-prompt2::sep 3 && printf '%d modified' "${modified}"
-    [[ ${untracked} -ne 0 ]] && decorate-prompt2::sep 1 && printf '%d untracked' "${untracked}"
-    [[ ${conflicted} -ne 0 ]] && decorate-prompt2::sep 5 && printf '%d conflicted' "${conflicted}"
+      [[ ${staged} -ne 0 ]] && decorate-prompt2::sep 2 && printf '%d staged' "${staged}"
+      [[ ${modified} -ne 0 ]] && decorate-prompt2::sep 3 && printf '%d modified' "${modified}"
+      [[ ${untracked} -ne 0 ]] && decorate-prompt2::sep 1 && printf '%d untracked' "${untracked}"
+      [[ ${conflicted} -ne 0 ]] && decorate-prompt2::sep 5 && printf '%d conflicted' "${conflicted}"
+    }
   }
 }
 
