@@ -31,6 +31,9 @@ abbrevs:
   - abbr: 'tauri'
     snippet: 'npm run tauri'
 
+  - abbr: 'what-package'
+    snippet: 'pacman -Qo'
+
   - abbr: 'reload'
     snippet: 'exec zsh'
 
